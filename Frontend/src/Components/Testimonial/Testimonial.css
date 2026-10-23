@@ -13,7 +13,7 @@
 
   position: relative;
   overflow: hidden;
-  padding: 100px 24px 110px;
+  padding: 85px 24px 85px;
   background:
     radial-gradient(ellipse at 10% 20%, rgba(21, 139, 88, 0.08) 0%, transparent 45%),
     radial-gradient(circle at 90% 80%, rgba(7, 37, 28, 0.035) 0%, transparent 45%),

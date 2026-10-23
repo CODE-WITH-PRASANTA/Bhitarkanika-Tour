@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import AboutOneImage from "../../assets/aboutimage.png";
@@ -53,7 +52,7 @@ const AboutOne = () => {
           observer.unobserve(entry.target);
         }
       },
-      { threshold: 0.18 }
+      { threshold: 0.12 }
     );
 
     observer.observe(section);
@@ -69,7 +68,11 @@ const AboutOne = () => {
     let animationFrame;
 
     const animateCounter = (currentTime) => {
-      const progress = Math.min((currentTime - startTime) / duration, 1);
+      const progress = Math.min(
+        (currentTime - startTime) / duration,
+        1
+      );
+
       const easedProgress = 1 - Math.pow(1 - progress, 4);
 
       setExperienceYears(Math.round(easedProgress * 25));
@@ -88,12 +91,14 @@ const AboutOne = () => {
 
   return (
     <section
-      className={`AboutOne ${isVisible ? "AboutOne--visible" : ""}`}
       ref={sectionRef}
+      className={`AboutOne ${
+        isVisible ? "AboutOne--visible" : ""
+      }`}
       aria-labelledby="AboutOne-title"
     >
       <div className="AboutOne__container">
-        {/* Left content */}
+        {/* LEFT CONTENT */}
         <div className="AboutOne__content">
           <div className="AboutOne__eyebrow">
             <span className="AboutOne__eyebrowLine" />
@@ -106,40 +111,48 @@ const AboutOne = () => {
           </h2>
 
           <p className="AboutOne__intro">
-            Explore the enchanting mangrove forests, peaceful waterways and
-            remarkable biodiversity of Bhitarkanika. Every journey is an
-            opportunity to appreciate nature and understand why its
-            conservation matters.
+            Explore the enchanting mangrove forests, peaceful
+            waterways and remarkable biodiversity of Bhitarkanika.
+            Every journey is an opportunity to appreciate nature and
+            understand why its conservation matters.
           </p>
 
           <div className="AboutOne__features">
             {aboutFeatures.map((feature) => (
-              <article className="AboutOne__feature" key={feature.number}>
+              <article
+                className="AboutOne__feature"
+                key={feature.number}
+              >
                 <span className="AboutOne__featureNumber">
                   {feature.number}
                 </span>
 
                 <h3>{feature.title}</h3>
-
                 <p>{feature.description}</p>
               </article>
             ))}
           </div>
 
           <div className="AboutOne__actions">
-            <Link to="/about" className="AboutOne__button AboutOne__button--primary">
+            <Link
+              to="/about"
+              className="AboutOne__button AboutOne__button--primary"
+            >
               Discover Our Story
               <span aria-hidden="true">↗</span>
             </Link>
 
-            <Link to="/contact" className="AboutOne__button AboutOne__button--secondary">
+            <Link
+              to="/contact"
+              className="AboutOne__button AboutOne__button--secondary"
+            >
               Contact Us
               <span aria-hidden="true">↗</span>
             </Link>
           </div>
         </div>
 
-        {/* Right image */}
+        {/* RIGHT IMAGE */}
         <div className="AboutOne__visual">
           <div className="AboutOne__imageFrame">
             <img
@@ -147,6 +160,7 @@ const AboutOne = () => {
               src={AboutOneImage}
               alt="Explore the natural landscapes and wildlife of Bhitarkanika"
               loading="lazy"
+              decoding="async"
             />
 
             <div className="AboutOne__imageOverlay" />
@@ -157,13 +171,16 @@ const AboutOne = () => {
             </div>
           </div>
 
-          {/* Floating experience card */}
+          {/* EXPERIENCE COUNTER */}
           <div className="AboutOne__experience">
             <span className="AboutOne__experienceLabel">
               OUR COMMITMENT
             </span>
 
-            <div className="AboutOne__counter">
+            <div
+              className="AboutOne__counter"
+              aria-label={`${experienceYears} plus`}
+            >
               {experienceYears}
               <span>+</span>
             </div>
@@ -171,8 +188,8 @@ const AboutOne = () => {
             <h3>Years of Experience</h3>
 
             <p>
-              A lasting commitment to meaningful journeys and responsible
-              nature exploration.
+              A lasting commitment to meaningful journeys and
+              responsible nature exploration.
             </p>
 
             <div className="AboutOne__experienceLine">
@@ -180,8 +197,14 @@ const AboutOne = () => {
             </div>
           </div>
 
-          <div className="AboutOne__decor AboutOne__decor--one" />
-          <div className="AboutOne__decor AboutOne__decor--two" />
+          <div
+            className="AboutOne__decor AboutOne__decor--one"
+            aria-hidden="true"
+          />
+          <div
+            className="AboutOne__decor AboutOne__decor--two"
+            aria-hidden="true"
+          />
         </div>
       </div>
     </section>

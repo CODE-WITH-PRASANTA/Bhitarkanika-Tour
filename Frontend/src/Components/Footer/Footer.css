@@ -390,32 +390,6 @@
   color: var(--footer-green);
 }
 
-/* =========================================
-   BACK TO TOP
-========================================= */
-
-.footer-back-to-top {
-  position: absolute;
-  right: 25px;
-  bottom: 18px;
-  width: 43px;
-  height: 43px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  background: #2ab77b;
-  border: none;
-  cursor: pointer;
-  transition:
-    background 0.2s ease,
-    transform 0.2s ease;
-}
-
-.footer-back-to-top:hover {
-  background: #15965f;
-  transform: translateY(-3px);
-}
 
 /* =========================================
    LAPTOP

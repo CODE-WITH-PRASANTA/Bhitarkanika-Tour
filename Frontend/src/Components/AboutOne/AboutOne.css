@@ -1,4 +1,5 @@
 
+
 .AboutOne {
   --AboutOne-green: #22b875;
   --AboutOne-green-dark: #108451;
@@ -8,8 +9,12 @@
   --AboutOne-line: #e2e8e3;
 
   position: relative;
+  isolation: isolate;
+  display: block;
   width: 100%;
-  overflow: hidden;
+  max-width: 100%;
+  min-width: 0;
+  overflow: clip;
   padding: 90px 24px 100px;
   background:
     radial-gradient(
@@ -32,29 +37,37 @@
   display: grid;
   width: 100%;
   max-width: 1450px;
-  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  min-width: 0;
+  grid-template-columns:
+    minmax(0, 1.08fr)
+    minmax(0, 0.92fr);
   align-items: center;
-  gap: clamp(45px, 6vw, 90px);
-  margin: 0 auto;
+  gap: clamp(28px, 4.5vw, 70px);
+  margin-inline: auto;
 }
 
-/* Left content: enters from the left */
+.AboutOne__content,
+.AboutOne__visual {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* =========================================
+   LEFT CONTENT ANIMATION
+========================================= */
 
 .AboutOne__content {
-  min-width: 0;
   opacity: 0;
-  transform: translateX(-65px);
+  transform: translateX(-35px);
   transition:
-    opacity 0.85s ease,
-    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 0.8s ease,
+    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .AboutOne--visible .AboutOne__content {
   opacity: 1;
   transform: translateX(0);
 }
-
-/* Intro label */
 
 .AboutOne__eyebrow {
   display: flex;
@@ -64,26 +77,26 @@
   color: var(--AboutOne-green-dark);
   font-size: 14px;
   font-weight: 700;
-  letter-spacing: 1.5px;
+  letter-spacing: 1.3px;
 }
 
 .AboutOne__eyebrowLine {
   display: inline-block;
   width: 35px;
   height: 2px;
+  flex-shrink: 0;
   background: var(--AboutOne-green);
 }
-
-/* Main heading */
 
 .AboutOne__title {
   margin: 0;
   color: var(--AboutOne-ink);
   font-family: "Arial Narrow", "Roboto Condensed", Arial, sans-serif;
-  font-size: clamp(38px, 4vw, 58px);
+  font-size: clamp(36px, 4vw, 58px);
   font-weight: 800;
   line-height: 1.16;
-  letter-spacing: -1.5px;
+  letter-spacing: -1.3px;
+  overflow-wrap: anywhere;
 }
 
 .AboutOne__title span {
@@ -92,20 +105,23 @@
   color: var(--AboutOne-green-dark);
 }
 
-/* Intro paragraph */
-
 .AboutOne__intro {
   max-width: 690px;
   margin: 23px 0 27px;
   color: var(--AboutOne-muted);
   font-size: 16px;
-  line-height: 1.95;
+  line-height: 1.9;
+  overflow-wrap: anywhere;
 }
 
-/* Feature grid */
+/* =========================================
+   FEATURE CARDS
+========================================= */
 
 .AboutOne__features {
   display: grid;
+  width: 100%;
+  min-width: 0;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   margin-top: 26px;
   border-top: 1px solid var(--AboutOne-line);
@@ -115,7 +131,7 @@
 .AboutOne__feature {
   position: relative;
   min-width: 0;
-  padding: 25px 22px 25px 24px;
+  padding: 25px 20px 25px 22px;
   border-right: 1px solid var(--AboutOne-line);
   border-bottom: 1px solid var(--AboutOne-line);
   background: rgba(255, 255, 255, 0.55);
@@ -136,7 +152,7 @@
   display: inline-flex;
   margin-bottom: 9px;
   color: var(--AboutOne-green-dark);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
   letter-spacing: 1.5px;
 }
@@ -145,9 +161,10 @@
   margin: 0 0 10px;
   color: #26352e;
   font-family: "Arial Narrow", "Roboto Condensed", Arial, sans-serif;
-  font-size: clamp(17px, 1.55vw, 22px);
+  font-size: clamp(17px, 1.5vw, 22px);
   font-weight: 800;
   line-height: 1.4;
+  overflow-wrap: anywhere;
 }
 
 .AboutOne__feature p {
@@ -155,9 +172,12 @@
   color: var(--AboutOne-muted);
   font-size: 14px;
   line-height: 1.85;
+  overflow-wrap: anywhere;
 }
 
-/* Action buttons */
+/* =========================================
+   PREMIUM BUTTONS
+========================================= */
 
 .AboutOne__actions {
   display: flex;
@@ -167,18 +187,20 @@
 }
 
 .AboutOne__button {
-  position: relative;
   display: inline-flex;
-  min-height: 55px;
+  max-width: 100%;
+  min-height: 54px;
   align-items: center;
   justify-content: center;
-  gap: 20px;
-  padding: 15px 21px;
+  gap: 15px;
+  padding: 14px 21px;
   border: 1px solid transparent;
-  border-radius: 3px;
+  border-radius: 4px;
   font-size: 14px;
   font-weight: 800;
+  text-align: center;
   text-decoration: none;
+  overflow-wrap: anywhere;
   transition:
     transform 0.25s ease,
     color 0.25s ease,
@@ -188,6 +210,7 @@
 }
 
 .AboutOne__button span {
+  flex-shrink: 0;
   font-size: 18px;
   transition: transform 0.25s ease;
 }
@@ -222,17 +245,19 @@
   background: #f0faf4;
 }
 
-/* Right image: enters from the right */
+/* =========================================
+   RIGHT IMAGE ANIMATION
+========================================= */
 
 .AboutOne__visual {
   position: relative;
-  min-width: 0;
+  width: 100%;
   padding: 0 0 65px;
   opacity: 0;
-  transform: translateX(65px);
+  transform: translateX(35px);
   transition:
     opacity 0.9s ease 0.12s,
-    transform 1s cubic-bezier(0.22, 1, 0.36, 1) 0.12s;
+    transform 0.95s cubic-bezier(0.22, 1, 0.36, 1) 0.12s;
 }
 
 .AboutOne--visible .AboutOne__visual {
@@ -240,11 +265,10 @@
   transform: translateX(0);
 }
 
-/* Image frame */
-
 .AboutOne__imageFrame {
   position: relative;
-  min-height: 500px;
+  width: 100%;
+  min-width: 0;
   overflow: hidden;
   border-radius: 5px;
   background: #dfe9df;
@@ -254,7 +278,8 @@
 .AboutOne__image {
   display: block;
   width: 100%;
-  height: clamp(490px, 48vw, 700px);
+  max-width: 100%;
+  height: clamp(430px, 44vw, 650px);
   object-fit: cover;
   object-position: center;
   transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.3, 1);
@@ -277,19 +302,20 @@
 
 .AboutOne__imageLabel {
   position: absolute;
-  right: 18px;
-  bottom: 18px;
+  right: 16px;
+  bottom: 16px;
   display: inline-flex;
+  max-width: calc(100% - 32px);
   align-items: center;
   gap: 10px;
-  padding: 12px 16px;
+  padding: 12px 15px;
   border: 1px solid rgba(255, 255, 255, 0.42);
-  border-radius: 3px;
-  background: rgba(9, 42, 28, 0.8);
+  border-radius: 4px;
+  background: rgba(9, 42, 28, 0.86);
   color: #ffffff;
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.4px;
   backdrop-filter: blur(12px);
 }
 
@@ -302,15 +328,17 @@
   box-shadow: 0 0 0 5px rgba(111, 226, 162, 0.15);
 }
 
-/* Floating experience counter card */
+/* =========================================
+   FLOATING COUNTER CARD
+========================================= */
 
 .AboutOne__experience {
   position: absolute;
   z-index: 2;
   bottom: 0;
-  left: -50px;
-  width: min(380px, 85%);
-  padding: 29px 35px 27px;
+  left: 0;
+  width: min(380px, 88%);
+  padding: 28px 30px 26px;
   border-left: 5px solid var(--AboutOne-green);
   background: #ffffff;
   box-shadow: 0 20px 60px rgba(18, 54, 35, 0.16);
@@ -383,7 +411,9 @@
   transition: transform 1.5s ease 0.25s;
 }
 
-/* Decorative circles */
+/* =========================================
+   DECORATIVE CIRCLES
+========================================= */
 
 .AboutOne__decor {
   position: absolute;
@@ -394,45 +424,44 @@
 }
 
 .AboutOne__decor--one {
-  top: -27px;
-  right: -24px;
-  width: 110px;
-  height: 110px;
+  top: -15px;
+  right: 0;
+  width: 85px;
+  height: 85px;
 }
 
 .AboutOne__decor--two {
-  right: -12px;
+  right: 0;
   bottom: 20px;
   width: 58px;
   height: 58px;
 }
 
-/* Floating animation */
-
 @keyframes AboutOne-float {
-  0%,
-  100% {
+  0%, 100% {
     transform: translateY(0);
   }
 
   50% {
-    transform: translateY(-8px);
+    transform: translateY(-6px);
   }
 }
 
-/* Laptop */
+/* =========================================
+   LAPTOP
+========================================= */
 
 @media (max-width: 1150px) {
   .AboutOne {
-    padding: 75px 25px 85px;
+    padding: 75px 24px 85px;
   }
 
   .AboutOne__container {
-    gap: 55px;
+    gap: 30px;
   }
 
   .AboutOne__title {
-    font-size: clamp(36px, 4.2vw, 49px);
+    font-size: clamp(34px, 4vw, 48px);
   }
 
   .AboutOne__intro {
@@ -440,38 +469,35 @@
   }
 
   .AboutOne__feature {
-    padding: 21px 17px;
+    padding: 20px 15px;
   }
 
   .AboutOne__feature p {
     font-size: 13px;
   }
 
-  .AboutOne__imageFrame {
-    min-height: 450px;
-  }
-
   .AboutOne__image {
-    height: 560px;
+    height: 500px;
   }
 
   .AboutOne__experience {
-    left: -35px;
-    width: min(340px, 88%);
-    padding: 25px 27px;
+    width: min(340px, 90%);
+    padding: 24px 23px;
   }
 }
 
-/* Tablet */
+/* =========================================
+   TABLET
+========================================= */
 
 @media (max-width: 850px) {
   .AboutOne {
-    padding: 65px 25px 80px;
+    padding: 65px 24px 80px;
   }
 
   .AboutOne__container {
     grid-template-columns: minmax(0, 1fr);
-    gap: 65px;
+    gap: 55px;
   }
 
   .AboutOne__content {
@@ -483,41 +509,36 @@
     max-width: 650px;
     order: 2;
     justify-self: center;
+    margin-inline: auto;
     padding-bottom: 65px;
   }
 
   .AboutOne__title {
     max-width: 680px;
-    font-size: clamp(39px, 6vw, 54px);
+    font-size: clamp(38px, 6vw, 54px);
   }
 
   .AboutOne__intro {
     max-width: 700px;
   }
 
-  .AboutOne__imageFrame {
-    min-height: 0;
-  }
-
   .AboutOne__image {
-    height: clamp(380px, 68vw, 570px);
+    height: clamp(360px, 65vw, 550px);
   }
 
   .AboutOne__experience {
-    left: -15px;
-    width: min(365px, 80%);
-  }
-
-  .AboutOne__decor--one {
-    right: -12px;
+    left: 0;
+    width: min(365px, 85%);
   }
 }
 
-/* Mobile */
+/* =========================================
+   MOBILE
+========================================= */
 
 @media (max-width: 560px) {
   .AboutOne {
-    padding: 45px 17px 60px;
+    padding: 45px 16px 60px;
   }
 
   .AboutOne__container {
@@ -536,7 +557,7 @@
   }
 
   .AboutOne__title {
-    font-size: clamp(32px, 8.2vw, 43px);
+    font-size: clamp(31px, 8vw, 42px);
     letter-spacing: -0.8px;
     line-height: 1.2;
   }
@@ -552,7 +573,7 @@
   }
 
   .AboutOne__feature {
-    padding: 17px 12px;
+    padding: 16px 11px;
   }
 
   .AboutOne__featureNumber {
@@ -561,8 +582,7 @@
   }
 
   .AboutOne__feature h3 {
-    font-size: 16px;
-    line-height: 1.4;
+    font-size: 15px;
   }
 
   .AboutOne__feature p {
@@ -576,36 +596,36 @@
   }
 
   .AboutOne__button {
-    min-height: 49px;
-    gap: 12px;
-    padding: 12px 14px;
+    min-height: 48px;
+    gap: 9px;
+    padding: 12px 13px;
     font-size: 12px;
   }
 
   .AboutOne__visual {
-    padding-bottom: 75px;
+    padding-bottom: 72px;
   }
 
   .AboutOne__image {
-    height: 390px;
+    height: 370px;
   }
 
   .AboutOne__imageLabel {
     right: 9px;
     bottom: 9px;
     gap: 8px;
-    padding: 10px 11px;
+    padding: 10px;
     font-size: 10px;
   }
 
   .AboutOne__experience {
-    left: -3px;
-    width: min(310px, 91%);
-    padding: 21px 23px;
+    left: 0;
+    width: min(310px, 94%);
+    padding: 20px 18px;
   }
 
   .AboutOne__counter {
-    font-size: 49px;
+    font-size: 48px;
   }
 
   .AboutOne__experience h3 {
@@ -617,27 +637,29 @@
   }
 
   .AboutOne__decor--one {
-    top: -15px;
-    right: -8px;
-    width: 70px;
-    height: 70px;
+    top: -10px;
+    right: 0;
+    width: 65px;
+    height: 65px;
   }
 }
 
-/* Very small phones */
+/* =========================================
+   VERY SMALL PHONES
+========================================= */
 
 @media (max-width: 360px) {
   .AboutOne {
-    padding-right: 13px;
-    padding-left: 13px;
+    padding-right: 12px;
+    padding-left: 12px;
   }
 
   .AboutOne__title {
-    font-size: 31px;
+    font-size: 30px;
   }
 
   .AboutOne__feature {
-    padding: 14px 10px;
+    padding: 13px 9px;
   }
 
   .AboutOne__feature h3 {
@@ -649,21 +671,28 @@
   }
 
   .AboutOne__button {
-    gap: 8px;
-    padding: 11px;
+    gap: 7px;
+    padding: 10px;
     font-size: 11px;
   }
 
   .AboutOne__image {
-    height: 330px;
+    height: 315px;
   }
 
   .AboutOne__experience {
-    padding: 18px;
+    padding: 17px;
   }
 }
 
-/* Accessibility */
+/* =========================================
+   ACCESSIBILITY
+========================================= */
+
+.AboutOne__button:focus-visible {
+  outline: 3px solid var(--AboutOne-green);
+  outline-offset: 4px;
+}
 
 @media (prefers-reduced-motion: reduce) {
   .AboutOne__content,
@@ -675,6 +704,11 @@
 
   .AboutOne__experience {
     animation: none;
+  }
+
+  .AboutOne__experienceLine span {
+    transform: scaleX(1);
+    transition: none;
   }
 
   .AboutOne *,

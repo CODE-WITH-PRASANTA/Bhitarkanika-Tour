@@ -391,6 +391,8 @@ const ContactMain = () => {
           </aside>
         </div>
 
+        
+       
         {/* MAP SECTION */}
         <section className="ContactMain__map-section">
           <div className="ContactMain__map-header">
@@ -420,6 +422,7 @@ const ContactMain = () => {
             </a>
           </div>
 
+          {/* Map only — no overlay card */}
           <div className="ContactMain__map">
             <iframe
               className="ContactMain__map-frame"
@@ -429,12 +432,15 @@ const ContactMain = () => {
               allowFullScreen
               referrerPolicy="no-referrer-when-downgrade"
             />
+          </div>
 
-            <div className="ContactMain__map-card">
-              <div className="ContactMain__map-pin">
-                <ContactIcon type="location" />
-              </div>
+          {/* Location information below the map */}
+          <div className="ContactMain__map-details">
+            <div className="ContactMain__map-details-icon">
+              <ContactIcon type="location" />
+            </div>
 
+            <div className="ContactMain__map-details-content">
               <span className="ContactMain__map-label">
                 OUR LOCATION
               </span>
@@ -442,18 +448,20 @@ const ContactMain = () => {
               <h3>{LOCATION.name}</h3>
 
               <p>{LOCATION.address}</p>
-
-              <a
-                href={mapDirectionsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Get Directions
-                <ContactIcon type="arrow" />
-              </a>
             </div>
+
+            <a
+              className="ContactMain__directions"
+              href={mapDirectionsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Get Directions
+              <ContactIcon type="arrow" />
+            </a>
           </div>
         </section>
+
 
       </div>
     </section>

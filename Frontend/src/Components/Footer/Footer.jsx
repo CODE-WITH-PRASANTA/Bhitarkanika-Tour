@@ -258,15 +258,8 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Back To Top */}
-      <button
-        type="button"
-        className="footer-back-to-top"
-        onClick={scrollToTop}
-        aria-label="Back to top"
-      >
-        <ChevronUp size={24} strokeWidth={2.5} />
-      </button>
+
+    
     </footer>
   );
 };

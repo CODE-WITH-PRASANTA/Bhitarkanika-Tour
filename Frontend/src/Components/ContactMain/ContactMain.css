@@ -628,10 +628,15 @@
   color: #fff;
 }
 
-/* MAP SECTION */
+
+/* =========================
+   PREMIUM MAP SECTION
+========================= */
 
 .ContactMain__map-section {
-  margin-top: clamp(65px, 8vw, 105px);
+  width: 100%;
+  min-width: 0;
+  margin-top: clamp(55px, 7vw, 95px);
 }
 
 .ContactMain__map-header {
@@ -639,14 +644,15 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: 24px;
-  margin-bottom: 25px;
+  margin-bottom: 24px;
 }
 
 .ContactMain__map-title {
   color: var(--cm-dark);
-  font-family: 'Rajdhani', sans-serif;
+  font-family: "Rajdhani", sans-serif;
   font-size: clamp(35px, 4vw, 48px);
   font-weight: 700;
+  line-height: 1.15;
 }
 
 .ContactMain__map-title span {
@@ -654,25 +660,27 @@
 }
 
 .ContactMain__map-description {
-  margin-top: 7px !important;
+  margin-top: 8px !important;
   color: var(--cm-muted);
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.8;
 }
 
 .ContactMain__map-link {
   display: inline-flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  gap: 9px;
-  padding: 13px 16px;
+  gap: 10px;
+  padding: 13px 17px;
   border: 1px solid #cce9d7;
   border-radius: 5px;
+  background: #fff;
   color: var(--cm-green-dark) !important;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   text-decoration: none;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition: background 0.25s ease, color 0.25s ease;
 }
 
 .ContactMain__map-link:hover {
@@ -681,101 +689,224 @@
 }
 
 .ContactMain__map-link .ContactMain__svg {
-  width: 16px;
-  height: 16px;
+  width: 17px;
+  height: 17px;
 }
+
+/* Map frame — clean, with no card overlay */
 
 .ContactMain__map {
   position: relative;
-  min-height: 390px;
+  width: 100%;
+  height: clamp(320px, 37vw, 470px);
+  min-height: 0;
   overflow: hidden;
-  border: 1px solid #e6ebea;
-  border-radius: 9px;
-  background: #f5faf7;
-  box-shadow: 0 12px 35px rgba(20, 40, 30, 0.06);
+  border: 1px solid #e4ebe6;
+  border-radius: 12px;
+  background: #f1f6f2;
+  box-shadow: 0 14px 38px rgba(20, 40, 30, 0.08);
 }
 
 .ContactMain__map-frame {
   display: block;
   width: 100%;
-  height: 390px;
+  height: 100%;
   border: 0;
 }
 
-.ContactMain__map-card {
-  position: absolute;
-  top: 22px;
-  left: 22px;
-  width: min(310px, calc(100% - 44px));
-  padding: 22px;
-  border: 1px solid #e5eee8;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.97);
-  box-shadow: 0 10px 35px rgba(20, 40, 30, 0.12);
+/* Location details are BELOW the map */
+
+.ContactMain__map-details {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  margin-top: 18px;
+  padding: 23px 25px;
+  border: 1px solid #e7eee9;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 8px 28px rgba(20, 40, 30, 0.045);
 }
 
-.ContactMain__map-pin {
+.ContactMain__map-details-icon {
   display: grid;
-  width: 43px;
-  height: 43px;
-  margin-bottom: 15px;
+  flex: 0 0 58px;
+  width: 58px;
+  height: 58px;
   place-items: center;
-  border-radius: 8px;
-  background: var(--cm-green-soft);
+  border-radius: 10px;
+  background: #eaf8f0;
   color: var(--cm-green-dark);
 }
 
-.ContactMain__map-pin .ContactMain__svg {
-  width: 24px;
-  height: 24px;
+.ContactMain__map-details-icon .ContactMain__svg {
+  width: 27px;
+  height: 27px;
+}
+
+.ContactMain__map-details-content {
+  flex: 1;
+  min-width: 0;
 }
 
 .ContactMain__map-label {
+  display: block;
+  margin-bottom: 5px;
   color: var(--cm-green-dark);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.13em;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
 }
 
-.ContactMain__map-card h3 {
-  margin-top: 7px;
+.ContactMain__map-details-content h3 {
   color: var(--cm-dark);
-  font-family: 'Rajdhani', sans-serif;
+  font-family: "Rajdhani", sans-serif;
   font-size: 25px;
+  font-weight: 700;
+  line-height: 1.3;
 }
 
-.ContactMain__map-card p {
-  margin-top: 7px;
+.ContactMain__map-details-content p {
+  margin-top: 5px;
   color: var(--cm-muted);
-  font-size: 12px;
-  line-height: 1.8;
+  font-size: 13px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
 }
 
-.ContactMain__map-card > a {
-  display: flex;
+.ContactMain__directions {
+  display: inline-flex;
+  flex-shrink: 0;
   align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  margin-top: 18px;
-  padding: 12px 14px;
-  border-radius: 4px;
+  justify-content: center;
+  gap: 18px;
+  min-height: 49px;
+  padding: 12px 18px;
+  border-radius: 5px;
   background: var(--cm-green);
-  color: #fff;
-  font-size: 12px;
+  color: #fff !important;
+  font-size: 13px;
   font-weight: 700;
   text-decoration: none;
-  transition: background 0.2s ease;
+  transition: background 0.25s ease, transform 0.25s ease;
 }
 
-.ContactMain__map-card > a:hover {
+.ContactMain__directions:hover {
+  transform: translateY(-2px);
   background: var(--cm-green-dark);
 }
 
-.ContactMain__map-card > a .ContactMain__svg {
+.ContactMain__directions .ContactMain__svg {
   width: 18px;
   height: 18px;
-  color: #fff;
 }
+
+/* Tablet */
+
+@media (max-width: 820px) {
+  .ContactMain__map {
+    height: 360px;
+  }
+
+  .ContactMain__map-details {
+    gap: 15px;
+    padding: 20px;
+  }
+
+  .ContactMain__map-details-content h3 {
+    font-size: 22px;
+  }
+
+  .ContactMain__directions {
+    gap: 10px;
+    padding: 12px;
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 560px) {
+  .ContactMain__map-section {
+    margin-top: 50px;
+  }
+
+  .ContactMain__map-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .ContactMain__map-title {
+    font-size: 37px;
+  }
+
+  .ContactMain__map-description {
+    font-size: 12px;
+  }
+
+  .ContactMain__map-link {
+    padding: 11px 14px;
+  }
+
+  .ContactMain__map {
+    height: 300px;
+    border-radius: 8px;
+  }
+
+  .ContactMain__map-details {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 13px;
+    margin-top: 13px;
+    padding: 17px 14px;
+    border-radius: 8px;
+  }
+
+  .ContactMain__map-details-icon {
+    grid-row: 1;
+    grid-column: 1;
+    width: 48px;
+    height: 48px;
+  }
+
+  .ContactMain__map-details-icon .ContactMain__svg {
+    width: 23px;
+    height: 23px;
+  }
+
+  .ContactMain__map-details-content {
+    grid-row: 1;
+    grid-column: 2;
+  }
+
+  .ContactMain__map-details-content h3 {
+    font-size: 21px;
+  }
+
+  .ContactMain__map-details-content p {
+    font-size: 12px;
+  }
+
+  .ContactMain__directions {
+    grid-row: 2;
+    grid-column: 1 / -1;
+    width: 100%;
+    min-height: 47px;
+  }
+}
+
+@media (max-width: 360px) {
+  .ContactMain__map {
+    height: 260px;
+  }
+
+  .ContactMain__map-details-content h3 {
+    font-size: 19px;
+  }
+}
+
 
 /* TABLETS */
 

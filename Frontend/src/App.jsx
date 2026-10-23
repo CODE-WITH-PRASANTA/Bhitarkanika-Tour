@@ -12,6 +12,7 @@ import GalleryMain from "./Components/GalleryMain/GalleryMain";
 import FaqMain from "./Components/FaqMain/FaqMain";
 import ServiceMain from "./Components/ServiceMain/ServiceMain";
 import About from "./Pages/About/About";
+import FloatingIcons from "./Components/FloatingIcons/FloatingIcons";
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
       </Routes>
 
       <Footer />
+      <FloatingIcons/>
     </BrowserRouter>
   );
 };
