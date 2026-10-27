@@ -1,0 +1,443 @@
+
+/* =========================================
+   HERO SECTION
+========================================= */
+
+.HeroSection {
+  width: 100%;
+  padding: 8px 0;
+  background: #ffffff;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  overflow: hidden;
+}
+
+.HeroSection,
+.HeroSection * {
+  box-sizing: border-box;
+}
+
+.HeroSection-container {
+  position: relative;
+  display: grid;
+  grid-template-columns: 59.7% 40.3%;
+  width: 100%;
+  height: clamp(500px, 32.6vw, 650px);
+  min-height: 500px;
+  overflow: hidden;
+  background: #e6f0fd;
+}
+
+/* =========================================
+   LEFT IMAGE PANEL
+========================================= */
+
+.HeroSection-imagePanel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #dce9e8;
+}
+
+.HeroSection-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 1;
+  overflow: hidden;
+  transition:
+    opacity 1.5s ease-in-out,
+    visibility 1.5s ease-in-out;
+}
+
+.HeroSection-slideActive {
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
+}
+
+.HeroSection-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  transform: scale(1.04);
+  transition: transform 5s ease-out;
+}
+
+.HeroSection-slideActive .HeroSection-image {
+  transform: scale(1);
+}
+
+/* Optional subtle image shading */
+
+.HeroSection-imageOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.03),
+    transparent 45%,
+    rgba(0, 0, 0, 0.02)
+  );
+}
+
+/* =========================================
+   RIGHT CONTENT PANEL
+========================================= */
+
+.HeroSection-contentPanel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 0;
+  height: 100%;
+  padding: 65px 7.5% 80px 9.8%;
+  overflow: hidden;
+  isolation: isolate;
+  background: #e6f0fd;
+}
+
+/* Soft scenic texture behind the content */
+
+.HeroSection-contentPanel::before {
+  position: absolute;
+  content: "";
+  inset: 0;
+  z-index: -2;
+  background-image: url("../../assets/hero-1.jpg");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.12;
+  filter: blur(2px);
+  transform: scale(1.04);
+}
+
+.HeroSection-contentPanel::after {
+  position: absolute;
+  content: "";
+  inset: 0;
+  z-index: -1;
+  background: rgba(232, 241, 253, 0.88);
+  pointer-events: none;
+}
+
+.HeroSection-content {
+  width: 100%;
+  max-width: 590px;
+  animation: HeroSection-contentEnter 0.9s ease both;
+}
+
+.HeroSection-eyebrow {
+  display: block;
+  margin-bottom: 15px;
+  color: #e85a00;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: 1.5;
+}
+
+.HeroSection-title {
+  margin: 0;
+  color: #050505;
+  font-size: clamp(32px, 2.9vw, 55px);
+  font-weight: 300;
+  letter-spacing: -1.5px;
+  line-height: 1.16;
+  text-transform: uppercase;
+}
+
+.HeroSection-title strong {
+  font-weight: 800;
+}
+
+.HeroSection-title span {
+  font-weight: 300;
+}
+
+.HeroSection-description {
+  max-width: 580px;
+  margin: 38px 0 0;
+  color: #151515;
+  font-size: clamp(14px, 1.05vw, 20px);
+  font-weight: 400;
+  line-height: 1.65;
+}
+
+/* =========================================
+   SLIDE INDICATORS
+========================================= */
+
+.HeroSection-indicators {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  transform: translateX(-50%);
+}
+
+.HeroSection-indicator {
+  display: block;
+  width: 13px;
+  height: 13px;
+  flex: 0 0 13px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #a1a39f;
+  cursor: pointer;
+  transition:
+    background-color 0.4s ease,
+    transform 0.4s ease;
+}
+
+.HeroSection-indicator:hover {
+  transform: scale(1.12);
+}
+
+.HeroSection-indicatorActive {
+  background: #f15a00;
+}
+
+/* =========================================
+   ENQUIRY BUTTON
+========================================= */
+
+.HeroSection-enquiryButton {
+  position: absolute;
+  top: 34%;
+  right: 8px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 39px;
+  height: 130px;
+  padding: 10px 0;
+  border: none;
+  border-radius: 0;
+  background: #f15a00;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    width 0.3s ease;
+}
+
+.HeroSection-enquiryButton:hover {
+  width: 44px;
+  background: #d94e00;
+}
+
+/* =========================================
+   ANIMATIONS
+========================================= */
+
+@keyframes HeroSection-contentEnter {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================
+   LARGE LAPTOPS
+========================================= */
+
+@media (min-width: 1600px) {
+  .HeroSection-container {
+    height: 650px;
+  }
+
+  .HeroSection-contentPanel {
+    padding-left: 75px;
+    padding-right: 65px;
+  }
+}
+
+/* =========================================
+   TABLETS
+========================================= */
+
+@media (max-width: 1024px) {
+  .HeroSection-container {
+    grid-template-columns: 55% 45%;
+    height: 520px;
+    min-height: 460px;
+  }
+
+  .HeroSection-contentPanel {
+    padding: 50px 50px 75px 35px;
+  }
+
+  .HeroSection-title {
+    font-size: clamp(30px, 4vw, 42px);
+    letter-spacing: -1px;
+  }
+
+  .HeroSection-description {
+    margin-top: 26px;
+    font-size: 16px;
+  }
+
+  .HeroSection-eyebrow {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+  }
+
+  .HeroSection-indicators {
+    bottom: 28px;
+    gap: 6px;
+  }
+
+  .HeroSection-indicator {
+    width: 11px;
+    height: 11px;
+    flex-basis: 11px;
+  }
+
+  .HeroSection-enquiryButton {
+    right: 5px;
+    width: 33px;
+    height: 115px;
+    font-size: 10px;
+  }
+}
+
+/* =========================================
+   MOBILE LANDSCAPE / SMALL TABLETS
+========================================= */
+
+@media (max-width: 700px) {
+  .HeroSection {
+    padding: 0;
+  }
+
+  .HeroSection-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 48% 52%;
+    height: 680px;
+    min-height: 0;
+  }
+
+  .HeroSection-imagePanel {
+    grid-row: 1;
+  }
+
+  .HeroSection-contentPanel {
+    grid-row: 2;
+    align-items: center;
+    padding: 35px 28px 75px;
+  }
+
+  .HeroSection-content {
+    max-width: 540px;
+  }
+
+  .HeroSection-eyebrow {
+    margin-bottom: 10px;
+    font-size: 10px;
+  }
+
+  .HeroSection-title {
+    max-width: 470px;
+    font-size: clamp(30px, 6.3vw, 42px);
+    line-height: 1.14;
+    letter-spacing: -0.8px;
+  }
+
+  .HeroSection-description {
+    margin-top: 19px;
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .HeroSection-indicators {
+    bottom: 23px;
+  }
+
+  .HeroSection-enquiryButton {
+    top: 48%;
+    right: 0;
+    width: 34px;
+    height: 105px;
+    font-size: 10px;
+  }
+}
+
+/* =========================================
+   SMALL MOBILE DEVICES
+========================================= */
+
+@media (max-width: 400px) {
+  .HeroSection-container {
+    height: 620px;
+    grid-template-rows: 44% 56%;
+  }
+
+  .HeroSection-contentPanel {
+    padding: 28px 20px 68px;
+  }
+
+  .HeroSection-eyebrow {
+    font-size: 9px;
+    letter-spacing: 1.2px;
+  }
+
+  .HeroSection-title {
+    font-size: 29px;
+    line-height: 1.2;
+  }
+
+  .HeroSection-description {
+    margin-top: 17px;
+    font-size: 14px;
+  }
+
+  .HeroSection-indicators {
+    bottom: 22px;
+    gap: 6px;
+  }
+
+  .HeroSection-indicator {
+    width: 10px;
+    height: 10px;
+    flex-basis: 10px;
+  }
+}
+
+/* =========================================
+   ACCESSIBILITY
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .HeroSection-slide,
+  .HeroSection-image,
+  .HeroSection-content,
+  .HeroSection-indicator,
+  .HeroSection-enquiryButton {
+    animation: none;
+    transition: none;
+  }
+}
