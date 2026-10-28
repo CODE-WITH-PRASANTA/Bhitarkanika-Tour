@@ -13,6 +13,7 @@ import FaqMain from "./Components/FaqMain/FaqMain";
 import ServiceMain from "./Components/ServiceMain/ServiceMain";
 import About from "./Pages/About/About";
 import FloatingIcons from "./Components/FloatingIcons/FloatingIcons";
+import BlogDetails from "./Pages/BlogDetails/BlogDetails";
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
         <Route path="/faq" element={<FaqMain/>} />
         <Route path="/service" element={<ServiceMain/>} />
         <Route path="/about" element={<About/>} />
+        <Route path="/blog-details" element={<BlogDetails/>} />
       </Routes>
 
       <Footer />
