@@ -1,7 +1,25 @@
-
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import "./Experience.css";
+
+// ============================================
+// SETTINGS (change these to match your business)
+// ============================================
+
+const BRAND_NAME = "Bhitarkanika Explore";
+const CHILD_RATE = 0.5; // children pay 50% of the adult price (set 0 for free, 1 for full)
+const TIME_SLOTS = [
+  "06:00 AM",
+  "07:00 AM",
+  "08:00 AM",
+  "09:00 AM",
+  "10:00 AM",
+  "11:00 AM",
+  "12:00 PM",
+  "02:00 PM",
+  "04:00 PM",
+];
 
 // ============================================
 // TOUR PACKAGE DATA
@@ -198,11 +216,607 @@ const hotelData = [
 ];
 
 // ============================================
-// PRICE FORMATTER
+// HELPERS
 // ============================================
 
-const formatPrice = (value) => {
-  return `₹${Number(value).toLocaleString("en-IN")}`;
+const formatPrice = (value) => `₹${Number(value).toLocaleString("en-IN")}`;
+
+const todayString = () => {
+  const d = new Date();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${d.getFullYear()}-${m}-${day}`;
+};
+
+const formatDate = (iso) => {
+  if (!iso) return "";
+  const [y, m, d] = iso.split("-").map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+};
+
+const maskAadhar = (value) =>
+  value ? `XXXX XXXX ${value.slice(-4)}` : "Not provided";
+
+const generateBookingId = () =>
+  `BTK-${Date.now().toString().slice(-6)}${Math.floor(Math.random() * 90 + 10)}`;
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+const INITIAL_FORM = {
+  name: "",
+  adults: 1,
+  children: 0,
+  date: "",
+  time: "",
+  phone: "",
+  aadhar: "",
+  email: "",
+};
+
+// ============================================
+// BOOKING MODAL
+// ============================================
+
+const BookingModal = ({ tour, onClose }) => {
+  const [step, setStep] = useState("form"); // "form" | "success"
+  const [form, setForm] = useState(INITIAL_FORM);
+  const [errors, setErrors] = useState({});
+  const [booking, setBooking] = useState(null);
+  const [closing, setClosing] = useState(false);
+  const [downloading, setDownloading] = useState(false);
+  const nameRef = useRef(null);
+
+  // Smooth close
+  const handleClose = () => {
+    setClosing(true);
+    setTimeout(onClose, 260);
+  };
+
+  // Lock page scroll, close on Escape, focus first field
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const onKey = (e) => {
+      if (e.key === "Escape") handleClose();
+    };
+    window.addEventListener("keydown", onKey);
+
+    const focusTimer = setTimeout(() => nameRef.current?.focus(), 350);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKey);
+      clearTimeout(focusTimer);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const setField = (field, value) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: "" }));
+    }
+  };
+
+  const changeCount = (field, delta) => {
+    const min = field === "adults" ? 1 : 0;
+    const next = Math.min(20, Math.max(min, form[field] + delta));
+    setField(field, next);
+  };
+
+  const handleDigits = (field, maxLength) => (e) => {
+    setField(field, e.target.value.replace(/\D/g, "").slice(0, maxLength));
+  };
+
+  const totalAmount =
+    form.adults * tour.price +
+    Math.round(form.children * tour.price * CHILD_RATE);
+
+  const validate = () => {
+    const next = {};
+    if (form.name.trim().length < 2) next.name = "Please enter your full name.";
+    if (!form.date) next.date = "Please choose a date.";
+    else if (form.date < todayString())
+      next.date = "Date cannot be in the past.";
+    if (!form.time) next.time = "Please choose a time.";
+    if (!/^[6-9]\d{9}$/.test(form.phone))
+      next.phone = "Enter a valid 10-digit mobile number.";
+    if (form.aadhar && form.aadhar.length !== 12)
+      next.aadhar = "Aadhar must be 12 digits (or leave it empty).";
+    if (!EMAIL_REGEX.test(form.email.trim()))
+      next.email = "Enter a valid email address.";
+    setErrors(next);
+    return Object.keys(next).length === 0;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    const data = {
+      id: generateBookingId(),
+      issuedOn: new Date().toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }),
+      ...form,
+      name: form.name.trim(),
+      email: form.email.trim(),
+      total: totalAmount,
+    };
+
+    // TODO: send `data` to your backend / email service here.
+    setBooking(data);
+    setStep("success");
+  };
+
+  // ------------------------------------------
+  // PDF DOWNLOAD (uses jsPDF: npm install jspdf)
+  // ------------------------------------------
+  const handleDownload = async () => {
+    if (!booking) return;
+    setDownloading(true);
+
+    try {
+      const { jsPDF } = await import("jspdf");
+      const doc = new jsPDF({ unit: "mm", format: "a4" });
+      const W = 210;
+      const green = [29, 53, 43];
+      const gold = [173, 134, 61];
+      const rs = (n) => `Rs. ${Number(n).toLocaleString("en-IN")}`;
+
+      // Header band
+      doc.setFillColor(...green);
+      doc.rect(0, 0, W, 50, "F");
+      doc.setFillColor(...gold);
+      doc.rect(0, 50, W, 2.5, "F");
+
+      doc.setTextColor(255, 255, 255);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(22);
+      doc.text("BOOKING CONFIRMATION", 14, 24);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10.5);
+      doc.text(BRAND_NAME, 14, 33);
+      doc.setTextColor(...[225, 200, 140]);
+      doc.text("Tour Package Reservation", 14, 40);
+
+      doc.setTextColor(255, 255, 255);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(11);
+      doc.text(`Booking ID: ${booking.id}`, W - 14, 24, { align: "right" });
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      doc.text(`Issued on: ${booking.issuedOn}`, W - 14, 32, {
+        align: "right",
+      });
+
+      // Tour block
+      doc.setTextColor(...green);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(17);
+      doc.text(tour.title, 14, 70);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      doc.setTextColor(110, 118, 114);
+      doc.text(
+        `${tour.category}  |  ${tour.location}  |  ${tour.duration}`,
+        14,
+        77
+      );
+
+      doc.setDrawColor(225, 222, 212);
+      doc.line(14, 83, W - 14, 83);
+
+      // Details grid
+      const drawField = (label, value, x, y) => {
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(8);
+        doc.setTextColor(...gold);
+        doc.text(label.toUpperCase(), x, y);
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(11.5);
+        doc.setTextColor(30, 45, 39);
+        doc.text(String(value), x, y + 6.5);
+      };
+
+      const col1 = 14;
+      const col2 = 110;
+      let y = 96;
+      const rowGap = 20;
+
+      drawField("Guest name", booking.name, col1, y);
+      drawField("Phone number", `+91 ${booking.phone}`, col2, y);
+      y += rowGap;
+      drawField("Email address", booking.email, col1, y);
+      drawField("Aadhar number", maskAadhar(booking.aadhar), col2, y);
+      y += rowGap;
+      drawField("Travel date", formatDate(booking.date), col1, y);
+      drawField("Preferred time", booking.time, col2, y);
+      y += rowGap;
+      drawField("Adults", booking.adults, col1, y);
+      drawField("Children", booking.children, col2, y);
+      y += rowGap + 2;
+
+      // Payment box
+      doc.setFillColor(248, 246, 238);
+      doc.setDrawColor(...gold);
+      doc.roundedRect(14, y, W - 28, 36, 3, 3, "FD");
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      doc.setTextColor(90, 100, 95);
+      doc.text(
+        `Adults: ${booking.adults} x ${rs(tour.price)}`,
+        20,
+        y + 11
+      );
+      doc.text(
+        `Children: ${booking.children} x ${rs(
+          Math.round(tour.price * CHILD_RATE)
+        )}`,
+        20,
+        y + 18
+      );
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(9);
+      doc.setTextColor(...gold);
+      doc.text("ESTIMATED TOTAL", W - 20, y + 11, { align: "right" });
+      doc.setFontSize(20);
+      doc.setTextColor(...green);
+      doc.text(rs(booking.total), W - 20, y + 25, { align: "right" });
+      y += 48;
+
+      // Notes
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10);
+      doc.setTextColor(...green);
+      doc.text("Important Notes", 14, y);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9);
+      doc.setTextColor(95, 105, 100);
+      const notes = [
+        "This is a booking request. Our team will contact you to confirm availability and payment.",
+        "Please carry a valid photo ID during the tour.",
+        "Timings may change depending on weather and tide conditions.",
+      ];
+      notes.forEach((n, i) => doc.text(`-  ${n}`, 14, y + 7 + i * 6));
+
+      // Footer
+      doc.setFillColor(...green);
+      doc.rect(0, 280, W, 17, "F");
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(9);
+      doc.text(`Thank you for choosing ${BRAND_NAME}`, W / 2, 290, {
+        align: "center",
+      });
+
+      doc.save(`Booking-${booking.id}.pdf`);
+    } catch (err) {
+      console.error("PDF error:", err);
+      alert("Could not create the PDF. Please try again.");
+    } finally {
+      setDownloading(false);
+    }
+  };
+
+  const fieldClass = (name) => (errors[name] ? "bk-field has-error" : "bk-field");
+
+  return createPortal(
+    <div
+      className={`bk-backdrop ${closing ? "is-closing" : ""}`}
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) handleClose();
+      }}
+    >
+      <div
+        className="bk-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="bk-title"
+      >
+        {/* HEADER */}
+        <div className="bk-header">
+          <div>
+            <span className="bk-kicker">
+              {step === "form" ? "Reserve your trip" : "Booking received"}
+            </span>
+            <h2 id="bk-title">
+              {step === "form" ? "Book Your Tour" : "Booking Confirmed"}
+            </h2>
+          </div>
+          <button
+            type="button"
+            className="bk-close"
+            onClick={handleClose}
+            aria-label="Close"
+          >
+            ×
+          </button>
+        </div>
+
+        {step === "form" ? (
+          <form className="bk-body" onSubmit={handleSubmit} noValidate>
+            {/* Selected tour */}
+            <div className="bk-tour">
+              <img src={tour.image} alt="" />
+              <div>
+                <h3>{tour.title}</h3>
+                <p>
+                  {tour.duration} · {tour.location}
+                </p>
+                <strong>
+                  {formatPrice(tour.price)} <small>per adult</small>
+                </strong>
+              </div>
+            </div>
+
+            <div className="bk-grid">
+              {/* Name */}
+              <div className={`${fieldClass("name")} bk-span-2`}>
+                <label htmlFor="bk-name">Full name</label>
+                <input
+                  id="bk-name"
+                  ref={nameRef}
+                  type="text"
+                  placeholder="Enter your full name"
+                  value={form.name}
+                  onChange={(e) => setField("name", e.target.value)}
+                  autoComplete="name"
+                />
+                {errors.name && <em>{errors.name}</em>}
+              </div>
+
+              {/* Adults */}
+              <div className="bk-field">
+                <label>Adults</label>
+                <div className="bk-counter">
+                  <button
+                    type="button"
+                    onClick={() => changeCount("adults", -1)}
+                    disabled={form.adults <= 1}
+                    aria-label="Decrease adults"
+                  >
+                    −
+                  </button>
+                  <span>{form.adults}</span>
+                  <button
+                    type="button"
+                    onClick={() => changeCount("adults", 1)}
+                    aria-label="Increase adults"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              {/* Children */}
+              <div className="bk-field">
+                <label>Children</label>
+                <div className="bk-counter">
+                  <button
+                    type="button"
+                    onClick={() => changeCount("children", -1)}
+                    disabled={form.children <= 0}
+                    aria-label="Decrease children"
+                  >
+                    −
+                  </button>
+                  <span>{form.children}</span>
+                  <button
+                    type="button"
+                    onClick={() => changeCount("children", 1)}
+                    aria-label="Increase children"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              {/* Date */}
+              <div className={fieldClass("date")}>
+                <label htmlFor="bk-date">Choose date</label>
+                <input
+                  id="bk-date"
+                  type="date"
+                  min={todayString()}
+                  value={form.date}
+                  onChange={(e) => setField("date", e.target.value)}
+                />
+                {errors.date && <em>{errors.date}</em>}
+              </div>
+
+              {/* Time */}
+              <div className={fieldClass("time")}>
+                <label htmlFor="bk-time">Choose time</label>
+                <select
+                  id="bk-time"
+                  value={form.time}
+                  onChange={(e) => setField("time", e.target.value)}
+                >
+                  <option value="">Select a time</option>
+                  {TIME_SLOTS.map((slot) => (
+                    <option key={slot} value={slot}>
+                      {slot}
+                    </option>
+                  ))}
+                </select>
+                {errors.time && <em>{errors.time}</em>}
+              </div>
+
+              {/* Phone */}
+              <div className={fieldClass("phone")}>
+                <label htmlFor="bk-phone">Phone number</label>
+                <input
+                  id="bk-phone"
+                  type="tel"
+                  inputMode="numeric"
+                  placeholder="10-digit mobile number"
+                  value={form.phone}
+                  onChange={handleDigits("phone", 10)}
+                  autoComplete="tel-national"
+                />
+                {errors.phone && <em>{errors.phone}</em>}
+              </div>
+
+              {/* Aadhar */}
+              <div className={fieldClass("aadhar")}>
+                <label htmlFor="bk-aadhar">
+                  Aadhar number <span className="bk-optional">(optional)</span>
+                </label>
+                <input
+                  id="bk-aadhar"
+                  type="text"
+                  inputMode="numeric"
+                  placeholder="12-digit Aadhar number"
+                  value={form.aadhar}
+                  onChange={handleDigits("aadhar", 12)}
+                />
+                {errors.aadhar && <em>{errors.aadhar}</em>}
+              </div>
+
+              {/* Email */}
+              <div className={`${fieldClass("email")} bk-span-2`}>
+                <label htmlFor="bk-email">Email address</label>
+                <input
+                  id="bk-email"
+                  type="email"
+                  placeholder="you@example.com"
+                  value={form.email}
+                  onChange={(e) => setField("email", e.target.value)}
+                  autoComplete="email"
+                />
+                {errors.email && <em>{errors.email}</em>}
+              </div>
+            </div>
+
+            {/* Total + actions */}
+            <div className="bk-total">
+              <div>
+                <span>Estimated total</span>
+                <strong>{formatPrice(totalAmount)}</strong>
+              </div>
+              <div className="bk-actions">
+                <button
+                  type="button"
+                  className="bk-btn bk-btn-ghost"
+                  onClick={handleClose}
+                >
+                  Cancel
+                </button>
+                <button type="submit" className="bk-btn bk-btn-primary">
+                  Continue <span>→</span>
+                </button>
+              </div>
+            </div>
+          </form>
+        ) : (
+          <div className="bk-body bk-success">
+            <div className="bk-success-top">
+              <div className="bk-check" aria-hidden="true">
+                <svg viewBox="0 0 52 52">
+                  <circle cx="26" cy="26" r="24" />
+                  <path d="M15 27l8 8 14-16" />
+                </svg>
+              </div>
+              <h3>Submitted successfully</h3>
+              <p>
+                Thank you, {booking.name.split(" ")[0]}! Your details are saved
+                in the booking slip below. Our team will contact you shortly.
+              </p>
+            </div>
+
+            {/* DOCUMENT PREVIEW */}
+            <div className="bk-doc">
+              <div className="bk-doc-head">
+                <div>
+                  <small>{BRAND_NAME}</small>
+                  <h4>Booking Slip</h4>
+                </div>
+                <div className="bk-doc-id">
+                  <small>Booking ID</small>
+                  <strong>{booking.id}</strong>
+                </div>
+              </div>
+
+              <div className="bk-doc-tour">
+                <h5>{tour.title}</h5>
+                <p>
+                  {tour.category} · {tour.location} · {tour.duration}
+                </p>
+              </div>
+
+              <dl className="bk-doc-grid">
+                <div>
+                  <dt>Guest name</dt>
+                  <dd>{booking.name}</dd>
+                </div>
+                <div>
+                  <dt>Phone</dt>
+                  <dd>+91 {booking.phone}</dd>
+                </div>
+                <div className="bk-doc-wide">
+                  <dt>Email</dt>
+                  <dd>{booking.email}</dd>
+                </div>
+                <div>
+                  <dt>Travel date</dt>
+                  <dd>{formatDate(booking.date)}</dd>
+                </div>
+                <div>
+                  <dt>Time</dt>
+                  <dd>{booking.time}</dd>
+                </div>
+                <div>
+                  <dt>Adults</dt>
+                  <dd>{booking.adults}</dd>
+                </div>
+                <div>
+                  <dt>Children</dt>
+                  <dd>{booking.children}</dd>
+                </div>
+                <div className="bk-doc-wide">
+                  <dt>Aadhar</dt>
+                  <dd>{maskAadhar(booking.aadhar)}</dd>
+                </div>
+              </dl>
+
+              <div className="bk-doc-total">
+                <span>Estimated total</span>
+                <strong>{formatPrice(booking.total)}</strong>
+              </div>
+            </div>
+
+            <div className="bk-actions bk-actions-end">
+              <button
+                type="button"
+                className="bk-btn bk-btn-ghost"
+                onClick={handleClose}
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                className="bk-btn bk-btn-primary"
+                onClick={handleDownload}
+                disabled={downloading}
+              >
+                {downloading ? "Preparing PDF..." : "Download PDF"}{" "}
+                <span>↓</span>
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>,
+    document.body
+  );
 };
 
 // ============================================
@@ -214,6 +828,7 @@ const Experience = () => {
 
   const [activeTab, setActiveTab] = useState("tour");
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [bookingTour, setBookingTour] = useState(null);
   const [isMobile, setIsMobile] = useState(
     typeof window !== "undefined" ? window.innerWidth <= 650 : false
   );
@@ -227,7 +842,6 @@ const Experience = () => {
     };
 
     handleResize();
-
     window.addEventListener("resize", handleResize);
 
     return () => {
@@ -244,23 +858,19 @@ const Experience = () => {
   // MOBILE CAROUSEL
   const handlePrev = () => {
     setCurrentIndex((previousIndex) =>
-      previousIndex === 0
-        ? displayedItems.length - 1
-        : previousIndex - 1
+      previousIndex === 0 ? displayedItems.length - 1 : previousIndex - 1
     );
   };
 
   const handleNext = () => {
     setCurrentIndex((previousIndex) =>
-      previousIndex === displayedItems.length - 1
-        ? 0
-        : previousIndex + 1
+      previousIndex === displayedItems.length - 1 ? 0 : previousIndex + 1
     );
   };
 
-  // NAVIGATION
+  // BOOK TRIP -> OPEN POPUP
   const handleBookTrip = (item) => {
-    navigate(`/tours/${item.slug}`);
+    setBookingTour(item);
   };
 
   const handleCheckAvailability = (item) => {
@@ -277,22 +887,19 @@ const Experience = () => {
   return (
     <section className="exp-section">
       <div className="exp-container">
-
         {/* SECTION HEADER */}
         <div className="exp-header">
           <div className="exp-header-content">
-            <span className="exp-eyebrow">
-              BHITARKANIKA EXPLORE
-            </span>
+            <span className="exp-eyebrow">BHITARKANIKA EXPLORE</span>
 
             <h1>
-              Discover Odisha <span>Tour Packages</span>
+              Discover Bhitarakanika <span>Tour Packages</span>
             </h1>
 
             <p>
               Explore beautiful mangrove forests, experience unforgettable
               boat safaris, discover local wildlife, and find comfortable
-              stays for your next Odisha adventure.
+              stays for your next Bhitarakanika adventure.
             </p>
           </div>
 
@@ -300,9 +907,7 @@ const Experience = () => {
           <div className="exp-tabs">
             <button
               type="button"
-              className={
-                activeTab === "tour" ? "exp-tab active" : "exp-tab"
-              }
+              className={activeTab === "tour" ? "exp-tab active" : "exp-tab"}
               onClick={() => handleTabChange("tour")}
               aria-pressed={activeTab === "tour"}
             >
@@ -312,9 +917,7 @@ const Experience = () => {
 
             <button
               type="button"
-              className={
-                activeTab === "hotel" ? "exp-tab active" : "exp-tab"
-              }
+              className={activeTab === "hotel" ? "exp-tab active" : "exp-tab"}
               onClick={() => handleTabChange("hotel")}
               aria-pressed={activeTab === "hotel"}
             >
@@ -347,9 +950,7 @@ const Experience = () => {
 
                     <div className="exp-image-overlay" />
 
-                    <span className="exp-duration">
-                      {item.duration}
-                    </span>
+                    <span className="exp-duration">{item.duration}</span>
 
                     <span className="exp-location">
                       {item.category} • {item.location}
@@ -368,9 +969,7 @@ const Experience = () => {
 
                     <div className="exp-card-footer">
                       <div className="exp-price-box">
-                        <span className="exp-price-label">
-                          Starting From
-                        </span>
+                        <span className="exp-price-label">Starting From</span>
 
                         <div className="exp-price-row">
                           <strong>{formatPrice(item.price)}</strong>
@@ -405,13 +1004,9 @@ const Experience = () => {
 
                   <div className="exp-image-overlay" />
 
-                  <span className="exp-breakfast">
-                    {item.breakfast}
-                  </span>
+                  <span className="exp-breakfast">{item.breakfast}</span>
 
-                  <span className="exp-hotel-rating">
-                    ★ {item.rating}
-                  </span>
+                  <span className="exp-hotel-rating">★ {item.rating}</span>
                 </div>
 
                 <div className="exp-hotel-content">
@@ -425,9 +1020,7 @@ const Experience = () => {
                     </div>
                   </div>
 
-                  <p className="exp-hotel-distance">
-                    {item.distance}
-                  </p>
+                  <p className="exp-hotel-distance">{item.distance}</p>
 
                   <div className="exp-amenities">
                     {item.amenities.slice(0, 4).map((amenity) => (
@@ -454,9 +1047,7 @@ const Experience = () => {
 
                   <div className="exp-hotel-footer">
                     <div className="exp-price-box">
-                      <span className="exp-price-label">
-                        Per Night
-                      </span>
+                      <span className="exp-price-label">Per Night</span>
 
                       <div className="exp-price-row">
                         <strong>{formatPrice(item.price)}</strong>
@@ -481,11 +1072,7 @@ const Experience = () => {
         {/* MOBILE SLIDER CONTROLS */}
         {isMobile && displayedItems.length > 1 && (
           <div className="exp-mobile-controls">
-            <button
-              type="button"
-              onClick={handlePrev}
-              aria-label="Previous item"
-            >
+            <button type="button" onClick={handlePrev} aria-label="Previous item">
               ←
             </button>
 
@@ -502,16 +1089,20 @@ const Experience = () => {
               ))}
             </div>
 
-            <button
-              type="button"
-              onClick={handleNext}
-              aria-label="Next item"
-            >
+            <button type="button" onClick={handleNext} aria-label="Next item">
               →
             </button>
           </div>
         )}
       </div>
+
+      {/* BOOKING POPUP */}
+      {bookingTour && (
+        <BookingModal
+          tour={bookingTour}
+          onClose={() => setBookingTour(null)}
+        />
+      )}
     </section>
   );
 };
