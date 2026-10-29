@@ -143,7 +143,7 @@ const Journey = () => {
               </h3>
 
               <Link
-                to="/tours"
+                to="/services/boat-service"
                 className="btn-view-destinations"
               >
                 Explore All Tours
