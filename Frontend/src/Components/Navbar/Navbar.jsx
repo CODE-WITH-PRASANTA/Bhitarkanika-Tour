@@ -171,7 +171,7 @@
           {/* Right Side: Support and Booking */}
           <div className="navbar-right">
             <a
-              href="tel:+00032145598"
+              href="tel:+91 832 898 2394"
               className="navbar-support"
               aria-label="Call our 24/7 support hotline"
             >
@@ -182,7 +182,7 @@
               <span className="navbar-support-text">
                 <span className="navbar-support-label">24/7 Hotline</span>
                 <span className="navbar-support-number">
-                  +000 3214-55-98
+                  +91 832 898 2394
                 </span>
               </span>
             </a>

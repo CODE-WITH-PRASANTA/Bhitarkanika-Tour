@@ -1,0 +1,1629 @@
+
+/* =========================================
+   TOUR BOOKING - MAIN LAYOUT
+========================================= */
+
+.TourBooking {
+  width: 100%;
+  min-height: 100vh;
+ 
+  color: #213c32;
+  background: #f5f9f7;
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+.TourBooking *,
+.TourBooking *::before,
+.TourBooking *::after {
+  box-sizing: border-box;
+}
+
+.TourBooking button,
+.TourBooking input,
+.TourBooking select {
+  font: inherit;
+}
+
+.TourBooking button {
+  cursor: pointer;
+}
+
+.TourBooking button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+/* =========================================
+   PAGE HEADER
+========================================= */
+
+.TourBooking-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 25px;
+}
+
+.TourBooking-heading {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
+}
+
+.TourBooking-heading-accent {
+  display: block;
+  width: 9px;
+  min-width: 9px;
+  height: 52px;
+  border-radius: 20px;
+  background: #09ad78;
+}
+
+.TourBooking-heading h1 {
+  margin: 0;
+  color: #1d4035;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(25px, 2.1vw, 34px);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.TourBooking-heading p {
+  margin: 5px 0 0;
+  color: #687d75;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.TourBooking-breadcrumb {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 11px;
+  color: #60756d;
+  font-size: 13px;
+}
+
+.TourBooking-breadcrumb svg {
+  color: #08a979;
+}
+
+.TourBooking-breadcrumb strong {
+  color: #079d6e;
+  font-weight: 700;
+}
+
+.TourBooking-breadcrumb-separator {
+  color: #a3b2ac;
+}
+
+/* =========================================
+   NOTIFICATION
+========================================= */
+
+.TourBooking-notice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 17px;
+  margin-bottom: 18px;
+  border: 1px solid #bce7d5;
+  border-radius: 10px;
+  background: #eaf8f1;
+  color: #166b4d;
+  font-size: 13px;
+}
+
+.TourBooking-notice button {
+  display: grid;
+  place-items: center;
+  border: none;
+  background: transparent;
+  color: inherit;
+}
+
+/* =========================================
+   STATISTICS CARDS
+========================================= */
+
+.TourBooking-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 17px;
+  margin-bottom: 22px;
+}
+
+.TourBooking-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
+  min-height: 115px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 4px 18px rgba(34, 67, 51, 0.035);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.TourBooking-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(34, 67, 51, 0.075);
+}
+
+.TourBooking-stat-icon {
+  display: grid;
+  place-items: center;
+  width: 68px;
+  height: 68px;
+  min-width: 68px;
+  border-radius: 17px;
+}
+
+.TourBooking-stat-content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 2px;
+}
+
+.TourBooking-stat-content > span {
+  color: #43564e;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.TourBooking-stat-content > strong {
+  color: #183c30;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 31px;
+  font-weight: 700;
+  line-height: 1.05;
+}
+
+.TourBooking-stat-content > small {
+  color: #83918b;
+  font-size: 12px;
+}
+
+.TourBooking-positive {
+  color: #09a978;
+  font-weight: 800;
+}
+
+.TourBooking-stat-total {
+  background: linear-gradient(120deg, #f0fbf6, #ffffff);
+}
+
+.TourBooking-stat-total .TourBooking-stat-icon {
+  background: #d9f5e9;
+  color: #079f71;
+}
+
+.TourBooking-stat-confirmed {
+  background: linear-gradient(120deg, #eff7ff, #ffffff);
+}
+
+.TourBooking-stat-confirmed .TourBooking-stat-icon {
+  background: #dceeff;
+  color: #2386dc;
+}
+
+.TourBooking-stat-pending {
+  background: linear-gradient(120deg, #fff9e9, #ffffff);
+}
+
+.TourBooking-stat-pending .TourBooking-stat-icon {
+  background: #fff0ca;
+  color: #ce8700;
+}
+
+.TourBooking-stat-cancelled {
+  background: linear-gradient(120deg, #fff1f1, #ffffff);
+}
+
+.TourBooking-stat-cancelled .TourBooking-stat-icon {
+  background: #ffdddd;
+  color: #df3c44;
+}
+
+/* =========================================
+   TOOLBAR / SEARCH / FILTERS
+========================================= */
+
+.TourBooking-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 22px;
+  padding: 13px;
+  border: 1px solid #fff;
+  border-radius: 15px;
+  background: #fff;
+  box-shadow: 0 4px 18px rgba(34, 67, 51, 0.035);
+}
+
+.TourBooking-search-box,
+.TourBooking-select-box,
+.TourBooking-date-filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 46px;
+  min-width: 0;
+  padding: 0 13px;
+  border: 1px solid #e0e9e4;
+  border-radius: 11px;
+  background: #fbfdfc;
+  box-shadow: inset 0 1px 3px rgba(30, 58, 45, 0.025);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.TourBooking-search-box:focus-within,
+.TourBooking-select-box:focus-within,
+.TourBooking-date-filter:focus-within {
+  border-color: #12ad7c;
+  box-shadow: 0 0 0 3px rgba(9, 173, 120, 0.08);
+}
+
+.TourBooking-search-box {
+  flex: 1.5 1 220px;
+}
+
+.TourBooking-search-box > svg,
+.TourBooking-date-filter > svg {
+  flex-shrink: 0;
+  color: #82958c;
+}
+
+.TourBooking-search-box input {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #254438;
+  font-size: 13px;
+}
+
+.TourBooking-search-box input::placeholder {
+  color: #98a7a0;
+}
+
+.TourBooking-search-box input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.TourBooking-search-box > button {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  padding: 4px;
+  border: 0;
+  background: transparent;
+  color: #819188;
+}
+
+.TourBooking-select-box {
+  position: relative;
+  flex: 0.75 1 140px;
+  cursor: pointer;
+}
+
+.TourBooking-select-box select {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  appearance: none;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #304b40;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.TourBooking-select-box > svg {
+  flex-shrink: 0;
+  color: #73877d;
+  pointer-events: none;
+}
+
+.TourBooking-date-filter {
+  flex: 1.25 1 260px;
+  gap: 8px;
+}
+
+.TourBooking-date-filter input {
+  width: 100%;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #687e73;
+  font-size: 12px;
+}
+
+.TourBooking-date-filter input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.TourBooking-date-filter > span {
+  color: #a1afa8;
+  font-size: 12px;
+}
+
+.TourBooking-search-button,
+.TourBooking-add-button,
+.TourBooking-export-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-shrink: 0;
+  height: 46px;
+  padding: 0 17px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.TourBooking-search-button {
+  background: #09a978;
+  color: #fff;
+}
+
+.TourBooking-search-button:hover,
+.TourBooking-add-button:hover {
+  background: #078b63;
+  transform: translateY(-1px);
+}
+
+.TourBooking-add-button {
+  margin-left: auto;
+  background: #08a978;
+  color: #fff;
+}
+
+.TourBooking-export-button {
+  border-color: #dce9e2;
+  background: #f8fbf9;
+  color: #315c49;
+}
+
+.TourBooking-export-button:hover {
+  background: #eaf6ef;
+}
+
+/* =========================================
+   BULK ACTIONS
+========================================= */
+
+.TourBooking-bulk-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px 16px;
+  margin-bottom: 15px;
+  border: 1px solid #c9e8d8;
+  border-radius: 12px;
+  background: #edf9f2;
+  color: #285542;
+  font-size: 13px;
+}
+
+.TourBooking-bulk-bar > span {
+  margin-right: auto;
+  font-weight: 700;
+}
+
+.TourBooking-bulk-bar button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 11px;
+  border: 1px solid #d5e7dc;
+  border-radius: 8px;
+  background: #fff;
+  color: #315c49;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.TourBooking-bulk-bar button:first-of-type {
+  border-color: #ffd7d7;
+  color: #d63d43;
+}
+
+/* =========================================
+   TABLE PANEL
+========================================= */
+
+.TourBooking-table-panel {
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid #fff;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 5px 24px rgba(34, 67, 51, 0.045);
+}
+
+.TourBooking-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #b8d0c3 #f4f8f5;
+}
+
+.TourBooking-table-scroll::-webkit-scrollbar {
+  height: 7px;
+}
+
+.TourBooking-table-scroll::-webkit-scrollbar-track {
+  background: #f4f8f5;
+}
+
+.TourBooking-table-scroll::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #b8d0c3;
+}
+
+.TourBooking-table {
+  width: 100%;
+  min-width: 1450px;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: #385248;
+  text-align: left;
+  font-size: 12px;
+}
+
+.TourBooking-table thead {
+  background: #f1f7f3;
+}
+
+.TourBooking-table th {
+  height: 54px;
+  padding: 13px 10px;
+  border-bottom: 1px solid #e8efea;
+  color: #27483a;
+  font-size: 12px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.TourBooking-table th:first-child {
+  padding-left: 20px;
+}
+
+.TourBooking-table td {
+  height: 78px;
+  padding: 10px;
+  border-bottom: 1px solid #edf1ee;
+  background: #fff;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.TourBooking-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.TourBooking-table tbody tr:hover td {
+  background: #f8fcf9;
+}
+
+.TourBooking-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.TourBooking-checkbox-column {
+  width: 42px;
+  padding-left: 20px !important;
+  padding-right: 4px !important;
+}
+
+.TourBooking-checkbox-column input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: #08a978;
+  cursor: pointer;
+}
+
+.TourBooking-row-number {
+  color: #60796c;
+  font-weight: 600;
+}
+
+.TourBooking-package-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 230px;
+}
+
+.TourBooking-package-cell > img {
+  display: block;
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  object-fit: cover;
+  background: #eaf2ed;
+}
+
+.TourBooking-package-cell > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-width: 0;
+}
+
+.TourBooking-package-cell strong {
+  max-width: 210px;
+  overflow: hidden;
+  color: #294a3b;
+  font-size: 12px;
+  font-weight: 750;
+  text-overflow: ellipsis;
+}
+
+.TourBooking-package-cell span {
+  color: #8a9a92;
+  font-size: 11px;
+}
+
+.TourBooking-package-cell b {
+  color: #b27b20;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.TourBooking-package-cell b small {
+  color: #91a097;
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.TourBooking-guest-name {
+  color: #304e40;
+  font-weight: 600;
+}
+
+.TourBooking-amount {
+  color: #ae741c;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+/* =========================================
+   BOOKING STATUS BADGES
+========================================= */
+
+.TourBooking-status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 98px;
+  padding: 7px 11px;
+  border-radius: 22px;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.TourBooking-status-badge > span {
+  display: block;
+  width: 9px;
+  height: 9px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.TourBooking-status-confirmed {
+  background: #e0f7ed;
+  color: #07865e;
+}
+
+.TourBooking-status-confirmed > span {
+  background: #08a878;
+}
+
+.TourBooking-status-pending {
+  background: #fff2d6;
+  color: #b87800;
+}
+
+.TourBooking-status-pending > span {
+  background: #e6a000;
+}
+
+.TourBooking-status-cancelled {
+  background: #ffe5e5;
+  color: #c9363d;
+}
+
+.TourBooking-status-cancelled > span {
+  background: #dc4147;
+}
+
+/* =========================================
+   ROW ACTION BUTTONS
+========================================= */
+
+.TourBooking-action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.TourBooking-action-buttons button {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease;
+}
+
+.TourBooking-action-buttons button:hover {
+  transform: translateY(-2px);
+}
+
+.TourBooking-action-view {
+  background: #edf5f7;
+  color: #537a8a;
+}
+
+.TourBooking-action-view:hover {
+  background: #dcebf1;
+}
+
+.TourBooking-action-edit {
+  background: #e5f2ff;
+  color: #1682db;
+}
+
+.TourBooking-action-edit:hover {
+  background: #d1e7ff;
+}
+
+.TourBooking-action-delete {
+  background: #ffebeb;
+  color: #df3d45;
+}
+
+.TourBooking-action-delete:hover {
+  background: #ffd9d9;
+}
+
+/* =========================================
+   EMPTY TABLE STATE
+========================================= */
+
+.TourBooking-empty-state {
+  height: 220px !important;
+  text-align: center;
+  white-space: normal !important;
+}
+
+.TourBooking-empty-state > svg,
+.TourBooking-empty-state > strong,
+.TourBooking-empty-state > span {
+  display: block;
+  margin: 0 auto 9px;
+}
+
+.TourBooking-empty-state > svg {
+  color: #9db8aa;
+}
+
+.TourBooking-empty-state > strong {
+  color: #345746;
+  font-size: 15px;
+}
+
+.TourBooking-empty-state > span {
+  color: #82958b;
+  font-size: 12px;
+}
+
+.TourBooking-empty-state > button {
+  padding: 8px 13px;
+  border: 1px solid #cce7d8;
+  border-radius: 8px;
+  background: #f0faf4;
+  color: #087d59;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* =========================================
+   TABLE FOOTER & PAGINATION
+========================================= */
+
+.TourBooking-table-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 18px;
+  min-height: 72px;
+  padding: 14px 16px;
+  border-top: 1px solid #eef2ef;
+  background: #fff;
+}
+
+.TourBooking-table-footer > p {
+  margin: 0;
+  color: #61766c;
+  font-size: 12px;
+}
+
+.TourBooking-table-footer > p strong {
+  color: #385649;
+  font-weight: 750;
+}
+
+.TourBooking-pagination-area {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.TourBooking-entries-select {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #64796e;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.TourBooking-entries-select select {
+  width: 60px;
+  height: 38px;
+  padding: 0 7px;
+  border: 1px solid #e0eae3;
+  border-radius: 9px;
+  outline: none;
+  background: #fff;
+  color: #385649;
+  cursor: pointer;
+}
+
+.TourBooking-pagination {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.TourBooking-pagination button {
+  display: grid;
+  place-items: center;
+  min-width: 35px;
+  height: 38px;
+  padding: 0 8px;
+  border: 1px solid #edf2ee;
+  border-radius: 8px;
+  background: #fff;
+  color: #506c5d;
+  font-size: 12px;
+  transition: background 0.18s ease;
+}
+
+.TourBooking-pagination button:hover:not(:disabled) {
+  background: #e9f7ef;
+}
+
+.TourBooking-pagination button.TourBooking-page-active {
+  border-color: #08a978;
+  background: #08a978;
+  color: #fff;
+  box-shadow: 0 3px 8px rgba(8, 169, 120, 0.18);
+}
+
+.TourBooking-pagination button:disabled {
+  background: #f4f7f5;
+}
+
+.TourBooking-page-ellipsis {
+  padding: 0 4px;
+  color: #81958a;
+}
+
+/* =========================================
+   MODAL OVERLAY
+========================================= */
+
+.TourBooking-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  padding: 24px;
+  background: rgba(16, 35, 27, 0.58);
+  backdrop-filter: blur(5px);
+  animation: TourBooking-fade-in 0.2s ease;
+}
+
+.TourBooking-detail-modal,
+.TourBooking-form-modal {
+  width: 100%;
+  max-width: 760px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 19px;
+  background: #fff;
+  box-shadow: 0 22px 75px rgba(15, 39, 27, 0.22);
+  animation: TourBooking-modal-in 0.22s ease;
+}
+
+.TourBooking-detail-modal {
+  max-width: 700px;
+  padding: 25px;
+}
+
+.TourBooking-form-modal {
+  max-width: 790px;
+  padding: 25px;
+}
+
+.TourBooking-modal-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #e9f0eb;
+}
+
+.TourBooking-modal-heading > div > span {
+  color: #0b9e70;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.TourBooking-modal-heading h2 {
+  margin: 5px 0 0;
+  color: #204435;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 25px;
+}
+
+.TourBooking-modal-heading > button {
+  display: grid;
+  place-items: center;
+  width: 37px;
+  height: 37px;
+  flex-shrink: 0;
+  border: 1px solid #e5eee8;
+  border-radius: 10px;
+  background: #f6faf7;
+  color: #476456;
+}
+
+.TourBooking-modal-heading > button:hover {
+  background: #e9f6ee;
+}
+
+/* =========================================
+   VIEW BOOKING DETAILS
+========================================= */
+
+.TourBooking-detail-package {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px;
+  margin-top: 20px;
+  border: 1px solid #e7f0e9;
+  border-radius: 14px;
+  background: #f5faf6;
+}
+
+.TourBooking-detail-package > img {
+  width: 90px;
+  height: 82px;
+  flex-shrink: 0;
+  border-radius: 11px;
+  object-fit: cover;
+}
+
+.TourBooking-detail-package h3 {
+  margin: 0 0 6px;
+  color: #234638;
+  font-size: 16px;
+}
+
+.TourBooking-detail-package p {
+  margin: 0 0 8px;
+  color: #819188;
+  font-size: 12px;
+}
+
+.TourBooking-detail-package strong {
+  color: #b47c20;
+  font-size: 18px;
+}
+
+.TourBooking-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 20px;
+  margin-top: 12px;
+}
+
+.TourBooking-detail-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  padding: 15px 0;
+  border-bottom: 1px solid #edf2ee;
+}
+
+.TourBooking-detail-grid > div > span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #82958a;
+  font-size: 12px;
+}
+
+.TourBooking-detail-grid > div > span svg {
+  color: #0b9e70;
+}
+
+.TourBooking-detail-grid > div > strong {
+  overflow-wrap: anywhere;
+  color: #2d4d3e;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+/* =========================================
+   ADD / EDIT BOOKING FORM
+========================================= */
+
+.TourBooking-form {
+  padding-top: 20px;
+}
+
+.TourBooking-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 17px;
+}
+
+.TourBooking-form-grid > label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  color: #304e40;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.TourBooking-form-grid input,
+.TourBooking-form-grid select {
+  width: 100%;
+  height: 44px;
+  min-width: 0;
+  padding: 0 12px;
+  border: 1px solid #dfeae2;
+  border-radius: 9px;
+  outline: none;
+  background: #fbfdfb;
+  color: #345344;
+  font-size: 13px;
+  font-weight: 400;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.TourBooking-form-grid input:focus,
+.TourBooking-form-grid select:focus {
+  border-color: #0baa78;
+  box-shadow: 0 0 0 3px rgba(11, 170, 120, 0.09);
+}
+
+.TourBooking-form-grid input::placeholder {
+  color: #9aa9a1;
+}
+
+.TourBooking-form-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 22px;
+  padding: 17px 0;
+  border-top: 1px solid #e7eee9;
+}
+
+.TourBooking-form-total > span {
+  color: #7c8e84;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+.TourBooking-form-total > strong {
+  color: #204435;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 25px;
+}
+
+/* =========================================
+   MODAL FOOTER BUTTONS
+========================================= */
+
+.TourBooking-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 17px;
+  margin-top: 12px;
+  border-top: 1px solid #edf2ee;
+}
+
+.TourBooking-modal-footer button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 18px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 750;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.TourBooking-modal-footer button:hover {
+  transform: translateY(-1px);
+}
+
+.TourBooking-modal-secondary {
+  border-color: #dce9e0 !important;
+  background: #f7faf8;
+  color: #385748;
+}
+
+.TourBooking-modal-secondary:hover {
+  background: #eaf4ed;
+}
+
+.TourBooking-modal-primary {
+  background: #204637;
+  color: #fff;
+}
+
+.TourBooking-modal-primary:hover {
+  background: #143729;
+}
+
+/* =========================================
+   ANIMATIONS
+========================================= */
+
+@keyframes TourBooking-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes TourBooking-modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.99);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =========================================
+   RESPONSIVE: LARGE LAPTOPS
+========================================= */
+
+@media (max-width: 1450px) {
+  .TourBooking {
+    padding: 20px;
+  }
+
+  .TourBooking-stats-grid {
+    gap: 13px;
+  }
+
+  .TourBooking-stat-card {
+    gap: 13px;
+    padding: 16px;
+  }
+
+  .TourBooking-stat-icon {
+    width: 58px;
+    height: 58px;
+    min-width: 58px;
+  }
+
+  .TourBooking-stat-content > strong {
+    font-size: 28px;
+  }
+
+  .TourBooking-toolbar {
+    flex-wrap: wrap;
+  }
+
+  .TourBooking-search-box {
+    flex: 1 1 270px;
+  }
+
+  .TourBooking-select-box {
+    flex: 1 1 150px;
+  }
+
+  .TourBooking-date-filter {
+    flex: 1.5 1 270px;
+  }
+
+  .TourBooking-add-button {
+    margin-left: 0;
+  }
+}
+
+/* =========================================
+   RESPONSIVE: TABLETS
+========================================= */
+
+@media (max-width: 1024px) {
+  .TourBooking {
+    padding: 18px;
+  }
+
+  .TourBooking-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .TourBooking-header {
+    align-items: flex-start;
+  }
+
+  .TourBooking-breadcrumb {
+    padding-top: 8px;
+  }
+
+  .TourBooking-toolbar {
+    gap: 10px;
+  }
+
+  .TourBooking-search-box {
+    flex-basis: 100%;
+  }
+
+  .TourBooking-select-box {
+    flex: 1 1 calc(50% - 10px);
+  }
+
+  .TourBooking-date-filter {
+    flex: 1 1 100%;
+  }
+
+  .TourBooking-search-button,
+  .TourBooking-add-button,
+  .TourBooking-export-button {
+    flex: 1 1 auto;
+  }
+
+  .TourBooking-table-footer {
+    align-items: flex-start;
+  }
+
+  .TourBooking-pagination-area {
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
+/* =========================================
+   RESPONSIVE: MOBILE DEVICES
+========================================= */
+
+@media (max-width: 640px) {
+  .TourBooking {
+    padding: 12px;
+  }
+
+  .TourBooking-header {
+    flex-direction: column;
+    gap: 13px;
+    margin-bottom: 19px;
+  }
+
+  .TourBooking-heading {
+    gap: 12px;
+  }
+
+  .TourBooking-heading-accent {
+    width: 6px;
+    min-width: 6px;
+    height: 43px;
+  }
+
+  .TourBooking-heading h1 {
+    font-size: 25px;
+  }
+
+  .TourBooking-heading p {
+    font-size: 12px;
+  }
+
+  .TourBooking-breadcrumb {
+    justify-content: flex-start;
+    padding: 0 0 0 18px;
+    font-size: 11px;
+  }
+
+  .TourBooking-stats-grid {
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .TourBooking-stat-card {
+    min-height: 105px;
+    gap: 10px;
+    padding: 12px 10px;
+    border-radius: 13px;
+  }
+
+  .TourBooking-stat-icon {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    border-radius: 12px;
+  }
+
+  .TourBooking-stat-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .TourBooking-stat-content > span {
+    font-size: 10px;
+  }
+
+  .TourBooking-stat-content > strong {
+    font-size: 25px;
+  }
+
+  .TourBooking-stat-content > small {
+    font-size: 10px;
+  }
+
+  .TourBooking-toolbar {
+    gap: 9px;
+    padding: 10px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+  }
+
+  .TourBooking-search-box {
+    flex-basis: 100%;
+    height: 43px;
+  }
+
+  .TourBooking-select-box {
+    flex-basis: calc(50% - 5px);
+    height: 42px;
+    padding: 0 9px;
+  }
+
+  .TourBooking-select-box select {
+    font-size: 11px;
+  }
+
+  .TourBooking-date-filter {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 44px;
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .TourBooking-date-filter input {
+    flex: 1 1 95px;
+    height: 28px;
+    font-size: 11px;
+  }
+
+  .TourBooking-date-filter > span {
+    font-size: 10px;
+  }
+
+  .TourBooking-search-button,
+  .TourBooking-add-button,
+  .TourBooking-export-button {
+    height: 41px;
+    padding: 0 9px;
+    gap: 5px;
+    font-size: 11px;
+  }
+
+  .TourBooking-search-button svg,
+  .TourBooking-add-button svg,
+  .TourBooking-export-button svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .TourBooking-table-panel {
+    border-radius: 12px;
+  }
+
+  .TourBooking-table {
+    min-width: 1400px;
+  }
+
+  .TourBooking-table th {
+    height: 48px;
+    padding: 10px 8px;
+    font-size: 11px;
+  }
+
+  .TourBooking-table td {
+    height: 70px;
+    padding: 8px;
+    font-size: 11px;
+  }
+
+  .TourBooking-package-cell {
+    min-width: 210px;
+    gap: 9px;
+  }
+
+  .TourBooking-package-cell > img {
+    width: 48px;
+    height: 48px;
+  }
+
+  .TourBooking-package-cell strong {
+    font-size: 11px;
+  }
+
+  .TourBooking-package-cell b {
+    font-size: 12px;
+  }
+
+  .TourBooking-status-badge {
+    min-width: 88px;
+    padding: 6px 8px;
+    font-size: 10px;
+  }
+
+  .TourBooking-action-buttons {
+    gap: 5px;
+  }
+
+  .TourBooking-action-buttons button {
+    width: 30px;
+    height: 30px;
+    border-radius: 7px;
+  }
+
+  .TourBooking-action-buttons button svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .TourBooking-table-footer {
+    gap: 15px;
+    padding: 13px 11px;
+  }
+
+  .TourBooking-table-footer > p {
+    font-size: 11px;
+  }
+
+  .TourBooking-pagination-area {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .TourBooking-pagination {
+    width: 100%;
+    gap: 3px;
+  }
+
+  .TourBooking-pagination button {
+    min-width: 31px;
+    height: 34px;
+    padding: 0 6px;
+    font-size: 11px;
+  }
+
+  .TourBooking-modal-overlay {
+    align-items: flex-start;
+    padding: 12px;
+  }
+
+  .TourBooking-detail-modal,
+  .TourBooking-form-modal {
+    max-height: calc(100dvh - 24px);
+    margin: auto 0;
+    padding: 17px;
+    border-radius: 14px;
+  }
+
+  .TourBooking-modal-heading h2 {
+    font-size: 22px;
+  }
+
+  .TourBooking-detail-package {
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .TourBooking-detail-package > img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .TourBooking-detail-package h3 {
+    font-size: 13px;
+  }
+
+  .TourBooking-detail-package p {
+    font-size: 10px;
+  }
+
+  .TourBooking-detail-package strong {
+    font-size: 16px;
+  }
+
+  .TourBooking-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .TourBooking-detail-grid > div {
+    gap: 6px;
+    padding: 12px 0;
+  }
+
+  .TourBooking-form-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .TourBooking-form-grid input,
+  .TourBooking-form-grid select {
+    height: 43px;
+  }
+
+  .TourBooking-form-total > strong {
+    font-size: 22px;
+  }
+
+  .TourBooking-modal-footer {
+    gap: 8px;
+  }
+
+  .TourBooking-modal-footer button {
+    flex: 1 1 auto;
+    min-height: 42px;
+    padding: 0 11px;
+    font-size: 11px;
+  }
+}
+
+/* =========================================
+   RESPONSIVE: EXTRA SMALL PHONES
+========================================= */
+
+@media (max-width: 380px) {
+  .TourBooking {
+    padding: 9px;
+  }
+
+  .TourBooking-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .TourBooking-stat-card {
+    min-height: 83px;
+    padding: 12px;
+  }
+
+  .TourBooking-stat-icon {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+  }
+
+  .TourBooking-stat-content > span {
+    font-size: 12px;
+  }
+
+  .TourBooking-stat-content > strong {
+    font-size: 26px;
+  }
+
+  .TourBooking-stat-content > small {
+    font-size: 11px;
+  }
+
+  .TourBooking-search-button,
+  .TourBooking-add-button,
+  .TourBooking-export-button {
+    flex-basis: 100%;
+  }
+
+  .TourBooking-pagination {
+    flex-wrap: wrap;
+  }
+}
+
+/* =========================================
+   REDUCED MOTION ACCESSIBILITY
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .TourBooking *,
+  .TourBooking *::before,
+  .TourBooking *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

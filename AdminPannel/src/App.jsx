@@ -5,6 +5,9 @@ import Dashboard from "./Pages/Dashboard/Dashboard";
 import BlogPosting from "./Components/BlogPosting/BlogPosting";
 import BlogManagement from "./Components/BlogManagement/BlogManagement";
 import Enquiry from "./Components/Enquiry/Enquiry";
+import TourBooking from "./Components/TourBooking/TourBooking";
+import Gallary from "./Components/Gallary/Gallary";
+import Hotelbooking from "./Components/Hotelbooking/Hotelbooking";
 
 
 const App = () => {
@@ -17,6 +20,9 @@ const App = () => {
           <Route path="/blog/posting" element={<BlogPosting />} />
           <Route path="/blog/management" element={<BlogManagement />} />
           <Route path="/enquiry" element={<Enquiry />} />
+          <Route path="/tour-booking" element={<TourBooking />} />
+          <Route path="/gallery" element={<Gallary />} />
+          <Route path="/hotel-booking" element={<Hotelbooking />} />
         </Route>
       </Routes>
     </BrowserRouter>

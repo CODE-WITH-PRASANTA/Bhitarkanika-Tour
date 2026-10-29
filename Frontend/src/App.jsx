@@ -28,6 +28,7 @@ import OliveRidleyTurtles from "./Pages/OliveRidleyTurtles/OliveRidleyTurtles";
 import SeaFood from "./Pages/SeaFood/SeaFood";
 import HuntingTower from "./Pages/HuntingTower/HuntingTower";
 import EVVechile from "./Pages/EVVechile/EVVechile";
+import EnquireNow from "./Components/EnquireNow/EnquireNow";
 
 const App = () => {
   return (
@@ -67,6 +68,7 @@ const App = () => {
 
       <Footer />
       <FloatingIcons/>
+      <EnquireNow/>
     </BrowserRouter>
   );
 };
