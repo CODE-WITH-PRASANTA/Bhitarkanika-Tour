@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
 
 .ServiceMain {
   --ServiceMain-green: #158b58;
@@ -14,8 +14,9 @@
   width: 100%;
   margin: 0;
   color: var(--ServiceMain-ink);
-  background: #ffffff;
-  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  background: #fff;
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  overflow-wrap: anywhere;
 }
 
 .ServiceMain *,
@@ -24,10 +25,32 @@
   box-sizing: border-box;
 }
 
-/* 2-Column Split */
+.ServiceMain button,
+.ServiceMain input,
+.ServiceMain select,
+.ServiceMain textarea {
+  font: inherit;
+}
+
+.ServiceMain button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ServiceMain button:focus-visible,
+.ServiceMain input:focus-visible,
+.ServiceMain select:focus-visible,
+.ServiceMain textarea:focus-visible {
+  outline: 3px solid rgba(21, 139, 88, 0.35);
+  outline-offset: 3px;
+}
+
+/* ==============================
+   MAIN LAYOUT
+============================== */
+
 .ServiceMain__layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.85fr) minmax(340px, 0.95fr);
+  grid-template-columns: minmax(0, 1.85fr) minmax(300px, 0.95fr);
   align-items: stretch;
   width: 100%;
   max-width: 1540px;
@@ -36,21 +59,25 @@
 
 .ServiceMain__main {
   min-width: 0;
-  padding: 65px clamp(28px, 4.5vw, 76px) 90px;
-  background: #ffffff;
+  padding: 65px clamp(24px, 4.5vw, 76px) 90px;
+  background: #fff;
 }
 
 .ServiceMain__sidebar {
   display: flex;
   min-width: 0;
   flex-direction: column;
-  gap: 28px;
-  padding: 65px clamp(24px, 3.2vw, 48px) 80px;
+  gap: 26px;
+  padding: 65px clamp(20px, 3vw, 44px) 80px;
   background: #f7faf8;
   border-left: 1px solid var(--ServiceMain-line);
+  align-self: stretch;
 }
 
-/* Animated View Transition */
+/* ==============================
+   VIEW ANIMATION
+============================== */
+
 .ServiceMain__viewPane {
   animation: ServiceMain-slideFade 0.36s var(--ServiceMain-ease) both;
 }
@@ -60,13 +87,17 @@
     opacity: 0;
     transform: translateY(14px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-/* Header & Eyebrow */
+/* ==============================
+   PAGE HEADING
+============================== */
+
 .ServiceMain__eyebrow {
   display: inline-flex;
   align-items: center;
@@ -75,12 +106,13 @@
   color: var(--ServiceMain-green);
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 2.8px;
+  letter-spacing: 2.5px;
 }
 
 .ServiceMain__eyebrowLine {
   width: 28px;
   height: 2px;
+  flex-shrink: 0;
   border-radius: 2px;
   background: var(--ServiceMain-green);
 }
@@ -88,213 +120,217 @@
 .ServiceMain__pageTitle {
   margin: 0;
   color: var(--ServiceMain-forest);
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: clamp(34px, 3.8vw, 52px);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(32px, 3.8vw, 52px);
   font-weight: 700;
-  line-height: 1.15;
+  line-height: 1.16;
   letter-spacing: -1px;
 }
 
-.ServiceMain__pageTitle span {
+.ServiceMain__pageTitle > span {
   display: block;
+  margin-top: 5px;
   color: var(--ServiceMain-green);
   font-style: italic;
   font-weight: 500;
-  margin-top: 4px;
 }
 
 .ServiceMain__lead {
   max-width: 720px;
   margin: 18px 0 32px;
   color: var(--ServiceMain-muted);
-  font-size: 15px;
-  line-height: 1.8;
+  font-size: 14px;
+  line-height: 1.9;
 }
 
-/* Hero Picture */
+/* ==============================
+   HERO IMAGE
+============================== */
+
 .ServiceMain__heroFigure {
   position: relative;
-  margin: 0 0 40px;
+  margin: 0 0 38px;
   overflow: hidden;
   border-radius: var(--ServiceMain-radius);
+  background: #e6eee8;
   box-shadow: 0 16px 38px -12px rgba(10, 45, 34, 0.15);
 }
 
 .ServiceMain__heroImage {
   display: block;
   width: 100%;
-  height: clamp(320px, 36vw, 480px);
+  height: clamp(280px, 34vw, 470px);
   object-fit: cover;
   transition: transform 0.8s var(--ServiceMain-ease);
 }
 
 .ServiceMain__heroFigure:hover .ServiceMain__heroImage {
-  transform: scale(1.03);
+  transform: scale(1.035);
 }
 
 .ServiceMain__heroCaption {
   position: absolute;
-  right: 18px;
-  bottom: 18px;
+  right: 16px;
+  bottom: 16px;
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 18px;
+  max-width: calc(100% - 32px);
+  padding: 11px 16px;
   border: 1px solid rgba(255, 255, 255, 0.35);
   border-radius: 30px;
-  background: rgba(7, 35, 26, 0.85);
-  color: #ffffff;
-  font-size: 12.5px;
+  background: rgba(7, 35, 26, 0.86);
+  color: #fff;
+  font-size: 11px;
+  line-height: 1.6;
   backdrop-filter: blur(12px);
 }
 
 .ServiceMain__heroCaptionDot {
   width: 8px;
   height: 8px;
+  flex-shrink: 0;
   border-radius: 50%;
   background: #73e6a8;
-  box-shadow: 0 0 0 4px rgba(115, 230, 168, 0.25);
+  box-shadow: 0 0 0 4px rgba(115, 230, 168, 0.2);
 }
 
-/* Spec Feature Grid */
+/* ==============================
+   FEATURE CARDS
+============================== */
+
 .ServiceMain__featureGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 20px;
-  margin-bottom: 38px;
+  gap: 16px;
+  margin-bottom: 36px;
 }
 
 .ServiceMain__specBox {
-  padding: 24px 20px;
-  background: var(--ServiceMain-soft);
+  min-width: 0;
+  padding: 24px 19px;
   border: 1px solid var(--ServiceMain-line);
-  border-radius: 12px;
+  border-radius: 13px;
+  background: var(--ServiceMain-soft);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.ServiceMain__specBox:hover {
+  transform: translateY(-4px);
+  border-color: #b7ddc5;
+  box-shadow: 0 12px 28px rgba(10, 45, 34, 0.07);
 }
 
 .ServiceMain__specNum {
   display: block;
-  font-family: 'Cinzel', serif;
+  margin-bottom: 12px;
+  color: var(--ServiceMain-green);
+  font-family: "Cinzel", serif;
   font-size: 14px;
   font-weight: 700;
-  color: var(--ServiceMain-green);
-  margin-bottom: 10px;
 }
 
 .ServiceMain__specBox h3 {
-  margin: 0 0 8px;
-  font-size: 16px;
+  margin: 0 0 9px;
   color: var(--ServiceMain-forest);
+  font-size: 15px;
   font-weight: 700;
+  line-height: 1.5;
 }
 
 .ServiceMain__specBox p {
   margin: 0;
   color: var(--ServiceMain-muted);
-  font-size: 13px;
-  line-height: 1.65;
+  font-size: 12px;
+  line-height: 1.8;
 }
 
-/* Call to Action Banner */
+/* ==============================
+   ACTION BANNER
+============================== */
+
 .ServiceMain__actionBanner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
-  padding: 32px 36px;
-  border-radius: var(--ServiceMain-radius);
-  background: linear-gradient(135deg, #0e3d2e 0%, #061c14 100%);
-  color: #ffffff;
+  gap: 22px;
   margin-top: 20px;
+  padding: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--ServiceMain-radius);
+  background:
+    radial-gradient(
+      circle at 100% 0,
+      rgba(33, 181, 115, 0.17),
+      transparent 45%
+    ),
+    linear-gradient(135deg, #0e3d2e, #061c14);
+  color: #fff;
 }
 
 .ServiceMain__actionBanner h3 {
-  margin: 0 0 6px;
-  font-family: 'Playfair Display', serif;
+  margin: 0 0 8px;
+  color: #fff;
+  font-family: "Playfair Display", Georgia, serif;
   font-size: 22px;
+  line-height: 1.4;
 }
 
 .ServiceMain__actionBanner p {
   margin: 0;
   color: #b7d6c6;
-  font-size: 13.5px;
+  font-size: 12px;
+  line-height: 1.8;
 }
 
 .ServiceMain__btnPrimary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 13px 26px;
+  flex-shrink: 0;
+  padding: 13px 23px;
+  border: 1px solid transparent;
   border-radius: 30px;
   background: var(--ServiceMain-green);
-  color: #ffffff;
-  font-size: 13.5px;
+  color: #fff;
+  font-size: 12px;
   font-weight: 700;
-  border: none;
-  cursor: pointer;
   white-space: nowrap;
-  transition: all 0.25s ease;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .ServiceMain__btnPrimary:hover {
-  background: #1cb572;
   transform: translateY(-2px);
-  box-shadow: 0 8px 22px rgba(21, 139, 88, 0.4);
+  background: #1cb572;
+  box-shadow: 0 8px 22px rgba(21, 139, 88, 0.3);
 }
 
-/* Wildlife & Nature Cards */
-.ServiceMain__wildlifeCards {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 22px;
-}
+/* ==============================
+   TRIP PLANNING ACCORDION
+============================== */
 
-.ServiceMain__animalCard {
-  padding: 26px;
-  border-radius: 14px;
-  background: var(--ServiceMain-soft);
-  border: 1px solid var(--ServiceMain-line);
-  position: relative;
-}
-
-.ServiceMain__animalCard h4 {
-  margin: 0 0 8px;
-  font-family: 'Playfair Display', serif;
-  font-size: 20px;
-  color: var(--ServiceMain-forest);
-}
-
-.ServiceMain__animalCard p {
-  margin: 0 0 16px;
-  color: var(--ServiceMain-muted);
-  font-size: 13.5px;
-  line-height: 1.7;
-}
-
-.ServiceMain__badge {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 20px;
-  background: #ffffff;
-  border: 1px solid #cce5d5;
-  color: var(--ServiceMain-green);
-  font-size: 11px;
-  font-weight: 700;
-}
-
-/* Trip Planning Accordion & Box */
 .ServiceMain__planAccordion {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-bottom: 34px;
+  margin-bottom: 30px;
 }
 
 .ServiceMain__planItem {
+  overflow: hidden;
   border: 1px solid var(--ServiceMain-line);
   border-radius: 12px;
-  overflow: hidden;
-  background: #ffffff;
-  transition: border-color 0.25s ease;
+  background: #fff;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .ServiceMain__planItem.is-open {
@@ -303,234 +339,354 @@
 }
 
 .ServiceMain__planTrigger {
-  width: 100%;
   display: flex;
+  width: 100%;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 24px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  text-align: left;
-  font-size: 15px;
-  font-weight: 600;
+  gap: 18px;
+  padding: 19px 21px;
+  border: 0;
+  background: #fff;
   color: var(--ServiceMain-forest);
+  text-align: left;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.7;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+
+.ServiceMain__planTrigger:hover {
+  background: #f8fbf9;
 }
 
 .ServiceMain__planToggle {
-  font-size: 20px;
-  font-weight: 700;
+  display: inline-flex;
+  width: 29px;
+  height: 29px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #edf7f0;
   color: var(--ServiceMain-green);
+  font-size: 20px;
+  line-height: 1;
 }
 
 .ServiceMain__planAnswer {
-  padding: 0 24px 22px;
   margin: 0;
+  padding: 0 21px 21px;
   color: var(--ServiceMain-muted);
-  font-size: 13.5px;
-  line-height: 1.75;
+  font-size: 12.5px;
+  line-height: 1.9;
 }
 
+/* ==============================
+   TRAVEL ROUTE BOX
+============================== */
+
 .ServiceMain__routeBox {
-  padding: 28px;
-  background: var(--ServiceMain-soft);
-  border-radius: 14px;
+  padding: 27px;
   border: 1px dashed #bddfcb;
+  border-radius: 14px;
+  background: var(--ServiceMain-soft);
 }
 
 .ServiceMain__routeBox h3 {
-  margin: 0 0 14px;
-  font-size: 18px;
+  margin: 0 0 17px;
   color: var(--ServiceMain-forest);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 21px;
 }
 
 .ServiceMain__routeBox ul {
-  margin: 0;
-  padding-left: 18px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 13px;
+  margin: 0;
+  padding-left: 19px;
 }
 
 .ServiceMain__routeBox li {
-  font-size: 13.5px;
   color: var(--ServiceMain-muted);
-  line-height: 1.6;
+  font-size: 12.5px;
+  line-height: 1.8;
 }
 
-/* Booking Enquiry Form */
+.ServiceMain__routeBox li::marker {
+  color: var(--ServiceMain-green);
+}
+
+.ServiceMain__routeNote {
+  margin: 18px 0 0;
+  padding-top: 15px;
+  border-top: 1px solid var(--ServiceMain-line);
+  color: var(--ServiceMain-muted);
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+/* ==============================
+   BOOKING FORM
+============================== */
+
 .ServiceMain__form {
-  padding: 34px;
+  padding: 30px;
+  border: 1px solid var(--ServiceMain-line);
   border-radius: var(--ServiceMain-radius);
   background: var(--ServiceMain-soft);
-  border: 1px solid var(--ServiceMain-line);
+}
+
+.ServiceMain__formHeading {
+  margin-bottom: 27px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--ServiceMain-line);
+}
+
+.ServiceMain__formHeading > span {
+  color: var(--ServiceMain-green);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.ServiceMain__formHeading h3 {
+  margin: 7px 0;
+  color: var(--ServiceMain-forest);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 24px;
+}
+
+.ServiceMain__formHeading p {
+  margin: 0;
+  color: var(--ServiceMain-muted);
+  font-size: 12px;
+  line-height: 1.7;
 }
 
 .ServiceMain__formGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
-  margin-bottom: 20px;
+  gap: 0 18px;
 }
 
 .ServiceMain__inputGroup {
   display: flex;
+  min-width: 0;
   flex-direction: column;
-  gap: 7px;
-  margin-bottom: 18px;
+  gap: 8px;
+  margin-bottom: 19px;
 }
 
 .ServiceMain__inputGroup label {
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
   color: var(--ServiceMain-forest);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
 }
 
 .ServiceMain__inputGroup input,
 .ServiceMain__inputGroup select,
 .ServiceMain__inputGroup textarea {
   width: 100%;
-  padding: 12px 16px;
-  border-radius: 8px;
+  min-width: 0;
+  min-height: 46px;
+  padding: 12px 14px;
   border: 1px solid #d4e2d8;
-  background: #ffffff;
-  font-family: inherit;
-  font-size: 13.5px;
+  border-radius: 8px;
+  background: #fff;
   color: var(--ServiceMain-ink);
-  outline: none;
-  transition: border-color 0.2s ease;
+  font-size: 12px;
+  line-height: 1.6;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.ServiceMain__inputGroup input::placeholder,
+.ServiceMain__inputGroup textarea::placeholder {
+  color: #98a99e;
 }
 
 .ServiceMain__inputGroup input:focus,
 .ServiceMain__inputGroup select:focus,
 .ServiceMain__inputGroup textarea:focus {
   border-color: var(--ServiceMain-green);
-  box-shadow: 0 0 0 3px rgba(21, 139, 88, 0.15);
+  box-shadow: 0 0 0 3px rgba(21, 139, 88, 0.12);
+  outline: none;
+}
+
+.ServiceMain__inputGroup textarea {
+  min-height: 120px;
+  resize: vertical;
 }
 
 .ServiceMain__submitBtn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 14px 28px;
-  border-radius: 30px;
+  width: 100%;
+  min-height: 49px;
+  padding: 14px 24px;
+  border: 0;
+  border-radius: 9px;
   background: var(--ServiceMain-green);
-  color: #ffffff;
-  font-size: 14px;
+  color: #fff;
+  font-size: 12px;
   font-weight: 700;
-  border: none;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .ServiceMain__submitBtn:hover {
-  background: var(--ServiceMain-green-hover);
   transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(21, 139, 88, 0.35);
+  background: var(--ServiceMain-green-hover);
+  box-shadow: 0 10px 24px rgba(21, 139, 88, 0.22);
 }
 
+/* FORM SUCCESS */
+
 .ServiceMain__formSuccess {
-  padding: 48px 30px;
-  text-align: center;
-  background: var(--ServiceMain-soft);
+  padding: 45px 28px;
   border: 1px solid #bce2cb;
   border-radius: var(--ServiceMain-radius);
+  background: var(--ServiceMain-soft);
+  text-align: center;
 }
 
 .ServiceMain__checkIcon {
   display: inline-flex;
-  width: 52px;
-  height: 52px;
+  width: 56px;
+  height: 56px;
   align-items: center;
   justify-content: center;
+  margin-bottom: 17px;
   border-radius: 50%;
   background: var(--ServiceMain-green);
-  color: #ffffff;
-  font-size: 24px;
-  margin-bottom: 16px;
+  color: #fff;
+  font-size: 25px;
 }
 
-/* Wildlife Gallery Page Grid */
+.ServiceMain__formSuccess h3 {
+  margin: 0 0 12px;
+  color: var(--ServiceMain-forest);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 24px;
+}
+
+.ServiceMain__formSuccess p {
+  margin: 0 0 23px;
+  color: var(--ServiceMain-muted);
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+/* ==============================
+   WILDLIFE GALLERY
+============================== */
+
 .ServiceMain__galleryPageGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
+  gap: 16px;
 }
 
 .ServiceMain__galleryPageCard {
   position: relative;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
   overflow: hidden;
+  aspect-ratio: 4 / 4.5;
+  border: 0;
   border-radius: 12px;
-  aspect-ratio: 4 / 3;
-  cursor: pointer;
   background: #dbeef2;
+  text-align: left;
+  cursor: pointer;
+  isolation: isolate;
 }
 
-.ServiceMain__galleryPageCard img {
+.ServiceMain__galleryPageCard > img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s var(--ServiceMain-ease);
+  transition: transform 0.65s var(--ServiceMain-ease);
 }
 
-.ServiceMain__galleryPageCard:hover img {
+.ServiceMain__galleryPageCard:hover > img {
   transform: scale(1.08);
 }
 
 .ServiceMain__galleryCardOverlay {
   position: absolute;
+  z-index: 1;
   inset: 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 16px;
-  background: linear-gradient(180deg, transparent 40%, rgba(6, 26, 19, 0.88) 100%);
-  color: #ffffff;
+  align-items: flex-start;
+  gap: 5px;
+  padding: 15px;
+  background: linear-gradient(
+    180deg,
+    transparent 20%,
+    rgba(6, 26, 19, 0.25) 48%,
+    rgba(6, 26, 19, 0.92) 100%
+  );
+  color: #fff;
 }
 
-.ServiceMain__galleryCardOverlay span {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1px;
+.ServiceMain__galleryCardOverlay > span:first-child {
   color: #79e3aa;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
   text-transform: uppercase;
 }
 
-.ServiceMain__galleryCardOverlay h4 {
-  margin: 3px 0 2px;
-  font-size: 14px;
-  font-weight: 600;
+.ServiceMain__galleryCardTitle {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.5;
 }
 
-.ServiceMain__galleryCardOverlay small {
-  font-size: 11px;
-  color: #c9e3d4;
+.ServiceMain__galleryLocation {
+  color: #d4e6dc;
+  font-size: 10px;
+  line-height: 1.6;
 }
 
-/* =========================================================
-   SIDEBAR & BUTTON CONTROLS
-========================================================= */
+/* ==============================
+   SIDEBAR BOXES
+============================== */
 
 .ServiceMain__sideBox {
   min-width: 0;
-  padding: 32px 28px;
-  border-radius: var(--ServiceMain-radius);
+  padding: 27px 23px;
   border: 1px solid var(--ServiceMain-line);
-  background: #ffffff;
-  box-shadow: 0 6px 20px rgba(10, 45, 34, 0.04);
+  border-radius: var(--ServiceMain-radius);
+  background: #fff;
+  box-shadow: 0 6px 20px rgba(10, 45, 34, 0.035);
 }
 
 .ServiceMain__sideTitle {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-bottom: 22px;
+  gap: 12px;
+  margin-bottom: 21px;
 }
 
 .ServiceMain__sideTitle > span {
   width: 4px;
-  height: 28px;
+  height: 26px;
+  flex-shrink: 0;
   border-radius: 4px;
   background: var(--ServiceMain-green);
 }
@@ -538,85 +694,101 @@
 .ServiceMain__sideTitle h2 {
   margin: 0;
   color: var(--ServiceMain-forest);
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 21px;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 20px;
   font-weight: 600;
+  line-height: 1.4;
 }
 
-/* Interactive Navigation Buttons */
+/* ==============================
+   EXPLORE SERVICES NAVIGATION
+============================== */
+
 .ServiceMain__serviceNav {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 9px;
 }
 
 .ServiceMain__serviceNav button {
   display: flex;
   width: 100%;
-  min-height: 52px;
+  min-height: 49px;
   align-items: center;
-  gap: 14px;
-  padding: 14px 18px;
-  border-radius: 10px;
+  gap: 13px;
+  padding: 13px 15px;
   border: 1px solid transparent;
+  border-radius: 9px;
   background: #f3f7f4;
   color: #2b4035;
-  font-size: 13.5px;
-  font-weight: 600;
   text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.6;
   cursor: pointer;
-  transition: all 0.25s var(--ServiceMain-ease);
+  transition:
+    background 0.25s var(--ServiceMain-ease),
+    color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .ServiceMain__navArrow {
-  font-size: 16px;
+  flex-shrink: 0;
   color: var(--ServiceMain-green);
+  font-size: 15px;
   transition: transform 0.25s ease;
 }
 
 .ServiceMain__serviceNav button:hover {
+  transform: translateX(3px);
   background: #e7f3ec;
   color: var(--ServiceMain-forest);
-  transform: translateX(4px);
 }
 
-/* ACTIVE HIGHLIGHT STATE */
 .ServiceMain__serviceNav button.is-highlighted {
-  background: var(--ServiceMain-green) !important;
-  color: #ffffff !important;
-  box-shadow: 0 8px 20px -4px rgba(21, 139, 88, 0.38);
+  transform: translateX(3px);
   border-color: var(--ServiceMain-green);
-  transform: translateX(4px);
+  background: var(--ServiceMain-green);
+  color: #fff;
+  box-shadow: 0 8px 20px -4px rgba(21, 139, 88, 0.3);
 }
 
 .ServiceMain__serviceNav button.is-highlighted .ServiceMain__navArrow {
-  color: #ffffff !important;
   transform: translate(2px, -2px);
+  color: #fff;
 }
 
-/* Support Help Card */
+/* ==============================
+   SUPPORT CARD
+============================== */
+
 .ServiceMain__supportCard {
   position: relative;
   overflow: hidden;
-  padding: 34px 28px;
+  padding: 29px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--ServiceMain-radius);
   background:
-    radial-gradient(circle at 100% 0%, rgba(33, 181, 115, 0.22), transparent 50%),
-    linear-gradient(155deg, #0d3829 0%, #061c14 100%);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 16px 36px -10px rgba(6, 28, 20, 0.3);
+    radial-gradient(
+      circle at 100% 0,
+      rgba(33, 181, 115, 0.22),
+      transparent 50%
+    ),
+    linear-gradient(155deg, #0d3829, #061c14);
+  color: #fff;
+  box-shadow: 0 16px 36px -10px rgba(6, 28, 20, 0.24);
 }
 
 .ServiceMain__supportIcon {
   display: flex;
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   align-items: center;
   justify-content: center;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.12);
   border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.1);
   color: #79e3aa;
 }
 
@@ -626,74 +798,83 @@
 }
 
 .ServiceMain__supportHeading {
-  margin-top: 22px;
+  margin-top: 20px;
 }
 
 .ServiceMain__supportHeading > span {
   color: #79e3aa;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
   letter-spacing: 2px;
 }
 
 .ServiceMain__supportHeading h3 {
-  margin: 6px 0 0;
-  color: #ffffff;
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 24px;
+  margin: 7px 0 0;
+  color: #fff;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 23px;
   font-weight: 600;
-  line-height: 1.3;
+  line-height: 1.35;
 }
 
 .ServiceMain__supportCard > p {
-  margin: 12px 0 0;
+  margin: 13px 0 0;
   color: #b9d5c6;
-  font-size: 13px;
-  line-height: 1.75;
+  font-size: 11.5px;
+  line-height: 1.9;
 }
 
 .ServiceMain__supportLink {
-  width: 100%;
   display: flex;
+  width: 100%;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
   margin-top: 22px;
   padding: 16px 0 0;
-  border: none;
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
   background: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
   color: #79e3aa;
-  font-size: 13px;
+  text-align: left;
+  font-size: 12px;
   font-weight: 700;
   cursor: pointer;
   transition: color 0.2s ease;
 }
 
 .ServiceMain__supportLink:hover {
-  color: #ffffff;
+  color: #fff;
 }
 
-/* Quick Essentials */
+/* ==============================
+   TRAVEL ESSENTIALS
+============================== */
+
 .ServiceMain__downloadGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  gap: 10px;
 }
 
 .ServiceMain__downloadGrid button {
   display: flex;
   min-width: 0;
-  min-height: 140px;
+  min-height: 132px;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  padding: 16px 14px;
-  border-radius: 12px;
+  padding: 13px 11px;
   border: 1px solid var(--ServiceMain-line);
+  border-radius: 11px;
   background: var(--ServiceMain-soft);
   text-align: left;
   cursor: pointer;
-  transition: all 0.25s var(--ServiceMain-ease);
+  transition:
+    transform 0.25s var(--ServiceMain-ease),
+    border-color 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .ServiceMain__downloadGrid button.is-active-btn {
@@ -704,45 +885,49 @@
 .ServiceMain__downloadGrid button:hover {
   transform: translateY(-3px);
   border-color: #a4d8b6;
-  background: #ffffff;
+  background: #fff;
   box-shadow: 0 8px 20px rgba(21, 139, 88, 0.08);
 }
 
 .ServiceMain__downloadIcon {
   display: flex;
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   align-items: center;
   justify-content: center;
-  margin-bottom: 14px;
-  border-radius: 50%;
-  background: #ffffff;
+  margin-bottom: 12px;
   border: 1px solid #c2e4ce;
+  border-radius: 50%;
+  background: #fff;
   color: var(--ServiceMain-green);
-  font-family: 'Cinzel', serif;
-  font-size: 12px;
+  font-family: "Cinzel", serif;
+  font-size: 11px;
   font-weight: 700;
 }
 
 .ServiceMain__downloadGrid strong {
   color: var(--ServiceMain-forest);
-  font-size: 12.5px;
-  line-height: 1.4;
+  font-size: 11px;
+  line-height: 1.6;
 }
 
 .ServiceMain__downloadGrid small {
-  margin-top: 4px;
+  margin-top: 5px;
   color: var(--ServiceMain-muted);
-  font-size: 11px;
+  font-size: 9px;
+  line-height: 1.6;
 }
 
-/* Contact Details Info */
+/* ==============================
+   CONTACT INFORMATION
+============================== */
+
 .ServiceMain__contactInfo {
   display: grid;
-  grid-template-columns: 28px 1fr;
+  grid-template-columns: 27px minmax(0, 1fr);
   align-items: start;
-  gap: 12px;
-  margin-top: 20px;
+  gap: 11px;
+  margin-top: 21px;
 }
 
 .ServiceMain__contactInfo:first-of-type {
@@ -750,24 +935,26 @@
 }
 
 .ServiceMain__contactInfoIcon {
-  font-size: 18px;
-  line-height: 1.2;
+  font-size: 17px;
+  line-height: 1.5;
 }
 
 .ServiceMain__contactInfo strong {
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: 5px;
   color: var(--ServiceMain-forest);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
 }
 
 .ServiceMain__contactInfo p,
 .ServiceMain__contactInfo a {
+  display: inline-block;
   margin: 0;
   color: var(--ServiceMain-muted);
-  font-size: 12.5px;
-  line-height: 1.7;
+  font-size: 11px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
 }
 
 .ServiceMain__contactInfo a {
@@ -779,49 +966,64 @@
   text-decoration: underline;
 }
 
-/* Lightbox Modal */
+/* ==============================
+   FULLSCREEN LIGHTBOX
+============================== */
+
 .ServiceMain__lightbox {
   position: fixed;
-  inset: 0;
   z-index: 999999;
-  background: rgba(3, 18, 12, 0.94);
-  backdrop-filter: blur(14px);
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 20px;
+  padding: 25px 18px;
+  background: rgba(3, 18, 12, 0.94);
+  backdrop-filter: blur(14px);
 }
 
 .ServiceMain__lightboxBox {
   position: relative;
-  max-width: 900px;
   width: 100%;
-  border-radius: 16px;
-  overflow: hidden;
-  background: #082218;
+  max-width: 900px;
+  max-height: 95vh;
+  overflow: auto;
   border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  background: #082218;
+  scrollbar-width: thin;
 }
 
 .ServiceMain__lightboxClose {
   position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #fff;
-  cursor: pointer;
+  z-index: 2;
+  top: 14px;
+  right: 14px;
   display: flex;
+  width: 40px;
+  height: 40px;
   align-items: center;
   justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
   font-size: 16px;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
-.ServiceMain__lightboxBox img {
+.ServiceMain__lightboxClose:hover {
+  transform: rotate(90deg);
+  background: var(--ServiceMain-green);
+}
+
+.ServiceMain__lightboxBox > img {
+  display: block;
   width: 100%;
-  max-height: 60vh;
+  max-height: 65vh;
   object-fit: contain;
   background: #020e09;
 }
@@ -830,84 +1032,380 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 26px;
-  color: #ffffff;
+  gap: 18px;
+  padding: 20px 25px;
+  color: #fff;
 }
 
-.ServiceMain__lightboxCaption span {
+.ServiceMain__lightboxCaption > div > span {
+  color: #79e3aa;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 1px;
-  color: #79e3aa;
   text-transform: uppercase;
 }
 
 .ServiceMain__lightboxCaption h3 {
-  margin: 4px 0 2px;
-  font-size: 20px;
-  font-family: 'Playfair Display', serif;
+  margin: 5px 0;
+  color: #fff;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 22px;
+  line-height: 1.4;
+}
+
+.ServiceMain__lightboxCaption small {
+  color: #c9e3d4;
+  font-size: 11px;
 }
 
 .ServiceMain__lightboxCount {
-  font-family: 'Cinzel', serif;
-  font-size: 14px;
+  flex-shrink: 0;
+  color: #79e3aa;
+  font-family: "Cinzel", serif;
+  font-size: 13px;
 }
 
-/* =========================================================
-   RESPONSIVE DESIGN
-========================================================= */
+.ServiceMain__lightboxControls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 0 25px 20px;
+}
+
+.ServiceMain__lightboxControls button {
+  padding: 10px 15px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.07);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.ServiceMain__lightboxControls button:hover {
+  border-color: #79e3aa;
+  background: rgba(21, 139, 88, 0.4);
+}
+
+/* ==============================
+   TABLET
+============================== */
 
 @media (max-width: 1100px) {
   .ServiceMain__layout {
-    grid-template-columns: minmax(0, 1.6fr) minmax(300px, 0.9fr);
+    grid-template-columns: minmax(0, 1.6fr) minmax(270px, 0.9fr);
   }
 
   .ServiceMain__main {
-    padding: 50px 30px 70px;
+    padding: 48px 28px 65px;
   }
 
   .ServiceMain__sidebar {
-    padding: 50px 24px 70px;
+    gap: 20px;
+    padding: 48px 20px 65px;
   }
 
   .ServiceMain__featureGrid {
     grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 860px) {
-  .ServiceMain__layout {
-    grid-template-columns: 1fr;
+    gap: 13px;
   }
 
-  .ServiceMain__sidebar {
-    border-left: none;
-    border-top: 1px solid var(--ServiceMain-line);
-    display: grid;
+  .ServiceMain__specBox {
+    padding: 21px;
+  }
+
+  .ServiceMain__galleryPageGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px;
-    padding: 40px 24px 60px;
-  }
-
-  .ServiceMain__wildlifeCards,
-  .ServiceMain__galleryPageGrid,
-  .ServiceMain__formGrid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 600px) {
-  .ServiceMain__main {
-    padding: 35px 18px 50px;
-  }
-
-  .ServiceMain__sidebar {
-    grid-template-columns: 1fr;
-    padding: 30px 18px 50px;
   }
 
   .ServiceMain__actionBanner {
-    flex-direction: column;
     align-items: flex-start;
+    flex-direction: column;
+    padding: 26px;
+  }
+}
+
+/* ==============================
+   SMALL TABLET
+============================== */
+
+@media (max-width: 860px) {
+  .ServiceMain__layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ServiceMain__main {
+    padding: 45px 30px 55px;
+  }
+
+  .ServiceMain__sidebar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 20px;
+    padding: 35px 30px 45px;
+    border-top: 1px solid var(--ServiceMain-line);
+    border-left: 0;
+  }
+
+  .ServiceMain__sideBox {
+    padding: 24px 20px;
+  }
+
+  .ServiceMain__featureGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .ServiceMain__specBox {
+    padding: 18px 14px;
+  }
+
+  .ServiceMain__specBox h3 {
+    font-size: 13px;
+  }
+
+  .ServiceMain__specBox p {
+    font-size: 11px;
+  }
+
+  .ServiceMain__actionBanner {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .ServiceMain__formGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ServiceMain__galleryPageGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* ==============================
+   MOBILE
+============================== */
+
+@media (max-width: 600px) {
+  .ServiceMain__main {
+    padding: 35px 17px 42px;
+  }
+
+  .ServiceMain__sidebar {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 17px;
+    padding: 28px 17px 38px;
+  }
+
+  .ServiceMain__pageTitle {
+    font-size: clamp(30px, 8vw, 39px);
+    letter-spacing: -0.7px;
+  }
+
+  .ServiceMain__eyebrow {
+    gap: 9px;
+    font-size: 9px;
+    letter-spacing: 1.7px;
+  }
+
+  .ServiceMain__eyebrowLine {
+    width: 22px;
+  }
+
+  .ServiceMain__lead {
+    margin: 15px 0 25px;
+    font-size: 12px;
+    line-height: 1.9;
+  }
+
+  .ServiceMain__heroImage {
+    height: 270px;
+  }
+
+  .ServiceMain__heroCaption {
+    right: 10px;
+    bottom: 10px;
+    padding: 9px 12px;
+    font-size: 9px;
+  }
+
+  .ServiceMain__featureGrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .ServiceMain__specBox {
+    padding: 21px;
+  }
+
+  .ServiceMain__specBox h3 {
+    font-size: 14px;
+  }
+
+  .ServiceMain__specBox p {
+    font-size: 12px;
+  }
+
+  .ServiceMain__actionBanner {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 18px;
+    padding: 23px 20px;
+  }
+
+  .ServiceMain__actionBanner h3 {
+    font-size: 21px;
+  }
+
+  .ServiceMain__actionBanner p {
+    font-size: 11px;
+  }
+
+  .ServiceMain__btnPrimary {
+    width: 100%;
+    white-space: normal;
+  }
+
+  .ServiceMain__planTrigger {
+    gap: 12px;
+    padding: 16px;
+    font-size: 12px;
+  }
+
+  .ServiceMain__planAnswer {
+    padding: 0 16px 17px;
+    font-size: 11.5px;
+  }
+
+  .ServiceMain__routeBox {
+    padding: 22px 19px;
+  }
+
+  .ServiceMain__routeBox h3 {
+    font-size: 20px;
+  }
+
+  .ServiceMain__routeBox li {
+    font-size: 11.5px;
+  }
+
+  .ServiceMain__form {
+    padding: 21px 16px;
+  }
+
+  .ServiceMain__formHeading h3 {
+    font-size: 22px;
+  }
+
+  .ServiceMain__formGrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .ServiceMain__inputGroup {
+    margin-bottom: 16px;
+  }
+
+  .ServiceMain__galleryPageGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 11px;
+  }
+
+  .ServiceMain__galleryPageCard {
+    aspect-ratio: 4 / 4.7;
+  }
+
+  .ServiceMain__galleryCardOverlay {
+    padding: 11px;
+  }
+
+  .ServiceMain__galleryCardTitle {
+    font-size: 11px;
+  }
+
+  .ServiceMain__galleryLocation {
+    font-size: 9px;
+  }
+
+  .ServiceMain__sideTitle h2 {
+    font-size: 20px;
+  }
+
+  .ServiceMain__supportCard {
+    padding: 26px 22px;
+  }
+
+  .ServiceMain__lightbox {
+    padding: 12px;
+  }
+
+  .ServiceMain__lightboxCaption {
+    align-items: flex-start;
+    padding: 17px;
+  }
+
+  .ServiceMain__lightboxCaption h3 {
+    font-size: 19px;
+  }
+
+  .ServiceMain__lightboxControls {
+    padding: 0 17px 17px;
+  }
+}
+
+/* ==============================
+   EXTRA SMALL MOBILE
+============================== */
+
+@media (max-width: 380px) {
+  .ServiceMain__main {
+    padding-right: 13px;
+    padding-left: 13px;
+  }
+
+  .ServiceMain__sidebar {
+    padding-right: 13px;
+    padding-left: 13px;
+  }
+
+  .ServiceMain__galleryPageGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ServiceMain__galleryPageCard {
+    aspect-ratio: 4 / 3;
+  }
+
+  .ServiceMain__downloadGrid {
+    gap: 8px;
+  }
+
+  .ServiceMain__downloadGrid button {
+    padding: 12px 9px;
+  }
+
+  .ServiceMain__lightboxCaption {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+/* ==============================
+   REDUCED MOTION
+============================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .ServiceMain *,
+  .ServiceMain *::before,
+  .ServiceMain *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

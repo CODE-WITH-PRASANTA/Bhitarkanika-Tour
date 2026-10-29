@@ -6,27 +6,27 @@ import "./AboutOne.css";
 const aboutFeatures = [
   {
     number: "01",
-    title: "Wildlife Conservation",
+    title: "Scenic Boat Safaris",
     description:
-      "Protecting the natural beauty and biodiversity of Bhitarkanika is at the heart of responsible tourism.",
+      "Explore Bhitarkanika's beautiful rivers, winding creeks, and peaceful mangrove waterways on a memorable boat journey.",
   },
   {
     number: "02",
-    title: "Save Wildlife Habitat",
+    title: "Remarkable Wildlife",
     description:
-      "Discover the importance of preserving mangrove forests and the habitats of native wildlife.",
+      "Discover the natural habitat of saltwater crocodiles, kingfishers, and other fascinating wildlife while respecting their space.",
   },
   {
     number: "03",
-    title: "Respect Nature",
+    title: "Mangrove Conservation",
     description:
-      "Explore the outdoors thoughtfully and help keep these beautiful natural surroundings undisturbed.",
+      "Experience the beauty of this unique coastal ecosystem and learn why protecting its mangrove forests is essential.",
   },
   {
     number: "04",
-    title: "Guided Experiences",
+    title: "Nature & Birdwatching",
     description:
-      "Make your journey more meaningful with local guidance and responsible travel practices.",
+      "Enjoy peaceful surroundings, observe beautiful birds, capture nature photography, and create unforgettable memories in Odisha.",
   },
 ];
 
@@ -99,23 +99,30 @@ const AboutOne = () => {
     >
       <div className="AboutOne__container">
         {/* LEFT CONTENT */}
+
         <div className="AboutOne__content">
           <div className="AboutOne__eyebrow">
             <span className="AboutOne__eyebrowLine" />
-            Welcome to Bhitarkanika
+            Welcome to Bhitarakanika Boat Service
           </div>
 
           <h2 className="AboutOne__title" id="AboutOne-title">
-            Discover the Beauty of
-            <span>Nature and Wildlife.</span>
+            Discover the Magic of
+            <span> Bhitarkanika by Boat.</span>
           </h2>
 
           <p className="AboutOne__intro">
-            Explore the enchanting mangrove forests, peaceful
-            waterways and remarkable biodiversity of Bhitarkanika.
-            Every journey is an opportunity to appreciate nature and
-            understand why its conservation matters.
+            Welcome to Bhitarakanika Boat Service, your gateway to
+            exploring the extraordinary natural beauty of Bhitarkanika,
+            Odisha. Cruise through peaceful mangrove waterways, admire
+            lush green forests, and discover a remarkable world of
+            saltwater crocodiles and diverse birdlife. Whether you are
+            a nature lover, wildlife enthusiast, photographer, or
+            travelling with family, every boat journey offers a chance
+            to experience the wilderness and create lasting memories.
           </p>
+
+          {/* BHITARKANIKA EXPERIENCES */}
 
           <div className="AboutOne__features">
             {aboutFeatures.map((feature) => (
@@ -128,10 +135,13 @@ const AboutOne = () => {
                 </span>
 
                 <h3>{feature.title}</h3>
+
                 <p>{feature.description}</p>
               </article>
             ))}
           </div>
+
+          {/* ACTION BUTTONS */}
 
           <div className="AboutOne__actions">
             <Link
@@ -146,19 +156,20 @@ const AboutOne = () => {
               to="/contact"
               className="AboutOne__button AboutOne__button--secondary"
             >
-              Contact Us
+              Plan Your Visit
               <span aria-hidden="true">↗</span>
             </Link>
           </div>
         </div>
 
         {/* RIGHT IMAGE */}
+
         <div className="AboutOne__visual">
           <div className="AboutOne__imageFrame">
             <img
               className="AboutOne__image"
               src={AboutOneImage}
-              alt="Explore the natural landscapes and wildlife of Bhitarkanika"
+              alt="Discover the mangrove waterways and natural beauty of Bhitarkanika, Odisha"
               loading="lazy"
               decoding="async"
             />
@@ -172,6 +183,7 @@ const AboutOne = () => {
           </div>
 
           {/* EXPERIENCE COUNTER */}
+
           <div className="AboutOne__experience">
             <span className="AboutOne__experienceLabel">
               OUR COMMITMENT
@@ -185,11 +197,12 @@ const AboutOne = () => {
               <span>+</span>
             </div>
 
-            <h3>Years of Experience</h3>
+            <h3>Nature Comes First</h3>
 
             <p>
-              A lasting commitment to meaningful journeys and
-              responsible nature exploration.
+              Discover Bhitarkanika responsibly through memorable boat
+              journeys, respect for wildlife, and a shared commitment
+              to protecting Odisha's natural heritage.
             </p>
 
             <div className="AboutOne__experienceLine">
@@ -197,10 +210,13 @@ const AboutOne = () => {
             </div>
           </div>
 
+          {/* DECORATIVE ELEMENTS */}
+
           <div
             className="AboutOne__decor AboutOne__decor--one"
             aria-hidden="true"
           />
+
           <div
             className="AboutOne__decor AboutOne__decor--two"
             aria-hidden="true"

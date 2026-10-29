@@ -4,8 +4,8 @@ import './Oursuccess.css';
 const featuresData = [
   {
     id: 1,
-    title: 'Odisha & Worldwide Tours',
-    description: 'Bhubaneswar se lekar Puri, Konark aur international destinations tak seamless travel packages.',
+    title: 'Scenic Bhitarkanika Boat Rides',
+    description: 'Explore the beautiful mangrove creeks, winding waterways, and peaceful river landscapes of Bhitarkanika with memorable boat journeys.',
     theme: 'green',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
@@ -19,7 +19,7 @@ const featuresData = [
   {
     id: 2,
     title: 'Affordable & Transparent Pricing',
-    description: 'Bhubaneswar me sabse kifayati aur transparent rates, bina kisi hidden charges ke.',
+    description: 'Enjoy a memorable Bhitarkanika boat experience with clear pricing and helpful booking assistance, so you can plan your nature adventure with confidence.',
     theme: 'orange',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
@@ -31,8 +31,8 @@ const featuresData = [
   },
   {
     id: 3,
-    title: 'Instant Cab & Tour Booking',
-    description: 'Airport transfers, outstation cabs aur holiday packages ke liye fast online booking support.',
+    title: 'Easy Boat Trip Booking',
+    description: 'Plan your Bhitarkanika visit with convenient booking assistance for boat journeys, wildlife exploration, and scenic mangrove experiences.',
     theme: 'yellow',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
@@ -49,8 +49,8 @@ const featuresData = [
   },
   {
     id: 4,
-    title: 'Expert Local Guides',
-    description: 'Odisha ke historical temples aur tourist attractions ke liye anubhavi local tour guides.',
+    title: 'Discover Mangroves & Wildlife',
+    description: 'Explore the remarkable mangrove ecosystem, observe diverse birdlife, and discover the natural habitat of the famous saltwater crocodile.',
     theme: 'lime',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
@@ -62,8 +62,8 @@ const featuresData = [
   },
   {
     id: 5,
-    title: '24/7 Dedicated Support',
-    description: 'Aapki poori yatra ke dauraan 24 ghante customer support aur roadside assistance.',
+    title: 'Friendly Booking Assistance',
+    description: 'Get helpful information about your boat trip, visit planning, and local attractions to make your Bhitarkanika nature experience smoother.',
     theme: 'mint',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
@@ -75,8 +75,8 @@ const featuresData = [
   },
   {
     id: 6,
-    title: 'Customizable Itineraries',
-    description: 'Family trips, corporate tours aur solo travels ke hisab se customized travel plans.',
+    title: 'Memorable Nature Experiences',
+    description: 'Whether you are travelling with family, friends, or fellow nature lovers, discover scenic waterways, peaceful mangroves, and unforgettable wildlife encounters.',
     theme: 'peach',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
@@ -89,38 +89,46 @@ const featuresData = [
 ];
 
 const Oursuccess = () => {
-  // Local SEO Schema for Google Search
+  // Local SEO Schema for Bhitarakanika Boat Service
   const travelAgencySchema = {
     '@context': 'https://schema.org',
-    '@type': 'TravelAgency',
-    name: 'TripRex - Best Travels and Tours Agency',
-    description: 'Top-rated travel and tour agency in Bhubaneswar, Odisha offering car rentals, customized holiday packages, and temple tours across Puri, Konark, and Chilika.',
+    '@type': 'TouristInformationCenter',
+    name: 'Bhitarakanika Boat Service',
+    description: 'Discover Bhitarkanika, Odisha, with scenic boat journeys through mangrove waterways, opportunities to appreciate local birdlife, and wildlife experiences in a remarkable coastal ecosystem.',
     address: {
       '@type': 'PostalAddress',
-      addressLocality: 'Bhubaneswar',
       addressRegion: 'Odisha',
       addressCountry: 'IN'
     },
     areaServed: [
-      { '@type': 'City', name: 'Bhubaneswar' },
-      { '@type': 'City', name: 'Cuttack' },
-      { '@type': 'City', name: 'Puri' },
-      { '@type': 'AdministrativeArea', name: 'Odisha' }
-    ],
-    priceRange: '₹₹'
+      {
+        '@type': 'Place',
+        name: 'Bhitarkanika National Park, Odisha'
+      },
+      {
+        '@type': 'AdministrativeArea',
+        name: 'Kendrapara, Odisha'
+      },
+      {
+        '@type': 'State',
+        name: 'Odisha, India'
+      }
+    ]
   };
 
   return (
-    <section 
-      className="oursuccess-section" 
-      itemScope 
-      itemType="https://schema.org/TravelAgency"
+    <section
+      className="oursuccess-section"
+      itemScope
+      itemType="https://schema.org/TouristInformationCenter"
       aria-labelledby="section-main-heading"
     >
       {/* Schema Markup for Local SEO */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(travelAgencySchema) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(travelAgencySchema)
+        }}
       />
 
       {/* Decorative Background Graphics */}
@@ -156,38 +164,51 @@ const Oursuccess = () => {
       </div>
 
       <div className="oursuccess-container">
-        {/* SEO-Optimized Header */}
+        {/* Section Header */}
         <header className="oursuccess-header">
           <div className="oursuccess-badge">
             <span className="badge-arrow">➔</span>
-            <span className="badge-text">Why We Are The Best</span>
+            <span className="badge-text">Why Choose Us</span>
             <span className="badge-sparkle">✦</span>
           </div>
-          
-          <h2 id="section-main-heading" className="oursuccess-title" itemProp="name">
-            Best Travels and Tours Agency in Bhubaneswar, Odisha
+
+          <h2
+            id="section-main-heading"
+            className="oursuccess-title"
+            itemProp="name"
+          >
+            Discover Bhitarkanika with Bhitarakanika Boat Service
           </h2>
-          
-          <p className="oursuccess-subtitle" itemProp="description">
-            Odisha Tourism ke trusted partner. Ham pradan karte hain affordable cab service, custom holiday packages, aur Puri-Konark temple tours.
+
+          <p
+            className="oursuccess-subtitle"
+            itemProp="description"
+          >
+            Experience the natural beauty of Odisha through scenic boat
+            journeys, lush mangrove forests, fascinating wildlife, and
+            unforgettable moments in the heart of Bhitarkanika.
           </p>
         </header>
 
         {/* 3x2 Features Grid */}
         <div className="features-grid">
           {featuresData.map((item) => (
-            <article 
-              key={item.id} 
+            <article
+              key={item.id}
               className={`feature-card theme-${item.theme}`}
-              itemScope 
-              itemType="https://schema.org/Offer"
             >
               <div className="card-icon-bubble" aria-hidden="true">
                 {item.icon}
               </div>
+
               <div className="card-text-content">
-                <h3 className="card-heading" itemProp="itemOffered">{item.title}</h3>
-                <p className="card-desc" itemProp="description">{item.description}</p>
+                <h3 className="card-heading">
+                  {item.title}
+                </h3>
+
+                <p className="card-desc">
+                  {item.description}
+                </p>
               </div>
             </article>
           ))}

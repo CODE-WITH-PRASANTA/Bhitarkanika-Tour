@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import "./HeroSection.css";
 
@@ -17,11 +16,12 @@ const HeroSection = () => {
   const heroSlides = [
     {
       image: heroImage1,
-      eyebrow: "BHITARKANIKA RIVER SAFARI",
+      eyebrow: "BHITARAKANIKA BOAT SERVICE",
       title: "SAIL THROUGH",
-      highlight: "MANGROVE RIVERS",
+      highlight: "MANGROVE CREEKS",
       description:
-        "Experience a scenic boat journey through the winding rivers of Bhitarkanika, surrounded by lush green mangroves and breathtaking natural landscapes.",
+        "Experience safe, certified boat safaris through the tranquil tidal waters of Bhitarkanika National Park, surrounded by lush estuarine mangrove forests.",
+      ctaText: "Book River Safari",
     },
     {
       image: heroImage2,
@@ -29,67 +29,72 @@ const HeroSection = () => {
       title: "DISCOVER THE",
       highlight: "MIGHTY CROCODILES",
       description:
-        "Observe magnificent saltwater crocodiles resting along the muddy riverbanks during a guided boat safari through the remarkable wilderness of Bhitarkanika.",
+        "Witness giant saltwater crocodiles basking along the muddy riverbanks of Dangamal and Khola from our stable, eco-friendly safari boats.",
+      ctaText: "Explore Safari Routes",
     },
     {
       image: heroImage3,
-      eyebrow: "EXPLORE HIDDEN WATERWAYS",
+      eyebrow: "CANOPY CRUISE EXPEDITION",
       title: "JOURNEY INTO",
-      highlight: "MANGROVE FORESTS",
+      highlight: "SHADED WATERWAYS",
       description:
-        "Navigate narrow forest waterways beneath a canopy of lush mangroves and discover the peaceful, mysterious beauty of this unique coastal ecosystem.",
+        "Navigate narrow tidal creeks beneath interlocking mangrove branches with certified boat captains and forest-guided naturalists.",
+      ctaText: "View Boating Packages",
     },
     {
       image: heroImage4,
-      eyebrow: "A BIRD'S-EYE VIEW",
-      title: "EXPLORE THE",
-      highlight: "GREEN WILDERNESS",
+      eyebrow: "ESTUARINE HABITAT",
+      title: "ENCOUNTER THE",
+      highlight: "APEX REPTILES",
       description:
-        "Admire the vast mangrove forests and winding waterways from above, revealing the extraordinary scale and natural beauty of Bhitarkanika.",
+        "Get an up-close glimpse of Bhitarkanika's famous saltwater crocodiles in their undisturbed habitat alongside unique stilt and breathing roots.",
+      ctaText: "Check Safari Timings",
     },
     {
       image: heroImage5,
-      eyebrow: "YOUR NEXT NATURE ESCAPE",
-      title: "EXPERIENCE",
-      highlight: "WILDLIFE SAFARIS",
+      eyebrow: "SCENIC DELTA VISTAS",
+      title: "EXPERIENCE THE",
+      highlight: "VIBRANT WETLANDS",
       description:
-        "Enjoy an unforgettable boat excursion through serene mangrove creeks, where forest wildlife and the spectacular scenery create a memorable adventure.",
+        "Absorb panoramic views across the Brahmani and Baitarani river systems, home to India's richest biodiversity and coastal wildlife.",
+      ctaText: "Plan Your Visit",
     },
     {
       image: heroImage6,
-      eyebrow: "FOLLOW THE RIVER",
-      title: "FIND PEACE IN",
-      highlight: "NATURE'S BEAUTY",
+      eyebrow: "GUIDED GROUP SAFARIS",
+      title: "EXPLORE WITH",
+      highlight: "CERTIFIED GUIDES",
       description:
-        "Discover a tranquil river winding between thriving mangrove forests, with calm waters and beautiful greenery offering a refreshing escape into nature.",
+        "Enjoy family and group boat rides equipped with safety jackets, eco-tour permits, and knowledgeable local naturalists.",
+      ctaText: "Book Group Tours",
     },
     {
       image: heroImage7,
-      eyebrow: "ADVENTURE ON THE WATER",
-      title: "SAIL BENEATH",
-      highlight: "THE MANGROVE CANOPY",
+      eyebrow: "SHORELINE WILDLIFE CRUISE",
+      title: "CRUISE ALONG",
+      highlight: "SUNBASKING SHORES",
       description:
-        "Travel beneath arching mangrove branches on a memorable boat ride through shaded creeks and experience the forest from a unique perspective.",
+        "Capture prime wildlife moments as kingfishers, deer, and giant estuarine crocodiles rest along the sunlit mudflats.",
+      ctaText: "Reserve A Boat",
     },
     {
       image: heroImage8,
-      eyebrow: "THE KINGDOM OF CROCODILES",
-      title: "WITNESS THE",
-      highlight: "WILD UP CLOSE",
+      eyebrow: "THE HEART OF BHITARAKANIKA",
+      title: "SAIL INTO",
+      highlight: "UNTOUCHED NATURE",
       description:
-        "Discover the powerful saltwater crocodile in its natural mangrove habitat and experience the fascinating wildlife that makes Bhitarkanika special.",
+        "Unwind as our boat glides through the serene river sanctuary, providing a peaceful escape into the heart of Odisha's mangrove paradise.",
+      ctaText: "Enquire for Booking",
     },
   ];
 
- useEffect(() => {
-  const sliderInterval = setInterval(() => {
-    setActiveSlide((previousSlide) => (
-      (previousSlide + 1) % heroSlides.length
-    ));
-  }, 5000); // Change photo every 5 seconds
+  useEffect(() => {
+    const sliderInterval = setInterval(() => {
+      setActiveSlide((previousSlide) => (previousSlide + 1) % heroSlides.length);
+    }, 5000);
 
-  return () => clearInterval(sliderInterval);
-}, [heroSlides.length]);
+    return () => clearInterval(sliderInterval);
+  }, [heroSlides.length]);
 
   const currentSlide = heroSlides[activeSlide];
 
@@ -109,22 +114,19 @@ const HeroSection = () => {
   return (
     <section className="HeroSection">
       <div className="HeroSection-container">
-
         {/* LEFT IMAGE SLIDER */}
         <div className="HeroSection-imagePanel">
           {heroSlides.map((slide, index) => (
             <div
               key={slide.image}
               className={`HeroSection-slide ${
-                activeSlide === index
-                  ? "HeroSection-slideActive"
-                  : ""
+                activeSlide === index ? "HeroSection-slideActive" : ""
               }`}
               aria-hidden={activeSlide !== index}
             >
               <img
                 src={slide.image}
-                alt={`${slide.highlight} in Bhitarkanika, Odisha`}
+                alt={`${slide.highlight} - Bhitarakanika Boat Service`}
                 className="HeroSection-image"
                 loading={index === 0 ? "eager" : "lazy"}
               />
@@ -134,12 +136,9 @@ const HeroSection = () => {
           <div className="HeroSection-imageOverlay" />
         </div>
 
-        {/* RIGHT CONTENT: MATCHES ACTIVE IMAGE */}
+        {/* RIGHT CONTENT PANEL */}
         <div className="HeroSection-contentPanel">
-          <div
-            className="HeroSection-content"
-            key={activeSlide}
-          >
+          <div className="HeroSection-content" key={activeSlide}>
             <span className="HeroSection-eyebrow">
               {currentSlide.eyebrow}
             </span>
@@ -152,6 +151,16 @@ const HeroSection = () => {
             <p className="HeroSection-description">
               {currentSlide.description}
             </p>
+
+            <div className="HeroSection-actionRow">
+              <button
+                type="button"
+                className="HeroSection-ctaButton"
+                onClick={handleEnquiry}
+              >
+                {currentSlide.ctaText}
+              </button>
+            </div>
           </div>
 
           {/* SLIDE INDICATORS */}
@@ -164,23 +173,25 @@ const HeroSection = () => {
                 key={slide.image}
                 type="button"
                 className={`HeroSection-indicator ${
-                  activeSlide === index
-                    ? "HeroSection-indicatorActive"
-                    : ""
+                  activeSlide === index ? "HeroSection-indicatorActive" : ""
                 }`}
                 onClick={() => setActiveSlide(index)}
                 aria-label={`Go to slide ${index + 1}`}
-                aria-current={
-                  activeSlide === index ? "true" : undefined
-                }
+                aria-current={activeSlide === index ? "true" : undefined}
               />
             ))}
           </div>
         </div>
 
-        {/* ENQUIRY BUTTON */}
-      
-
+        {/* SIDE FLOATING ENQUIRY TAB */}
+        <button
+          type="button"
+          className="HeroSection-enquiryButton"
+          onClick={handleEnquiry}
+          aria-label="Open enquiry form"
+        >
+          ENQUIRE NOW
+        </button>
       </div>
     </section>
   );

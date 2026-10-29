@@ -1,0 +1,1411 @@
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
+
+.HuntingTower {
+  --HuntingTower-green: #158b58;
+  --HuntingTower-green-hover: #0f6f46;
+  --HuntingTower-forest: #08281e;
+  --HuntingTower-ink: #142820;
+  --HuntingTower-muted: #597164;
+  --HuntingTower-line: #e1ede5;
+  --HuntingTower-soft: #f4f8f5;
+  --HuntingTower-radius: 16px;
+  --HuntingTower-ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  width: 100%;
+  margin: 0;
+  color: var(--HuntingTower-ink);
+  background: #fff;
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.HuntingTower *,
+.HuntingTower *::before,
+.HuntingTower *::after {
+  box-sizing: border-box;
+}
+
+.HuntingTower button,
+.HuntingTower input,
+.HuntingTower select,
+.HuntingTower textarea {
+  font: inherit;
+}
+
+.HuntingTower button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.HuntingTower button:focus-visible,
+.HuntingTower input:focus-visible,
+.HuntingTower select:focus-visible,
+.HuntingTower textarea:focus-visible {
+  outline: 3px solid rgba(21, 139, 88, 0.35);
+  outline-offset: 3px;
+}
+
+/* ==============================
+   MAIN LAYOUT
+============================== */
+
+.HuntingTower__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.85fr) minmax(310px, 0.95fr);
+  align-items: stretch;
+  width: 100%;
+  max-width: 1540px;
+  margin: 0 auto;
+}
+
+.HuntingTower__main {
+  min-width: 0;
+  padding: 65px clamp(24px, 4.5vw, 76px) 90px;
+  background: #fff;
+}
+
+.HuntingTower__sidebar {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 26px;
+  padding: 65px clamp(20px, 3vw, 44px) 80px;
+  background: #f7faf8;
+  border-left: 1px solid var(--HuntingTower-line);
+  align-self: stretch;
+}
+
+/* ==============================
+   VIEW ANIMATION
+============================== */
+
+.HuntingTower__viewPane {
+  animation: HuntingTower-slideFade 0.36s var(--HuntingTower-ease) both;
+}
+
+@keyframes HuntingTower-slideFade {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==============================
+   PAGE HEADING
+============================== */
+
+.HuntingTower__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  color: var(--HuntingTower-green);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.HuntingTower__eyebrowLine {
+  width: 28px;
+  height: 2px;
+  flex-shrink: 0;
+  border-radius: 2px;
+  background: var(--HuntingTower-green);
+}
+
+.HuntingTower__pageTitle {
+  margin: 0;
+  color: var(--HuntingTower-forest);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(32px, 3.8vw, 50px);
+  font-weight: 700;
+  line-height: 1.16;
+  letter-spacing: -0.8px;
+}
+
+.HuntingTower__pageTitle > span {
+  display: block;
+  margin-top: 5px;
+  color: var(--HuntingTower-green);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.HuntingTower__lead {
+  max-width: 760px;
+  margin: 18px 0 32px;
+  color: var(--HuntingTower-muted);
+  font-size: 14.5px;
+  line-height: 1.85;
+}
+
+/* ==============================
+   HERO IMAGE
+============================== */
+
+.HuntingTower__heroFigure {
+  position: relative;
+  margin: 0 0 38px;
+  overflow: hidden;
+  border-radius: var(--HuntingTower-radius);
+  background: #e6eee8;
+  box-shadow: 0 16px 38px -12px rgba(10, 45, 34, 0.15);
+}
+
+.HuntingTower__heroImage {
+  display: block;
+  width: 100%;
+  height: clamp(280px, 36vw, 490px);
+  object-fit: cover;
+  transition: transform 0.8s var(--HuntingTower-ease);
+}
+
+.HuntingTower__heroFigure:hover .HuntingTower__heroImage {
+  transform: scale(1.035);
+}
+
+.HuntingTower__heroCaption {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  max-width: calc(100% - 32px);
+  padding: 11px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 30px;
+  background: rgba(7, 35, 26, 0.86);
+  color: #fff;
+  font-size: 11.5px;
+  line-height: 1.6;
+  backdrop-filter: blur(12px);
+}
+
+.HuntingTower__heroCaptionDot {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #73e6a8;
+  box-shadow: 0 0 0 4px rgba(115, 230, 168, 0.2);
+}
+
+/* ==============================
+   FEATURE CARDS
+============================== */
+
+.HuntingTower__featureGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 38px;
+}
+
+.HuntingTower__specBox {
+  min-width: 0;
+  padding: 24px 19px;
+  border: 1px solid var(--HuntingTower-line);
+  border-radius: 13px;
+  background: var(--HuntingTower-soft);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.HuntingTower__specBox:hover {
+  transform: translateY(-4px);
+  border-color: #b7ddc5;
+  box-shadow: 0 12px 28px rgba(10, 45, 34, 0.07);
+}
+
+.HuntingTower__specNum {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--HuntingTower-green);
+  font-family: "Cinzel", serif;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.HuntingTower__specBox h3 {
+  margin: 0 0 9px;
+  color: var(--HuntingTower-forest);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.HuntingTower__specBox p {
+  margin: 0;
+  color: var(--HuntingTower-muted);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+/* ==============================
+   PACKAGES SECTION
+============================== */
+
+.HuntingTower__packageSection {
+  margin-bottom: 36px;
+}
+
+.HuntingTower__subHeader {
+  margin-bottom: 18px;
+}
+
+.HuntingTower__subHeader span {
+  color: var(--HuntingTower-green);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.HuntingTower__subHeader h2 {
+  margin: 6px 0 0;
+  color: var(--HuntingTower-forest);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 24px;
+}
+
+.HuntingTower__packageGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.HuntingTower__packageCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 22px 18px;
+  border: 1px solid var(--HuntingTower-line);
+  border-radius: 13px;
+  background: #fff;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.HuntingTower__packageCard:hover {
+  border-color: #a4d7b7;
+  box-shadow: 0 10px 24px rgba(10, 45, 34, 0.06);
+}
+
+.HuntingTower__packageTag {
+  display: inline-block;
+  align-self: flex-start;
+  margin-bottom: 10px;
+  padding: 3px 9px;
+  border-radius: 4px;
+  background: #e7f5ed;
+  color: var(--HuntingTower-green);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.HuntingTower__packageCard h3 {
+  margin: 0 0 8px;
+  color: var(--HuntingTower-forest);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.HuntingTower__packageRoute {
+  margin: 0 0 12px;
+  color: var(--HuntingTower-muted);
+  font-size: 11.5px;
+  line-height: 1.7;
+}
+
+.HuntingTower__packageMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px 0;
+  margin-bottom: 10px;
+  border-top: 1px dashed var(--HuntingTower-line);
+  border-bottom: 1px dashed var(--HuntingTower-line);
+  color: var(--HuntingTower-forest);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.HuntingTower__packageDesc {
+  margin: 0;
+  color: var(--HuntingTower-muted);
+  font-size: 11.5px;
+  line-height: 1.7;
+}
+
+/* ==============================
+   ACTION BANNER
+============================== */
+
+.HuntingTower__actionBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  margin-top: 20px;
+  padding: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--HuntingTower-radius);
+  background:
+    radial-gradient(
+      circle at 100% 0,
+      rgba(33, 181, 115, 0.17),
+      transparent 45%
+    ),
+    linear-gradient(135deg, #0e3d2e, #061c14);
+  color: #fff;
+}
+
+.HuntingTower__actionBanner h3 {
+  margin: 0 0 8px;
+  color: #fff;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 22px;
+  line-height: 1.4;
+}
+
+.HuntingTower__actionBanner p {
+  margin: 0;
+  color: #b7d6c6;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.HuntingTower__btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 13px 23px;
+  border: 1px solid transparent;
+  border-radius: 30px;
+  background: var(--HuntingTower-green);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.HuntingTower__btnPrimary:hover {
+  transform: translateY(-2px);
+  background: #1cb572;
+  box-shadow: 0 8px 22px rgba(21, 139, 88, 0.3);
+}
+
+/* ==============================
+   ACCORDION
+============================== */
+
+.HuntingTower__planAccordion {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.HuntingTower__planItem {
+  overflow: hidden;
+  border: 1px solid var(--HuntingTower-line);
+  border-radius: 12px;
+  background: #fff;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.HuntingTower__planItem.is-open {
+  border-color: #a4d7b7;
+  box-shadow: 0 8px 20px rgba(10, 45, 34, 0.06);
+}
+
+.HuntingTower__planTrigger {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 19px 21px;
+  border: 0;
+  background: #fff;
+  color: var(--HuntingTower-forest);
+  text-align: left;
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.7;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+
+.HuntingTower__planTrigger:hover {
+  background: #f8fbf9;
+}
+
+.HuntingTower__planToggle {
+  display: inline-flex;
+  width: 29px;
+  height: 29px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #edf7f0;
+  color: var(--HuntingTower-green);
+  font-size: 20px;
+  line-height: 1;
+}
+
+.HuntingTower__planAnswer {
+  margin: 0;
+  padding: 0 21px 21px;
+  color: var(--HuntingTower-muted);
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+/* ==============================
+   ROUTE / FIELD BOX
+============================== */
+
+.HuntingTower__routeBox {
+  padding: 27px;
+  border: 1px dashed #bddfcb;
+  border-radius: 14px;
+  background: var(--HuntingTower-soft);
+}
+
+.HuntingTower__routeBox h3 {
+  margin: 0 0 17px;
+  color: var(--HuntingTower-forest);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 21px;
+}
+
+.HuntingTower__routeBox ul {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  margin: 0;
+  padding-left: 19px;
+}
+
+.HuntingTower__routeBox li {
+  color: var(--HuntingTower-muted);
+  font-size: 12.5px;
+  line-height: 1.8;
+}
+
+.HuntingTower__routeBox li::marker {
+  color: var(--HuntingTower-green);
+}
+
+.HuntingTower__routeNote {
+  margin: 18px 0 0;
+  padding-top: 15px;
+  border-top: 1px solid var(--HuntingTower-line);
+  color: var(--HuntingTower-muted);
+  font-size: 11.5px;
+  line-height: 1.8;
+}
+
+/* ==============================
+   BOOKING FORM
+============================== */
+
+.HuntingTower__form {
+  padding: 30px;
+  border: 1px solid var(--HuntingTower-line);
+  border-radius: var(--HuntingTower-radius);
+  background: var(--HuntingTower-soft);
+}
+
+.HuntingTower__formHeading {
+  margin-bottom: 27px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--HuntingTower-line);
+}
+
+.HuntingTower__formHeading > span {
+  color: var(--HuntingTower-green);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.HuntingTower__formHeading h3 {
+  margin: 7px 0;
+  color: var(--HuntingTower-forest);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 24px;
+}
+
+.HuntingTower__formHeading p {
+  margin: 0;
+  color: var(--HuntingTower-muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.HuntingTower__formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 18px;
+}
+
+.HuntingTower__inputGroup {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 19px;
+}
+
+.HuntingTower__inputGroup--full {
+  grid-column: 1 / -1;
+}
+
+.HuntingTower__inputGroup label {
+  color: var(--HuntingTower-forest);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.HuntingTower__inputGroup input,
+.HuntingTower__inputGroup select,
+.HuntingTower__inputGroup textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 46px;
+  padding: 12px 14px;
+  border: 1px solid #d4e2d8;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--HuntingTower-ink);
+  font-size: 12px;
+  line-height: 1.6;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.HuntingTower__inputGroup input::placeholder,
+.HuntingTower__inputGroup textarea::placeholder {
+  color: #98a99e;
+}
+
+.HuntingTower__inputGroup input:focus,
+.HuntingTower__inputGroup select:focus,
+.HuntingTower__inputGroup textarea:focus {
+  border-color: var(--HuntingTower-green);
+  box-shadow: 0 0 0 3px rgba(21, 139, 88, 0.12);
+  outline: none;
+}
+
+.HuntingTower__inputGroup textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.HuntingTower__submitBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 49px;
+  padding: 14px 24px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--HuntingTower-green);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.HuntingTower__submitBtn:hover {
+  transform: translateY(-2px);
+  background: var(--HuntingTower-green-hover);
+  box-shadow: 0 10px 24px rgba(21, 139, 88, 0.22);
+}
+
+/* FORM SUCCESS */
+
+.HuntingTower__formSuccess {
+  padding: 45px 28px;
+  border: 1px solid #bce2cb;
+  border-radius: var(--HuntingTower-radius);
+  background: var(--HuntingTower-soft);
+  text-align: center;
+}
+
+.HuntingTower__checkIcon {
+  display: inline-flex;
+  width: 56px;
+  height: 56px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 17px;
+  border-radius: 50%;
+  background: var(--HuntingTower-green);
+  color: #fff;
+  font-size: 25px;
+}
+
+.HuntingTower__formSuccess h3 {
+  margin: 0 0 12px;
+  color: var(--HuntingTower-forest);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 24px;
+}
+
+.HuntingTower__formSuccess p {
+  margin: 0 0 23px;
+  color: var(--HuntingTower-muted);
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+/* ==============================
+   GALLERY
+============================== */
+
+.HuntingTower__galleryPageGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.HuntingTower__galleryPageCard {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  overflow: hidden;
+  aspect-ratio: 4 / 4.5;
+  border: 0;
+  border-radius: 12px;
+  background: #0d2a1f;
+  text-align: left;
+  cursor: pointer;
+  isolation: isolate;
+}
+
+.HuntingTower__galleryPageCard > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.65s var(--HuntingTower-ease);
+}
+
+.HuntingTower__galleryPageCard:hover > img {
+  transform: scale(1.08);
+}
+
+.HuntingTower__galleryCardOverlay {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 5px;
+  padding: 15px;
+  background: linear-gradient(
+    180deg,
+    transparent 20%,
+    rgba(6, 26, 19, 0.25) 48%,
+    rgba(6, 26, 19, 0.92) 100%
+  );
+  color: #fff;
+}
+
+.HuntingTower__galleryCardOverlay > span:first-child {
+  color: #79e3aa;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.HuntingTower__galleryCardTitle {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.HuntingTower__galleryLocation {
+  color: #d4e6dc;
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+/* ==============================
+   SIDEBAR BOXES
+============================== */
+
+.HuntingTower__sideBox {
+  min-width: 0;
+  padding: 27px 23px;
+  border: 1px solid var(--HuntingTower-line);
+  border-radius: var(--HuntingTower-radius);
+  background: #fff;
+  box-shadow: 0 6px 20px rgba(10, 45, 34, 0.035);
+}
+
+.HuntingTower__sideTitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 21px;
+}
+
+.HuntingTower__sideTitle > span {
+  width: 4px;
+  height: 26px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  background: var(--HuntingTower-green);
+}
+
+.HuntingTower__sideTitle h2 {
+  margin: 0;
+  color: var(--HuntingTower-forest);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* ==============================
+   SIDEBAR NAVIGATION
+============================== */
+
+.HuntingTower__serviceNav {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.HuntingTower__serviceNav button {
+  display: flex;
+  width: 100%;
+  min-height: 49px;
+  align-items: center;
+  gap: 13px;
+  padding: 13px 15px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: #f3f7f4;
+  color: #2b4035;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.6;
+  cursor: pointer;
+  transition:
+    background 0.25s var(--HuntingTower-ease),
+    color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.HuntingTower__navArrow {
+  flex-shrink: 0;
+  color: var(--HuntingTower-green);
+  font-size: 15px;
+  transition: transform 0.25s ease;
+}
+
+.HuntingTower__serviceNav button:hover {
+  transform: translateX(3px);
+  background: #e7f3ec;
+  color: var(--HuntingTower-forest);
+}
+
+.HuntingTower__serviceNav button.is-highlighted {
+  transform: translateX(3px);
+  border-color: var(--HuntingTower-green);
+  background: var(--HuntingTower-green);
+  color: #fff;
+  box-shadow: 0 8px 20px -4px rgba(21, 139, 88, 0.3);
+}
+
+.HuntingTower__serviceNav button.is-highlighted .HuntingTower__navArrow {
+  transform: translate(2px, -2px);
+  color: #fff;
+}
+
+/* ==============================
+   SUPPORT CARD
+============================== */
+
+.HuntingTower__supportCard {
+  position: relative;
+  overflow: hidden;
+  padding: 29px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--HuntingTower-radius);
+  background:
+    radial-gradient(
+      circle at 100% 0,
+      rgba(33, 181, 115, 0.22),
+      transparent 50%
+    ),
+    linear-gradient(155deg, #0d3829, #061c14);
+  color: #fff;
+  box-shadow: 0 16px 36px -10px rgba(6, 28, 20, 0.24);
+}
+
+.HuntingTower__supportIcon {
+  display: flex;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #79e3aa;
+}
+
+.HuntingTower__supportIcon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.HuntingTower__supportHeading {
+  margin-top: 20px;
+}
+
+.HuntingTower__supportHeading > span {
+  color: #79e3aa;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.HuntingTower__supportHeading h3 {
+  margin: 7px 0 0;
+  color: #fff;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 23px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.HuntingTower__supportCard > p {
+  margin: 13px 0 0;
+  color: #b9d5c6;
+  font-size: 11.5px;
+  line-height: 1.9;
+}
+
+.HuntingTower__supportLink {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 22px;
+  padding: 16px 0 0;
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  background: none;
+  color: #79e3aa;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.HuntingTower__supportLink:hover {
+  color: #fff;
+}
+
+/* ==============================
+   QUICK LINKS
+============================== */
+
+.HuntingTower__downloadGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.HuntingTower__downloadGrid button {
+  display: flex;
+  min-width: 0;
+  min-height: 132px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 13px 11px;
+  border: 1px solid var(--HuntingTower-line);
+  border-radius: 11px;
+  background: var(--HuntingTower-soft);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform 0.25s var(--HuntingTower-ease),
+    border-color 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.HuntingTower__downloadGrid button.is-active-btn {
+  border-color: var(--HuntingTower-green);
+  background: #eef8f2;
+}
+
+.HuntingTower__downloadGrid button:hover {
+  transform: translateY(-3px);
+  border-color: #a4d8b6;
+  background: #fff;
+  box-shadow: 0 8px 20px rgba(21, 139, 88, 0.08);
+}
+
+.HuntingTower__downloadIcon {
+  display: flex;
+  width: 32px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  border: 1px solid #c2e4ce;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--HuntingTower-green);
+  font-family: "Cinzel", serif;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.HuntingTower__downloadGrid strong {
+  color: var(--HuntingTower-forest);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.HuntingTower__downloadGrid small {
+  margin-top: 5px;
+  color: var(--HuntingTower-muted);
+  font-size: 9px;
+  line-height: 1.6;
+}
+
+/* ==============================
+   CONTACT INFORMATION
+============================== */
+
+.HuntingTower__contactInfo {
+  display: grid;
+  grid-template-columns: 27px minmax(0, 1fr);
+  align-items: start;
+  gap: 11px;
+  margin-top: 21px;
+}
+
+.HuntingTower__contactInfo:first-of-type {
+  margin-top: 0;
+}
+
+.HuntingTower__contactInfoIcon {
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+.HuntingTower__contactInfo strong {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--HuntingTower-forest);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.HuntingTower__contactInfo p,
+.HuntingTower__contactInfo a {
+  display: inline-block;
+  margin: 0;
+  color: var(--HuntingTower-muted);
+  font-size: 11px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.HuntingTower__contactInfo a {
+  color: var(--HuntingTower-green);
+  text-decoration: none;
+}
+
+.HuntingTower__contactInfo a:hover {
+  text-decoration: underline;
+}
+
+/* ==============================
+   LIGHTBOX
+============================== */
+
+.HuntingTower__lightbox {
+  position: fixed;
+  z-index: 999999;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 25px 18px;
+  background: rgba(3, 18, 12, 0.94);
+  backdrop-filter: blur(14px);
+}
+
+.HuntingTower__lightboxBox {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  max-height: 95vh;
+  overflow: auto;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  background: #082218;
+  scrollbar-width: thin;
+}
+
+.HuntingTower__lightboxClose {
+  position: absolute;
+  z-index: 2;
+  top: 14px;
+  right: 14px;
+  display: flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.HuntingTower__lightboxClose:hover {
+  transform: rotate(90deg);
+  background: var(--HuntingTower-green);
+}
+
+.HuntingTower__lightboxBox > img {
+  display: block;
+  width: 100%;
+  max-height: 65vh;
+  object-fit: contain;
+  background: #020e09;
+}
+
+.HuntingTower__lightboxCaption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 20px 25px;
+  color: #fff;
+}
+
+.HuntingTower__lightboxCaption > div > span {
+  color: #79e3aa;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.HuntingTower__lightboxCaption h3 {
+  margin: 5px 0;
+  color: #fff;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 22px;
+  line-height: 1.4;
+}
+
+.HuntingTower__lightboxCaption small {
+  color: #c9e3d4;
+  font-size: 11px;
+}
+
+.HuntingTower__lightboxCount {
+  flex-shrink: 0;
+  color: #79e3aa;
+  font-family: "Cinzel", serif;
+  font-size: 13px;
+}
+
+.HuntingTower__lightboxControls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 0 25px 20px;
+}
+
+.HuntingTower__lightboxControls button {
+  padding: 10px 15px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.07);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.HuntingTower__lightboxControls button:hover {
+  border-color: #79e3aa;
+  background: rgba(21, 139, 88, 0.4);
+}
+
+/* ==============================
+   TABLET RESPONSIVE
+============================== */
+
+@media (max-width: 1100px) {
+  .HuntingTower__layout {
+    grid-template-columns: minmax(0, 1.6fr) minmax(270px, 0.9fr);
+  }
+
+  .HuntingTower__main {
+    padding: 48px 28px 65px;
+  }
+
+  .HuntingTower__sidebar {
+    gap: 20px;
+    padding: 48px 20px 65px;
+  }
+
+  .HuntingTower__featureGrid,
+  .HuntingTower__packageGrid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .HuntingTower__specBox {
+    padding: 21px;
+  }
+
+  .HuntingTower__galleryPageGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .HuntingTower__actionBanner {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 26px;
+  }
+}
+
+/* ==============================
+   SMALL TABLET RESPONSIVE
+============================== */
+
+@media (max-width: 860px) {
+  .HuntingTower__layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .HuntingTower__main {
+    padding: 45px 30px 55px;
+  }
+
+  .HuntingTower__sidebar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 20px;
+    padding: 35px 30px 45px;
+    border-top: 1px solid var(--HuntingTower-line);
+    border-left: 0;
+  }
+
+  .HuntingTower__sideBox {
+    padding: 24px 20px;
+  }
+
+  .HuntingTower__featureGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .HuntingTower__packageGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .HuntingTower__specBox {
+    padding: 18px 14px;
+  }
+
+  .HuntingTower__specBox h3 {
+    font-size: 13px;
+  }
+
+  .HuntingTower__specBox p {
+    font-size: 11px;
+  }
+
+  .HuntingTower__actionBanner {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .HuntingTower__formGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .HuntingTower__galleryPageGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* ==============================
+   MOBILE RESPONSIVE
+============================== */
+
+@media (max-width: 600px) {
+  .HuntingTower__main {
+    padding: 35px 17px 42px;
+  }
+
+  .HuntingTower__sidebar {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 17px;
+    padding: 28px 17px 38px;
+  }
+
+  .HuntingTower__pageTitle {
+    font-size: clamp(28px, 8vw, 38px);
+    letter-spacing: -0.5px;
+  }
+
+  .HuntingTower__eyebrow {
+    gap: 9px;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+  }
+
+  .HuntingTower__eyebrowLine {
+    width: 20px;
+  }
+
+  .HuntingTower__lead {
+    margin: 15px 0 25px;
+    font-size: 12.5px;
+    line-height: 1.8;
+  }
+
+  .HuntingTower__heroImage {
+    height: 260px;
+  }
+
+  .HuntingTower__heroCaption {
+    right: 10px;
+    bottom: 10px;
+    padding: 8px 12px;
+    font-size: 9.5px;
+  }
+
+  .HuntingTower__featureGrid,
+  .HuntingTower__packageGrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .HuntingTower__specBox {
+    padding: 20px;
+  }
+
+  .HuntingTower__actionBanner {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 18px;
+    padding: 22px 18px;
+  }
+
+  .HuntingTower__actionBanner h3 {
+    font-size: 20px;
+  }
+
+  .HuntingTower__btnPrimary {
+    width: 100%;
+    white-space: normal;
+  }
+
+  .HuntingTower__planTrigger {
+    gap: 12px;
+    padding: 16px;
+    font-size: 12.5px;
+  }
+
+  .HuntingTower__planAnswer {
+    padding: 0 16px 17px;
+    font-size: 12px;
+  }
+
+  .HuntingTower__routeBox {
+    padding: 22px 18px;
+  }
+
+  .HuntingTower__form {
+    padding: 21px 16px;
+  }
+
+  .HuntingTower__formGrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .HuntingTower__galleryPageGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+}
+
+/* ==============================
+   REDUCED MOTION
+============================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .HuntingTower *,
+  .HuntingTower *::before,
+  .HuntingTower *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
