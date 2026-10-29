@@ -7,6 +7,103 @@ import deerImgFour from "../../assets/deer-4.png";
 import deerImgFive from "../../assets/deer-5.png";
 import deerImgSix from "../../assets/deer-6.png";
 
+// ============================================
+// WHATSAPP SETTINGS
+// ============================================
+
+const WHATSAPP_NUMBER = "918328982394"; // country code + number, digits only
+const WHATSAPP_DISPLAY = "+91 83289 82394";
+const GENERAL_MESSAGE =
+  "Hello Bhitarakanika Boat Service! I would like to know about spotted deer safari availability and today's tide timings.";
+
+const whatsappLink = (message) =>
+  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+
+// ============================================
+// SMALL HELPERS
+// ============================================
+
+const todayISO = () => {
+  const d = new Date();
+  const p = (n) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+};
+
+const formatDate = (iso) => {
+  if (!iso) return "Not selected";
+  const [y, m, d] = iso.split("-").map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+};
+
+const ICONS = {
+  pin: (
+    <>
+      <path d="M12 21s7-6.2 7-11.5a7 7 0 1 0-14 0C5 14.8 12 21 12 21z" />
+      <circle cx="12" cy="9.5" r="2.5" />
+    </>
+  ),
+  mail: (
+    <>
+      <rect x="3" y="5" width="18" height="14" rx="2.5" />
+      <path d="m4 7 8 6 8-6" />
+    </>
+  ),
+  clock: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 2" />
+    </>
+  ),
+  users: (
+    <>
+      <circle cx="9" cy="8" r="3.2" />
+      <path d="M3 20a6 6 0 0 1 12 0" />
+      <circle cx="17" cy="9" r="2.5" />
+      <path d="M17 14.5a5 5 0 0 1 4 5.5" />
+    </>
+  ),
+};
+
+const Icon = ({ name }) => (
+  <svg
+    className="Deer__icon"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.7"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    {ICONS[name]}
+  </svg>
+);
+
+const WaIcon = () => (
+  <svg className="Deer__waIcon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M20.52 3.48A11.86 11.86 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.9c0 2.1.55 4.14 1.6 5.95L0 24l6.3-1.65a11.9 11.9 0 0 0 5.74 1.46h.01c6.55 0 11.9-5.34 11.9-11.9 0-3.18-1.24-6.17-3.43-8.43zM12.05 21.8h-.01a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.87 9.87 0 0 1-1.52-5.27c0-5.46 4.44-9.9 9.91-9.9 2.64 0 5.13 1.03 7 2.9a9.84 9.84 0 0 1 2.9 7c0 5.46-4.45 9.9-9.9 9.9zm5.43-7.42c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.14-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z" />
+  </svg>
+);
+
+const WhatsAppLink = ({ message = GENERAL_MESSAGE, className, children }) => (
+  <a
+    className={className}
+    href={whatsappLink(message)}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    {children}
+  </a>
+);
+
+// ============================================
+// DATA
+// ============================================
+
 const galleryImages = [
   {
     src: deerImgOne,
@@ -53,6 +150,33 @@ const navTabs = [
   { id: "deer-gallery", label: "Spotted Deer Gallery" },
 ];
 
+const heroStats = [
+  { value: "Axis axis", label: "Spotted deer (Chital)" },
+  { value: "6:30 – 9:30", label: "Best morning window" },
+  { value: "Oct – Mar", label: "Best safari season" },
+  { value: "3.5 – 4 hrs", label: "Standard safari" },
+];
+
+const GATE_OPTIONS = [
+  "Khola Gate (Direct to Dangmal Deer Glades)",
+  "Gupti Gate (Estuary & Coastal Islands)",
+  "Chandbali Ghat (River Approach)",
+];
+
+const GUEST_OPTIONS = [
+  "1–4 Persons (Private Small Boat)",
+  "5–8 Persons (Standard Safari Vessel)",
+  "9–14 Persons (Large Group Cruiser)",
+  "15+ Persons (Corporate / School Tour)",
+];
+
+const SERVICE_OPTIONS = [
+  "Morning Wildlife & Deer Safari (4 hrs) — Peak Activity Window",
+  "Afternoon Glade Safari (3 hrs)",
+  "Full Day Wildlife & Canopy Skywalk Combo (6 hrs)",
+  "Wildlife Photography Low-Speed Private Charter",
+];
+
 const safariPackages = [
   {
     tag: "MOST POPULAR",
@@ -62,6 +186,8 @@ const safariPackages = [
     highlights:
       "Large herds of Spotted Deer (Chital) grazing in natural forest glades, water monitors, and estuarine creek cruising.",
     capacity: "Authorized Motor Cruisers (Up to 8 / 14 / 20 Seats)",
+    gate: GATE_OPTIONS[0],
+    service: SERVICE_OPTIONS[0],
   },
   {
     tag: "HERBIVORE TRAIL",
@@ -71,6 +197,8 @@ const safariPackages = [
     highlights:
       "Guided walk along the elevated wooden trail through dense mangroves into open pastures where spotted deer congregate.",
     capacity: "Eco-Boat Transfer + Certified Forest Naturalist",
+    gate: GATE_OPTIONS[0],
+    service: SERVICE_OPTIONS[2],
   },
   {
     tag: "FULL SANCTUARY TRAIL",
@@ -80,6 +208,8 @@ const safariPackages = [
     highlights:
       "Tracking coastal herds of spotted deer, wild boars, Brahminy kites, and coastal mangrove ecology.",
     capacity: "High-Stability Safari Cruiser (Up to 10–12 Guests)",
+    gate: GATE_OPTIONS[1],
+    service: SERVICE_OPTIONS[2],
   },
 ];
 
@@ -106,43 +236,93 @@ const deerFAQs = [
   },
 ];
 
+const INITIAL_FORM = {
+  name: "",
+  email: "",
+  phone: "",
+  travelDate: "",
+  entryGate: GATE_OPTIONS[0],
+  guests: GUEST_OPTIONS[0],
+  service: SERVICE_OPTIONS[0],
+  notes: "",
+};
+
+const buildBookingMessage = (d) =>
+  [
+    "Hello Bhitarakanika Boat Service! I would like to book a spotted deer safari.",
+    "",
+    `Name: ${d.name}`,
+    `Mobile: ${d.phone}`,
+    `Email: ${d.email}`,
+    `Safari date: ${formatDate(d.travelDate)}`,
+    `Service: ${d.service}`,
+    `Departure jetty: ${d.entryGate}`,
+    `Passengers: ${d.guests}`,
+    d.notes ? `Notes: ${d.notes}` : null,
+  ]
+    .filter((line) => line !== null)
+    .join("\n");
+
+// ============================================
+// COMPONENT
+// ============================================
+
 const Deer = () => {
   const [activeTab, setActiveTab] = useState("deer-safari");
   const [activeImage, setActiveImage] = useState(null);
   const [faqIndex, setFaqIndex] = useState(0);
-  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [form, setForm] = useState(INITIAL_FORM);
+  const [submitted, setSubmitted] = useState(null); // holds the sent form data
 
-  const handleTabChange = (tabId) => {
-    setActiveTab(tabId);
-
-    if (tabId === "ecology-guide") {
-      setFaqIndex(0);
-    }
-
-    if (tabId === "book-safari") {
-      setFormSubmitted(false);
-    }
-
+  const scrollToTop = () => {
     document.getElementById("spotted-deer")?.scrollIntoView({
       behavior: "smooth",
       block: "start",
     });
   };
 
+  const handleTabChange = (tabId) => {
+    setActiveTab(tabId);
+    if (tabId === "ecology-guide") setFaqIndex(0);
+    if (tabId === "book-safari") setSubmitted(null);
+    scrollToTop();
+  };
+
+  // "Book" button on a package card: open the form with that package filled in
+  const handleBookPackage = (pkg) => {
+    setForm((prev) => ({ ...prev, entryGate: pkg.gate, service: pkg.service }));
+    handleTabChange("book-safari");
+  };
+
+  const updateField = (event) => {
+    const { name, value } = event.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // TODO: also send `form` to your backend / email service here.
+    setSubmitted({ ...form });
+    scrollToTop();
+  };
+
+  const handleNewRequest = () => {
+    setForm(INITIAL_FORM);
+    setSubmitted(null);
+  };
+
+  // Lightbox: keyboard + scroll lock
   useEffect(() => {
     if (activeImage === null) return undefined;
 
     const handleKeyDown = (event) => {
-      if (event.key === "Escape") {
-        setActiveImage(null);
-      }
+      if (event.key === "Escape") setActiveImage(null);
       if (event.key === "ArrowRight") {
         setActiveImage((current) => (current + 1) % galleryImages.length);
       }
       if (event.key === "ArrowLeft") {
         setActiveImage(
-          (current) =>
-            (current - 1 + galleryImages.length) % galleryImages.length
+          (current) => (current - 1 + galleryImages.length) % galleryImages.length
         );
       }
     };
@@ -170,14 +350,16 @@ const Deer = () => {
               </div>
 
               <h1 className="Deer__pageTitle">
-                Spotted Deer of Bhitarkanika <span>In Coastal Forest Glades.</span>
+                Spotted Deer of Bhitarkanika{" "}
+                <span>In Coastal Forest Glades.</span>
               </h1>
 
               <p className="Deer__lead">
-                Traverse tidal riverways aboard authorized motor cruisers by Bhitarakanika
-                Boat Service to explore the grassy savannahs and elevated forest islands of
-                Dangmal. Witness hundreds of graceful Spotted Deer (Chital) browsing peacefully
-                along mangrove fringes alongside wild boars, monitor lizards, and delta birdlife.
+                Traverse tidal riverways aboard authorized motor cruisers by
+                Bhitarakanika Boat Service to explore the grassy savannahs and
+                elevated forest islands of Dangmal. Witness hundreds of graceful
+                Spotted Deer (Chital) browsing peacefully along mangrove fringes
+                alongside wild boars, monitor lizards, and delta birdlife.
               </p>
 
               <figure className="Deer__heroFigure">
@@ -187,13 +369,27 @@ const Deer = () => {
                   alt="Herd of spotted deer grazing in the open glades of Bhitarkanika National Park"
                 />
 
+                <span className="Deer__heroChip">
+                  <Icon name="pin" /> Khola · Gupti · Chandbali
+                </span>
+
                 <figcaption className="Deer__heroCaption">
                   <span className="Deer__heroCaptionDot" />
                   <span>
-                    Bhitarakanika Boat Service • Forest Wildlife Safaris & Eco-Guided Trails
+                    Bhitarakanika Boat Service • Forest Wildlife Safaris &
+                    Eco-Guided Trails
                   </span>
                 </figcaption>
               </figure>
+
+              <div className="Deer__stats">
+                {heroStats.map((stat) => (
+                  <div key={stat.label} className="Deer__stat">
+                    <strong>{stat.value}</strong>
+                    <span>{stat.label}</span>
+                  </div>
+                ))}
+              </div>
 
               {/* HIGHLIGHT PILLARS */}
               <div className="Deer__featureGrid">
@@ -201,8 +397,8 @@ const Deer = () => {
                   <span className="Deer__specNum">01</span>
                   <h3>Abundant Wild Herds</h3>
                   <p>
-                    Home to thousands of Axis deer freely roaming natural open meadows,
-                    feeding grounds, and forest buffer zones.
+                    Home to thousands of Axis deer freely roaming natural open
+                    meadows, feeding grounds, and forest buffer zones.
                   </p>
                 </div>
 
@@ -210,8 +406,8 @@ const Deer = () => {
                   <span className="Deer__specNum">02</span>
                   <h3>Dawn & Dusk Glades</h3>
                   <p>
-                    Departures synchronized with prime grazing hours when stags with majestic
-                    antlers lead herds into open sunlight.
+                    Departures synchronized with prime grazing hours when stags
+                    with majestic antlers lead herds into open sunlight.
                   </p>
                 </div>
 
@@ -219,8 +415,8 @@ const Deer = () => {
                   <span className="Deer__specNum">03</span>
                   <h3>Safe Forest Trails</h3>
                   <p>
-                    Combine river cruising with elevated wooden boardwalk walks around Dangmal
-                    for close wildlife observation.
+                    Combine river cruising with elevated wooden boardwalk walks
+                    around Dangmal for close wildlife observation.
                   </p>
                 </div>
               </div>
@@ -240,13 +436,34 @@ const Deer = () => {
                       <p className="Deer__packageRoute">
                         <strong>Route:</strong> {pkg.route}
                       </p>
+
                       <div className="Deer__packageMeta">
-                        <span>⏱ {pkg.duration}</span>
-                        <span>👥 {pkg.capacity}</span>
+                        <span>
+                          <Icon name="clock" /> {pkg.duration}
+                        </span>
+                        <span>
+                          <Icon name="users" /> {pkg.capacity}
+                        </span>
                       </div>
-                      <p className="Deer__packageDesc">
-                        {pkg.highlights}
-                      </p>
+
+                      <p className="Deer__packageDesc">{pkg.highlights}</p>
+
+                      <div className="Deer__packageActions">
+                        <button
+                          type="button"
+                          className="Deer__pkgBtn"
+                          onClick={() => handleBookPackage(pkg)}
+                        >
+                          Book This Safari ↗
+                        </button>
+
+                        <WhatsAppLink
+                          className="Deer__pkgBtn Deer__pkgBtn--wa"
+                          message={`Hello Bhitarakanika Boat Service! I'm interested in the "${pkg.title}". Please share availability and pricing.`}
+                        >
+                          <WaIcon /> Ask on WhatsApp
+                        </WhatsAppLink>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -256,18 +473,24 @@ const Deer = () => {
                 <div>
                   <h3>Ready to Spot Herds of Chital with Bhitarakanika Boat Service?</h3>
                   <p>
-                    Reserve private or shared safari boats with forest permits and certified
-                    naturalists for seamless wildlife exploration in Bhitarkanika.
+                    Reserve private or shared safari boats with forest permits
+                    and certified naturalists for seamless wildlife exploration
+                    in Bhitarkanika.
                   </p>
                 </div>
 
-                <button
-                  type="button"
-                  className="Deer__btnPrimary"
-                  onClick={() => handleTabChange("book-safari")}
-                >
-                  Reserve Safari Boat ↗
-                </button>
+                <div className="Deer__bannerActions">
+                  <button
+                    type="button"
+                    className="Deer__btnPrimary"
+                    onClick={() => handleTabChange("book-safari")}
+                  >
+                    Reserve Safari Boat ↗
+                  </button>
+                  <WhatsAppLink className="Deer__btnWhatsApp">
+                    <WaIcon /> Chat on WhatsApp
+                  </WhatsAppLink>
+                </div>
               </div>
             </div>
           )}
@@ -285,8 +508,9 @@ const Deer = () => {
               </h1>
 
               <p className="Deer__lead">
-                Learn about the unique adaptation of Chital to the estuarine ecosystem of
-                Bhitarkanika, optimal viewing sectors, and forest sanctuary conduct.
+                Learn about the unique adaptation of Chital to the estuarine
+                ecosystem of Bhitarkanika, optimal viewing sectors, and forest
+                sanctuary conduct.
               </p>
 
               <div className="Deer__planAccordion">
@@ -296,9 +520,7 @@ const Deer = () => {
                   return (
                     <div
                       key={item.q}
-                      className={`Deer__planItem ${
-                        isOpen ? "is-open" : ""
-                      }`}
+                      className={`Deer__planItem ${isOpen ? "is-open" : ""}`}
                     >
                       <button
                         type="button"
@@ -306,18 +528,16 @@ const Deer = () => {
                         className="Deer__planTrigger"
                         onClick={() => setFaqIndex(isOpen ? -1 : index)}
                       >
-                        <span>
-                          {String(index + 1).padStart(2, "0")}. {item.q}
+                        <span className="Deer__planIndex">
+                          {String(index + 1).padStart(2, "0")}
                         </span>
-
+                        <span className="Deer__planQuestion">{item.q}</span>
                         <span className="Deer__planToggle">
                           {isOpen ? "−" : "+"}
                         </span>
                       </button>
 
-                      {isOpen && (
-                        <p className="Deer__planAnswer">{item.a}</p>
-                      )}
+                      {isOpen && <p className="Deer__planAnswer">{item.a}</p>}
                     </div>
                   );
                 })}
@@ -328,27 +548,31 @@ const Deer = () => {
 
                 <ul>
                   <li>
-                    <strong>Dangmal Forest Clearing:</strong> A large natural grassland opening
-                    behind the forest campus where herds emerge by late afternoon to graze and
-                    hydrate at freshwater ponds.
+                    <strong>Dangmal Forest Clearing:</strong> A large natural
+                    grassland opening behind the forest campus where herds
+                    emerge by late afternoon to graze and hydrate at freshwater
+                    ponds.
                   </li>
 
                   <li>
-                    <strong>Skywalk Trail Perimeters:</strong> Walking along the elevated
-                    canopy boardwalk offers an aerial vantage point to watch deer navigating
-                    through mangrove roots and shrub clearings undisturbed.
+                    <strong>Skywalk Trail Perimeters:</strong> Walking along the
+                    elevated canopy boardwalk offers an aerial vantage point to
+                    watch deer navigating through mangrove roots and shrub
+                    clearings undisturbed.
                   </li>
 
                   <li>
-                    <strong>Suajore Creek Banks:</strong> Deer frequently visit muddy creek edges
-                    during low tide to lick mineral-rich soil and browse lower foliage.
+                    <strong>Suajore Creek Banks:</strong> Deer frequently visit
+                    muddy creek edges during low tide to lick mineral-rich soil
+                    and browse lower foliage.
                   </li>
                 </ul>
 
                 <p className="Deer__routeNote">
-                  <strong>Wildlife Sanctuary Advisory:</strong> Feeding, whistling, approaching,
-                  or disturbing deer herds is strictly prohibited under Forest Department laws.
-                  Always maintain silence on walking trails and viewing platforms.
+                  <strong>Wildlife Sanctuary Advisory:</strong> Feeding,
+                  whistling, approaching, or disturbing deer herds is strictly
+                  prohibited under Forest Department laws. Always maintain
+                  silence on walking trails and viewing platforms.
                 </p>
               </div>
 
@@ -356,18 +580,27 @@ const Deer = () => {
                 <div>
                   <h3>Planning a Group or Family Wildlife Tour?</h3>
                   <p>
-                    Connect with our jetty operations desk at Bhitarakanika Boat Service for
-                    custom multi-hour itineraries, boat sizing, and eco-guide support.
+                    Connect with our jetty operations desk at Bhitarakanika Boat
+                    Service for custom multi-hour itineraries, boat sizing, and
+                    eco-guide support.
                   </p>
                 </div>
 
-                <button
-                  type="button"
-                  className="Deer__btnPrimary"
-                  onClick={() => handleTabChange("book-safari")}
-                >
-                  Send Travel Inquiry ↗
-                </button>
+                <div className="Deer__bannerActions">
+                  <button
+                    type="button"
+                    className="Deer__btnPrimary"
+                    onClick={() => handleTabChange("book-safari")}
+                  >
+                    Send Travel Inquiry ↗
+                  </button>
+                  <WhatsAppLink
+                    className="Deer__btnWhatsApp"
+                    message="Hello Bhitarakanika Boat Service! I have a question about group size and deer safari timing."
+                  >
+                    <WaIcon /> Chat on WhatsApp
+                  </WhatsAppLink>
+                </div>
               </div>
             </div>
           )}
@@ -385,44 +618,68 @@ const Deer = () => {
               </h1>
 
               <p className="Deer__lead">
-                Submit your travel schedule and passenger details. Bhitarakanika Boat
-                Service will verify vessel availability, handle Forest Department entry
-                permits, and assign an eco-guide for your tour.
+                Submit your travel schedule and passenger details. Bhitarakanika
+                Boat Service will verify vessel availability, handle Forest
+                Department entry permits, assign an eco-guide, and confirm your
+                tour on WhatsApp.
               </p>
 
-              {formSubmitted ? (
+              {submitted ? (
                 <div className="Deer__formSuccess">
                   <span className="Deer__checkIcon">✓</span>
 
-                  <h3>Safari Inquiry Received!</h3>
+                  <h3>One last step, {submitted.name.split(" ")[0]}!</h3>
 
                   <p>
-                    Your request has been logged successfully with Bhitarakanika Boat Service.
-                    Our desk will review vessel slots, organize required clearances, and
-                    contact you with timing and pricing details.
+                    Your safari request is ready. Send it to Bhitarakanika Boat
+                    Service on WhatsApp so we can confirm vessel slots, timings
+                    and permit help for your date.
                   </p>
 
-                  <button
-                    type="button"
-                    className="Deer__btnPrimary"
-                    onClick={() => setFormSubmitted(false)}
-                  >
-                    Submit Another Booking Request
-                  </button>
+                  <dl className="Deer__summary">
+                    <div>
+                      <dt>Safari date</dt>
+                      <dd>{formatDate(submitted.travelDate)}</dd>
+                    </div>
+                    <div>
+                      <dt>Departure jetty</dt>
+                      <dd>{submitted.entryGate}</dd>
+                    </div>
+                    <div>
+                      <dt>Passengers</dt>
+                      <dd>{submitted.guests}</dd>
+                    </div>
+                    <div>
+                      <dt>Service</dt>
+                      <dd>{submitted.service}</dd>
+                    </div>
+                  </dl>
+
+                  <div className="Deer__successActions">
+                    <WhatsAppLink
+                      className="Deer__btnWhatsApp Deer__btnWhatsApp--large"
+                      message={buildBookingMessage(submitted)}
+                    >
+                      <WaIcon /> Send Request on WhatsApp
+                    </WhatsAppLink>
+
+                    <button
+                      type="button"
+                      className="Deer__btnGhost"
+                      onClick={handleNewRequest}
+                    >
+                      New Booking Request
+                    </button>
+                  </div>
                 </div>
               ) : (
-                <form
-                  className="Deer__form"
-                  onSubmit={(event) => {
-                    event.preventDefault();
-                    setFormSubmitted(true);
-                  }}
-                >
+                <form className="Deer__form" onSubmit={handleSubmit}>
                   <div className="Deer__formHeading">
                     <span>BHITARAKANIKA BOAT SERVICE</span>
                     <h3>Wildlife & Deer Safari Booking Form</h3>
                     <p>
-                      Mandatory fields for Forest Department passenger permits (*).
+                      Fields marked * are needed for Forest Department passenger
+                      permits.
                     </p>
                   </div>
 
@@ -435,6 +692,8 @@ const Deer = () => {
                         type="text"
                         placeholder="e.g. Debashis Mohapatra"
                         autoComplete="name"
+                        value={form.name}
+                        onChange={updateField}
                         required
                       />
                     </div>
@@ -447,6 +706,8 @@ const Deer = () => {
                         type="email"
                         placeholder="debashis@example.com"
                         autoComplete="email"
+                        value={form.email}
+                        onChange={updateField}
                         required
                       />
                     </div>
@@ -457,8 +718,13 @@ const Deer = () => {
                         id="Deer-phone"
                         name="phone"
                         type="tel"
+                        inputMode="tel"
                         placeholder="+91 94370 XXXXX"
                         autoComplete="tel"
+                        pattern="[0-9+ ]{10,15}"
+                        title="Enter a valid mobile number (10 to 15 digits)"
+                        value={form.phone}
+                        onChange={updateField}
                         required
                       />
                     </div>
@@ -469,7 +735,9 @@ const Deer = () => {
                         id="Deer-date"
                         name="travelDate"
                         type="date"
-                        min={new Date().toISOString().split("T")[0]}
+                        min={todayISO()}
+                        value={form.travelDate}
+                        onChange={updateField}
                         required
                       />
                     </div>
@@ -479,17 +747,14 @@ const Deer = () => {
                       <select
                         id="Deer-entryGate"
                         name="entryGate"
-                        defaultValue="Khola Gate (Direct to Dangmal Deer Glades)"
+                        value={form.entryGate}
+                        onChange={updateField}
                       >
-                        <option value="Khola Gate (Direct to Dangmal Deer Glades)">
-                          Khola Gate (Direct to Dangmal Deer Glades)
-                        </option>
-                        <option value="Gupti Gate (Estuary & Coastal Islands)">
-                          Gupti Gate (Estuary & Coastal Islands)
-                        </option>
-                        <option value="Chandbali Ghat (River Approach)">
-                          Chandbali Ghat (River Approach)
-                        </option>
+                        {GATE_OPTIONS.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
                       </select>
                     </div>
 
@@ -498,20 +763,14 @@ const Deer = () => {
                       <select
                         id="Deer-guests"
                         name="guests"
-                        defaultValue="1–4 Persons (Private Small Boat)"
+                        value={form.guests}
+                        onChange={updateField}
                       >
-                        <option value="1–4 Persons (Private Small Boat)">
-                          1–4 Persons (Private Small Boat)
-                        </option>
-                        <option value="5–8 Persons (Standard Safari Vessel)">
-                          5–8 Persons (Standard Safari Vessel)
-                        </option>
-                        <option value="9–14 Persons (Large Group Cruiser)">
-                          9–14 Persons (Large Group Cruiser)
-                        </option>
-                        <option value="15+ Persons (Corporate / School Tour)">
-                          15+ Persons (Corporate / School Tour)
-                        </option>
+                        {GUEST_OPTIONS.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
                       </select>
                     </div>
 
@@ -520,38 +779,34 @@ const Deer = () => {
                       <select
                         id="Deer-service"
                         name="service"
-                        defaultValue="Morning Wildlife & Deer Safari (4 hrs) — Peak Activity Window"
+                        value={form.service}
+                        onChange={updateField}
                       >
-                        <option value="Morning Wildlife & Deer Safari (4 hrs) — Peak Activity Window">
-                          Morning Wildlife & Deer Safari (4 hrs) — Peak Activity Window
-                        </option>
-                        <option value="Afternoon Glade Safari (3 hrs)">
-                          Afternoon Glade Safari (3 hrs)
-                        </option>
-                        <option value="Full Day Wildlife & Canopy Skywalk Combo (6 hrs)">
-                          Full Day Wildlife & Canopy Skywalk Combo (6 hrs)
-                        </option>
-                        <option value="Wildlife Photography Low-Speed Private Charter">
-                          Wildlife Photography Low-Speed Private Charter
-                        </option>
+                        {SERVICE_OPTIONS.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
                       </select>
+                    </div>
+
+                    <div className="Deer__inputGroup Deer__inputGroup--full">
+                      <label htmlFor="Deer-notes">
+                        Special Requirements / Pick-up Details
+                      </label>
+                      <textarea
+                        id="Deer-notes"
+                        name="notes"
+                        rows="4"
+                        placeholder="Let Bhitarakanika Boat Service know if you need forest cottage arrangements, dedicated nature guide, binoculars, or senior citizen assistance..."
+                        value={form.notes}
+                        onChange={updateField}
+                      />
                     </div>
                   </div>
 
-                  <div className="Deer__inputGroup">
-                    <label htmlFor="Deer-notes">
-                      Special Requirements / Pick-up Details
-                    </label>
-                    <textarea
-                      id="Deer-notes"
-                      name="notes"
-                      rows="4"
-                      placeholder="Let Bhitarakanika Boat Service know if you need forest cottage arrangements, dedicated nature guide, binoculars, or senior citizen assistance..."
-                    />
-                  </div>
-
                   <button type="submit" className="Deer__submitBtn">
-                    Submit Safari Booking Request ↗
+                    Continue to Confirm on WhatsApp ↗
                   </button>
                 </form>
               )}
@@ -571,9 +826,9 @@ const Deer = () => {
               </h1>
 
               <p className="Deer__lead">
-                Browse photographs captured during wildlife safaris across the forest
-                clearings and mangrove edges of Bhitarkanika. Click any image to view
-                details in full screen.
+                Browse photographs captured during wildlife safaris across the
+                forest clearings and mangrove edges of Bhitarkanika. Tap any
+                image to view it full screen with location details.
               </p>
 
               <div className="Deer__galleryPageGrid">
@@ -589,11 +844,9 @@ const Deer = () => {
 
                     <span className="Deer__galleryCardOverlay">
                       <span>{img.category}</span>
-                      <span className="Deer__galleryCardTitle">
-                        {img.title}
-                      </span>
+                      <span className="Deer__galleryCardTitle">{img.title}</span>
                       <span className="Deer__galleryLocation">
-                        <span aria-hidden="true">📍</span> {img.location}
+                        <Icon name="pin" /> {img.location}
                       </span>
                     </span>
                   </button>
@@ -612,10 +865,7 @@ const Deer = () => {
               <h2>Explore Safari Desk</h2>
             </div>
 
-            <nav
-              className="Deer__serviceNav"
-              aria-label="Explore spotted deer services"
-            >
+            <nav className="Deer__serviceNav" aria-label="Explore spotted deer services">
               {navTabs.map((tab) => {
                 const isSelected = activeTab === tab.id;
 
@@ -635,14 +885,19 @@ const Deer = () => {
             </nav>
           </div>
 
-          {/* SUPPORT CARD */}
+          {/* SUPPORT CARD → WHATSAPP */}
           <div className="Deer__supportCard">
             <div className="Deer__supportIcon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none">
                 <path
-                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"
-                  fill="currentColor"
+                  d="M5 13v-2a7 7 0 0 1 14 0v2"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
                 />
+                <rect x="3.5" y="11" width="4" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8" />
+                <rect x="16.5" y="11" width="4" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8" />
+                <path d="M18 18c0 2-2 3-5 3h-1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
               </svg>
             </div>
 
@@ -652,18 +907,23 @@ const Deer = () => {
             </div>
 
             <p>
-              Deer sightings peak during morning and late afternoon grazing windows.
-              Speak with our dock managers for today's wildlife movements and permit assistance.
+              Deer sightings peak during morning and late afternoon grazing
+              windows. Message our dock managers for today's wildlife movements,
+              boat availability and permit assistance.
             </p>
 
-            <button
-              type="button"
-              className="Deer__supportLink"
-              onClick={() => handleTabChange("book-safari")}
-            >
-              <span>Connect with Jetty Desk</span>
-              <span aria-hidden="true">↗</span>
-            </button>
+            <WhatsAppLink className="Deer__supportWa">
+              <span className="Deer__waBadge">
+                <WaIcon />
+              </span>
+              <span className="Deer__waText">
+                <strong>Connect with Jetty Desk</strong>
+                <small>Chat on WhatsApp · {WHATSAPP_DISPLAY}</small>
+              </span>
+              <span className="Deer__waArrow" aria-hidden="true">
+                ↗
+              </span>
+            </WhatsAppLink>
           </div>
 
           {/* QUICK LINKS */}
@@ -696,7 +956,7 @@ const Deer = () => {
             </div>
           </div>
 
-          {/* CONTACT INFO */}
+          {/* CONTACT INFORMATION */}
           <div className="Deer__sideBox Deer__contactBox">
             <div className="Deer__sideTitle">
               <span />
@@ -704,20 +964,31 @@ const Deer = () => {
             </div>
 
             <div className="Deer__contactInfo">
-              <span className="Deer__contactInfoIcon" aria-hidden="true">
-                📍
+              <span className="Deer__contactInfoIcon">
+                <Icon name="pin" />
               </span>
               <div>
                 <strong>Primary Jetty Location</strong>
                 <p>
-                  Khola Entry Ghat, Rajnagar Block, Kendrapara District, Odisha 754225
+                  Khola Entry Ghat, Rajnagar Block, Kendrapara District, Odisha
+                  754225
                 </p>
               </div>
             </div>
 
             <div className="Deer__contactInfo">
-              <span className="Deer__contactInfoIcon" aria-hidden="true">
-                ✉
+              <span className="Deer__contactInfoIcon Deer__contactInfoIcon--wa">
+                <WaIcon />
+              </span>
+              <div>
+                <strong>Boat Service WhatsApp</strong>
+                <WhatsAppLink>{WHATSAPP_DISPLAY}</WhatsAppLink>
+              </div>
+            </div>
+
+            <div className="Deer__contactInfo">
+              <span className="Deer__contactInfoIcon">
+                <Icon name="mail" />
               </span>
               <div>
                 <strong>Official Safari Inquiries</strong>
@@ -728,8 +999,8 @@ const Deer = () => {
             </div>
 
             <div className="Deer__contactInfo">
-              <span className="Deer__contactInfoIcon" aria-hidden="true">
-                🕒
+              <span className="Deer__contactInfoIcon">
+                <Icon name="clock" />
               </span>
               <div>
                 <strong>Forest Gate Operating Hours</strong>
@@ -740,7 +1011,7 @@ const Deer = () => {
         </aside>
       </div>
 
-      {/* FULLSCREEN LIGHTBOX */}
+      {/* FULLSCREEN GALLERY LIGHTBOX */}
       {activeImage !== null && (
         <div
           className="Deer__lightbox"
@@ -771,7 +1042,9 @@ const Deer = () => {
               <div>
                 <span>{galleryImages[activeImage].category}</span>
                 <h3>{galleryImages[activeImage].title}</h3>
-                <small>📍 {galleryImages[activeImage].location}</small>
+                <small>
+                  <Icon name="pin" /> {galleryImages[activeImage].location}
+                </small>
               </div>
 
               <span className="Deer__lightboxCount">
@@ -785,14 +1058,20 @@ const Deer = () => {
                 type="button"
                 onClick={() =>
                   setActiveImage(
-                    (activeImage - 1 + galleryImages.length) %
-                      galleryImages.length
+                    (activeImage - 1 + galleryImages.length) % galleryImages.length
                   )
                 }
                 aria-label="Previous photograph"
               >
                 ← Previous
               </button>
+
+              <WhatsAppLink
+                className="Deer__lightboxWa"
+                message={`Hello Bhitarakanika Boat Service! I liked "${galleryImages[activeImage].title}" (${galleryImages[activeImage].location}). Can I book a safari to this area?`}
+              >
+                <WaIcon /> Book this area
+              </WhatsAppLink>
 
               <button
                 type="button"
