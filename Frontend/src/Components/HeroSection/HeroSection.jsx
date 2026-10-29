@@ -287,15 +287,6 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* SIDE ENQUIRY TAB */}
-      <button
-        type="button"
-        className="HeroSection-enquiryButton"
-        onClick={handleEnquiry}
-        aria-label="Open enquiry form"
-      >
-        ENQUIRE NOW
-      </button>
     </section>
   );
 };

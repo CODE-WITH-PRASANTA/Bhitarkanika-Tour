@@ -4,9 +4,8 @@ import Aboutt from '../../Components/Aboutt/Aboutt'
 import Journey from '../../Components/Journey/Journey'
 import Experience from '../../Components/Experience/Experience'
 import Facility from '../../Components/Facility/Facility'
-import Tourpackage from '../../Components/Tourpackage/Tourpackage'
 import Oursuccess from '../../Components/Oursuccess/Oursuccess'
-import HotelPackage from '../../Components/HotelPackage/HotelPackage'
+import HomeContact from '../../Components/HomeContact/HomeContact'
 
 
 const Home = () => {
@@ -17,9 +16,8 @@ const Home = () => {
       <Journey />
       <Experience />
       <Facility />
-      <Tourpackage />
       <Oursuccess />
-      <HotelPackage />
+      <HomeContact/>
     </div>
   )
 }

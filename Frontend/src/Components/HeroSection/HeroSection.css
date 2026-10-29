@@ -437,40 +437,7 @@
   transform: scale(1.08);
 }
 
-/* =========================================
-   VERTICAL ENQUIRY TAB
-========================================= */
 
-.HeroSection-enquiryButton {
-  position: absolute;
-  top: 38%;
-  right: 0;
-  z-index: 8;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 140px;
-  padding: 10px 0;
-  border: 0;
-  border-radius: 6px 0 0 6px;
-  background: var(--hero-orange-deep);
-  color: #fff;
-  font-family: inherit;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 1.6px;
-  white-space: nowrap;
-  writing-mode: vertical-rl;
-  cursor: pointer;
-  box-shadow: -4px 6px 20px rgba(0, 0, 0, 0.25);
-  transition: background-color 0.3s ease, width 0.25s ease;
-}
-
-.HeroSection-enquiryButton:hover {
-  width: 48px;
-  background: #cf4f00;
-}
 
 /* =========================================
    ANIMATIONS

@@ -1,0 +1,1224 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+
+/* =========================================================
+   ENQUIRE NOW
+   Bhitarkanika Boat Service
+   Theme: deep forest green + mangrove green + gold
+   ========================================================= */
+
+.enquire-now-trigger,
+.enquire-now-backdrop {
+  --eq-bg: #0b1511;
+  --eq-panel: #0f1c16;
+  --eq-panel-2: #132419;
+  --eq-green: #22bd73;
+  --eq-green-soft: #3ddc92;
+  --eq-green-mid: #17a463;
+  --eq-green-deep: #0d6e41;
+  --eq-gold: #f2c14e;
+  --eq-white: #ffffff;
+  --eq-body: #d3ddd8;
+  --eq-muted: #93a39b;
+  --eq-border: rgba(255, 255, 255, 0.1);
+  --eq-field: rgba(255, 255, 255, 0.05);
+  --eq-error: #ff8a8a;
+  --eq-glow: rgba(34, 189, 115, 0.3);
+  --eq-ease: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.enquire-now-trigger,
+.enquire-now-trigger *,
+.enquire-now-trigger *::before,
+.enquire-now-trigger *::after,
+.enquire-now-backdrop,
+.enquire-now-backdrop *,
+.enquire-now-backdrop *::before,
+.enquire-now-backdrop *::after {
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   SIDE TRIGGER BUTTON
+   ========================================================= */
+
+.enquire-now-trigger {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  z-index: 99990;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  width: 48px;
+  min-height: 150px;
+  padding: 14px 6px;
+  padding-right: calc(6px + env(safe-area-inset-right, 0px));
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-right: none;
+  border-radius: 14px 0 0 14px;
+  background: linear-gradient(150deg, var(--eq-green-mid), var(--eq-green-deep));
+  color: #fff;
+  cursor: pointer;
+  overflow: hidden;
+  transform: translateY(-50%);
+  box-shadow: -6px 10px 28px rgba(13, 110, 65, 0.45);
+  transition: var(--eq-ease);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.enquire-now-trigger::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(225deg, rgba(255, 255, 255, 0.22), transparent 45%);
+  pointer-events: none;
+}
+
+.enquire-now-trigger:hover {
+  width: 56px;
+  box-shadow: -8px 12px 34px rgba(34, 189, 115, 0.45);
+}
+
+.enquire-now-trigger:active {
+  transform: translateY(-50%) scale(0.98);
+}
+
+.enquire-now-trigger:focus-visible {
+  outline: 2px solid var(--eq-gold);
+  outline-offset: 3px;
+}
+
+.enquire-now-trigger-dot {
+  position: absolute;
+  top: 12px;
+  right: 10px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--eq-gold);
+  animation: enquireNowPulse 2s infinite;
+}
+
+.enquire-now-trigger-icon {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.enquire-now-trigger-text {
+  position: relative;
+  z-index: 1;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   BACKDROP
+   ========================================================= */
+
+.enquire-now-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100dvh;
+  padding: 20px;
+
+  background: rgba(3, 9, 6, 0.8);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  animation: enquireNowFade 0.25s ease forwards;
+}
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.enquire-now-card {
+  position: relative;
+
+  display: grid;
+  grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+  width: min(100%, 920px);
+  max-height: calc(100dvh - 40px);
+
+  border: 1px solid var(--eq-border);
+  border-radius: 22px;
+  background: var(--eq-bg);
+  overflow: hidden;
+  box-shadow: 0 34px 90px rgba(0, 0, 0, 0.65);
+  animation: enquireNowPop 0.34s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ---------- Close ---------- */
+
+.enquire-now-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 20;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  background: rgba(8, 20, 14, 0.8);
+  color: #fff;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  transition: var(--eq-ease);
+}
+
+.enquire-now-close:hover {
+  background: var(--eq-green);
+  border-color: var(--eq-green);
+  transform: rotate(90deg);
+  box-shadow: 0 6px 18px var(--eq-glow);
+}
+
+.enquire-now-close:focus-visible {
+  outline: 2px solid var(--eq-gold);
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   LEFT PROMO
+   ========================================================= */
+
+.enquire-now-promo {
+  position: relative;
+  min-width: 0;
+  background-color: #0a1a12;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.enquire-now-promo-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(6, 22, 14, 0.55) 0%, rgba(6, 20, 14, 0.82) 55%, rgba(5, 15, 10, 0.97) 100%),
+    radial-gradient(circle at 0 0, rgba(34, 189, 115, 0.25), transparent 55%);
+}
+
+.enquire-now-promo-content {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 22px;
+  height: 100%;
+  padding: 34px 30px 30px;
+  color: #fff;
+}
+
+.enquire-now-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  max-width: 100%;
+  margin-bottom: 16px;
+  padding: 6px 12px;
+
+  border: 1px solid rgba(242, 193, 78, 0.35);
+  border-radius: 999px;
+  background: rgba(242, 193, 78, 0.1);
+  color: var(--eq-gold);
+  font-size: 11.5px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.enquire-now-badge-dot {
+  flex-shrink: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--eq-gold);
+  box-shadow: 0 0 8px rgba(242, 193, 78, 0.8);
+}
+
+.enquire-now-promo-title {
+  margin: 0 0 12px;
+  color: #fff;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.enquire-now-promo-title span {
+  color: var(--eq-green-soft);
+}
+
+.enquire-now-promo-desc {
+  max-width: 340px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 13.5px;
+  line-height: 1.7;
+}
+
+/* ---------- Features ---------- */
+
+.enquire-now-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.enquire-now-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  min-width: 0;
+  padding: 10px;
+
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.enquire-now-feature-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(34, 189, 115, 0.18);
+  color: var(--eq-green-soft);
+}
+
+.enquire-now-feature strong {
+  display: block;
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.enquire-now-feature small {
+  display: block;
+  margin-top: 2px;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+/* ---------- Call button ---------- */
+
+.enquire-now-call-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 9px 20px 9px 10px;
+
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  color: #fff;
+  text-decoration: none;
+  transition: var(--eq-ease);
+}
+
+.enquire-now-call-btn:hover {
+  border-color: var(--eq-green);
+  background: rgba(34, 189, 115, 0.18);
+  transform: translateY(-2px);
+}
+
+.enquire-now-call-btn:focus-visible {
+  outline: 2px solid var(--eq-gold);
+  outline-offset: 3px;
+}
+
+.enquire-now-call-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, var(--eq-green), var(--eq-green-deep));
+  color: #fff;
+}
+
+.enquire-now-call-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+}
+
+.enquire-now-call-text small {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.enquire-now-call-text strong {
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+/* =========================================================
+   RIGHT PANE
+   ========================================================= */
+
+.enquire-now-pane {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  padding: 36px 36px 28px;
+
+  background:
+    radial-gradient(circle at 92% 4%, rgba(34, 189, 115, 0.14), transparent 34%),
+    linear-gradient(155deg, #13241b 0%, #0f1c16 55%, #0a130f 100%);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.enquire-now-pane > * {
+  flex-shrink: 0;
+}
+
+.enquire-now-pane::-webkit-scrollbar {
+  width: 5px;
+}
+
+.enquire-now-pane::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ---------- Header ---------- */
+
+.enquire-now-header {
+  margin-bottom: 22px;
+  padding-right: 36px;
+}
+
+.enquire-now-form-badge {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: var(--eq-green-soft);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+.enquire-now-title {
+  margin: 0 0 8px;
+  color: #fff;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 27px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.enquire-now-title::after {
+  content: "";
+  display: block;
+  width: 42px;
+  height: 3px;
+  margin-top: 10px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--eq-green), var(--eq-gold));
+}
+
+.enquire-now-subtitle {
+  margin: 0;
+  color: var(--eq-muted);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.enquire-now-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+.enquire-now-field {
+  min-width: 0;
+}
+
+.enquire-now-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 6px 2px;
+  color: var(--eq-body);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.enquire-now-label em {
+  color: var(--eq-muted);
+  font-size: 11.5px;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.enquire-now-input-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.enquire-now-field input[type="text"],
+.enquire-now-field input[type="email"],
+.enquire-now-field input[type="tel"],
+.enquire-now-field select {
+  width: 100%;
+  height: 48px;
+  padding: 0 14px 0 44px;
+
+  border: 1px solid var(--eq-border);
+  border-radius: 12px;
+  outline: none;
+  background: var(--eq-field);
+  color: #fff;
+  font-family: inherit;
+  font-size: 14.5px;
+  font-weight: 500;
+  transition: var(--eq-ease);
+}
+
+.enquire-now-field input::placeholder {
+  color: rgba(255, 255, 255, 0.34);
+}
+
+.enquire-now-field input:focus,
+.enquire-now-field select:focus {
+  border-color: var(--eq-green);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 0 0 4px rgba(34, 189, 115, 0.14);
+}
+
+.enquire-now-field input[aria-invalid="true"],
+.enquire-now-field select[aria-invalid="true"] {
+  border-color: rgba(255, 138, 138, 0.7);
+}
+
+.enquire-now-input-icon {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  color: var(--eq-green-soft);
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+/* Mobile prefix */
+
+.enquire-now-prefix {
+  position: absolute;
+  top: 50%;
+  left: 43px;
+  z-index: 2;
+  padding-right: 10px;
+  transform: translateY(-50%);
+  border-right: 1px solid var(--eq-border);
+  color: var(--eq-gold);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+  pointer-events: none;
+}
+
+.enquire-now-field input.enquire-now-input-prefixed {
+  padding-left: 86px;
+}
+
+/* Select */
+
+.enquire-now-field select {
+  padding-right: 42px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.enquire-now-field select:invalid {
+  color: rgba(255, 255, 255, 0.34);
+}
+
+.enquire-now-field select option {
+  background: #0f1c16;
+  color: #fff;
+}
+
+.enquire-now-chevron {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  color: var(--eq-muted);
+  pointer-events: none;
+}
+
+.enquire-now-field select:first-of-type {
+  padding-left: 14px;
+}
+
+/* ---------- Captcha ---------- */
+
+.enquire-now-captcha-row {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr) 48px;
+  gap: 8px;
+}
+
+.enquire-now-captcha-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+
+  border: 1px dashed rgba(242, 193, 78, 0.55);
+  border-radius: 12px;
+  background: repeating-linear-gradient(
+    -45deg,
+    rgba(242, 193, 78, 0.09),
+    rgba(242, 193, 78, 0.09) 6px,
+    rgba(255, 255, 255, 0.03) 6px,
+    rgba(255, 255, 255, 0.03) 12px
+  );
+  color: var(--eq-gold);
+  font-family: "Courier New", monospace;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  user-select: none;
+}
+
+.enquire-now-field input.enquire-now-captcha-input {
+  padding-left: 14px;
+  letter-spacing: 1px;
+}
+
+.enquire-now-captcha-refresh {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  padding: 0;
+
+  border: 1px solid var(--eq-border);
+  border-radius: 12px;
+  background: var(--eq-field);
+  color: #fff;
+  cursor: pointer;
+  transition: var(--eq-ease);
+}
+
+.enquire-now-captcha-refresh:hover {
+  border-color: var(--eq-green);
+  background: rgba(34, 189, 115, 0.18);
+  color: var(--eq-green-soft);
+}
+
+.enquire-now-captcha-refresh:focus-visible {
+  outline: 2px solid var(--eq-gold);
+  outline-offset: 2px;
+}
+
+/* ---------- Terms ---------- */
+
+.enquire-now-terms {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: var(--eq-body);
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+.enquire-now-terms input {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin: 1px 0 0;
+  accent-color: var(--eq-green);
+  cursor: pointer;
+}
+
+.enquire-now-terms label {
+  cursor: pointer;
+}
+
+.enquire-now-terms a {
+  color: var(--eq-green-soft);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.enquire-now-terms a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Errors ---------- */
+
+.enquire-now-error {
+  margin: 6px 0 0 2px;
+  color: var(--eq-error);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* ---------- Submit ---------- */
+
+.enquire-now-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+  min-height: 50px;
+  margin-top: 2px;
+  padding: 0 22px;
+
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--eq-green-mid) 0%, var(--eq-green-deep) 100%);
+  color: #fff;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 26px rgba(13, 110, 65, 0.45);
+  transition: var(--eq-ease);
+}
+
+.enquire-now-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(34, 189, 115, 0.4);
+}
+
+.enquire-now-submit:active {
+  transform: translateY(0);
+}
+
+.enquire-now-submit:focus-visible {
+  outline: 2px solid var(--eq-gold);
+  outline-offset: 3px;
+}
+
+.enquire-now-secure-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--eq-muted);
+  font-size: 11.5px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.enquire-now-secure-text svg {
+  flex-shrink: 0;
+  color: var(--eq-green-soft);
+}
+
+.enquire-now-mobile-call {
+  display: none;
+}
+
+/* =========================================================
+   SUCCESS STATE
+   ========================================================= */
+
+.enquire-now-success {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 320px;
+  padding: 20px 0;
+  text-align: center;
+}
+
+.enquire-now-success-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 76px;
+  height: 76px;
+  margin-bottom: 18px;
+
+  border: 1px solid rgba(34, 189, 115, 0.45);
+  border-radius: 50%;
+  background: rgba(34, 189, 115, 0.14);
+  color: var(--eq-green-soft);
+  box-shadow: 0 0 0 10px rgba(34, 189, 115, 0.07);
+  animation: enquireNowPop 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.enquire-now-success-title {
+  margin: 0 0 10px;
+  color: #fff;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.enquire-now-success-text {
+  max-width: 340px;
+  margin: 0 0 24px;
+  color: var(--eq-body);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.enquire-now-success-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.enquire-now-ghost-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 20px;
+
+  border: 1px solid rgba(34, 189, 115, 0.45);
+  border-radius: 999px;
+  color: var(--eq-green-soft);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: var(--eq-ease);
+}
+
+.enquire-now-ghost-btn:hover {
+  background: var(--eq-green);
+  border-color: var(--eq-green);
+  color: #fff;
+}
+
+.enquire-now-wa-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 50px;
+  padding: 0 22px;
+
+  border: 1px solid rgba(37, 211, 102, 0.5);
+  border-radius: 999px;
+  background: #25d366;
+  color: #052e1c;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 10px 26px rgba(37, 211, 102, 0.28);
+  transition: var(--eq-ease);
+}
+
+.enquire-now-wa-btn:hover {
+  background: #3be07b;
+  transform: translateY(-2px);
+}
+
+.enquire-now-wa-btn:focus-visible {
+  outline: 2px solid var(--eq-gold);
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   KEYFRAMES
+   ========================================================= */
+
+@keyframes enquireNowFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes enquireNowPop {
+  from { opacity: 0; transform: scale(0.94) translateY(14px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes enquireNowSheet {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes enquireNowPulse {
+  0% { box-shadow: 0 0 0 0 rgba(242, 193, 78, 0.6); }
+  70% { box-shadow: 0 0 0 9px rgba(242, 193, 78, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(242, 193, 78, 0); }
+}
+
+/* =========================================================
+   LAPTOPS (short screens)
+   ========================================================= */
+
+@media (max-width: 1100px) {
+  .enquire-now-card {
+    width: min(100%, 860px);
+  }
+
+  .enquire-now-promo-content {
+    padding: 30px 24px 26px;
+  }
+
+  .enquire-now-promo-title {
+    font-size: 25px;
+  }
+
+  .enquire-now-pane {
+    padding: 32px 28px 26px;
+  }
+}
+
+@media (max-height: 760px) and (min-width: 761px) {
+  .enquire-now-backdrop {
+    padding: 12px;
+  }
+
+  .enquire-now-card {
+    max-height: calc(100dvh - 24px);
+  }
+
+  .enquire-now-pane {
+    padding-top: 26px;
+    padding-bottom: 22px;
+  }
+
+  .enquire-now-header {
+    margin-bottom: 16px;
+  }
+
+  .enquire-now-form {
+    gap: 11px;
+  }
+
+  .enquire-now-feature small {
+    display: none;
+  }
+}
+
+/* Phones in landscape (wide but very short) */
+@media (max-height: 520px) and (min-width: 761px) {
+  .enquire-now-promo-desc,
+  .enquire-now-feature-grid {
+    display: none;
+  }
+
+  .enquire-now-subtitle {
+    display: none;
+  }
+}
+
+/* =========================================================
+   TABLET + MOBILE: BOTTOM SHEET
+   ========================================================= */
+
+@media (max-width: 760px) {
+  .enquire-now-backdrop {
+    align-items: flex-end;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .enquire-now-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-height: 94dvh;
+
+    border-right: none;
+    border-bottom: none;
+    border-left: none;
+    border-radius: 24px 24px 0 0;
+    animation: enquireNowSheet 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* Grab handle */
+  .enquire-now-card::before {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    z-index: 25;
+    width: 42px;
+    height: 4px;
+    transform: translateX(-50%);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.35);
+  }
+
+  .enquire-now-close {
+    top: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+  }
+
+  /* Compact promo header */
+  .enquire-now-promo {
+    flex-shrink: 0;
+  }
+
+  .enquire-now-promo-content {
+    gap: 0;
+    height: auto;
+    padding: 28px 62px 18px 20px;
+  }
+
+  .enquire-now-badge {
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+
+  .enquire-now-promo-title {
+    margin: 0;
+    font-size: 21px;
+  }
+
+  .enquire-now-promo-desc,
+  .enquire-now-feature-grid,
+  .enquire-now-call-btn {
+    display: none;
+  }
+
+  /* Form pane scrolls inside the sheet */
+  .enquire-now-pane {
+    flex: 1;
+    padding: 22px 20px calc(26px + env(safe-area-inset-bottom, 0px));
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .enquire-now-header {
+    margin-bottom: 18px;
+    padding-right: 0;
+  }
+
+  .enquire-now-title {
+    font-size: 23px;
+  }
+
+  .enquire-now-subtitle {
+    font-size: 13px;
+  }
+
+  /* 16px inputs stop iOS from zooming on focus */
+  .enquire-now-field input[type="text"],
+  .enquire-now-field input[type="email"],
+  .enquire-now-field input[type="tel"],
+  .enquire-now-field select {
+    height: 50px;
+    font-size: 16px;
+  }
+
+  .enquire-now-captcha-box,
+  .enquire-now-captcha-refresh {
+    height: 50px;
+  }
+
+  .enquire-now-submit {
+    min-height: 52px;
+  }
+
+  .enquire-now-mobile-call {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 46px;
+    margin-top: 2px;
+
+    border: 1px solid rgba(34, 189, 115, 0.4);
+    border-radius: 999px;
+    color: var(--eq-green-soft);
+    font-size: 13.5px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  /* Side trigger */
+  .enquire-now-trigger {
+    width: 44px;
+    min-height: 136px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    gap: 8px;
+    border-radius: 13px 0 0 13px;
+  }
+
+  .enquire-now-trigger:hover {
+    width: 44px;
+  }
+
+  .enquire-now-trigger-icon {
+    width: 27px;
+    height: 27px;
+  }
+
+  .enquire-now-trigger-text {
+    font-size: 10.5px;
+    letter-spacing: 1.4px;
+  }
+
+  .enquire-now-success {
+    min-height: 340px;
+  }
+}
+
+/* =========================================================
+   SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 400px) {
+  .enquire-now-promo-content {
+    padding: 26px 56px 16px 16px;
+  }
+
+  .enquire-now-promo-title {
+    font-size: 19px;
+  }
+
+  .enquire-now-pane {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .enquire-now-title {
+    font-size: 21px;
+  }
+
+  .enquire-now-form {
+    gap: 12px;
+  }
+
+  .enquire-now-captcha-row {
+    grid-template-columns: 84px minmax(0, 1fr) 46px;
+    gap: 6px;
+  }
+
+  .enquire-now-captcha-box {
+    font-size: 17px;
+    letter-spacing: 1px;
+  }
+
+  .enquire-now-terms {
+    font-size: 12px;
+  }
+}
+
+/* Phones in landscape */
+@media (max-height: 480px) and (max-width: 900px) {
+  .enquire-now-backdrop {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .enquire-now-card {
+    max-height: 100dvh;
+    border-radius: 16px;
+  }
+
+  .enquire-now-card::before {
+    display: none;
+  }
+
+  .enquire-now-promo-content {
+    padding: 14px 56px 10px 18px;
+  }
+
+  .enquire-now-badge {
+    display: none;
+  }
+
+  .enquire-now-promo-title {
+    font-size: 16px;
+  }
+
+  .enquire-now-pane {
+    padding-top: 14px;
+  }
+
+  .enquire-now-header {
+    margin-bottom: 12px;
+  }
+
+  .enquire-now-subtitle {
+    display: none;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .enquire-now-backdrop,
+  .enquire-now-card,
+  .enquire-now-trigger,
+  .enquire-now-trigger-dot,
+  .enquire-now-success-icon {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

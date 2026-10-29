@@ -6,7 +6,8 @@
   width: 100%;
   padding: 90px 0;
   background:
-    radial-gradient(circle at top left, rgba(197, 163, 82, 0.08), transparent 32%),
+    radial-gradient(circle at top left, rgba(197, 163, 82, 0.1), transparent 32%),
+    radial-gradient(circle at bottom right, rgba(29, 53, 43, 0.06), transparent 36%),
     #f8f8f5;
   overflow: hidden;
   box-sizing: border-box;
@@ -122,20 +123,22 @@
 .exp-cards-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px;
+  gap: 26px;
   width: 100%;
 }
 
 /* =========================================================
-   TOUR CARD
+   CARD BASE (boat + hotel)
 ========================================================= */
 
 .exp-tour-card,
 .exp-hotel-card {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   overflow: hidden;
   border: 1px solid #ebe9e1;
-  border-radius: 20px;
+  border-radius: 22px;
   background: #fff;
   box-shadow: 0 15px 45px rgba(24, 42, 34, 0.07);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -145,11 +148,16 @@
 .exp-tour-card:hover,
 .exp-hotel-card:hover {
   transform: translateY(-7px);
-  box-shadow: 0 25px 55px rgba(24, 42, 34, 0.13);
+  box-shadow: 0 25px 55px rgba(24, 42, 34, 0.14);
 }
+
+/* =========================================================
+   BOAT CARD
+========================================================= */
 
 .exp-card-image-wrap {
   position: relative;
+  flex-shrink: 0;
   height: 285px;
   overflow: hidden;
   background: #e8e8e2;
@@ -170,7 +178,7 @@
 .exp-image-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(10, 22, 17, 0.48), transparent 55%);
+  background: linear-gradient(to top, rgba(10, 22, 17, 0.62), transparent 58%);
   pointer-events: none;
 }
 
@@ -215,34 +223,208 @@
   background: rgba(255, 255, 255, 0.92);
 }
 
+/* Website / brand badge on the photo */
+.exp-brand-badge {
+  position: absolute;
+  z-index: 2;
+  left: 17px;
+  bottom: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: calc(100% - 34px);
+  padding: 8px 14px 8px 11px;
+  border: 1px solid rgba(225, 200, 140, 0.55);
+  border-radius: 30px;
+  background: rgba(10, 22, 17, 0.58);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.exp-brand-badge i {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #e1c88c;
+  box-shadow: 0 0 0 4px rgba(225, 200, 140, 0.25);
+}
+
 .exp-card-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   padding: 24px;
 }
 
 .exp-card-content h2 {
-  margin: 0 0 14px;
+  margin: 0 0 8px;
   color: #1e2d27;
-  font-size: 21px;
+  font-size: 22px;
   line-height: 1.25;
   font-weight: 800;
 }
 
-.exp-route {
-  min-height: 43px;
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
+.exp-tagline {
+  min-height: 40px;
+  margin: 0;
   color: #727b76;
   font-size: 13px;
   line-height: 1.55;
 }
 
-.exp-route > span:first-child {
-  color: #b0873d;
-  font-size: 18px;
-  font-weight: 800;
-  flex-shrink: 0;
+/* ---------- Package select ---------- */
+
+.exp-pkg {
+  margin-top: 16px;
 }
+
+.exp-pkg-label {
+  display: block;
+  margin-bottom: 8px;
+  color: #8a918d;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+}
+
+.exp-pkg-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 4px;
+  border: 1px solid #e8e6dc;
+  border-radius: 13px;
+  background: #f3f4ee;
+}
+
+.exp-pkg-pill {
+  min-height: 38px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #5d6862;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.exp-pkg-pill:hover {
+  color: #1d352b;
+  background: #fff;
+}
+
+.exp-pkg-pill.active {
+  color: #fff;
+  background: linear-gradient(135deg, #c9a152, #ad863d);
+  box-shadow: 0 6px 14px rgba(173, 134, 61, 0.38);
+}
+
+.exp-pkg-perks {
+  min-height: 34px;
+  margin: 8px 0 0;
+  color: #727b76;
+  font-size: 11.5px;
+  line-height: 1.5;
+}
+
+.exp-pkg-perks.is-warning {
+  color: #b8433a;
+  font-weight: 700;
+  animation: expShake 0.4s ease;
+}
+
+@keyframes expShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+/* ---------- From -> To route ---------- */
+
+.exp-route-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 12px;
+  padding: 15px 18px;
+  overflow: hidden;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #264a3b, #1d352b);
+  color: #fff;
+}
+
+.exp-route-card::after {
+  content: "";
+  position: absolute;
+  top: -40px;
+  right: -30px;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(225, 200, 140, 0.22), transparent 70%);
+  pointer-events: none;
+}
+
+.exp-route-point {
+  min-width: 0;
+  flex: 0 1 auto;
+}
+
+.exp-route-point small {
+  display: block;
+  color: #e1c88c;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.exp-route-point strong {
+  display: block;
+  margin-top: 3px;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.exp-route-point-end {
+  text-align: right;
+}
+
+.exp-route-line {
+  position: relative;
+  flex: 1;
+  min-width: 34px;
+  height: 0;
+  border-top: 2px dashed rgba(225, 200, 140, 0.7);
+}
+
+.exp-route-boat {
+  position: absolute;
+  top: -11px;
+  left: 0;
+  font-size: 17px;
+  line-height: 1;
+  animation: expSail 3.4s ease-in-out infinite alternate;
+}
+
+@keyframes expSail {
+  from { left: 0; }
+  to { left: calc(100% - 20px); }
+}
+
+/* ---------- Footer / price ---------- */
 
 .exp-card-footer,
 .exp-hotel-footer {
@@ -250,9 +432,13 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: 15px;
-  margin-top: 24px;
+  margin-top: auto;
   padding-top: 18px;
   border-top: 1px solid #eceae3;
+}
+
+.exp-card-footer {
+  margin-top: 22px;
 }
 
 .exp-price-box {
@@ -273,11 +459,17 @@
   display: flex;
   align-items: baseline;
   gap: 8px;
+  animation: expPricePop 0.35s ease both;
+}
+
+@keyframes expPricePop {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .exp-price-row strong {
   color: #1e352b;
-  font-size: 22px;
+  font-size: 24px;
   line-height: 1;
 }
 
@@ -286,20 +478,28 @@
   font-size: 12px;
 }
 
+.exp-price-row small {
+  color: #8a918d;
+  font-size: 11px;
+  font-weight: 700;
+}
+
 .exp-primary-btn {
-  min-height: 44px;
+  min-height: 46px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding: 0 16px;
+  padding: 0 18px;
   border: 0;
-  border-radius: 9px;
+  border-radius: 11px;
   color: #fff;
-  background: #1d352b;
+  background: linear-gradient(135deg, #264a3b, #1d352b);
+  font-family: inherit;
   font-size: 12px;
   font-weight: 800;
   cursor: pointer;
+  box-shadow: 0 8px 18px rgba(29, 53, 43, 0.22);
   transition: 0.25s ease;
   white-space: nowrap;
 }
@@ -310,7 +510,7 @@
 }
 
 .exp-primary-btn:hover {
-  background: #ad863d;
+  background: linear-gradient(135deg, #c9a152, #ad863d);
   transform: translateY(-2px);
 }
 
@@ -324,6 +524,7 @@
 
 .exp-hotel-image-wrap {
   position: relative;
+  flex-shrink: 0;
   height: 255px;
   overflow: hidden;
   background: #e8e8e2;
@@ -343,6 +544,7 @@
 
 .exp-breakfast {
   position: absolute;
+  z-index: 2;
   top: 16px;
   left: 16px;
   padding: 8px 11px;
@@ -356,6 +558,7 @@
 
 .exp-hotel-rating {
   position: absolute;
+  z-index: 2;
   right: 16px;
   top: 16px;
   padding: 8px 11px;
@@ -367,7 +570,22 @@
 }
 
 .exp-hotel-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   padding: 23px;
+}
+
+.exp-oyo-tag {
+  align-self: flex-start;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  background: #fdecea;
+  color: #c8372d;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
 }
 
 .exp-hotel-title-row h2 {
@@ -415,7 +633,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
-  margin-top: 18px;
+  margin: 18px 0 24px;
 }
 
 .exp-room-info > div {
@@ -469,7 +687,7 @@
 }
 
 /* =========================================================
-   BOOKING POPUP  (neumorphic, prefix: bk-)
+   POPUPS (neumorphic, prefix: bk-)  -  booking + availability
 ========================================================= */
 
 .bk-backdrop {
@@ -602,7 +820,7 @@
   padding: 14px 28px 28px;
 }
 
-/* Selected tour strip */
+/* Selected tour / hotel strip */
 .bk-tour {
   display: flex;
   align-items: center;
@@ -633,6 +851,15 @@
   margin: 0 0 4px;
   color: var(--bk-muted);
   font-size: 12px;
+}
+
+.bk-tour .bk-tour-route {
+  color: var(--bk-green);
+  font-weight: 700;
+}
+
+.bk-tour .bk-tour-route b {
+  color: var(--bk-gold);
 }
 
 .bk-tour strong {
@@ -882,6 +1109,119 @@
   cursor: wait;
 }
 
+/* ---------- Availability result ---------- */
+
+.av-result {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-top: 22px;
+  padding: 16px;
+  border-radius: 16px;
+  animation: avPop 0.35s ease both;
+}
+
+@keyframes avPop {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.av-result h4 {
+  margin: 0 0 4px;
+  color: var(--bk-green);
+  font-size: 15px;
+}
+
+.av-result p {
+  margin: 0;
+  color: #4d5a54;
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.av-result p strong {
+  color: var(--bk-green);
+}
+
+.av-icon {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.av-available {
+  border: 1px solid #b9dcc6;
+  background: #e4f3ea;
+}
+
+.av-available .av-icon {
+  background: #2f7d57;
+}
+
+.av-limited {
+  border: 1px solid #ecd49a;
+  background: #fff6e1;
+}
+
+.av-limited .av-icon {
+  background: #d39a22;
+}
+
+.av-soldout {
+  border: 1px solid #efb9b3;
+  background: #fdeceb;
+}
+
+.av-soldout .av-icon {
+  background: #c4554a;
+}
+
+.av-loading {
+  align-items: center;
+  background: var(--bk-bg);
+  box-shadow: inset 4px 4px 9px var(--bk-dark), inset -4px -4px 9px var(--bk-light);
+}
+
+.av-spinner {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border: 3px solid rgba(29, 53, 43, 0.18);
+  border-top-color: #1d352b;
+  border-radius: 50%;
+  animation: avSpin 0.8s linear infinite;
+}
+
+@keyframes avSpin {
+  to { transform: rotate(360deg); }
+}
+
+.av-link {
+  display: block;
+  margin-top: 8px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--bk-gold);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 800;
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.av-link:hover {
+  color: var(--bk-green);
+}
+
 /* Success view */
 .bk-success-top {
   text-align: center;
@@ -1002,6 +1342,42 @@
   font-size: 11.5px;
 }
 
+.bk-doc-route {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 14px 22px 0;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: #1d352b;
+  color: #fff;
+}
+
+.bk-doc-route small {
+  display: block;
+  color: #e1c88c;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
+.bk-doc-route strong {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+}
+
+.bk-doc-route > div:last-child {
+  text-align: right;
+}
+
+.bk-doc-route > span {
+  color: #e1c88c;
+  font-size: 22px;
+}
+
 .bk-doc-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1061,7 +1437,8 @@
 /* Focus */
 .bk-btn:focus-visible,
 .bk-close:focus-visible,
-.bk-counter button:focus-visible {
+.bk-counter button:focus-visible,
+.av-link:focus-visible {
   outline: 3px solid rgba(173, 134, 61, 0.45);
   outline-offset: 2px;
 }
@@ -1101,7 +1478,7 @@
   }
 }
 
-/* Booking popup: tablets & phones */
+/* Popups: tablets & phones */
 @media (max-width: 640px) {
   .bk-backdrop {
     align-items: flex-end;
@@ -1130,8 +1507,8 @@
     grid-template-columns: 1fr 1fr;
     gap: 14px 12px;
   }
-  /* Date, time, phone, aadhar stack full width on phones */
-  .bk-grid .bk-field:nth-of-type(n + 4) {
+  /* Date, time, phone, aadhar, email go full width on phones */
+  .bk-grid:not(.bk-grid--plain) .bk-field:nth-of-type(n + 4) {
     grid-column: 1 / -1;
   }
   .bk-field input,
@@ -1164,6 +1541,9 @@
   }
   .bk-doc-tour {
     padding: 14px 16px 2px;
+  }
+  .bk-doc-route {
+    margin: 12px 16px 0;
   }
   .bk-doc-grid {
     padding: 14px 16px 16px;
@@ -1260,7 +1640,7 @@
   .exp-tour-card,
   .exp-hotel-card {
     width: 100%;
-    border-radius: 15px;
+    border-radius: 16px;
   }
   .exp-card-image-wrap {
     height: 225px;
@@ -1273,7 +1653,7 @@
     top: 12px;
     padding: 6px 8px;
     border-radius: 6px;
-    font-size: 7px;
+    font-size: 8px;
     letter-spacing: 0.5px;
   }
   .exp-duration {
@@ -1282,21 +1662,37 @@
   .exp-location {
     right: 12px;
   }
+  .exp-brand-badge {
+    left: 12px;
+    bottom: 12px;
+    padding: 6px 11px 6px 9px;
+    font-size: 10px;
+  }
   .exp-card-content,
   .exp-hotel-content {
     padding: 16px;
   }
   .exp-card-content h2,
   .exp-hotel-title-row h2 {
-    margin-bottom: 10px;
     font-size: 18px;
   }
-  .exp-route {
-    min-height: 35px;
+  .exp-tagline {
+    min-height: 0;
+    font-size: 12px;
+  }
+  .exp-pkg {
+    margin-top: 13px;
+  }
+  .exp-pkg-perks {
+    min-height: 0;
     font-size: 11px;
   }
-  .exp-route > span:first-child {
-    font-size: 15px;
+  .exp-route-card {
+    padding: 13px 14px;
+    gap: 10px;
+  }
+  .exp-route-point strong {
+    font-size: 12px;
   }
   .exp-card-footer,
   .exp-hotel-footer {
@@ -1313,12 +1709,12 @@
     font-size: 8px;
   }
   .exp-price-row strong {
-    font-size: 20px;
+    font-size: 21px;
   }
   .exp-primary-btn {
     width: 100%;
-    min-height: 42px;
-    font-size: 11px;
+    min-height: 44px;
+    font-size: 12px;
   }
   .exp-mobile-controls {
     display: flex;
@@ -1379,7 +1775,7 @@
   }
   .exp-room-info {
     gap: 7px;
-    margin-top: 13px;
+    margin: 13px 0 0;
   }
   .exp-room-info > div {
     padding: 8px;
@@ -1432,6 +1828,7 @@
 /* Focus & motion */
 .exp-tab:focus-visible,
 .exp-primary-btn:focus-visible,
+.exp-pkg-pill:focus-visible,
 .exp-mobile-controls button:focus-visible {
   outline: 3px solid rgba(173, 134, 61, 0.35);
   outline-offset: 2px;
@@ -1442,6 +1839,11 @@
   .exp-hotel-card,
   .exp-card-image,
   .exp-hotel-image,
+  .exp-route-boat,
+  .exp-price-row,
+  .exp-pkg-perks.is-warning,
+  .av-result,
+  .av-spinner,
   .bk-backdrop,
   .bk-modal,
   .bk-check circle,

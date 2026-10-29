@@ -7,6 +7,108 @@ import boatServiceFour from "../../assets/boatservice-4.png";
 import boatServiceFive from "../../assets/boatservice-5.png";
 import boatServiceSix from "../../assets/boatservice-6.png";
 
+// ============================================
+// WHATSAPP SETTINGS
+// ============================================
+
+const WHATSAPP_NUMBER = "918328982394"; // country code + number, digits only
+const WHATSAPP_DISPLAY = "+91 83289 82394";
+const GENERAL_MESSAGE =
+  "Hello Bhitarkanika Boat Service! I would like to know about safari boat availability and today's tide timings.";
+
+const whatsappLink = (message) =>
+  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+
+// ============================================
+// SMALL HELPERS
+// ============================================
+
+const todayISO = () => {
+  const d = new Date();
+  const p = (n) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+};
+
+const formatDate = (iso) => {
+  if (!iso) return "Not selected";
+  const [y, m, d] = iso.split("-").map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+};
+
+const ICONS = {
+  pin: (
+    <>
+      <path d="M12 21s7-6.2 7-11.5a7 7 0 1 0-14 0C5 14.8 12 21 12 21z" />
+      <circle cx="12" cy="9.5" r="2.5" />
+    </>
+  ),
+  mail: (
+    <>
+      <rect x="3" y="5" width="18" height="14" rx="2.5" />
+      <path d="m4 7 8 6 8-6" />
+    </>
+  ),
+  clock: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 2" />
+    </>
+  ),
+  users: (
+    <>
+      <circle cx="9" cy="8" r="3.2" />
+      <path d="M3 20a6 6 0 0 1 12 0" />
+      <circle cx="17" cy="9" r="2.5" />
+      <path d="M17 14.5a5 5 0 0 1 4 5.5" />
+    </>
+  ),
+  chat: (
+    <>
+      <path d="M21 12a8 8 0 0 1-11.7 7.1L4 20l1-4.6A8 8 0 1 1 21 12z" />
+    </>
+  ),
+};
+
+const Icon = ({ name }) => (
+  <svg
+    className="BoatService__icon"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.7"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    {ICONS[name]}
+  </svg>
+);
+
+const WaIcon = () => (
+  <svg className="BoatService__waIcon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M20.52 3.48A11.86 11.86 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.9c0 2.1.55 4.14 1.6 5.95L0 24l6.3-1.65a11.9 11.9 0 0 0 5.74 1.46h.01c6.55 0 11.9-5.34 11.9-11.9 0-3.18-1.24-6.17-3.43-8.43zM12.05 21.8h-.01a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.87 9.87 0 0 1-1.52-5.27c0-5.46 4.44-9.9 9.91-9.9 2.64 0 5.13 1.03 7 2.9a9.84 9.84 0 0 1 2.9 7c0 5.46-4.45 9.9-9.9 9.9zm5.43-7.42c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.14-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z" />
+  </svg>
+);
+
+const WhatsAppLink = ({ message = GENERAL_MESSAGE, className, children }) => (
+  <a
+    className={className}
+    href={whatsappLink(message)}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    {children}
+  </a>
+);
+
+// ============================================
+// DATA
+// ============================================
+
 const galleryImages = [
   {
     src: boatServiceImg,
@@ -53,6 +155,33 @@ const navTabs = [
   { id: "wildlife-gallery", label: "Sanctuary Gallery" },
 ];
 
+const heroStats = [
+  { value: "8", label: "Kingfisher species" },
+  { value: "Oct – Mar", label: "Best safari season" },
+  { value: "8 – 20", label: "Seater boats" },
+  { value: "3.5 – 4 hrs", label: "Standard safari" },
+];
+
+const GATE_OPTIONS = [
+  "Khola Gate (Direct to Dangmal)",
+  "Gupti Gate (Estuary & Islands)",
+  "Chandbali Ghat (River Transit)",
+];
+
+const GUEST_OPTIONS = [
+  "1–4 Persons (Private Small Boat)",
+  "5–8 Persons (Standard Safari Vessel)",
+  "9–14 Persons (Large Group Cruiser)",
+  "15+ Persons (Corporate / School Tour)",
+];
+
+const SERVICE_OPTIONS = [
+  "Morning Wildlife & Crocodile Safari (4 hrs)",
+  "Afternoon Sunset Creek Safari (3 hrs)",
+  "Full Day Gupti & Habalikhati Coastal Cruise (6-7 hrs)",
+  "Bird Photography Low-Speed Private Charter",
+];
+
 const safariPackages = [
   {
     tag: "MOST POPULAR",
@@ -61,25 +190,31 @@ const safariPackages = [
     duration: "3.5 to 4 Hours",
     highlights:
       "Saltwater crocodile sightings, mangrove birding, Dangmal museum walk, tidal creeks.",
-    capacity: "Up to 8 / 14 / 20 Seater Boats Available",
+    capacity: "8 / 14 / 20 seater boats available",
+    gate: GATE_OPTIONS[0],
+    service: SERVICE_OPTIONS[0],
   },
   {
     tag: "COASTAL EXPEDITION",
     title: "Gupti Estuary & Island Cruise",
     route: "Gupti Gate → Habalikhati Beach → Hukitola Lighthouse Creek",
-    duration: "Full Day / 6–7 Hours (High Tide Dependent)",
+    duration: "Full day · 6–7 hours (high tide dependent)",
     highlights:
       "Olive ridley coastal creeks, historic British storehouse at Hukitola, dolphin sightings.",
-    capacity: "Authorized Marine Cruisers (Up to 10–12 Pax)",
+    capacity: "Authorized marine cruisers · 10–12 guests",
+    gate: GATE_OPTIONS[1],
+    service: SERVICE_OPTIONS[2],
   },
   {
     tag: "PHOTOGRAPHY FOCUS",
     title: "Private Birding & Macro Safari",
     route: "Customised low-wake river cruise covering Suajore & interior creeks",
-    duration: "Early Morning (6:30 AM – 10:30 AM)",
+    duration: "Early morning · 6:30 AM – 10:30 AM",
     highlights:
-      "8 Kingfisher species, White-bellied Sea Eagle, mudskippers, and basking giants.",
-    capacity: "Private Custom Boat with Eco Guide",
+      "8 kingfisher species, White-bellied Sea Eagle, mudskippers, and basking giants.",
+    capacity: "Private custom boat with eco guide",
+    gate: GATE_OPTIONS[0],
+    service: SERVICE_OPTIONS[3],
   },
 ];
 
@@ -106,43 +241,93 @@ const planningFAQs = [
   },
 ];
 
+const INITIAL_FORM = {
+  name: "",
+  email: "",
+  phone: "",
+  travelDate: "",
+  entryGate: GATE_OPTIONS[0],
+  guests: GUEST_OPTIONS[0],
+  service: SERVICE_OPTIONS[0],
+  notes: "",
+};
+
+const buildBookingMessage = (d) =>
+  [
+    "Hello Bhitarkanika Boat Service! I would like to book a safari boat.",
+    "",
+    `Name: ${d.name}`,
+    `Mobile: ${d.phone}`,
+    `Email: ${d.email}`,
+    `Safari date: ${formatDate(d.travelDate)}`,
+    `Service: ${d.service}`,
+    `Entry jetty: ${d.entryGate}`,
+    `Passengers: ${d.guests}`,
+    d.notes ? `Notes: ${d.notes}` : null,
+  ]
+    .filter((line) => line !== null)
+    .join("\n");
+
+// ============================================
+// COMPONENT
+// ============================================
+
 const BoatService = () => {
   const [activeTab, setActiveTab] = useState("boat-safari");
   const [activeImage, setActiveImage] = useState(null);
   const [faqIndex, setFaqIndex] = useState(0);
-  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [form, setForm] = useState(INITIAL_FORM);
+  const [submitted, setSubmitted] = useState(null); // holds the sent form data
 
-  const handleTabChange = (tabId) => {
-    setActiveTab(tabId);
-
-    if (tabId === "trip-planning") {
-      setFaqIndex(0);
-    }
-
-    if (tabId === "enquire-trip") {
-      setFormSubmitted(false);
-    }
-
+  const scrollToTop = () => {
     document.getElementById("boat-services")?.scrollIntoView({
       behavior: "smooth",
       block: "start",
     });
   };
 
+  const handleTabChange = (tabId) => {
+    setActiveTab(tabId);
+    if (tabId === "trip-planning") setFaqIndex(0);
+    if (tabId === "enquire-trip") setSubmitted(null);
+    scrollToTop();
+  };
+
+  // "Book" button on a package card: open the form with that package filled in
+  const handleBookPackage = (pkg) => {
+    setForm((prev) => ({ ...prev, entryGate: pkg.gate, service: pkg.service }));
+    handleTabChange("enquire-trip");
+  };
+
+  const updateField = (event) => {
+    const { name, value } = event.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // TODO: also send `form` to your backend / email service here.
+    setSubmitted({ ...form });
+    scrollToTop();
+  };
+
+  const handleNewRequest = () => {
+    setForm(INITIAL_FORM);
+    setSubmitted(null);
+  };
+
+  // Lightbox: keyboard + scroll lock
   useEffect(() => {
     if (activeImage === null) return undefined;
 
     const handleKeyDown = (event) => {
-      if (event.key === "Escape") {
-        setActiveImage(null);
-      }
+      if (event.key === "Escape") setActiveImage(null);
       if (event.key === "ArrowRight") {
         setActiveImage((current) => (current + 1) % galleryImages.length);
       }
       if (event.key === "ArrowLeft") {
         setActiveImage(
-          (current) =>
-            (current - 1 + galleryImages.length) % galleryImages.length
+          (current) => (current - 1 + galleryImages.length) % galleryImages.length
         );
       }
     };
@@ -175,10 +360,11 @@ const BoatService = () => {
               </h1>
 
               <p className="BoatService__lead">
-                Traverse India’s second largest mangrove delta aboard authorized motor
-                vessels. Cruise past pristine mudflats, witness giant saltwater
-                crocodiles bask under the morning sun, and explore the dense labyrinth
-                of the Brahmani, Baitarani, and Dhamra river channels.
+                Traverse India’s second largest mangrove delta aboard authorized
+                motor vessels. Cruise past pristine mudflats, watch giant
+                saltwater crocodiles bask in the morning sun, and explore the
+                dense labyrinth of the Brahmani, Baitarani, and Dhamra river
+                channels with a certified local guide beside you.
               </p>
 
               <figure className="BoatService__heroFigure">
@@ -187,6 +373,10 @@ const BoatService = () => {
                   src={boatServiceImg}
                   alt="Authorized safari boat cruising through Bhitarkanika mangrove waters"
                 />
+
+                <span className="BoatService__heroChip">
+                  <Icon name="pin" /> Khola · Gupti · Chandbali
+                </span>
 
                 <figcaption className="BoatService__heroCaption">
                   <span className="BoatService__heroCaptionDot" />
@@ -197,6 +387,15 @@ const BoatService = () => {
                 </figcaption>
               </figure>
 
+              <div className="BoatService__stats">
+                {heroStats.map((stat) => (
+                  <div key={stat.label} className="BoatService__stat">
+                    <strong>{stat.value}</strong>
+                    <span>{stat.label}</span>
+                  </div>
+                ))}
+              </div>
+
               {/* SAFARI HIGHLIGHT PILLARS */}
               <div className="BoatService__featureGrid">
                 <div className="BoatService__specBox">
@@ -204,8 +403,8 @@ const BoatService = () => {
                   <h3>Scheduled Gate Departures</h3>
                   <p>
                     Daily morning (6:30 AM – 10:30 AM) and afternoon (1:30 PM –
-                    5:00 PM) safari departures from Khola and Gupti entry gates
-                    mapped with tidal cycles.
+                    5:00 PM) safari departures from Khola and Gupti entry gates,
+                    mapped to the tidal cycle.
                   </p>
                 </div>
 
@@ -213,8 +412,8 @@ const BoatService = () => {
                   <span className="BoatService__specNum">02</span>
                   <h3>Certified Eco Guides</h3>
                   <p>
-                    Every boat safari includes a Forest Department trained guide
-                    who tracks saltwater crocodiles, water monitor lizards,
+                    Every safari includes a Forest Department trained guide who
+                    tracks saltwater crocodiles, water monitor lizards,
                     kingfishers, and migratory waterfowl.
                   </p>
                 </div>
@@ -223,9 +422,9 @@ const BoatService = () => {
                   <span className="BoatService__specNum">03</span>
                   <h3>Certified Safety Fleet</h3>
                   <p>
-                    Rigid multi-passenger motorboats fitted with lifejackets for
-                    each guest, high-walled safety railings, first-aid kits, and
-                    low-noise propulsion engines.
+                    Rigid multi-passenger motorboats with a lifejacket for every
+                    guest, high-walled railings, first-aid kits, and low-noise
+                    engines.
                   </p>
                 </div>
               </div>
@@ -245,13 +444,34 @@ const BoatService = () => {
                       <p className="BoatService__packageRoute">
                         <strong>Route:</strong> {pkg.route}
                       </p>
+
                       <div className="BoatService__packageMeta">
-                        <span>⏱ {pkg.duration}</span>
-                        <span>👥 {pkg.capacity}</span>
+                        <span>
+                          <Icon name="clock" /> {pkg.duration}
+                        </span>
+                        <span>
+                          <Icon name="users" /> {pkg.capacity}
+                        </span>
                       </div>
-                      <p className="BoatService__packageDesc">
-                        {pkg.highlights}
-                      </p>
+
+                      <p className="BoatService__packageDesc">{pkg.highlights}</p>
+
+                      <div className="BoatService__packageActions">
+                        <button
+                          type="button"
+                          className="BoatService__pkgBtn"
+                          onClick={() => handleBookPackage(pkg)}
+                        >
+                          Book This Safari ↗
+                        </button>
+
+                        <WhatsAppLink
+                          className="BoatService__pkgBtn BoatService__pkgBtn--wa"
+                          message={`Hello Bhitarkanika Boat Service! I'm interested in the "${pkg.title}". Please share availability and pricing.`}
+                        >
+                          <WaIcon /> Ask on WhatsApp
+                        </WhatsAppLink>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -261,18 +481,23 @@ const BoatService = () => {
                 <div>
                   <h3>Ready for a River Expedition in Bhitarkanika?</h3>
                   <p>
-                    Pre-reserve private or shared boats to secure preferred gate
-                    clearance and eco-guide allocation during peak tourist seasons.
+                    Pre-reserve a private or shared boat to secure your preferred
+                    gate clearance and eco-guide during peak tourist season.
                   </p>
                 </div>
 
-                <button
-                  type="button"
-                  className="BoatService__btnPrimary"
-                  onClick={() => handleTabChange("enquire-trip")}
-                >
-                  Reserve Safari Boat ↗
-                </button>
+                <div className="BoatService__bannerActions">
+                  <button
+                    type="button"
+                    className="BoatService__btnPrimary"
+                    onClick={() => handleTabChange("enquire-trip")}
+                  >
+                    Reserve Safari Boat ↗
+                  </button>
+                  <WhatsAppLink className="BoatService__btnWhatsApp">
+                    <WaIcon /> Chat on WhatsApp
+                  </WhatsAppLink>
+                </div>
               </div>
             </div>
           )}
@@ -286,14 +511,13 @@ const BoatService = () => {
               </div>
 
               <h1 className="BoatService__pageTitle">
-                Everything Required{" "}
-                <span>To Plan Your Boat Safari.</span>
+                Everything Required <span>To Plan Your Boat Safari.</span>
               </h1>
 
               <p className="BoatService__lead">
-                Ensure a hassle-free trip to Bhitarkanika Wildlife Sanctuary with
-                updated rules on entry checkpoints, boat permissions, tidal
-                timelines, and transit logistics.
+                Plan a smooth trip to Bhitarkanika Wildlife Sanctuary with clear
+                guidance on entry checkpoints, boat permissions, tidal timelines,
+                and how to reach each departure jetty.
               </p>
 
               <div className="BoatService__planAccordion">
@@ -303,9 +527,7 @@ const BoatService = () => {
                   return (
                     <div
                       key={item.q}
-                      className={`BoatService__planItem ${
-                        isOpen ? "is-open" : ""
-                      }`}
+                      className={`BoatService__planItem ${isOpen ? "is-open" : ""}`}
                     >
                       <button
                         type="button"
@@ -313,18 +535,16 @@ const BoatService = () => {
                         className="BoatService__planTrigger"
                         onClick={() => setFaqIndex(isOpen ? -1 : index)}
                       >
-                        <span>
-                          {String(index + 1).padStart(2, "0")}. {item.q}
+                        <span className="BoatService__planIndex">
+                          {String(index + 1).padStart(2, "0")}
                         </span>
-
+                        <span className="BoatService__planQuestion">{item.q}</span>
                         <span className="BoatService__planToggle">
                           {isOpen ? "−" : "+"}
                         </span>
                       </button>
 
-                      {isOpen && (
-                        <p className="BoatService__planAnswer">{item.a}</p>
-                      )}
+                      {isOpen && <p className="BoatService__planAnswer">{item.a}</p>}
                     </div>
                   );
                 })}
@@ -349,40 +569,48 @@ const BoatService = () => {
 
                   <li>
                     <strong>Nearest Airport:</strong> Biju Patnaik International
-                    Airport (BBI), Bhubaneswar, connects daily flights from all
-                    prime Indian metros.
+                    Airport (BBI), Bhubaneswar, with daily flights from all major
+                    Indian metros.
                   </li>
                 </ul>
 
                 <p className="BoatService__routeNote">
                   <strong>Important Sanctuary Advisory:</strong> The park remains
-                  strictly closed during the crocodile breeding season from May
-                  1 to July 31 annually. Advance permit reservations are
+                  strictly closed during the crocodile breeding season from May 1
+                  to July 31 annually. Advance permit reservations are
                   recommended for winter weekends.
                 </p>
               </div>
 
               <div className="BoatService__actionBanner">
                 <div>
-                  <h3>Have Specific Group or Timing Inquiries?</h3>
+                  <h3>Have Specific Group or Timing Questions?</h3>
                   <p>
-                    Talk directly to local boat managers for customized
-                    multi-hour river itineraries and student nature camps.
+                    Talk directly to our boat service team for custom multi-hour
+                    river itineraries and student nature camps.
                   </p>
                 </div>
 
-                <button
-                  type="button"
-                  className="BoatService__btnPrimary"
-                  onClick={() => handleTabChange("enquire-trip")}
-                >
-                  Send Travel Inquiry ↗
-                </button>
+                <div className="BoatService__bannerActions">
+                  <button
+                    type="button"
+                    className="BoatService__btnPrimary"
+                    onClick={() => handleTabChange("enquire-trip")}
+                  >
+                    Send Travel Inquiry ↗
+                  </button>
+                  <WhatsAppLink
+                    className="BoatService__btnWhatsApp"
+                    message="Hello Bhitarkanika Boat Service! I have a question about group size and safari timing."
+                  >
+                    <WaIcon /> Chat on WhatsApp
+                  </WhatsAppLink>
+                </div>
               </div>
             </div>
           )}
 
-          {/* 3. ENQUIRE ABOUT A TRIP */}
+          {/* 3. BOOK A SAFARI BOAT */}
           {activeTab === "enquire-trip" && (
             <div className="BoatService__viewPane">
               <div className="BoatService__eyebrow">
@@ -395,58 +623,81 @@ const BoatService = () => {
               </h1>
 
               <p className="BoatService__lead">
-                Submit your expected travel dates and party details. Our boat desk
-                will verify tidal conditions, check forest boat permits, and
-                confirm vessel availability.
+                Share your travel date and group details. Our boat desk checks
+                tidal conditions and boat availability, then confirms your
+                safari on WhatsApp.
               </p>
 
-              {formSubmitted ? (
+              {submitted ? (
                 <div className="BoatService__formSuccess">
                   <span className="BoatService__checkIcon">✓</span>
 
-                  <h3>Safari Inquiry Received!</h3>
+                  <h3>One last step, {submitted.name.split(" ")[0]}!</h3>
 
                   <p>
-                    Your request has been logged successfully. Our tour desk will
-                    review water tidal timings for your selected date and contact
-                    you with boat options and permit assistance.
+                    Your safari request is ready. Send it to our boat service
+                    team on WhatsApp so we can confirm tide timings, boat
+                    availability and permit help for your date.
                   </p>
 
-                  <button
-                    type="button"
-                    className="BoatService__btnPrimary"
-                    onClick={() => setFormSubmitted(false)}
-                  >
-                    Submit Another Booking Request
-                  </button>
+                  <dl className="BoatService__summary">
+                    <div>
+                      <dt>Safari date</dt>
+                      <dd>{formatDate(submitted.travelDate)}</dd>
+                    </div>
+                    <div>
+                      <dt>Entry jetty</dt>
+                      <dd>{submitted.entryGate}</dd>
+                    </div>
+                    <div>
+                      <dt>Passengers</dt>
+                      <dd>{submitted.guests}</dd>
+                    </div>
+                    <div>
+                      <dt>Service</dt>
+                      <dd>{submitted.service}</dd>
+                    </div>
+                  </dl>
+
+                  <div className="BoatService__successActions">
+                    <WhatsAppLink
+                      className="BoatService__btnWhatsApp BoatService__btnWhatsApp--large"
+                      message={buildBookingMessage(submitted)}
+                    >
+                      <WaIcon /> Send Request on WhatsApp
+                    </WhatsAppLink>
+
+                    <button
+                      type="button"
+                      className="BoatService__btnGhost"
+                      onClick={handleNewRequest}
+                    >
+                      New Booking Request
+                    </button>
+                  </div>
                 </div>
               ) : (
-                <form
-                  className="BoatService__form"
-                  onSubmit={(event) => {
-                    event.preventDefault();
-                    setFormSubmitted(true);
-                  }}
-                >
+                <form className="BoatService__form" onSubmit={handleSubmit}>
                   <div className="BoatService__formHeading">
-                    <span>BHITARKANIKA TOUR DESK</span>
+                    <span>BHITARKANIKA BOAT SERVICE</span>
                     <h3>Safari Boat Booking Form</h3>
                     <p>
-                      Mandatory fields for Forest Department passenger permits (*).
+                      Fields marked * are needed for Forest Department passenger
+                      permits.
                     </p>
                   </div>
 
                   <div className="BoatService__formGrid">
                     <div className="BoatService__inputGroup">
-                      <label htmlFor="BoatService-name">
-                        Lead Passenger Name *
-                      </label>
+                      <label htmlFor="BoatService-name">Lead Passenger Name *</label>
                       <input
                         id="BoatService-name"
                         name="name"
                         type="text"
                         placeholder="e.g. Debashis Mohapatra"
                         autoComplete="name"
+                        value={form.name}
+                        onChange={updateField}
                         required
                       />
                     </div>
@@ -459,6 +710,8 @@ const BoatService = () => {
                         type="email"
                         placeholder="debashis@example.com"
                         autoComplete="email"
+                        value={form.email}
+                        onChange={updateField}
                         required
                       />
                     </div>
@@ -471,118 +724,102 @@ const BoatService = () => {
                         id="BoatService-phone"
                         name="phone"
                         type="tel"
+                        inputMode="tel"
                         placeholder="+91 94370 XXXXX"
                         autoComplete="tel"
+                        pattern="[0-9+ ]{10,15}"
+                        title="Enter a valid mobile number (10 to 15 digits)"
+                        value={form.phone}
+                        onChange={updateField}
                         required
                       />
                     </div>
 
                     <div className="BoatService__inputGroup">
-                      <label htmlFor="BoatService-date">
-                        Expected Safari Date *
-                      </label>
+                      <label htmlFor="BoatService-date">Expected Safari Date *</label>
                       <input
                         id="BoatService-date"
                         name="travelDate"
                         type="date"
-                        min={new Date().toISOString().split("T")[0]}
+                        min={todayISO()}
+                        value={form.travelDate}
+                        onChange={updateField}
                         required
                       />
                     </div>
 
                     <div className="BoatService__inputGroup">
-                      <label htmlFor="BoatService-entryGate">
-                        Preferred Entry Jetty
-                      </label>
+                      <label htmlFor="BoatService-entryGate">Preferred Entry Jetty</label>
                       <select
                         id="BoatService-entryGate"
                         name="entryGate"
-                        defaultValue="Khola Gate (Direct to Dangmal)"
+                        value={form.entryGate}
+                        onChange={updateField}
                       >
-                        <option value="Khola Gate (Direct to Dangmal)">
-                          Khola Gate (Direct to Dangmal)
-                        </option>
-                        <option value="Gupti Gate (Estuary & Islands)">
-                          Gupti Gate (Estuary & Islands)
-                        </option>
-                        <option value="Chandbali Ghat">
-                          Chandbali Ghat (River Transit)
-                        </option>
+                        {GATE_OPTIONS.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
                       </select>
                     </div>
 
                     <div className="BoatService__inputGroup">
-                      <label htmlFor="BoatService-guests">
-                        Number of Passengers
-                      </label>
+                      <label htmlFor="BoatService-guests">Number of Passengers</label>
                       <select
                         id="BoatService-guests"
                         name="guests"
-                        defaultValue="1–4 Persons (Private Small Boat)"
+                        value={form.guests}
+                        onChange={updateField}
                       >
-                        <option value="1–4 Persons (Private Small Boat)">
-                          1–4 Persons (Private Small Boat)
-                        </option>
-                        <option value="5–8 Persons (Standard Safari Vessel)">
-                          5–8 Persons (Standard Safari Vessel)
-                        </option>
-                        <option value="9–14 Persons (Large Group Cruiser)">
-                          9–14 Persons (Large Group Cruiser)
-                        </option>
-                        <option value="15+ Persons (Corporate / School Tour)">
-                          15+ Persons (Corporate / School Tour)
-                        </option>
+                        {GUEST_OPTIONS.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
                       </select>
                     </div>
 
                     <div className="BoatService__inputGroup BoatService__inputGroup--full">
-                      <label htmlFor="BoatService-service">
-                        Select Safari Service Tier
-                      </label>
+                      <label htmlFor="BoatService-service">Select Safari Service</label>
                       <select
                         id="BoatService-service"
                         name="service"
-                        defaultValue="Morning Wildlife & Crocodile Safari (4 hrs)"
+                        value={form.service}
+                        onChange={updateField}
                       >
-                        <option value="Morning Wildlife & Crocodile Safari (4 hrs)">
-                          Morning Wildlife & Crocodile Safari (4 hrs) — Peak
-                          Basking Window
-                        </option>
-                        <option value="Afternoon Sunset Safari (3 hrs)">
-                          Afternoon Sunset Creek Safari (3 hrs)
-                        </option>
-                        <option value="Full Day Gupti & Habalikhati Coastal Cruise">
-                          Full Day Gupti & Habalikhati Coastal Cruise (6-7 hrs)
-                        </option>
-                        <option value="Bird Photography Low-Speed Private Charter">
-                          Bird Photography Low-Speed Private Charter (Custom
-                          Timing)
-                        </option>
+                        {SERVICE_OPTIONS.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
                       </select>
+                    </div>
+
+                    <div className="BoatService__inputGroup BoatService__inputGroup--full">
+                      <label htmlFor="BoatService-notes">
+                        Special Requirements / Pick-up Details
+                      </label>
+                      <textarea
+                        id="BoatService-notes"
+                        name="notes"
+                        rows="4"
+                        placeholder="Tell us if you need forest cottage arrangements, binoculars, a dedicated nature guide, or dietary accommodations..."
+                        value={form.notes}
+                        onChange={updateField}
+                      />
                     </div>
                   </div>
 
-                  <div className="BoatService__inputGroup">
-                    <label htmlFor="BoatService-notes">
-                      Special Requirements / Pick-up Details
-                    </label>
-                    <textarea
-                      id="BoatService-notes"
-                      name="notes"
-                      rows="4"
-                      placeholder="Let us know if you need forest cottage arrangements, binoculars, dedicated nature guide, or dietary accommodations..."
-                    />
-                  </div>
-
                   <button type="submit" className="BoatService__submitBtn">
-                    Submit Safari Booking Request ↗
+                    Continue to Confirm on WhatsApp ↗
                   </button>
                 </form>
               )}
             </div>
           )}
 
-          {/* 4. WILDLIFE GALLERY */}
+          {/* 4. SANCTUARY GALLERY */}
           {activeTab === "wildlife-gallery" && (
             <div className="BoatService__viewPane">
               <div className="BoatService__eyebrow">
@@ -595,8 +832,8 @@ const BoatService = () => {
               </h1>
 
               <p className="BoatService__lead">
-                Browse our fleet and safari routes across Bhitarkanika. Click any
-                photograph to view it enlarged with details.
+                Browse our fleet and safari routes across Bhitarkanika. Tap any
+                photograph to view it full screen with route details.
               </p>
 
               <div className="BoatService__galleryPageGrid">
@@ -616,7 +853,7 @@ const BoatService = () => {
                         {img.title}
                       </span>
                       <span className="BoatService__galleryLocation">
-                        <span aria-hidden="true">📍</span> {img.location}
+                        <Icon name="pin" /> {img.location}
                       </span>
                     </span>
                   </button>
@@ -635,10 +872,7 @@ const BoatService = () => {
               <h2>Explore Services</h2>
             </div>
 
-            <nav
-              className="BoatService__serviceNav"
-              aria-label="Explore services"
-            >
+            <nav className="BoatService__serviceNav" aria-label="Explore services">
               {navTabs.map((tab) => {
                 const isSelected = activeTab === tab.id;
 
@@ -658,7 +892,7 @@ const BoatService = () => {
             </nav>
           </div>
 
-          {/* SUPPORT CARD */}
+          {/* SUPPORT CARD → WHATSAPP */}
           <div className="BoatService__supportCard">
             <div className="BoatService__supportIcon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none">
@@ -668,30 +902,9 @@ const BoatService = () => {
                   strokeWidth="1.8"
                   strokeLinecap="round"
                 />
-                <rect
-                  x="3.5"
-                  y="11"
-                  width="4"
-                  height="7"
-                  rx="1.5"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                />
-                <rect
-                  x="16.5"
-                  y="11"
-                  width="4"
-                  height="7"
-                  rx="1.5"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                />
-                <path
-                  d="M18 18c0 2-2 3-5 3h-1"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                />
+                <rect x="3.5" y="11" width="4" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8" />
+                <rect x="16.5" y="11" width="4" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8" />
+                <path d="M18 18c0 2-2 3-5 3h-1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
               </svg>
             </div>
 
@@ -701,21 +914,26 @@ const BoatService = () => {
             </div>
 
             <p>
-              Tidal levels dictate daily crocodile viewing quality. Speak with our
-              local dock operators for today’s tide timetable and permit paperwork.
+              Tidal levels shape daily crocodile viewing. Message our boat
+              service team for today’s tide timetable, boat availability and
+              permit help.
             </p>
 
-            <button
-              type="button"
-              className="BoatService__supportLink"
-              onClick={() => handleTabChange("enquire-trip")}
-            >
-              <span>Connect with Jetty Desk</span>
-              <span aria-hidden="true">↗</span>
-            </button>
+            <WhatsAppLink className="BoatService__supportWa">
+              <span className="BoatService__waBadge">
+                <WaIcon />
+              </span>
+              <span className="BoatService__waText">
+                <strong>Connect with Boat Service</strong>
+                <small>Chat on WhatsApp · {WHATSAPP_DISPLAY}</small>
+              </span>
+              <span className="BoatService__waArrow" aria-hidden="true">
+                ↗
+              </span>
+            </WhatsAppLink>
           </div>
 
-          {/* TRAVEL ESSENTIALS */}
+          {/* QUICK LINKS */}
           <div className="BoatService__sideBox BoatService__downloads">
             <div className="BoatService__sideTitle">
               <span />
@@ -749,15 +967,12 @@ const BoatService = () => {
           <div className="BoatService__sideBox BoatService__contactBox">
             <div className="BoatService__sideTitle">
               <span />
-              <h2>Jetty Information</h2>
+              <h2>Boat Information</h2>
             </div>
 
             <div className="BoatService__contactInfo">
-              <span
-                className="BoatService__contactInfoIcon"
-                aria-hidden="true"
-              >
-                📍
+              <span className="BoatService__contactInfoIcon">
+                <Icon name="pin" />
               </span>
               <div>
                 <strong>Primary Jetty Location</strong>
@@ -769,11 +984,18 @@ const BoatService = () => {
             </div>
 
             <div className="BoatService__contactInfo">
-              <span
-                className="BoatService__contactInfoIcon"
-                aria-hidden="true"
-              >
-                ✉
+              <span className="BoatService__contactInfoIcon BoatService__contactInfoIcon--wa">
+                <WaIcon />
+              </span>
+              <div>
+                <strong>Boat Service WhatsApp</strong>
+                <WhatsAppLink>{WHATSAPP_DISPLAY}</WhatsAppLink>
+              </div>
+            </div>
+
+            <div className="BoatService__contactInfo">
+              <span className="BoatService__contactInfoIcon">
+                <Icon name="mail" />
               </span>
               <div>
                 <strong>Official Inquiries</strong>
@@ -784,11 +1006,8 @@ const BoatService = () => {
             </div>
 
             <div className="BoatService__contactInfo">
-              <span
-                className="BoatService__contactInfoIcon"
-                aria-hidden="true"
-              >
-                🕒
+              <span className="BoatService__contactInfoIcon">
+                <Icon name="clock" />
               </span>
               <div>
                 <strong>Forest Gate Operational Hours</strong>
@@ -830,7 +1049,9 @@ const BoatService = () => {
               <div>
                 <span>{galleryImages[activeImage].category}</span>
                 <h3>{galleryImages[activeImage].title}</h3>
-                <small>📍 {galleryImages[activeImage].location}</small>
+                <small>
+                  <Icon name="pin" /> {galleryImages[activeImage].location}
+                </small>
               </div>
 
               <span className="BoatService__lightboxCount">
@@ -844,14 +1065,20 @@ const BoatService = () => {
                 type="button"
                 onClick={() =>
                   setActiveImage(
-                    (activeImage - 1 + galleryImages.length) %
-                      galleryImages.length
+                    (activeImage - 1 + galleryImages.length) % galleryImages.length
                   )
                 }
                 aria-label="Previous image"
               >
                 ← Previous
               </button>
+
+              <WhatsAppLink
+                className="BoatService__lightboxWa"
+                message={`Hello Bhitarkanika Boat Service! I liked "${galleryImages[activeImage].title}" (${galleryImages[activeImage].location}). Can I book this route?`}
+              >
+                <WaIcon /> Book this route
+              </WhatsAppLink>
 
               <button
                 type="button"
