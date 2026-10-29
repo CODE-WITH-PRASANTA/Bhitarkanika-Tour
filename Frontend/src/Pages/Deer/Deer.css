@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
 
 .Deer {
   --Deer-green: #158b58;
@@ -8,6 +8,9 @@
   --Deer-muted: #597164;
   --Deer-line: #e1ede5;
   --Deer-soft: #f4f8f5;
+  --Deer-mint: #79e3aa;
+  --Deer-wa: #25d366;
+  --Deer-wa-hover: #3be07b;
   --Deer-radius: 16px;
   --Deer-ease: cubic-bezier(0.16, 1, 0.3, 1);
 
@@ -32,16 +35,31 @@
   font: inherit;
 }
 
-.Deer button {
+.Deer button,
+.Deer a {
   -webkit-tap-highlight-color: transparent;
 }
 
 .Deer button:focus-visible,
+.Deer a:focus-visible,
 .Deer input:focus-visible,
 .Deer select:focus-visible,
 .Deer textarea:focus-visible {
   outline: 3px solid rgba(21, 139, 88, 0.35);
   outline-offset: 3px;
+}
+
+/* shared icons */
+.Deer__icon {
+  width: 1.15em;
+  height: 1.15em;
+  flex-shrink: 0;
+}
+
+.Deer__waIcon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
 }
 
 /* ==============================
@@ -69,7 +87,9 @@
   flex-direction: column;
   gap: 26px;
   padding: 65px clamp(20px, 3vw, 44px) 80px;
-  background: #f7faf8;
+  background:
+    radial-gradient(circle at 100% 0, rgba(21, 139, 88, 0.06), transparent 40%),
+    #f7faf8;
   border-left: 1px solid var(--Deer-line);
   align-self: stretch;
 }
@@ -148,11 +168,19 @@
 
 .Deer__heroFigure {
   position: relative;
-  margin: 0 0 38px;
+  margin: 0 0 22px;
   overflow: hidden;
-  border-radius: var(--Deer-radius);
+  border-radius: 20px;
   background: #e6eee8;
-  box-shadow: 0 16px 38px -12px rgba(10, 45, 34, 0.15);
+  box-shadow: 0 22px 46px -16px rgba(10, 45, 34, 0.28);
+}
+
+.Deer__heroFigure::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(4, 24, 17, 0.55), transparent 48%);
+  pointer-events: none;
 }
 
 .Deer__heroImage {
@@ -167,8 +195,31 @@
   transform: scale(1.035);
 }
 
+.Deer__heroChip {
+  position: absolute;
+  z-index: 2;
+  top: 16px;
+  left: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--Deer-forest);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+.Deer__heroChip .Deer__icon {
+  color: var(--Deer-green);
+}
+
 .Deer__heroCaption {
   position: absolute;
+  z-index: 2;
   right: 16px;
   bottom: 16px;
   display: inline-flex;
@@ -183,6 +234,7 @@
   font-size: 11.5px;
   line-height: 1.6;
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .Deer__heroCaptionDot {
@@ -190,8 +242,49 @@
   height: 8px;
   flex-shrink: 0;
   border-radius: 50%;
-  background: #73e6a8;
+  background: var(--Deer-mint);
   box-shadow: 0 0 0 4px rgba(115, 230, 168, 0.2);
+}
+
+/* ==============================
+   STATS STRIP
+============================== */
+
+.Deer__stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 30px;
+  border: 1px solid var(--Deer-line);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 10px 28px -14px rgba(10, 45, 34, 0.18);
+}
+
+.Deer__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 18px 16px;
+  text-align: center;
+}
+
+.Deer__stat + .Deer__stat {
+  border-left: 1px solid var(--Deer-line);
+}
+
+.Deer__stat strong {
+  color: var(--Deer-green);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.Deer__stat span {
+  color: var(--Deer-muted);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
 }
 
 /* ==============================
@@ -209,7 +302,7 @@
   min-width: 0;
   padding: 24px 19px;
   border: 1px solid var(--Deer-line);
-  border-radius: 13px;
+  border-radius: 14px;
   background: var(--Deer-soft);
   transition:
     transform 0.3s ease,
@@ -270,7 +363,7 @@
   margin: 6px 0 0;
   color: var(--Deer-forest);
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 24px;
+  font-size: 26px;
 }
 
 .Deer__packageGrid {
@@ -283,38 +376,53 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 22px 18px;
+  padding: 24px 18px 18px;
+  overflow: hidden;
   border: 1px solid var(--Deer-line);
-  border-radius: 13px;
+  border-radius: 16px;
   background: #fff;
   transition:
+    transform 0.3s ease,
     border-color 0.25s ease,
     box-shadow 0.25s ease;
 }
 
+.Deer__packageCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--Deer-green), var(--Deer-mint));
+}
+
 .Deer__packageCard:hover {
+  transform: translateY(-4px);
   border-color: #a4d7b7;
-  box-shadow: 0 10px 24px rgba(10, 45, 34, 0.06);
+  box-shadow: 0 16px 32px -10px rgba(10, 45, 34, 0.14);
 }
 
 .Deer__packageTag {
   display: inline-block;
   align-self: flex-start;
   margin-bottom: 10px;
-  padding: 3px 9px;
-  border-radius: 4px;
+  padding: 4px 10px;
+  border-radius: 5px;
   background: #e7f5ed;
   color: var(--Deer-green);
   font-size: 9px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 1px;
 }
 
 .Deer__packageCard h3 {
   margin: 0 0 8px;
   color: var(--Deer-forest);
-  font-size: 15px;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 18px;
   font-weight: 700;
+  line-height: 1.35;
 }
 
 .Deer__packageRoute {
@@ -324,11 +432,15 @@
   line-height: 1.7;
 }
 
+.Deer__packageRoute strong {
+  color: var(--Deer-forest);
+}
+
 .Deer__packageMeta {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  padding: 10px 0;
+  gap: 7px;
+  padding: 11px 0;
   margin-bottom: 10px;
   border-top: 1px dashed var(--Deer-line);
   border-bottom: 1px dashed var(--Deer-line);
@@ -337,11 +449,71 @@
   font-weight: 600;
 }
 
+.Deer__packageMeta > span {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.6;
+}
+
+.Deer__packageMeta .Deer__icon {
+  margin-top: 1px;
+  color: var(--Deer-green);
+}
+
 .Deer__packageDesc {
-  margin: 0;
+  margin: 0 0 18px;
   color: var(--Deer-muted);
   font-size: 11.5px;
   line-height: 1.7;
+}
+
+.Deer__packageActions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.Deer__pkgBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 42px;
+  padding: 10px 14px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: var(--Deer-forest);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.Deer__pkgBtn:hover {
+  transform: translateY(-2px);
+  background: var(--Deer-green);
+  box-shadow: 0 8px 18px rgba(21, 139, 88, 0.25);
+}
+
+.Deer__pkgBtn--wa {
+  border-color: #bfeccf;
+  background: #effaf3;
+  color: #0b5a34;
+}
+
+.Deer__pkgBtn--wa:hover {
+  border-color: var(--Deer-wa);
+  background: var(--Deer-wa);
+  color: #052e1c;
+  box-shadow: 0 8px 18px rgba(37, 211, 102, 0.3);
 }
 
 /* ==============================
@@ -352,26 +524,23 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 22px;
+  gap: 24px;
   margin-top: 20px;
-  padding: 30px;
+  padding: 32px;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--Deer-radius);
+  border-radius: 20px;
   background:
-    radial-gradient(
-      circle at 100% 0,
-      rgba(33, 181, 115, 0.17),
-      transparent 45%
-    ),
+    radial-gradient(circle at 100% 0, rgba(33, 181, 115, 0.2), transparent 45%),
     linear-gradient(135deg, #0e3d2e, #061c14);
   color: #fff;
+  box-shadow: 0 22px 44px -18px rgba(6, 28, 20, 0.5);
 }
 
 .Deer__actionBanner h3 {
   margin: 0 0 8px;
   color: #fff;
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 22px;
+  font-size: 23px;
   line-height: 1.4;
 }
 
@@ -380,6 +549,13 @@
   color: #b7d6c6;
   font-size: 12px;
   line-height: 1.8;
+}
+
+.Deer__bannerActions {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .Deer__btnPrimary {
@@ -408,6 +584,66 @@
   box-shadow: 0 8px 22px rgba(21, 139, 88, 0.3);
 }
 
+/* WhatsApp buttons */
+.Deer__btnWhatsApp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  gap: 9px;
+  padding: 13px 23px;
+  border: 1px solid transparent;
+  border-radius: 30px;
+  background: var(--Deer-wa);
+  color: #052e1c;
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.Deer__btnWhatsApp:hover {
+  transform: translateY(-2px);
+  background: var(--Deer-wa-hover);
+  box-shadow: 0 10px 24px rgba(37, 211, 102, 0.35);
+}
+
+.Deer__btnWhatsApp--large {
+  min-height: 52px;
+  padding: 14px 28px;
+  font-size: 13px;
+}
+
+.Deer__btnGhost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 14px 24px;
+  border: 1px solid #c9dfd1;
+  border-radius: 30px;
+  background: #fff;
+  color: var(--Deer-forest);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    border-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.Deer__btnGhost:hover {
+  transform: translateY(-2px);
+  border-color: var(--Deer-green);
+  color: var(--Deer-green);
+}
+
 /* ==============================
    ACCORDION
 ============================== */
@@ -422,7 +658,7 @@
 .Deer__planItem {
   overflow: hidden;
   border: 1px solid var(--Deer-line);
-  border-radius: 12px;
+  border-radius: 14px;
   background: #fff;
   transition:
     border-color 0.25s ease,
@@ -431,16 +667,15 @@
 
 .Deer__planItem.is-open {
   border-color: #a4d7b7;
-  box-shadow: 0 8px 20px rgba(10, 45, 34, 0.06);
+  box-shadow: 0 10px 24px rgba(10, 45, 34, 0.07);
 }
 
 .Deer__planTrigger {
   display: flex;
   width: 100%;
   align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 19px 21px;
+  gap: 16px;
+  padding: 18px 20px;
   border: 0;
   background: #fff;
   color: var(--Deer-forest);
@@ -454,6 +689,19 @@
 
 .Deer__planTrigger:hover {
   background: #f8fbf9;
+}
+
+.Deer__planIndex {
+  flex-shrink: 0;
+  color: var(--Deer-green);
+  font-family: "Cinzel", serif;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.Deer__planQuestion {
+  flex: 1;
+  min-width: 0;
 }
 
 .Deer__planToggle {
@@ -470,9 +718,14 @@
   line-height: 1;
 }
 
+.Deer__planItem.is-open .Deer__planToggle {
+  background: var(--Deer-green);
+  color: #fff;
+}
+
 .Deer__planAnswer {
   margin: 0;
-  padding: 0 21px 21px;
+  padding: 0 20px 22px 53px;
   color: var(--Deer-muted);
   font-size: 13px;
   line-height: 1.9;
@@ -483,9 +736,9 @@
 ============================== */
 
 .Deer__routeBox {
-  padding: 27px;
+  padding: 28px;
   border: 1px dashed #bddfcb;
-  border-radius: 14px;
+  border-radius: 16px;
   background: var(--Deer-soft);
 }
 
@@ -493,7 +746,7 @@
   margin: 0 0 17px;
   color: var(--Deer-forest);
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 21px;
+  font-size: 22px;
 }
 
 .Deer__routeBox ul {
@@ -510,15 +763,21 @@
   line-height: 1.8;
 }
 
+.Deer__routeBox li strong {
+  color: var(--Deer-forest);
+}
+
 .Deer__routeBox li::marker {
   color: var(--Deer-green);
 }
 
 .Deer__routeNote {
   margin: 18px 0 0;
-  padding-top: 15px;
-  border-top: 1px solid var(--Deer-line);
-  color: var(--Deer-muted);
+  padding: 14px 16px;
+  border-left: 3px solid #d9a441;
+  border-radius: 0 10px 10px 0;
+  background: #fff8e8;
+  color: #6b5421;
   font-size: 11.5px;
   line-height: 1.8;
 }
@@ -528,10 +787,11 @@
 ============================== */
 
 .Deer__form {
-  padding: 30px;
+  padding: 32px;
   border: 1px solid var(--Deer-line);
-  border-radius: var(--Deer-radius);
+  border-radius: 20px;
   background: var(--Deer-soft);
+  box-shadow: 0 18px 40px -22px rgba(10, 45, 34, 0.25);
 }
 
 .Deer__formHeading {
@@ -551,7 +811,7 @@
   margin: 7px 0;
   color: var(--Deer-forest);
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 24px;
+  font-size: 25px;
 }
 
 .Deer__formHeading p {
@@ -591,13 +851,13 @@
 .Deer__inputGroup textarea {
   width: 100%;
   min-width: 0;
-  min-height: 46px;
+  min-height: 48px;
   padding: 12px 14px;
   border: 1px solid #d4e2d8;
-  border-radius: 8px;
+  border-radius: 10px;
   background: #fff;
   color: var(--Deer-ink);
-  font-size: 12px;
+  font-size: 12.5px;
   line-height: 1.6;
   transition:
     border-color 0.2s ease,
@@ -627,62 +887,106 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  min-height: 49px;
+  min-height: 52px;
   padding: 14px 24px;
   border: 0;
-  border-radius: 9px;
-  background: var(--Deer-green);
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1aa468, #0f6f46);
   color: #fff;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   cursor: pointer;
   transition:
-    background 0.25s ease,
     transform 0.25s ease,
     box-shadow 0.25s ease;
 }
 
 .Deer__submitBtn:hover {
   transform: translateY(-2px);
-  background: var(--Deer-green-hover);
-  box-shadow: 0 10px 24px rgba(21, 139, 88, 0.22);
+  box-shadow: 0 12px 26px rgba(21, 139, 88, 0.3);
 }
 
 /* FORM SUCCESS */
 
 .Deer__formSuccess {
-  padding: 45px 28px;
+  padding: 42px 28px;
   border: 1px solid #bce2cb;
-  border-radius: var(--Deer-radius);
+  border-radius: 20px;
   background: var(--Deer-soft);
   text-align: center;
+  box-shadow: 0 18px 40px -22px rgba(10, 45, 34, 0.25);
 }
 
 .Deer__checkIcon {
   display: inline-flex;
-  width: 56px;
-  height: 56px;
+  width: 58px;
+  height: 58px;
   align-items: center;
   justify-content: center;
   margin-bottom: 17px;
   border-radius: 50%;
   background: var(--Deer-green);
   color: #fff;
-  font-size: 25px;
+  font-size: 26px;
+  box-shadow: 0 0 0 8px rgba(21, 139, 88, 0.14);
 }
 
 .Deer__formSuccess h3 {
   margin: 0 0 12px;
   color: var(--Deer-forest);
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 24px;
+  font-size: 26px;
 }
 
-.Deer__formSuccess p {
-  margin: 0 0 23px;
+.Deer__formSuccess > p {
+  max-width: 520px;
+  margin: 0 auto 24px;
   color: var(--Deer-muted);
-  font-size: 12px;
+  font-size: 12.5px;
   line-height: 1.9;
+}
+
+.Deer__summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0 0 26px;
+  overflow: hidden;
+  border: 1px solid var(--Deer-line);
+  border-radius: 14px;
+  background: var(--Deer-line);
+  text-align: left;
+}
+
+.Deer__summary > div {
+  min-width: 0;
+  padding: 14px 16px;
+  background: #fff;
+}
+
+.Deer__summary dt {
+  margin-bottom: 4px;
+  color: var(--Deer-green);
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.Deer__summary dd {
+  margin: 0;
+  color: var(--Deer-forest);
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.Deer__successActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
 }
 
 /* ==============================
@@ -704,11 +1008,19 @@
   overflow: hidden;
   aspect-ratio: 4 / 4.5;
   border: 0;
-  border-radius: 12px;
+  border-radius: 14px;
   background: #0d2a1f;
   text-align: left;
   cursor: pointer;
   isolation: isolate;
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.Deer__galleryPageCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 36px -14px rgba(6, 28, 20, 0.5);
 }
 
 .Deer__galleryPageCard > img {
@@ -743,7 +1055,7 @@
 }
 
 .Deer__galleryCardOverlay > span:first-child {
-  color: #79e3aa;
+  color: var(--Deer-mint);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 1.2px;
@@ -758,6 +1070,9 @@
 }
 
 .Deer__galleryLocation {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   color: #d4e6dc;
   font-size: 10px;
   line-height: 1.6;
@@ -818,7 +1133,7 @@
   gap: 13px;
   padding: 13px 15px;
   border: 1px solid transparent;
-  border-radius: 9px;
+  border-radius: 10px;
   background: #f3f7f4;
   color: #2b4035;
   text-align: left;
@@ -860,24 +1175,20 @@
 }
 
 /* ==============================
-   SUPPORT CARD
+   SUPPORT CARD (→ WhatsApp)
 ============================== */
 
 .Deer__supportCard {
   position: relative;
   overflow: hidden;
-  padding: 29px 24px;
+  padding: 29px 24px 24px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--Deer-radius);
+  border-radius: 20px;
   background:
-    radial-gradient(
-      circle at 100% 0,
-      rgba(33, 181, 115, 0.22),
-      transparent 50%
-    ),
+    radial-gradient(circle at 100% 0, rgba(33, 181, 115, 0.26), transparent 50%),
     linear-gradient(155deg, #0d3829, #061c14);
   color: #fff;
-  box-shadow: 0 16px 36px -10px rgba(6, 28, 20, 0.24);
+  box-shadow: 0 22px 44px -14px rgba(6, 28, 20, 0.4);
 }
 
 .Deer__supportIcon {
@@ -889,7 +1200,7 @@
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 13px;
   background: rgba(255, 255, 255, 0.1);
-  color: #79e3aa;
+  color: var(--Deer-mint);
 }
 
 .Deer__supportIcon svg {
@@ -902,7 +1213,7 @@
 }
 
 .Deer__supportHeading > span {
-  color: #79e3aa;
+  color: var(--Deer-mint);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 2px;
@@ -912,7 +1223,7 @@
   margin: 7px 0 0;
   color: #fff;
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 23px;
+  font-size: 24px;
   font-weight: 600;
   line-height: 1.35;
 }
@@ -924,27 +1235,97 @@
   line-height: 1.9;
 }
 
-.Deer__supportLink {
+.Deer__supportWa {
   display: flex;
-  width: 100%;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  gap: 13px;
   margin-top: 22px;
-  padding: 16px 0 0;
-  border: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  background: none;
-  color: #79e3aa;
-  text-align: left;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: color 0.2s ease;
+  padding: 13px 15px;
+  border-radius: 14px;
+  background: var(--Deer-wa);
+  color: #052e1c;
+  text-decoration: none;
+  box-shadow: 0 12px 26px -8px rgba(37, 211, 102, 0.55);
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
-.Deer__supportLink:hover {
-  color: #fff;
+.Deer__supportWa:hover {
+  transform: translateY(-3px);
+  background: var(--Deer-wa-hover);
+  box-shadow: 0 16px 30px -8px rgba(37, 211, 102, 0.7);
+}
+
+.Deer__waBadge {
+  position: relative;
+  display: flex;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #052e1c;
+  color: var(--Deer-wa);
+}
+
+.Deer__waBadge .Deer__waIcon {
+  width: 22px;
+  height: 22px;
+}
+
+.Deer__waBadge::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid #052e1c;
+  animation: Deer-waPulse 2.2s ease-out infinite;
+}
+
+@keyframes Deer-waPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.55);
+    opacity: 0;
+  }
+}
+
+.Deer__waText {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.Deer__waText strong {
+  font-size: 13.5px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.Deer__waText small {
+  color: rgba(5, 46, 28, 0.78);
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.Deer__waArrow {
+  flex-shrink: 0;
+  font-size: 18px;
+  font-weight: 700;
+  transition: transform 0.25s ease;
+}
+
+.Deer__supportWa:hover .Deer__waArrow {
+  transform: translate(2px, -2px);
 }
 
 /* ==============================
@@ -966,7 +1347,7 @@
   justify-content: center;
   padding: 13px 11px;
   border: 1px solid var(--Deer-line);
-  border-radius: 11px;
+  border-radius: 12px;
   background: var(--Deer-soft);
   text-align: left;
   cursor: pointer;
@@ -1024,10 +1405,10 @@
 
 .Deer__contactInfo {
   display: grid;
-  grid-template-columns: 27px minmax(0, 1fr);
+  grid-template-columns: 38px minmax(0, 1fr);
   align-items: start;
-  gap: 11px;
-  margin-top: 21px;
+  gap: 13px;
+  margin-top: 20px;
 }
 
 .Deer__contactInfo:first-of-type {
@@ -1035,13 +1416,30 @@
 }
 
 .Deer__contactInfoIcon {
-  font-size: 17px;
-  line-height: 1.5;
+  display: flex;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: #eaf6ef;
+  color: var(--Deer-green);
+  font-size: 18px;
+}
+
+.Deer__contactInfoIcon--wa {
+  background: #e3f9ec;
+  color: #128c4a;
+}
+
+.Deer__contactInfoIcon--wa .Deer__waIcon {
+  width: 19px;
+  height: 19px;
 }
 
 .Deer__contactInfo strong {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
   color: var(--Deer-forest);
   font-size: 12px;
   font-weight: 700;
@@ -1059,6 +1457,7 @@
 
 .Deer__contactInfo a {
   color: var(--Deer-green);
+  font-weight: 600;
   text-decoration: none;
 }
 
@@ -1067,7 +1466,7 @@
 }
 
 /* ==============================
-   LIGHTBOX
+   FULLSCREEN LIGHTBOX
 ============================== */
 
 .Deer__lightbox {
@@ -1080,6 +1479,7 @@
   padding: 25px 18px;
   background: rgba(3, 18, 12, 0.94);
   backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 
 .Deer__lightboxBox {
@@ -1089,7 +1489,7 @@
   max-height: 95vh;
   overflow: auto;
   border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 16px;
+  border-radius: 18px;
   background: #082218;
   scrollbar-width: thin;
 }
@@ -1138,7 +1538,7 @@
 }
 
 .Deer__lightboxCaption > div > span {
-  color: #79e3aa;
+  color: var(--Deer-mint);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -1154,13 +1554,16 @@
 }
 
 .Deer__lightboxCaption small {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   color: #c9e3d4;
   font-size: 11px;
 }
 
 .Deer__lightboxCount {
   flex-shrink: 0;
-  color: #79e3aa;
+  color: var(--Deer-mint);
   font-family: "Cinzel", serif;
   font-size: 13px;
 }
@@ -1169,8 +1572,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 15px;
-  padding: 0 25px 20px;
+  gap: 12px;
+  padding: 0 25px 22px;
 }
 
 .Deer__lightboxControls button {
@@ -1188,8 +1591,30 @@
 }
 
 .Deer__lightboxControls button:hover {
-  border-color: #79e3aa;
+  border-color: var(--Deer-mint);
   background: rgba(21, 139, 88, 0.4);
+}
+
+.Deer__lightboxWa {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 25px;
+  background: var(--Deer-wa);
+  color: #052e1c;
+  font-size: 11px;
+  font-weight: 800;
+  text-decoration: none;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.Deer__lightboxWa:hover {
+  transform: translateY(-2px);
+  background: var(--Deer-wa-hover);
 }
 
 /* ==============================
@@ -1220,6 +1645,18 @@
     padding: 21px;
   }
 
+  .Deer__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .Deer__stat:nth-child(3) {
+    border-left: 0;
+  }
+
+  .Deer__stat:nth-child(n + 3) {
+    border-top: 1px solid var(--Deer-line);
+  }
+
   .Deer__galleryPageGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1228,6 +1665,11 @@
     align-items: flex-start;
     flex-direction: column;
     padding: 26px;
+  }
+
+  .Deer__bannerActions {
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 }
 
@@ -1258,6 +1700,18 @@
     padding: 24px 20px;
   }
 
+  .Deer__stats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .Deer__stat:nth-child(3) {
+    border-left: 1px solid var(--Deer-line);
+  }
+
+  .Deer__stat:nth-child(n + 3) {
+    border-top: 0;
+  }
+
   .Deer__featureGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -1283,8 +1737,9 @@
     align-items: center;
   }
 
-  .Deer__formGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .Deer__bannerActions {
+    flex-direction: column;
+    flex-wrap: nowrap;
   }
 
   .Deer__galleryPageGrid {
@@ -1332,11 +1787,38 @@
     height: 260px;
   }
 
+  .Deer__heroChip {
+    top: 10px;
+    left: 10px;
+    padding: 7px 11px;
+    font-size: 10px;
+  }
+
   .Deer__heroCaption {
     right: 10px;
     bottom: 10px;
     padding: 8px 12px;
     font-size: 9.5px;
+  }
+
+  .Deer__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .Deer__stat {
+    padding: 14px 10px;
+  }
+
+  .Deer__stat strong {
+    font-size: 18px;
+  }
+
+  .Deer__stat:nth-child(3) {
+    border-left: 0;
+  }
+
+  .Deer__stat:nth-child(n + 3) {
+    border-top: 1px solid var(--Deer-line);
   }
 
   .Deer__featureGrid,
@@ -1349,30 +1831,40 @@
     padding: 20px;
   }
 
+  .Deer__subHeader h2 {
+    font-size: 22px;
+  }
+
   .Deer__actionBanner {
-    align-items: flex-start;
+    align-items: stretch;
     flex-direction: column;
     gap: 18px;
-    padding: 22px 18px;
+    padding: 24px 18px;
   }
 
   .Deer__actionBanner h3 {
     font-size: 20px;
   }
 
-  .Deer__btnPrimary {
+  .Deer__bannerActions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .Deer__btnPrimary,
+  .Deer__btnWhatsApp {
     width: 100%;
     white-space: normal;
   }
 
   .Deer__planTrigger {
-    gap: 12px;
+    gap: 11px;
     padding: 16px;
     font-size: 12.5px;
   }
 
   .Deer__planAnswer {
-    padding: 0 16px 17px;
+    padding: 0 16px 18px;
     font-size: 12px;
   }
 
@@ -1381,7 +1873,7 @@
   }
 
   .Deer__form {
-    padding: 21px 16px;
+    padding: 22px 16px;
   }
 
   .Deer__formGrid {
@@ -1389,9 +1881,50 @@
     gap: 0;
   }
 
+  .Deer__inputGroup input,
+  .Deer__inputGroup select,
+  .Deer__inputGroup textarea {
+    font-size: 16px; /* stops iOS zoom on focus */
+  }
+
+  .Deer__formSuccess {
+    padding: 32px 16px;
+  }
+
+  .Deer__summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .Deer__successActions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
   .Deer__galleryPageGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
+  }
+
+  .Deer__lightboxCaption {
+    padding: 16px 18px;
+  }
+
+  .Deer__lightboxCaption h3 {
+    font-size: 18px;
+  }
+
+  .Deer__lightboxControls {
+    flex-wrap: wrap;
+    padding: 0 18px 18px;
+  }
+
+  .Deer__lightboxWa {
+    order: -1;
+    width: 100%;
+  }
+
+  .Deer__lightboxControls button {
+    flex: 1;
   }
 }
 
