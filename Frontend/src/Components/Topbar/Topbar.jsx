@@ -21,7 +21,7 @@ const Topbar = () => {
       id: 2,
       icon: MapPin,
       title: "Visit Our Zoo",
-      description: "4rd Avenue,Upper East USA",
+      description: "Bhitarakanika, Kendrapara , Odisha",
     },
     {
       id: 3,

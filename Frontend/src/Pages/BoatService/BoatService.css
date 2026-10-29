@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
 
 .BoatService {
   --BoatService-green: #158b58;
@@ -8,6 +8,9 @@
   --BoatService-muted: #597164;
   --BoatService-line: #e1ede5;
   --BoatService-soft: #f4f8f5;
+  --BoatService-mint: #79e3aa;
+  --BoatService-wa: #25d366;
+  --BoatService-wa-hover: #3be07b;
   --BoatService-radius: 16px;
   --BoatService-ease: cubic-bezier(0.16, 1, 0.3, 1);
 
@@ -36,12 +39,30 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+.BoatService a {
+  -webkit-tap-highlight-color: transparent;
+}
+
 .BoatService button:focus-visible,
+.BoatService a:focus-visible,
 .BoatService input:focus-visible,
 .BoatService select:focus-visible,
 .BoatService textarea:focus-visible {
   outline: 3px solid rgba(21, 139, 88, 0.35);
   outline-offset: 3px;
+}
+
+/* shared icons */
+.BoatService__icon {
+  width: 1.15em;
+  height: 1.15em;
+  flex-shrink: 0;
+}
+
+.BoatService__waIcon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
 }
 
 /* ==============================
@@ -69,7 +90,9 @@
   flex-direction: column;
   gap: 26px;
   padding: 65px clamp(20px, 3vw, 44px) 80px;
-  background: #f7faf8;
+  background:
+    radial-gradient(circle at 100% 0, rgba(21, 139, 88, 0.06), transparent 40%),
+    #f7faf8;
   border-left: 1px solid var(--BoatService-line);
   align-self: stretch;
 }
@@ -148,11 +171,19 @@
 
 .BoatService__heroFigure {
   position: relative;
-  margin: 0 0 38px;
+  margin: 0 0 22px;
   overflow: hidden;
-  border-radius: var(--BoatService-radius);
+  border-radius: 20px;
   background: #e6eee8;
-  box-shadow: 0 16px 38px -12px rgba(10, 45, 34, 0.15);
+  box-shadow: 0 22px 46px -16px rgba(10, 45, 34, 0.28);
+}
+
+.BoatService__heroFigure::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(4, 24, 17, 0.55), transparent 48%);
+  pointer-events: none;
 }
 
 .BoatService__heroImage {
@@ -167,8 +198,31 @@
   transform: scale(1.035);
 }
 
+.BoatService__heroChip {
+  position: absolute;
+  z-index: 2;
+  top: 16px;
+  left: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--BoatService-forest);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+.BoatService__heroChip .BoatService__icon {
+  color: var(--BoatService-green);
+}
+
 .BoatService__heroCaption {
   position: absolute;
+  z-index: 2;
   right: 16px;
   bottom: 16px;
   display: inline-flex;
@@ -183,6 +237,7 @@
   font-size: 11.5px;
   line-height: 1.6;
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .BoatService__heroCaptionDot {
@@ -190,8 +245,49 @@
   height: 8px;
   flex-shrink: 0;
   border-radius: 50%;
-  background: #73e6a8;
+  background: var(--BoatService-mint);
   box-shadow: 0 0 0 4px rgba(115, 230, 168, 0.2);
+}
+
+/* ==============================
+   STATS STRIP
+============================== */
+
+.BoatService__stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 30px;
+  border: 1px solid var(--BoatService-line);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 10px 28px -14px rgba(10, 45, 34, 0.18);
+}
+
+.BoatService__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 18px 16px;
+  text-align: center;
+}
+
+.BoatService__stat + .BoatService__stat {
+  border-left: 1px solid var(--BoatService-line);
+}
+
+.BoatService__stat strong {
+  color: var(--BoatService-green);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.BoatService__stat span {
+  color: var(--BoatService-muted);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
 }
 
 /* ==============================
@@ -209,7 +305,7 @@
   min-width: 0;
   padding: 24px 19px;
   border: 1px solid var(--BoatService-line);
-  border-radius: 13px;
+  border-radius: 14px;
   background: var(--BoatService-soft);
   transition:
     transform 0.3s ease,
@@ -270,7 +366,7 @@
   margin: 6px 0 0;
   color: var(--BoatService-forest);
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 24px;
+  font-size: 26px;
 }
 
 .BoatService__packageGrid {
@@ -283,38 +379,53 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 22px 18px;
+  padding: 24px 18px 18px;
+  overflow: hidden;
   border: 1px solid var(--BoatService-line);
-  border-radius: 13px;
+  border-radius: 16px;
   background: #fff;
   transition:
+    transform 0.3s ease,
     border-color 0.25s ease,
     box-shadow 0.25s ease;
 }
 
+.BoatService__packageCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--BoatService-green), var(--BoatService-mint));
+}
+
 .BoatService__packageCard:hover {
+  transform: translateY(-4px);
   border-color: #a4d7b7;
-  box-shadow: 0 10px 24px rgba(10, 45, 34, 0.06);
+  box-shadow: 0 16px 32px -10px rgba(10, 45, 34, 0.14);
 }
 
 .BoatService__packageTag {
   display: inline-block;
   align-self: flex-start;
   margin-bottom: 10px;
-  padding: 3px 9px;
-  border-radius: 4px;
+  padding: 4px 10px;
+  border-radius: 5px;
   background: #e7f5ed;
   color: var(--BoatService-green);
   font-size: 9px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 1px;
 }
 
 .BoatService__packageCard h3 {
   margin: 0 0 8px;
   color: var(--BoatService-forest);
-  font-size: 15px;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 18px;
   font-weight: 700;
+  line-height: 1.35;
 }
 
 .BoatService__packageRoute {
@@ -324,11 +435,15 @@
   line-height: 1.7;
 }
 
+.BoatService__packageRoute strong {
+  color: var(--BoatService-forest);
+}
+
 .BoatService__packageMeta {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  padding: 10px 0;
+  gap: 7px;
+  padding: 11px 0;
   margin-bottom: 10px;
   border-top: 1px dashed var(--BoatService-line);
   border-bottom: 1px dashed var(--BoatService-line);
@@ -337,11 +452,71 @@
   font-weight: 600;
 }
 
+.BoatService__packageMeta > span {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.6;
+}
+
+.BoatService__packageMeta .BoatService__icon {
+  margin-top: 1px;
+  color: var(--BoatService-green);
+}
+
 .BoatService__packageDesc {
-  margin: 0;
+  margin: 0 0 18px;
   color: var(--BoatService-muted);
   font-size: 11.5px;
   line-height: 1.7;
+}
+
+.BoatService__packageActions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.BoatService__pkgBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 42px;
+  padding: 10px 14px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: var(--BoatService-forest);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.BoatService__pkgBtn:hover {
+  transform: translateY(-2px);
+  background: var(--BoatService-green);
+  box-shadow: 0 8px 18px rgba(21, 139, 88, 0.25);
+}
+
+.BoatService__pkgBtn--wa {
+  border-color: #bfeccf;
+  background: #effaf3;
+  color: #0b5a34;
+}
+
+.BoatService__pkgBtn--wa:hover {
+  border-color: var(--BoatService-wa);
+  background: var(--BoatService-wa);
+  color: #052e1c;
+  box-shadow: 0 8px 18px rgba(37, 211, 102, 0.3);
 }
 
 /* ==============================
@@ -352,26 +527,23 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 22px;
+  gap: 24px;
   margin-top: 20px;
-  padding: 30px;
+  padding: 32px;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--BoatService-radius);
+  border-radius: 20px;
   background:
-    radial-gradient(
-      circle at 100% 0,
-      rgba(33, 181, 115, 0.17),
-      transparent 45%
-    ),
+    radial-gradient(circle at 100% 0, rgba(33, 181, 115, 0.2), transparent 45%),
     linear-gradient(135deg, #0e3d2e, #061c14);
   color: #fff;
+  box-shadow: 0 22px 44px -18px rgba(6, 28, 20, 0.5);
 }
 
 .BoatService__actionBanner h3 {
   margin: 0 0 8px;
   color: #fff;
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 22px;
+  font-size: 23px;
   line-height: 1.4;
 }
 
@@ -380,6 +552,13 @@
   color: #b7d6c6;
   font-size: 12px;
   line-height: 1.8;
+}
+
+.BoatService__bannerActions {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .BoatService__btnPrimary {
@@ -408,6 +587,66 @@
   box-shadow: 0 8px 22px rgba(21, 139, 88, 0.3);
 }
 
+/* WhatsApp buttons */
+.BoatService__btnWhatsApp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  gap: 9px;
+  padding: 13px 23px;
+  border: 1px solid transparent;
+  border-radius: 30px;
+  background: var(--BoatService-wa);
+  color: #052e1c;
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.BoatService__btnWhatsApp:hover {
+  transform: translateY(-2px);
+  background: var(--BoatService-wa-hover);
+  box-shadow: 0 10px 24px rgba(37, 211, 102, 0.35);
+}
+
+.BoatService__btnWhatsApp--large {
+  min-height: 52px;
+  padding: 14px 28px;
+  font-size: 13px;
+}
+
+.BoatService__btnGhost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 14px 24px;
+  border: 1px solid #c9dfd1;
+  border-radius: 30px;
+  background: #fff;
+  color: var(--BoatService-forest);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    border-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.BoatService__btnGhost:hover {
+  transform: translateY(-2px);
+  border-color: var(--BoatService-green);
+  color: var(--BoatService-green);
+}
+
 /* ==============================
    TRIP PLANNING ACCORDION
 ============================== */
@@ -422,7 +661,7 @@
 .BoatService__planItem {
   overflow: hidden;
   border: 1px solid var(--BoatService-line);
-  border-radius: 12px;
+  border-radius: 14px;
   background: #fff;
   transition:
     border-color 0.25s ease,
@@ -431,16 +670,15 @@
 
 .BoatService__planItem.is-open {
   border-color: #a4d7b7;
-  box-shadow: 0 8px 20px rgba(10, 45, 34, 0.06);
+  box-shadow: 0 10px 24px rgba(10, 45, 34, 0.07);
 }
 
 .BoatService__planTrigger {
   display: flex;
   width: 100%;
   align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 19px 21px;
+  gap: 16px;
+  padding: 18px 20px;
   border: 0;
   background: #fff;
   color: var(--BoatService-forest);
@@ -454,6 +692,19 @@
 
 .BoatService__planTrigger:hover {
   background: #f8fbf9;
+}
+
+.BoatService__planIndex {
+  flex-shrink: 0;
+  color: var(--BoatService-green);
+  font-family: "Cinzel", serif;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.BoatService__planQuestion {
+  flex: 1;
+  min-width: 0;
 }
 
 .BoatService__planToggle {
@@ -470,9 +721,14 @@
   line-height: 1;
 }
 
+.BoatService__planItem.is-open .BoatService__planToggle {
+  background: var(--BoatService-green);
+  color: #fff;
+}
+
 .BoatService__planAnswer {
   margin: 0;
-  padding: 0 21px 21px;
+  padding: 0 20px 22px 53px;
   color: var(--BoatService-muted);
   font-size: 13px;
   line-height: 1.9;
@@ -483,9 +739,9 @@
 ============================== */
 
 .BoatService__routeBox {
-  padding: 27px;
+  padding: 28px;
   border: 1px dashed #bddfcb;
-  border-radius: 14px;
+  border-radius: 16px;
   background: var(--BoatService-soft);
 }
 
@@ -493,7 +749,7 @@
   margin: 0 0 17px;
   color: var(--BoatService-forest);
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 21px;
+  font-size: 22px;
 }
 
 .BoatService__routeBox ul {
@@ -510,15 +766,21 @@
   line-height: 1.8;
 }
 
+.BoatService__routeBox li strong {
+  color: var(--BoatService-forest);
+}
+
 .BoatService__routeBox li::marker {
   color: var(--BoatService-green);
 }
 
 .BoatService__routeNote {
   margin: 18px 0 0;
-  padding-top: 15px;
-  border-top: 1px solid var(--BoatService-line);
-  color: var(--BoatService-muted);
+  padding: 14px 16px;
+  border-left: 3px solid #d9a441;
+  border-radius: 0 10px 10px 0;
+  background: #fff8e8;
+  color: #6b5421;
   font-size: 11.5px;
   line-height: 1.8;
 }
@@ -528,10 +790,11 @@
 ============================== */
 
 .BoatService__form {
-  padding: 30px;
+  padding: 32px;
   border: 1px solid var(--BoatService-line);
-  border-radius: var(--BoatService-radius);
+  border-radius: 20px;
   background: var(--BoatService-soft);
+  box-shadow: 0 18px 40px -22px rgba(10, 45, 34, 0.25);
 }
 
 .BoatService__formHeading {
@@ -551,7 +814,7 @@
   margin: 7px 0;
   color: var(--BoatService-forest);
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 24px;
+  font-size: 25px;
 }
 
 .BoatService__formHeading p {
@@ -591,13 +854,13 @@
 .BoatService__inputGroup textarea {
   width: 100%;
   min-width: 0;
-  min-height: 46px;
+  min-height: 48px;
   padding: 12px 14px;
   border: 1px solid #d4e2d8;
-  border-radius: 8px;
+  border-radius: 10px;
   background: #fff;
   color: var(--BoatService-ink);
-  font-size: 12px;
+  font-size: 12.5px;
   line-height: 1.6;
   transition:
     border-color 0.2s ease,
@@ -627,66 +890,110 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  min-height: 49px;
+  min-height: 52px;
   padding: 14px 24px;
   border: 0;
-  border-radius: 9px;
-  background: var(--BoatService-green);
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1aa468, #0f6f46);
   color: #fff;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   cursor: pointer;
   transition:
-    background 0.25s ease,
     transform 0.25s ease,
     box-shadow 0.25s ease;
 }
 
 .BoatService__submitBtn:hover {
   transform: translateY(-2px);
-  background: var(--BoatService-green-hover);
-  box-shadow: 0 10px 24px rgba(21, 139, 88, 0.22);
+  box-shadow: 0 12px 26px rgba(21, 139, 88, 0.3);
 }
 
 /* FORM SUCCESS */
 
 .BoatService__formSuccess {
-  padding: 45px 28px;
+  padding: 42px 28px;
   border: 1px solid #bce2cb;
-  border-radius: var(--BoatService-radius);
+  border-radius: 20px;
   background: var(--BoatService-soft);
   text-align: center;
+  box-shadow: 0 18px 40px -22px rgba(10, 45, 34, 0.25);
 }
 
 .BoatService__checkIcon {
   display: inline-flex;
-  width: 56px;
-  height: 56px;
+  width: 58px;
+  height: 58px;
   align-items: center;
   justify-content: center;
   margin-bottom: 17px;
   border-radius: 50%;
   background: var(--BoatService-green);
   color: #fff;
-  font-size: 25px;
+  font-size: 26px;
+  box-shadow: 0 0 0 8px rgba(21, 139, 88, 0.14);
 }
 
 .BoatService__formSuccess h3 {
   margin: 0 0 12px;
   color: var(--BoatService-forest);
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 24px;
+  font-size: 26px;
 }
 
-.BoatService__formSuccess p {
-  margin: 0 0 23px;
+.BoatService__formSuccess > p {
+  max-width: 520px;
+  margin: 0 auto 24px;
   color: var(--BoatService-muted);
-  font-size: 12px;
+  font-size: 12.5px;
   line-height: 1.9;
 }
 
+.BoatService__summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0 0 26px;
+  overflow: hidden;
+  border: 1px solid var(--BoatService-line);
+  border-radius: 14px;
+  background: var(--BoatService-line);
+  text-align: left;
+}
+
+.BoatService__summary > div {
+  min-width: 0;
+  padding: 14px 16px;
+  background: #fff;
+}
+
+.BoatService__summary dt {
+  margin-bottom: 4px;
+  color: var(--BoatService-green);
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.BoatService__summary dd {
+  margin: 0;
+  color: var(--BoatService-forest);
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.BoatService__successActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
 /* ==============================
-   WILDLIFE GALLERY
+   SANCTUARY GALLERY
 ============================== */
 
 .BoatService__galleryPageGrid {
@@ -704,11 +1011,19 @@
   overflow: hidden;
   aspect-ratio: 4 / 4.5;
   border: 0;
-  border-radius: 12px;
+  border-radius: 14px;
   background: #0d2a1f;
   text-align: left;
   cursor: pointer;
   isolation: isolate;
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.BoatService__galleryPageCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 36px -14px rgba(6, 28, 20, 0.5);
 }
 
 .BoatService__galleryPageCard > img {
@@ -743,7 +1058,7 @@
 }
 
 .BoatService__galleryCardOverlay > span:first-child {
-  color: #79e3aa;
+  color: var(--BoatService-mint);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 1.2px;
@@ -758,6 +1073,9 @@
 }
 
 .BoatService__galleryLocation {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   color: #d4e6dc;
   font-size: 10px;
   line-height: 1.6;
@@ -818,7 +1136,7 @@
   gap: 13px;
   padding: 13px 15px;
   border: 1px solid transparent;
-  border-radius: 9px;
+  border-radius: 10px;
   background: #f3f7f4;
   color: #2b4035;
   text-align: left;
@@ -860,24 +1178,20 @@
 }
 
 /* ==============================
-   SUPPORT CARD
+   SUPPORT CARD  (connect with boat service → WhatsApp)
 ============================== */
 
 .BoatService__supportCard {
   position: relative;
   overflow: hidden;
-  padding: 29px 24px;
+  padding: 29px 24px 24px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--BoatService-radius);
+  border-radius: 20px;
   background:
-    radial-gradient(
-      circle at 100% 0,
-      rgba(33, 181, 115, 0.22),
-      transparent 50%
-    ),
+    radial-gradient(circle at 100% 0, rgba(33, 181, 115, 0.26), transparent 50%),
     linear-gradient(155deg, #0d3829, #061c14);
   color: #fff;
-  box-shadow: 0 16px 36px -10px rgba(6, 28, 20, 0.24);
+  box-shadow: 0 22px 44px -14px rgba(6, 28, 20, 0.4);
 }
 
 .BoatService__supportIcon {
@@ -889,7 +1203,7 @@
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 13px;
   background: rgba(255, 255, 255, 0.1);
-  color: #79e3aa;
+  color: var(--BoatService-mint);
 }
 
 .BoatService__supportIcon svg {
@@ -902,7 +1216,7 @@
 }
 
 .BoatService__supportHeading > span {
-  color: #79e3aa;
+  color: var(--BoatService-mint);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 2px;
@@ -912,7 +1226,7 @@
   margin: 7px 0 0;
   color: #fff;
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 23px;
+  font-size: 24px;
   font-weight: 600;
   line-height: 1.35;
 }
@@ -924,31 +1238,101 @@
   line-height: 1.9;
 }
 
-.BoatService__supportLink {
+.BoatService__supportWa {
   display: flex;
-  width: 100%;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  gap: 13px;
   margin-top: 22px;
-  padding: 16px 0 0;
-  border: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  background: none;
-  color: #79e3aa;
-  text-align: left;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: color 0.2s ease;
+  padding: 13px 15px;
+  border-radius: 14px;
+  background: var(--BoatService-wa);
+  color: #052e1c;
+  text-decoration: none;
+  box-shadow: 0 12px 26px -8px rgba(37, 211, 102, 0.55);
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
-.BoatService__supportLink:hover {
-  color: #fff;
+.BoatService__supportWa:hover {
+  transform: translateY(-3px);
+  background: var(--BoatService-wa-hover);
+  box-shadow: 0 16px 30px -8px rgba(37, 211, 102, 0.7);
+}
+
+.BoatService__waBadge {
+  position: relative;
+  display: flex;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #052e1c;
+  color: var(--BoatService-wa);
+}
+
+.BoatService__waBadge .BoatService__waIcon {
+  width: 22px;
+  height: 22px;
+}
+
+.BoatService__waBadge::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid #052e1c;
+  animation: BoatService-waPulse 2.2s ease-out infinite;
+}
+
+@keyframes BoatService-waPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.55);
+    opacity: 0;
+  }
+}
+
+.BoatService__waText {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.BoatService__waText strong {
+  font-size: 13.5px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.BoatService__waText small {
+  color: rgba(5, 46, 28, 0.78);
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.BoatService__waArrow {
+  flex-shrink: 0;
+  font-size: 18px;
+  font-weight: 700;
+  transition: transform 0.25s ease;
+}
+
+.BoatService__supportWa:hover .BoatService__waArrow {
+  transform: translate(2px, -2px);
 }
 
 /* ==============================
-   TRAVEL ESSENTIALS
+   QUICK LINKS
 ============================== */
 
 .BoatService__downloadGrid {
@@ -966,7 +1350,7 @@
   justify-content: center;
   padding: 13px 11px;
   border: 1px solid var(--BoatService-line);
-  border-radius: 11px;
+  border-radius: 12px;
   background: var(--BoatService-soft);
   text-align: left;
   cursor: pointer;
@@ -1024,10 +1408,10 @@
 
 .BoatService__contactInfo {
   display: grid;
-  grid-template-columns: 27px minmax(0, 1fr);
+  grid-template-columns: 38px minmax(0, 1fr);
   align-items: start;
-  gap: 11px;
-  margin-top: 21px;
+  gap: 13px;
+  margin-top: 20px;
 }
 
 .BoatService__contactInfo:first-of-type {
@@ -1035,13 +1419,30 @@
 }
 
 .BoatService__contactInfoIcon {
-  font-size: 17px;
-  line-height: 1.5;
+  display: flex;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: #eaf6ef;
+  color: var(--BoatService-green);
+  font-size: 18px;
+}
+
+.BoatService__contactInfoIcon--wa {
+  background: #e3f9ec;
+  color: #128c4a;
+}
+
+.BoatService__contactInfoIcon--wa .BoatService__waIcon {
+  width: 19px;
+  height: 19px;
 }
 
 .BoatService__contactInfo strong {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
   color: var(--BoatService-forest);
   font-size: 12px;
   font-weight: 700;
@@ -1059,6 +1460,7 @@
 
 .BoatService__contactInfo a {
   color: var(--BoatService-green);
+  font-weight: 600;
   text-decoration: none;
 }
 
@@ -1080,6 +1482,7 @@
   padding: 25px 18px;
   background: rgba(3, 18, 12, 0.94);
   backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 
 .BoatService__lightboxBox {
@@ -1089,7 +1492,7 @@
   max-height: 95vh;
   overflow: auto;
   border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 16px;
+  border-radius: 18px;
   background: #082218;
   scrollbar-width: thin;
 }
@@ -1138,7 +1541,7 @@
 }
 
 .BoatService__lightboxCaption > div > span {
-  color: #79e3aa;
+  color: var(--BoatService-mint);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -1154,13 +1557,16 @@
 }
 
 .BoatService__lightboxCaption small {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   color: #c9e3d4;
   font-size: 11px;
 }
 
 .BoatService__lightboxCount {
   flex-shrink: 0;
-  color: #79e3aa;
+  color: var(--BoatService-mint);
   font-family: "Cinzel", serif;
   font-size: 13px;
 }
@@ -1169,8 +1575,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 15px;
-  padding: 0 25px 20px;
+  gap: 12px;
+  padding: 0 25px 22px;
 }
 
 .BoatService__lightboxControls button {
@@ -1188,8 +1594,30 @@
 }
 
 .BoatService__lightboxControls button:hover {
-  border-color: #79e3aa;
+  border-color: var(--BoatService-mint);
   background: rgba(21, 139, 88, 0.4);
+}
+
+.BoatService__lightboxWa {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 25px;
+  background: var(--BoatService-wa);
+  color: #052e1c;
+  font-size: 11px;
+  font-weight: 800;
+  text-decoration: none;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.BoatService__lightboxWa:hover {
+  transform: translateY(-2px);
+  background: var(--BoatService-wa-hover);
 }
 
 /* ==============================
@@ -1220,6 +1648,18 @@
     padding: 21px;
   }
 
+  .BoatService__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .BoatService__stat:nth-child(3) {
+    border-left: 0;
+  }
+
+  .BoatService__stat:nth-child(n + 3) {
+    border-top: 1px solid var(--BoatService-line);
+  }
+
   .BoatService__galleryPageGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1228,6 +1668,11 @@
     align-items: flex-start;
     flex-direction: column;
     padding: 26px;
+  }
+
+  .BoatService__bannerActions {
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 }
 
@@ -1258,6 +1703,18 @@
     padding: 24px 20px;
   }
 
+  .BoatService__stats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .BoatService__stat:nth-child(3) {
+    border-left: 1px solid var(--BoatService-line);
+  }
+
+  .BoatService__stat:nth-child(n + 3) {
+    border-top: 0;
+  }
+
   .BoatService__featureGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -1283,8 +1740,9 @@
     align-items: center;
   }
 
-  .BoatService__formGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .BoatService__bannerActions {
+    flex-direction: column;
+    flex-wrap: nowrap;
   }
 
   .BoatService__galleryPageGrid {
@@ -1332,11 +1790,38 @@
     height: 260px;
   }
 
+  .BoatService__heroChip {
+    top: 10px;
+    left: 10px;
+    padding: 7px 11px;
+    font-size: 10px;
+  }
+
   .BoatService__heroCaption {
     right: 10px;
     bottom: 10px;
     padding: 8px 12px;
     font-size: 9.5px;
+  }
+
+  .BoatService__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .BoatService__stat {
+    padding: 14px 10px;
+  }
+
+  .BoatService__stat strong {
+    font-size: 18px;
+  }
+
+  .BoatService__stat:nth-child(3) {
+    border-left: 0;
+  }
+
+  .BoatService__stat:nth-child(n + 3) {
+    border-top: 1px solid var(--BoatService-line);
   }
 
   .BoatService__featureGrid,
@@ -1349,30 +1834,40 @@
     padding: 20px;
   }
 
+  .BoatService__subHeader h2 {
+    font-size: 22px;
+  }
+
   .BoatService__actionBanner {
-    align-items: flex-start;
+    align-items: stretch;
     flex-direction: column;
     gap: 18px;
-    padding: 22px 18px;
+    padding: 24px 18px;
   }
 
   .BoatService__actionBanner h3 {
     font-size: 20px;
   }
 
-  .BoatService__btnPrimary {
+  .BoatService__bannerActions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .BoatService__btnPrimary,
+  .BoatService__btnWhatsApp {
     width: 100%;
     white-space: normal;
   }
 
   .BoatService__planTrigger {
-    gap: 12px;
+    gap: 11px;
     padding: 16px;
     font-size: 12.5px;
   }
 
   .BoatService__planAnswer {
-    padding: 0 16px 17px;
+    padding: 0 16px 18px;
     font-size: 12px;
   }
 
@@ -1381,7 +1876,7 @@
   }
 
   .BoatService__form {
-    padding: 21px 16px;
+    padding: 22px 16px;
   }
 
   .BoatService__formGrid {
@@ -1389,9 +1884,50 @@
     gap: 0;
   }
 
+  .BoatService__inputGroup input,
+  .BoatService__inputGroup select,
+  .BoatService__inputGroup textarea {
+    font-size: 16px; /* stops iOS zoom on focus */
+  }
+
+  .BoatService__formSuccess {
+    padding: 32px 16px;
+  }
+
+  .BoatService__summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .BoatService__successActions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
   .BoatService__galleryPageGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
+  }
+
+  .BoatService__lightboxCaption {
+    padding: 16px 18px;
+  }
+
+  .BoatService__lightboxCaption h3 {
+    font-size: 18px;
+  }
+
+  .BoatService__lightboxControls {
+    flex-wrap: wrap;
+    padding: 0 18px 18px;
+  }
+
+  .BoatService__lightboxWa {
+    order: -1;
+    width: 100%;
+  }
+
+  .BoatService__lightboxControls button {
+    flex: 1;
   }
 }
 
