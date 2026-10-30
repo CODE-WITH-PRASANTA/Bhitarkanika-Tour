@@ -5,9 +5,9 @@ import "./FloatingIcons.css";
    Contact number
 --------------------------------- */
 const CONTACT = {
-  display: "+91 73759 71966",
-  tel: "+917375971966",
-  wa: "917375971966",
+  display: "+91 832 898 2394",
+  tel: "+918328982394",
+  wa: "918328982394",
 };
 
 const WHATSAPP_MESSAGE = encodeURIComponent(
