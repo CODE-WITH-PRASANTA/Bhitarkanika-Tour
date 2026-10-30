@@ -1,1947 +1,505 @@
 @import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
 
-.BoatService {
-  --BoatService-green: #158b58;
-  --BoatService-green-hover: #0f6f46;
-  --BoatService-forest: #08281e;
-  --BoatService-ink: #142820;
-  --BoatService-muted: #597164;
-  --BoatService-line: #e1ede5;
-  --BoatService-soft: #f4f8f5;
-  --BoatService-mint: #79e3aa;
-  --BoatService-wa: #25d366;
-  --BoatService-wa-hover: #3be07b;
-  --BoatService-radius: 16px;
-  --BoatService-ease: cubic-bezier(0.16, 1, 0.3, 1);
-
-  width: 100%;
-  margin: 0;
-  color: var(--BoatService-ink);
-  background: #fff;
-  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
-  overflow-wrap: anywhere;
-}
+.BoatService{--BoatService-green:#158b58;--BoatService-green-hover:#0f6f46;--BoatService-forest:#08281e;--BoatService-ink:#142820;--BoatService-muted:#597164;--BoatService-line:#e1ede5;--BoatService-soft:#f4f8f5;--BoatService-mint:#79e3aa;--BoatService-wa:#25d366;--BoatService-wa-hover:#3be07b;--BoatService-radius:16px;--BoatService-ease:cubic-bezier(0.16,1,0.3,1);width:100%;margin:0;color:var(--BoatService-ink);background:#fff;font-family:"Plus Jakarta Sans",system-ui,sans-serif;overflow-wrap:anywhere;}
 
-.BoatService *,
-.BoatService *::before,
-.BoatService *::after {
-  box-sizing: border-box;
-}
+.BoatService *,.BoatService *::before,.BoatService *::after{box-sizing:border-box;}
 
-.BoatService button,
-.BoatService input,
-.BoatService select,
-.BoatService textarea {
-  font: inherit;
-}
+.BoatService button,.BoatService input,.BoatService select,.BoatService textarea{font:inherit;}
 
-.BoatService button {
-  -webkit-tap-highlight-color: transparent;
-}
+.BoatService button,.BoatService a{-webkit-tap-highlight-color:transparent;}
 
-.BoatService a {
-  -webkit-tap-highlight-color: transparent;
-}
+.BoatService button:focus-visible,.BoatService a:focus-visible,.BoatService input:focus-visible,.BoatService select:focus-visible,.BoatService textarea:focus-visible{outline:3px solid rgba(21,139,88,.35);outline-offset:3px;}
 
-.BoatService button:focus-visible,
-.BoatService a:focus-visible,
-.BoatService input:focus-visible,
-.BoatService select:focus-visible,
-.BoatService textarea:focus-visible {
-  outline: 3px solid rgba(21, 139, 88, 0.35);
-  outline-offset: 3px;
-}
+.BoatService__icon{width:1.15em;height:1.15em;flex-shrink:0;}
 
-/* shared icons */
-.BoatService__icon {
-  width: 1.15em;
-  height: 1.15em;
-  flex-shrink: 0;
-}
+.BoatService__waIcon{width:18px;height:18px;flex-shrink:0;}
 
-.BoatService__waIcon {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-}
+/* MAIN LAYOUT */
 
-/* ==============================
-   MAIN LAYOUT
-============================== */
-
-.BoatService__layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1.85fr) minmax(310px, 0.95fr);
-  align-items: stretch;
-  width: 100%;
-  max-width: 1540px;
-  margin: 0 auto;
-}
+.BoatService__layout{display:grid;grid-template-columns:minmax(0,1.85fr) minmax(310px,.95fr);align-items:stretch;width:100%;max-width:1540px;margin:0 auto;}
 
-.BoatService__main {
-  min-width: 0;
-  padding: 65px clamp(24px, 4.5vw, 76px) 90px;
-  background: #fff;
-}
+.BoatService__main{min-width:0;padding:65px clamp(24px,4.5vw,76px) 90px;background:#fff;}
 
-.BoatService__sidebar {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  gap: 26px;
-  padding: 65px clamp(20px, 3vw, 44px) 80px;
-  background:
-    radial-gradient(circle at 100% 0, rgba(21, 139, 88, 0.06), transparent 40%),
-    #f7faf8;
-  border-left: 1px solid var(--BoatService-line);
-  align-self: stretch;
-}
+.BoatService__sidebar{display:flex;min-width:0;flex-direction:column;gap:26px;padding:65px clamp(20px,3vw,44px) 80px;background:radial-gradient(circle at 100% 0,rgba(21,139,88,.06),transparent 40%),#f7faf8;border-left:1px solid var(--BoatService-line);align-self:stretch;}
 
-/* ==============================
-   VIEW ANIMATION
-============================== */
+/* ANIMATION */
 
-.BoatService__viewPane {
-  animation: BoatService-slideFade 0.36s var(--BoatService-ease) both;
-}
+.BoatService__viewPane{animation:BoatService-slideFade .36s var(--BoatService-ease) both;}
 
-@keyframes BoatService-slideFade {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+@keyframes BoatService-slideFade{
+from{opacity:0;transform:translateY(14px);}
+to{opacity:1;transform:translateY(0);}
 }
 
-/* ==============================
-   PAGE HEADING
-============================== */
-
-.BoatService__eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-  color: var(--BoatService-green);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 2px;
-}
+/* PAGE HEADING */
 
-.BoatService__eyebrowLine {
-  width: 28px;
-  height: 2px;
-  flex-shrink: 0;
-  border-radius: 2px;
-  background: var(--BoatService-green);
-}
+.BoatService__eyebrow{display:inline-flex;align-items:center;gap:12px;margin-bottom:16px;color:var(--BoatService-green);font-size:11px;font-weight:700;letter-spacing:2px;}
 
-.BoatService__pageTitle {
-  margin: 0;
-  color: var(--BoatService-forest);
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: clamp(32px, 3.8vw, 50px);
-  font-weight: 700;
-  line-height: 1.16;
-  letter-spacing: -0.8px;
-}
+.BoatService__eyebrowLine{width:28px;height:2px;flex-shrink:0;border-radius:2px;background:var(--BoatService-green);}
 
-.BoatService__pageTitle > span {
-  display: block;
-  margin-top: 5px;
-  color: var(--BoatService-green);
-  font-style: italic;
-  font-weight: 500;
-}
+.BoatService__pageTitle{margin:0;color:var(--BoatService-forest);font-family:"Playfair Display",Georgia,serif;font-size:clamp(32px,3.8vw,50px);font-weight:700;line-height:1.16;letter-spacing:-.8px;}
 
-.BoatService__lead {
-  max-width: 760px;
-  margin: 18px 0 32px;
-  color: var(--BoatService-muted);
-  font-size: 14.5px;
-  line-height: 1.85;
-}
+.BoatService__pageTitle>span{display:block;margin-top:5px;color:var(--BoatService-green);font-style:italic;font-weight:500;}
 
-/* ==============================
-   HERO IMAGE
-============================== */
-
-.BoatService__heroFigure {
-  position: relative;
-  margin: 0 0 22px;
-  overflow: hidden;
-  border-radius: 20px;
-  background: #e6eee8;
-  box-shadow: 0 22px 46px -16px rgba(10, 45, 34, 0.28);
-}
+.BoatService__lead{max-width:760px;margin:18px 0 32px;color:var(--BoatService-muted);font-size:14.5px;line-height:1.85;}
 
-.BoatService__heroFigure::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(4, 24, 17, 0.55), transparent 48%);
-  pointer-events: none;
-}
+/* HERO IMAGE */
 
-.BoatService__heroImage {
-  display: block;
-  width: 100%;
-  height: clamp(280px, 36vw, 490px);
-  object-fit: cover;
-  transition: transform 0.8s var(--BoatService-ease);
-}
+.BoatService__heroFigure{position:relative;margin:0 0 22px;overflow:hidden;border-radius:20px;background:#e6eee8;box-shadow:0 22px 46px -16px rgba(10,45,34,.28);}
 
-.BoatService__heroFigure:hover .BoatService__heroImage {
-  transform: scale(1.035);
-}
+.BoatService__heroFigure::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(4,24,17,.55),transparent 48%);pointer-events:none;}
 
-.BoatService__heroChip {
-  position: absolute;
-  z-index: 2;
-  top: 16px;
-  left: 16px;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 9px 14px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 30px;
-  background: rgba(255, 255, 255, 0.92);
-  color: var(--BoatService-forest);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.4px;
-}
+.BoatService__heroImage{display:block;width:100%;height:clamp(280px,36vw,490px);object-fit:cover;transition:transform .8s var(--BoatService-ease);}
 
-.BoatService__heroChip .BoatService__icon {
-  color: var(--BoatService-green);
-}
+.BoatService__heroFigure:hover .BoatService__heroImage{transform:scale(1.035);}
 
-.BoatService__heroCaption {
-  position: absolute;
-  z-index: 2;
-  right: 16px;
-  bottom: 16px;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  max-width: calc(100% - 32px);
-  padding: 11px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 30px;
-  background: rgba(7, 35, 26, 0.86);
-  color: #fff;
-  font-size: 11.5px;
-  line-height: 1.6;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
+.BoatService__heroChip{position:absolute;z-index:2;top:16px;left:16px;display:inline-flex;align-items:center;gap:7px;padding:9px 14px;border:1px solid rgba(255,255,255,.35);border-radius:30px;background:rgba(255,255,255,.92);color:var(--BoatService-forest);font-size:11px;font-weight:700;letter-spacing:.4px;}
 
-.BoatService__heroCaptionDot {
-  width: 8px;
-  height: 8px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background: var(--BoatService-mint);
-  box-shadow: 0 0 0 4px rgba(115, 230, 168, 0.2);
-}
+.BoatService__heroChip .BoatService__icon{color:var(--BoatService-green);}
 
-/* ==============================
-   STATS STRIP
-============================== */
-
-.BoatService__stats {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  margin-bottom: 30px;
-  border: 1px solid var(--BoatService-line);
-  border-radius: 16px;
-  background: #fff;
-  box-shadow: 0 10px 28px -14px rgba(10, 45, 34, 0.18);
-}
+.BoatService__heroCaption{position:absolute;z-index:2;right:16px;bottom:16px;display:inline-flex;align-items:center;gap:10px;max-width:calc(100% - 32px);padding:11px 16px;border:1px solid rgba(255,255,255,.35);border-radius:30px;background:rgba(7,35,26,.86);color:#fff;font-size:11.5px;line-height:1.6;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
 
-.BoatService__stat {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 18px 16px;
-  text-align: center;
-}
+.BoatService__heroCaptionDot{width:8px;height:8px;flex-shrink:0;border-radius:50%;background:var(--BoatService-mint);box-shadow:0 0 0 4px rgba(115,230,168,.2);}
 
-.BoatService__stat + .BoatService__stat {
-  border-left: 1px solid var(--BoatService-line);
-}
+/* STATS */
 
-.BoatService__stat strong {
-  color: var(--BoatService-green);
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 21px;
-  font-weight: 700;
-  line-height: 1.2;
-}
+.BoatService__stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:30px;border:1px solid var(--BoatService-line);border-radius:16px;background:#fff;box-shadow:0 10px 28px -14px rgba(10,45,34,.18);}
 
-.BoatService__stat span {
-  color: var(--BoatService-muted);
-  font-size: 10.5px;
-  font-weight: 600;
-  letter-spacing: 0.4px;
-}
+.BoatService__stat{display:flex;flex-direction:column;gap:4px;padding:18px 16px;text-align:center;}
 
-/* ==============================
-   FEATURE CARDS
-============================== */
-
-.BoatService__featureGrid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-  margin-bottom: 38px;
-}
+.BoatService__stat+.BoatService__stat{border-left:1px solid var(--BoatService-line);}
 
-.BoatService__specBox {
-  min-width: 0;
-  padding: 24px 19px;
-  border: 1px solid var(--BoatService-line);
-  border-radius: 14px;
-  background: var(--BoatService-soft);
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease,
-    border-color 0.3s ease;
-}
+.BoatService__stat strong{color:var(--BoatService-green);font-family:"Playfair Display",Georgia,serif;font-size:21px;font-weight:700;line-height:1.2;}
 
-.BoatService__specBox:hover {
-  transform: translateY(-4px);
-  border-color: #b7ddc5;
-  box-shadow: 0 12px 28px rgba(10, 45, 34, 0.07);
-}
+.BoatService__stat span{color:var(--BoatService-muted);font-size:10.5px;font-weight:600;letter-spacing:.4px;}
 
-.BoatService__specNum {
-  display: block;
-  margin-bottom: 12px;
-  color: var(--BoatService-green);
-  font-family: "Cinzel", serif;
-  font-size: 14px;
-  font-weight: 700;
-}
+/* FEATURE CARDS */
 
-.BoatService__specBox h3 {
-  margin: 0 0 9px;
-  color: var(--BoatService-forest);
-  font-size: 15px;
-  font-weight: 700;
-  line-height: 1.5;
-}
+.BoatService__featureGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:38px;}
 
-.BoatService__specBox p {
-  margin: 0;
-  color: var(--BoatService-muted);
-  font-size: 12px;
-  line-height: 1.8;
-}
+.BoatService__specBox{min-width:0;padding:24px 19px;border:1px solid var(--BoatService-line);border-radius:14px;background:var(--BoatService-soft);transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease;}
 
-/* ==============================
-   SAFARI PACKAGES SECTION
-============================== */
+.BoatService__specBox:hover{transform:translateY(-4px);border-color:#b7ddc5;box-shadow:0 12px 28px rgba(10,45,34,.07);}
 
-.BoatService__packageSection {
-  margin-bottom: 36px;
-}
+.BoatService__specNum{display:block;margin-bottom:12px;color:var(--BoatService-green);font-family:"Cinzel",serif;font-size:14px;font-weight:700;}
 
-.BoatService__subHeader {
-  margin-bottom: 18px;
-}
+.BoatService__specBox h3{margin:0 0 9px;color:var(--BoatService-forest);font-size:15px;font-weight:700;line-height:1.5;}
 
-.BoatService__subHeader span {
-  color: var(--BoatService-green);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 2px;
-}
+.BoatService__specBox p{margin:0;color:var(--BoatService-muted);font-size:12px;line-height:1.8;}
 
-.BoatService__subHeader h2 {
-  margin: 6px 0 0;
-  color: var(--BoatService-forest);
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 26px;
-}
+/* PACKAGES */
 
-.BoatService__packageGrid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-}
+.BoatService__packageSection{margin-bottom:36px;}
 
-.BoatService__packageCard {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  padding: 24px 18px 18px;
-  overflow: hidden;
-  border: 1px solid var(--BoatService-line);
-  border-radius: 16px;
-  background: #fff;
-  transition:
-    transform 0.3s ease,
-    border-color 0.25s ease,
-    box-shadow 0.25s ease;
-}
+.BoatService__subHeader{margin-bottom:18px;}
 
-.BoatService__packageCard::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--BoatService-green), var(--BoatService-mint));
-}
+.BoatService__subHeader span{color:var(--BoatService-green);font-size:10px;font-weight:700;letter-spacing:2px;}
 
-.BoatService__packageCard:hover {
-  transform: translateY(-4px);
-  border-color: #a4d7b7;
-  box-shadow: 0 16px 32px -10px rgba(10, 45, 34, 0.14);
-}
+.BoatService__subHeader h2{margin:6px 0 0;color:var(--BoatService-forest);font-family:"Playfair Display",Georgia,serif;font-size:26px;}
 
-.BoatService__packageTag {
-  display: inline-block;
-  align-self: flex-start;
-  margin-bottom: 10px;
-  padding: 4px 10px;
-  border-radius: 5px;
-  background: #e7f5ed;
-  color: var(--BoatService-green);
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
+.BoatService__packageGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
 
-.BoatService__packageCard h3 {
-  margin: 0 0 8px;
-  color: var(--BoatService-forest);
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 1.35;
-}
+.BoatService__packageCard{position:relative;display:flex;flex-direction:column;padding:24px 18px 18px;overflow:hidden;border:1px solid var(--BoatService-line);border-radius:16px;background:#fff;transition:transform .3s ease,border-color .25s ease,box-shadow .25s ease;}
 
-.BoatService__packageRoute {
-  margin: 0 0 12px;
-  color: var(--BoatService-muted);
-  font-size: 11.5px;
-  line-height: 1.7;
-}
+.BoatService__packageCard::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--BoatService-green),var(--BoatService-mint));}
 
-.BoatService__packageRoute strong {
-  color: var(--BoatService-forest);
-}
+.BoatService__packageCard:hover{transform:translateY(-4px);border-color:#a4d7b7;box-shadow:0 16px 32px -10px rgba(10,45,34,.14);}
 
-.BoatService__packageMeta {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  padding: 11px 0;
-  margin-bottom: 10px;
-  border-top: 1px dashed var(--BoatService-line);
-  border-bottom: 1px dashed var(--BoatService-line);
-  color: var(--BoatService-forest);
-  font-size: 11px;
-  font-weight: 600;
-}
+.BoatService__packageTag{display:inline-block;align-self:flex-start;margin-bottom:10px;padding:4px 10px;border-radius:5px;background:#e7f5ed;color:var(--BoatService-green);font-size:9px;font-weight:800;letter-spacing:1px;}
 
-.BoatService__packageMeta > span {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  line-height: 1.6;
-}
+.BoatService__packageCard h3{margin:0 0 8px;color:var(--BoatService-forest);font-family:"Playfair Display",Georgia,serif;font-size:18px;font-weight:700;line-height:1.35;}
 
-.BoatService__packageMeta .BoatService__icon {
-  margin-top: 1px;
-  color: var(--BoatService-green);
-}
+.BoatService__packageRoute{margin:0 0 12px;color:var(--BoatService-muted);font-size:11.5px;line-height:1.7;}
 
-.BoatService__packageDesc {
-  margin: 0 0 18px;
-  color: var(--BoatService-muted);
-  font-size: 11.5px;
-  line-height: 1.7;
-}
+.BoatService__packageRoute strong{color:var(--BoatService-forest);}
 
-.BoatService__packageActions {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: auto;
-}
+.BoatService__packageMeta{display:flex;flex-direction:column;gap:7px;padding:11px 0;margin-bottom:10px;border-top:1px dashed var(--BoatService-line);border-bottom:1px dashed var(--BoatService-line);color:var(--BoatService-forest);font-size:11px;font-weight:600;}
 
-.BoatService__pkgBtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  min-height: 42px;
-  padding: 10px 14px;
-  border: 1px solid transparent;
-  border-radius: 10px;
-  background: var(--BoatService-forest);
-  color: #fff;
-  font-size: 11.5px;
-  font-weight: 700;
-  text-decoration: none;
-  cursor: pointer;
-  transition:
-    background 0.25s ease,
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
-}
+.BoatService__packageMeta>span{display:flex;align-items:flex-start;gap:8px;line-height:1.6;}
 
-.BoatService__pkgBtn:hover {
-  transform: translateY(-2px);
-  background: var(--BoatService-green);
-  box-shadow: 0 8px 18px rgba(21, 139, 88, 0.25);
-}
+.BoatService__packageMeta .BoatService__icon{margin-top:1px;color:var(--BoatService-green);}
 
-.BoatService__pkgBtn--wa {
-  border-color: #bfeccf;
-  background: #effaf3;
-  color: #0b5a34;
-}
+.BoatService__packageDesc{margin:0 0 18px;color:var(--BoatService-muted);font-size:11.5px;line-height:1.7;}
 
-.BoatService__pkgBtn--wa:hover {
-  border-color: var(--BoatService-wa);
-  background: var(--BoatService-wa);
-  color: #052e1c;
-  box-shadow: 0 8px 18px rgba(37, 211, 102, 0.3);
-}
+.BoatService__packageActions{display:flex;flex-direction:column;gap:8px;margin-top:auto;}
 
-/* ==============================
-   ACTION BANNER
-============================== */
-
-.BoatService__actionBanner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  margin-top: 20px;
-  padding: 32px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  background:
-    radial-gradient(circle at 100% 0, rgba(33, 181, 115, 0.2), transparent 45%),
-    linear-gradient(135deg, #0e3d2e, #061c14);
-  color: #fff;
-  box-shadow: 0 22px 44px -18px rgba(6, 28, 20, 0.5);
-}
+.BoatService__pkgBtn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:42px;padding:10px 14px;border:1px solid transparent;border-radius:10px;background:var(--BoatService-forest);color:#fff;font-size:11.5px;font-weight:700;text-decoration:none;cursor:pointer;transition:background .25s ease,transform .25s ease,box-shadow .25s ease;}
 
-.BoatService__actionBanner h3 {
-  margin: 0 0 8px;
-  color: #fff;
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 23px;
-  line-height: 1.4;
-}
+.BoatService__pkgBtn:hover{transform:translateY(-2px);background:var(--BoatService-green);box-shadow:0 8px 18px rgba(21,139,88,.25);}
 
-.BoatService__actionBanner p {
-  margin: 0;
-  color: #b7d6c6;
-  font-size: 12px;
-  line-height: 1.8;
-}
+.BoatService__pkgBtn--wa{border-color:#bfeccf;background:#effaf3;color:#0b5a34;}
 
-.BoatService__bannerActions {
-  display: flex;
-  flex-shrink: 0;
-  flex-direction: column;
-  gap: 10px;
-}
+.BoatService__pkgBtn--wa:hover{border-color:var(--BoatService-wa);background:var(--BoatService-wa);color:#052e1c;box-shadow:0 8px 18px rgba(37,211,102,.3);}
 
-.BoatService__btnPrimary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  padding: 13px 23px;
-  border: 1px solid transparent;
-  border-radius: 30px;
-  background: var(--BoatService-green);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 700;
-  white-space: nowrap;
-  cursor: pointer;
-  transition:
-    background 0.25s ease,
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
-}
+/* ACTION BANNER */
 
-.BoatService__btnPrimary:hover {
-  transform: translateY(-2px);
-  background: #1cb572;
-  box-shadow: 0 8px 22px rgba(21, 139, 88, 0.3);
-}
+.BoatService__actionBanner{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:20px;padding:32px;border:1px solid rgba(255,255,255,.08);border-radius:20px;background:radial-gradient(circle at 100% 0,rgba(33,181,115,.2),transparent 45%),linear-gradient(135deg,#0e3d2e,#061c14);color:#fff;box-shadow:0 22px 44px -18px rgba(6,28,20,.5);}
 
-/* WhatsApp buttons */
-.BoatService__btnWhatsApp {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  gap: 9px;
-  padding: 13px 23px;
-  border: 1px solid transparent;
-  border-radius: 30px;
-  background: var(--BoatService-wa);
-  color: #052e1c;
-  font-size: 12px;
-  font-weight: 800;
-  text-decoration: none;
-  white-space: nowrap;
-  cursor: pointer;
-  transition:
-    background 0.25s ease,
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
-}
+.BoatService__actionBanner h3{margin:0 0 8px;color:#fff;font-family:"Playfair Display",Georgia,serif;font-size:23px;line-height:1.4;}
 
-.BoatService__btnWhatsApp:hover {
-  transform: translateY(-2px);
-  background: var(--BoatService-wa-hover);
-  box-shadow: 0 10px 24px rgba(37, 211, 102, 0.35);
-}
+.BoatService__actionBanner p{margin:0;color:#b7d6c6;font-size:12px;line-height:1.8;}
 
-.BoatService__btnWhatsApp--large {
-  min-height: 52px;
-  padding: 14px 28px;
-  font-size: 13px;
-}
+.BoatService__bannerActions{display:flex;flex-shrink:0;flex-direction:column;gap:10px;}
 
-.BoatService__btnGhost {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 52px;
-  padding: 14px 24px;
-  border: 1px solid #c9dfd1;
-  border-radius: 30px;
-  background: #fff;
-  color: var(--BoatService-forest);
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  transition:
-    border-color 0.25s ease,
-    color 0.25s ease,
-    transform 0.25s ease;
-}
+.BoatService__btnPrimary{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;padding:13px 23px;border:1px solid transparent;border-radius:30px;background:var(--BoatService-green);color:#fff;font-size:12px;font-weight:700;white-space:nowrap;cursor:pointer;transition:background .25s ease,transform .25s ease,box-shadow .25s ease;}
 
-.BoatService__btnGhost:hover {
-  transform: translateY(-2px);
-  border-color: var(--BoatService-green);
-  color: var(--BoatService-green);
-}
+.BoatService__btnPrimary:hover{transform:translateY(-2px);background:#1cb572;box-shadow:0 8px 22px rgba(21,139,88,.3);}
 
-/* ==============================
-   TRIP PLANNING ACCORDION
-============================== */
-
-.BoatService__planAccordion {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 30px;
-}
+.BoatService__btnWhatsApp{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;gap:9px;padding:13px 23px;border:1px solid transparent;border-radius:30px;background:var(--BoatService-wa);color:#052e1c;font-size:12px;font-weight:800;text-decoration:none;white-space:nowrap;cursor:pointer;transition:background .25s ease,transform .25s ease,box-shadow .25s ease;}
 
-.BoatService__planItem {
-  overflow: hidden;
-  border: 1px solid var(--BoatService-line);
-  border-radius: 14px;
-  background: #fff;
-  transition:
-    border-color 0.25s ease,
-    box-shadow 0.25s ease;
-}
+.BoatService__btnWhatsApp:hover{transform:translateY(-2px);background:var(--BoatService-wa-hover);box-shadow:0 10px 24px rgba(37,211,102,.35);}
 
-.BoatService__planItem.is-open {
-  border-color: #a4d7b7;
-  box-shadow: 0 10px 24px rgba(10, 45, 34, 0.07);
-}
+.BoatService__btnWhatsApp--large{min-height:52px;padding:14px 28px;font-size:13px;}
 
-.BoatService__planTrigger {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  gap: 16px;
-  padding: 18px 20px;
-  border: 0;
-  background: #fff;
-  color: var(--BoatService-forest);
-  text-align: left;
-  font-size: 13.5px;
-  font-weight: 700;
-  line-height: 1.7;
-  cursor: pointer;
-  transition: background 0.25s ease;
-}
+.BoatService__btnGhost{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:14px 24px;border:1px solid #c9dfd1;border-radius:30px;background:#fff;color:var(--BoatService-forest);font-size:12px;font-weight:700;cursor:pointer;transition:border-color .25s ease,color .25s ease,transform .25s ease;}
 
-.BoatService__planTrigger:hover {
-  background: #f8fbf9;
-}
+.BoatService__btnGhost:hover{transform:translateY(-2px);border-color:var(--BoatService-green);color:var(--BoatService-green);}
 
-.BoatService__planIndex {
-  flex-shrink: 0;
-  color: var(--BoatService-green);
-  font-family: "Cinzel", serif;
-  font-size: 13px;
-  font-weight: 700;
-}
+/* FAQ ACCORDION */
 
-.BoatService__planQuestion {
-  flex: 1;
-  min-width: 0;
-}
+.BoatService__planAccordion{display:flex;flex-direction:column;gap:12px;margin-bottom:30px;}
 
-.BoatService__planToggle {
-  display: inline-flex;
-  width: 29px;
-  height: 29px;
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: #edf7f0;
-  color: var(--BoatService-green);
-  font-size: 20px;
-  line-height: 1;
-}
+.BoatService__planItem{overflow:hidden;border:1px solid var(--BoatService-line);border-radius:14px;background:#fff;transition:border-color .25s ease,box-shadow .25s ease;}
 
-.BoatService__planItem.is-open .BoatService__planToggle {
-  background: var(--BoatService-green);
-  color: #fff;
-}
+.BoatService__planItem.is-open{border-color:#a4d7b7;box-shadow:0 10px 24px rgba(10,45,34,.07);}
 
-.BoatService__planAnswer {
-  margin: 0;
-  padding: 0 20px 22px 53px;
-  color: var(--BoatService-muted);
-  font-size: 13px;
-  line-height: 1.9;
-}
+.BoatService__planTrigger{display:flex;width:100%;align-items:center;gap:16px;padding:18px 20px;border:0;background:#fff;color:var(--BoatService-forest);text-align:left;font-size:13.5px;font-weight:700;line-height:1.7;cursor:pointer;transition:background .25s ease;}
 
-/* ==============================
-   TRAVEL ROUTE BOX
-============================== */
-
-.BoatService__routeBox {
-  padding: 28px;
-  border: 1px dashed #bddfcb;
-  border-radius: 16px;
-  background: var(--BoatService-soft);
-}
+.BoatService__planTrigger:hover{background:#f8fbf9;}
 
-.BoatService__routeBox h3 {
-  margin: 0 0 17px;
-  color: var(--BoatService-forest);
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 22px;
-}
+.BoatService__planIndex{flex-shrink:0;color:var(--BoatService-green);font-family:"Cinzel",serif;font-size:13px;font-weight:700;}
 
-.BoatService__routeBox ul {
-  display: flex;
-  flex-direction: column;
-  gap: 13px;
-  margin: 0;
-  padding-left: 19px;
-}
+.BoatService__planQuestion{flex:1;min-width:0;}
 
-.BoatService__routeBox li {
-  color: var(--BoatService-muted);
-  font-size: 12.5px;
-  line-height: 1.8;
-}
+.BoatService__planToggle{display:inline-flex;width:29px;height:29px;flex-shrink:0;align-items:center;justify-content:center;border-radius:50%;background:#edf7f0;color:var(--BoatService-green);font-size:20px;line-height:1;}
 
-.BoatService__routeBox li strong {
-  color: var(--BoatService-forest);
-}
+.BoatService__planItem.is-open .BoatService__planToggle{background:var(--BoatService-green);color:#fff;}
 
-.BoatService__routeBox li::marker {
-  color: var(--BoatService-green);
-}
+.BoatService__planAnswer{margin:0;padding:0 20px 22px 53px;color:var(--BoatService-muted);font-size:13px;line-height:1.9;}
 
-.BoatService__routeNote {
-  margin: 18px 0 0;
-  padding: 14px 16px;
-  border-left: 3px solid #d9a441;
-  border-radius: 0 10px 10px 0;
-  background: #fff8e8;
-  color: #6b5421;
-  font-size: 11.5px;
-  line-height: 1.8;
-}
+/* ROUTE BOX */
 
-/* ==============================
-   BOOKING FORM
-============================== */
-
-.BoatService__form {
-  padding: 32px;
-  border: 1px solid var(--BoatService-line);
-  border-radius: 20px;
-  background: var(--BoatService-soft);
-  box-shadow: 0 18px 40px -22px rgba(10, 45, 34, 0.25);
-}
+.BoatService__routeBox{padding:28px;border:1px dashed #bddfcb;border-radius:16px;background:var(--BoatService-soft);}
 
-.BoatService__formHeading {
-  margin-bottom: 27px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--BoatService-line);
-}
+.BoatService__routeBox h3{margin:0 0 17px;color:var(--BoatService-forest);font-family:"Playfair Display",Georgia,serif;font-size:22px;}
 
-.BoatService__formHeading > span {
-  color: var(--BoatService-green);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 2px;
-}
+.BoatService__routeBox ul{display:flex;flex-direction:column;gap:13px;margin:0;padding-left:19px;}
 
-.BoatService__formHeading h3 {
-  margin: 7px 0;
-  color: var(--BoatService-forest);
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 25px;
-}
+.BoatService__routeBox li{color:var(--BoatService-muted);font-size:12.5px;line-height:1.8;}
 
-.BoatService__formHeading p {
-  margin: 0;
-  color: var(--BoatService-muted);
-  font-size: 12px;
-  line-height: 1.7;
-}
+.BoatService__routeBox li strong{color:var(--BoatService-forest);}
 
-.BoatService__formGrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0 18px;
-}
+.BoatService__routeBox li::marker{color:var(--BoatService-green);}
 
-.BoatService__inputGroup {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 19px;
-}
+.BoatService__routeNote{margin:18px 0 0;padding:14px 16px;border-left:3px solid #d9a441;border-radius:0 10px 10px 0;background:#fff8e8;color:#6b5421;font-size:11.5px;line-height:1.8;}
 
-.BoatService__inputGroup--full {
-  grid-column: 1 / -1;
-}
+/* BOOKING FORM */
 
-.BoatService__inputGroup label {
-  color: var(--BoatService-forest);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-}
+.BoatService__form{padding:32px;border:1px solid var(--BoatService-line);border-radius:20px;background:var(--BoatService-soft);box-shadow:0 18px 40px -22px rgba(10,45,34,.25);}
 
-.BoatService__inputGroup input,
-.BoatService__inputGroup select,
-.BoatService__inputGroup textarea {
-  width: 100%;
-  min-width: 0;
-  min-height: 48px;
-  padding: 12px 14px;
-  border: 1px solid #d4e2d8;
-  border-radius: 10px;
-  background: #fff;
-  color: var(--BoatService-ink);
-  font-size: 12.5px;
-  line-height: 1.6;
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
-}
+.BoatService__formHeading{margin-bottom:27px;padding-bottom:20px;border-bottom:1px solid var(--BoatService-line);}
 
-.BoatService__inputGroup input::placeholder,
-.BoatService__inputGroup textarea::placeholder {
-  color: #98a99e;
-}
+.BoatService__formHeading>span{color:var(--BoatService-green);font-size:10px;font-weight:700;letter-spacing:2px;}
 
-.BoatService__inputGroup input:focus,
-.BoatService__inputGroup select:focus,
-.BoatService__inputGroup textarea:focus {
-  border-color: var(--BoatService-green);
-  box-shadow: 0 0 0 3px rgba(21, 139, 88, 0.12);
-  outline: none;
-}
+.BoatService__formHeading h3{margin:7px 0;color:var(--BoatService-forest);font-family:"Playfair Display",Georgia,serif;font-size:25px;}
 
-.BoatService__inputGroup textarea {
-  min-height: 120px;
-  resize: vertical;
-}
+.BoatService__formHeading p{margin:0;color:var(--BoatService-muted);font-size:12px;line-height:1.7;}
 
-.BoatService__submitBtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  min-height: 52px;
-  padding: 14px 24px;
-  border: 0;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #1aa468, #0f6f46);
-  color: #fff;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
-}
+.BoatService__formGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 18px;}
 
-.BoatService__submitBtn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 26px rgba(21, 139, 88, 0.3);
-}
+.BoatService__inputGroup{display:flex;min-width:0;flex-direction:column;gap:8px;margin-bottom:19px;}
 
-/* FORM SUCCESS */
-
-.BoatService__formSuccess {
-  padding: 42px 28px;
-  border: 1px solid #bce2cb;
-  border-radius: 20px;
-  background: var(--BoatService-soft);
-  text-align: center;
-  box-shadow: 0 18px 40px -22px rgba(10, 45, 34, 0.25);
-}
+.BoatService__inputGroup--full{grid-column:1/-1;}
 
-.BoatService__checkIcon {
-  display: inline-flex;
-  width: 58px;
-  height: 58px;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 17px;
-  border-radius: 50%;
-  background: var(--BoatService-green);
-  color: #fff;
-  font-size: 26px;
-  box-shadow: 0 0 0 8px rgba(21, 139, 88, 0.14);
-}
+.BoatService__inputGroup label{color:var(--BoatService-forest);font-size:11px;font-weight:700;letter-spacing:.3px;}
 
-.BoatService__formSuccess h3 {
-  margin: 0 0 12px;
-  color: var(--BoatService-forest);
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 26px;
-}
+.BoatService__inputGroup input,.BoatService__inputGroup select,.BoatService__inputGroup textarea{width:100%;min-width:0;min-height:48px;padding:12px 14px;border:1px solid #d4e2d8;border-radius:10px;background:#fff;color:var(--BoatService-forest);font-size:12px;outline:none;transition:border-color .2s ease,box-shadow .2s ease;}
 
-.BoatService__formSuccess > p {
-  max-width: 520px;
-  margin: 0 auto 24px;
-  color: var(--BoatService-muted);
-  font-size: 12.5px;
-  line-height: 1.9;
-}
+.BoatService__inputGroup input:focus,.BoatService__inputGroup select:focus,.BoatService__inputGroup textarea:focus{border-color:var(--BoatService-green);box-shadow:0 0 0 3px rgba(21,139,88,.1);}
 
-.BoatService__summary {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1px;
-  margin: 0 0 26px;
-  overflow: hidden;
-  border: 1px solid var(--BoatService-line);
-  border-radius: 14px;
-  background: var(--BoatService-line);
-  text-align: left;
-}
+.BoatService__inputGroup input::placeholder,.BoatService__inputGroup textarea::placeholder{color:#9aaba0;}
 
-.BoatService__summary > div {
-  min-width: 0;
-  padding: 14px 16px;
-  background: #fff;
-}
+.BoatService__inputGroup select{cursor:pointer;}
 
-.BoatService__summary dt {
-  margin-bottom: 4px;
-  color: var(--BoatService-green);
-  font-size: 9.5px;
-  font-weight: 800;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-}
+.BoatService__inputGroup textarea{min-height:110px;resize:vertical;}
 
-.BoatService__summary dd {
-  margin: 0;
-  color: var(--BoatService-forest);
-  font-size: 12.5px;
-  font-weight: 600;
-  line-height: 1.6;
-}
+.BoatService__formFooter{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:8px;padding-top:22px;border-top:1px solid var(--BoatService-line);}
 
-.BoatService__successActions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-}
+.BoatService__formFooter p{margin:0;color:var(--BoatService-muted);font-size:11px;line-height:1.7;}
 
-/* ==============================
-   SANCTUARY GALLERY
-============================== */
-
-.BoatService__galleryPageGrid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-}
+.BoatService__fieldHint{display:block;margin-top:2px;color:var(--BoatService-muted);font-size:10.5px;line-height:1.6;}
 
-.BoatService__galleryPageCard {
-  position: relative;
-  display: block;
-  width: 100%;
-  min-width: 0;
-  padding: 0;
-  overflow: hidden;
-  aspect-ratio: 4 / 4.5;
-  border: 0;
-  border-radius: 14px;
-  background: #0d2a1f;
-  text-align: left;
-  cursor: pointer;
-  isolation: isolate;
-  transition:
-    transform 0.35s ease,
-    box-shadow 0.35s ease;
-}
+/* PASSENGER SELECTOR */
 
-.BoatService__galleryPageCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 36px -14px rgba(6, 28, 20, 0.5);
-}
+.BoatService__passengerHeading{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:12px;}
 
-.BoatService__galleryPageCard > img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.65s var(--BoatService-ease);
-}
+.BoatService__passengerHeading>div{min-width:0;}
 
-.BoatService__galleryPageCard:hover > img {
-  transform: scale(1.08);
-}
+.BoatService__passengerHeading p{margin:6px 0 0;color:var(--BoatService-muted);font-size:11px;line-height:1.6;}
 
-.BoatService__galleryCardOverlay {
-  position: absolute;
-  z-index: 1;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-  gap: 5px;
-  padding: 15px;
-  background: linear-gradient(
-    180deg,
-    transparent 20%,
-    rgba(6, 26, 19, 0.25) 48%,
-    rgba(6, 26, 19, 0.92) 100%
-  );
-  color: #fff;
-}
+.BoatService__passengerCount{flex-shrink:0;padding:8px 12px;border:1px solid #cce9d7;border-radius:30px;background:#eaf7ef;color:var(--BoatService-green);font-size:11px;font-weight:800;white-space:nowrap;}
 
-.BoatService__galleryCardOverlay > span:first-child {
-  color: var(--BoatService-mint);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-}
+.BoatService__passengerTableWrapper{width:100%;padding:10px;overflow-x:auto;border:1px solid var(--BoatService-line);border-radius:13px;background:#fff;}
 
-.BoatService__galleryCardTitle {
-  color: #fff;
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1.5;
-}
+.BoatService__passengerTable{width:100%;table-layout:fixed;border-collapse:separate;border-spacing:8px;}
 
-.BoatService__galleryLocation {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  color: #d4e6dc;
-  font-size: 10px;
-  line-height: 1.6;
-}
+.BoatService__passengerTable td{width:16.666%;padding:0;}
 
-/* ==============================
-   SIDEBAR BOXES
-============================== */
-
-.BoatService__sideBox {
-  min-width: 0;
-  padding: 27px 23px;
-  border: 1px solid var(--BoatService-line);
-  border-radius: var(--BoatService-radius);
-  background: #fff;
-  box-shadow: 0 6px 20px rgba(10, 45, 34, 0.035);
-}
+.BoatService__passengerOption{position:relative;display:flex;min-height:46px;align-items:center;justify-content:center;border:1px solid #dce9e0;border-radius:9px;background:#f8fbf9;color:var(--BoatService-forest);font-size:13px;font-weight:800;cursor:pointer;transition:background .2s ease,color .2s ease,border-color .2s ease,transform .2s ease;}
 
-.BoatService__sideTitle {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 21px;
-}
+.BoatService__passengerOption:hover{transform:translateY(-2px);border-color:var(--BoatService-green);background:#edf8f1;color:var(--BoatService-green);}
 
-.BoatService__sideTitle > span {
-  width: 4px;
-  height: 26px;
-  flex-shrink: 0;
-  border-radius: 4px;
-  background: var(--BoatService-green);
-}
+.BoatService__passengerOption input{position:absolute;width:1px;height:1px;opacity:0;}
 
-.BoatService__sideTitle h2 {
-  margin: 0;
-  color: var(--BoatService-forest);
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 1.4;
-}
+.BoatService__passengerOption--active{border-color:var(--BoatService-green);background:var(--BoatService-green);color:#fff;box-shadow:0 5px 14px rgba(21,139,88,.2);}
 
-/* ==============================
-   EXPLORE SERVICES NAVIGATION
-============================== */
-
-.BoatService__serviceNav {
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-}
+.BoatService__passengerOption--active:hover{background:var(--BoatService-green-hover);color:#fff;}
 
-.BoatService__serviceNav button {
-  display: flex;
-  width: 100%;
-  min-height: 49px;
-  align-items: center;
-  gap: 13px;
-  padding: 13px 15px;
-  border: 1px solid transparent;
-  border-radius: 10px;
-  background: #f3f7f4;
-  color: #2b4035;
-  text-align: left;
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1.6;
-  cursor: pointer;
-  transition:
-    background 0.25s var(--BoatService-ease),
-    color 0.25s ease,
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
-}
+.BoatService__passengerOption:focus-within{outline:3px solid rgba(21,139,88,.25);outline-offset:2px;}
 
-.BoatService__navArrow {
-  flex-shrink: 0;
-  color: var(--BoatService-green);
-  font-size: 15px;
-  transition: transform 0.25s ease;
-}
+.BoatService__inputGroup input[name="aadhar"]{letter-spacing:1px;}
 
-.BoatService__serviceNav button:hover {
-  transform: translateX(3px);
-  background: #e7f3ec;
-  color: var(--BoatService-forest);
-}
+/* SUCCESS CARD */
 
-.BoatService__serviceNav button.is-highlighted {
-  transform: translateX(3px);
-  border-color: var(--BoatService-green);
-  background: var(--BoatService-green);
-  color: #fff;
-  box-shadow: 0 8px 20px -4px rgba(21, 139, 88, 0.3);
-}
+.BoatService__successCard{padding:35px;border:1px solid var(--BoatService-line);border-radius:20px;background:#fff;box-shadow:0 18px 40px -22px rgba(10,45,34,.2);text-align:center;}
 
-.BoatService__serviceNav button.is-highlighted .BoatService__navArrow {
-  transform: translate(2px, -2px);
-  color: #fff;
-}
+.BoatService__successIcon{display:flex;width:58px;height:58px;align-items:center;justify-content:center;margin:0 auto 18px;border-radius:50%;background:#e8f7ee;color:var(--BoatService-green);font-size:30px;font-weight:800;}
 
-/* ==============================
-   SUPPORT CARD  (connect with boat service → WhatsApp)
-============================== */
-
-.BoatService__supportCard {
-  position: relative;
-  overflow: hidden;
-  padding: 29px 24px 24px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  background:
-    radial-gradient(circle at 100% 0, rgba(33, 181, 115, 0.26), transparent 50%),
-    linear-gradient(155deg, #0d3829, #061c14);
-  color: #fff;
-  box-shadow: 0 22px 44px -14px rgba(6, 28, 20, 0.4);
-}
+.BoatService__successLabel{color:var(--BoatService-green);font-size:10px;font-weight:800;letter-spacing:2px;}
 
-.BoatService__supportIcon {
-  display: flex;
-  width: 48px;
-  height: 48px;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 13px;
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--BoatService-mint);
-}
+.BoatService__successCard h2{margin:10px 0;color:var(--BoatService-forest);font-family:"Playfair Display",Georgia,serif;font-size:28px;}
 
-.BoatService__supportIcon svg {
-  width: 24px;
-  height: 24px;
-}
+.BoatService__successCard>p{max-width:520px;margin:0 auto 25px;color:var(--BoatService-muted);font-size:12px;line-height:1.8;}
 
-.BoatService__supportHeading {
-  margin-top: 20px;
-}
+.BoatService__successDetails{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;margin:0 0 25px;border:1px solid var(--BoatService-line);border-radius:13px;text-align:left;overflow:hidden;}
 
-.BoatService__supportHeading > span {
-  color: var(--BoatService-mint);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 2px;
-}
+.BoatService__successDetails>div{padding:14px 16px;border-bottom:1px solid var(--BoatService-line);}
 
-.BoatService__supportHeading h3 {
-  margin: 7px 0 0;
-  color: #fff;
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 24px;
-  font-weight: 600;
-  line-height: 1.35;
-}
+.BoatService__successDetails>div:nth-child(odd){border-right:1px solid var(--BoatService-line);}
 
-.BoatService__supportCard > p {
-  margin: 13px 0 0;
-  color: #b9d5c6;
-  font-size: 11.5px;
-  line-height: 1.9;
-}
+.BoatService__successDetails dt{margin-bottom:5px;color:var(--BoatService-muted);font-size:10px;font-weight:700;}
 
-.BoatService__supportWa {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-  margin-top: 22px;
-  padding: 13px 15px;
-  border-radius: 14px;
-  background: var(--BoatService-wa);
-  color: #052e1c;
-  text-decoration: none;
-  box-shadow: 0 12px 26px -8px rgba(37, 211, 102, 0.55);
-  transition:
-    transform 0.25s ease,
-    background 0.25s ease,
-    box-shadow 0.25s ease;
-}
+.BoatService__successDetails dd{margin:0;color:var(--BoatService-forest);font-size:12px;font-weight:700;overflow-wrap:anywhere;}
 
-.BoatService__supportWa:hover {
-  transform: translateY(-3px);
-  background: var(--BoatService-wa-hover);
-  box-shadow: 0 16px 30px -8px rgba(37, 211, 102, 0.7);
-}
+.BoatService__successActions{display:flex;flex-direction:column;gap:12px;max-width:420px;margin:0 auto;}
 
-.BoatService__waBadge {
-  position: relative;
-  display: flex;
-  width: 42px;
-  height: 42px;
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: #052e1c;
-  color: var(--BoatService-wa);
-}
+/* GALLERY */
 
-.BoatService__waBadge .BoatService__waIcon {
-  width: 22px;
-  height: 22px;
-}
+.BoatService__galleryPageGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;}
 
-.BoatService__waBadge::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 2px solid #052e1c;
-  animation: BoatService-waPulse 2.2s ease-out infinite;
-}
+.BoatService__galleryPageCard{position:relative;display:block;min-width:0;min-height:250px;padding:0;overflow:hidden;border:0;border-radius:16px;background:#e6eee8;text-align:left;cursor:pointer;}
 
-@keyframes BoatService-waPulse {
-  0% {
-    transform: scale(1);
-    opacity: 0.55;
-  }
-  100% {
-    transform: scale(1.55);
-    opacity: 0;
-  }
-}
+.BoatService__galleryPageCard img{display:block;width:100%;height:300px;object-fit:cover;transition:transform .7s var(--BoatService-ease);}
 
-.BoatService__waText {
-  display: flex;
-  min-width: 0;
-  flex: 1;
-  flex-direction: column;
-  gap: 2px;
-}
+.BoatService__galleryPageCard:hover img{transform:scale(1.06);}
 
-.BoatService__waText strong {
-  font-size: 13.5px;
-  font-weight: 800;
-  line-height: 1.35;
-}
+.BoatService__galleryCardOverlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;gap:7px;padding:22px;background:linear-gradient(to top,rgba(4,24,17,.86),rgba(4,24,17,0) 70%);color:#fff;}
 
-.BoatService__waText small {
-  color: rgba(5, 46, 28, 0.78);
-  font-size: 10.5px;
-  font-weight: 600;
-  line-height: 1.5;
-}
+.BoatService__galleryCardOverlay>span:first-child{color:#a5edc4;font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;}
 
-.BoatService__waArrow {
-  flex-shrink: 0;
-  font-size: 18px;
-  font-weight: 700;
-  transition: transform 0.25s ease;
-}
+.BoatService__galleryCardTitle{font-family:"Playfair Display",Georgia,serif;font-size:20px;font-weight:700;line-height:1.35;}
 
-.BoatService__supportWa:hover .BoatService__waArrow {
-  transform: translate(2px, -2px);
-}
+.BoatService__galleryLocation{display:flex;align-items:center;gap:7px;color:#e1f2e7;font-size:10px;}
 
-/* ==============================
-   QUICK LINKS
-============================== */
-
-.BoatService__downloadGrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-}
+/* SIDEBAR */
 
-.BoatService__downloadGrid button {
-  display: flex;
-  min-width: 0;
-  min-height: 132px;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 13px 11px;
-  border: 1px solid var(--BoatService-line);
-  border-radius: 12px;
-  background: var(--BoatService-soft);
-  text-align: left;
-  cursor: pointer;
-  transition:
-    transform 0.25s var(--BoatService-ease),
-    border-color 0.25s ease,
-    background 0.25s ease,
-    box-shadow 0.25s ease;
-}
+.BoatService__sideBox{padding:23px;border:1px solid var(--BoatService-line);border-radius:16px;background:#fff;box-shadow:0 12px 28px -20px rgba(10,45,34,.2);}
 
-.BoatService__downloadGrid button.is-active-btn {
-  border-color: var(--BoatService-green);
-  background: #eef8f2;
-}
+.BoatService__sideTitle{display:flex;align-items:center;gap:10px;margin-bottom:19px;}
 
-.BoatService__downloadGrid button:hover {
-  transform: translateY(-3px);
-  border-color: #a4d8b6;
-  background: #fff;
-  box-shadow: 0 8px 20px rgba(21, 139, 88, 0.08);
-}
+.BoatService__sideTitle>span{width:4px;height:21px;border-radius:5px;background:var(--BoatService-green);}
 
-.BoatService__downloadIcon {
-  display: flex;
-  width: 32px;
-  height: 32px;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 12px;
-  border: 1px solid #c2e4ce;
-  border-radius: 50%;
-  background: #fff;
-  color: var(--BoatService-green);
-  font-family: "Cinzel", serif;
-  font-size: 11px;
-  font-weight: 700;
-}
+.BoatService__sideTitle h2{margin:0;color:var(--BoatService-forest);font-family:"Playfair Display",Georgia,serif;font-size:19px;}
 
-.BoatService__downloadGrid strong {
-  color: var(--BoatService-forest);
-  font-size: 11px;
-  line-height: 1.6;
-}
+.BoatService__serviceNav{display:flex;flex-direction:column;gap:8px;}
 
-.BoatService__downloadGrid small {
-  margin-top: 5px;
-  color: var(--BoatService-muted);
-  font-size: 9px;
-  line-height: 1.6;
-}
+.BoatService__serviceNav button{display:flex;width:100%;align-items:center;gap:12px;padding:13px 14px;border:1px solid transparent;border-radius:10px;background:#f7faf8;color:var(--BoatService-ink);text-align:left;font-size:11.5px;font-weight:700;cursor:pointer;transition:background .2s ease,border-color .2s ease,color .2s ease,transform .2s ease;}
 
-/* ==============================
-   CONTACT INFORMATION
-============================== */
-
-.BoatService__contactInfo {
-  display: grid;
-  grid-template-columns: 38px minmax(0, 1fr);
-  align-items: start;
-  gap: 13px;
-  margin-top: 20px;
-}
+.BoatService__serviceNav button:hover{transform:translateX(3px);border-color:#cce7d5;background:#edf8f1;color:var(--BoatService-green);}
 
-.BoatService__contactInfo:first-of-type {
-  margin-top: 0;
-}
+.BoatService__serviceNav button.is-highlighted{border-color:#b9e1c8;background:#eaf7ef;color:var(--BoatService-green);}
 
-.BoatService__contactInfoIcon {
-  display: flex;
-  width: 38px;
-  height: 38px;
-  align-items: center;
-  justify-content: center;
-  border-radius: 12px;
-  background: #eaf6ef;
-  color: var(--BoatService-green);
-  font-size: 18px;
-}
+.BoatService__navArrow{display:inline-flex;width:25px;height:25px;flex-shrink:0;align-items:center;justify-content:center;border-radius:50%;background:#fff;color:var(--BoatService-green);}
 
-.BoatService__contactInfoIcon--wa {
-  background: #e3f9ec;
-  color: #128c4a;
-}
+.BoatService__supportCard{padding:26px;border:1px solid #d5eadc;border-radius:17px;background:linear-gradient(145deg,#fff,#eef8f1);}
 
-.BoatService__contactInfoIcon--wa .BoatService__waIcon {
-  width: 19px;
-  height: 19px;
-}
+.BoatService__supportIcon{display:flex;width:47px;height:47px;align-items:center;justify-content:center;margin-bottom:17px;border-radius:14px;background:#dff4e7;color:var(--BoatService-green);}
 
-.BoatService__contactInfo strong {
-  display: block;
-  margin-bottom: 4px;
-  color: var(--BoatService-forest);
-  font-size: 12px;
-  font-weight: 700;
-}
+.BoatService__supportIcon svg{width:26px;height:26px;}
 
-.BoatService__contactInfo p,
-.BoatService__contactInfo a {
-  display: inline-block;
-  margin: 0;
-  color: var(--BoatService-muted);
-  font-size: 11px;
-  line-height: 1.8;
-  overflow-wrap: anywhere;
-}
+.BoatService__supportHeading>span{color:var(--BoatService-green);font-size:9px;font-weight:800;letter-spacing:1.5px;}
 
-.BoatService__contactInfo a {
-  color: var(--BoatService-green);
-  font-weight: 600;
-  text-decoration: none;
-}
+.BoatService__supportHeading h3{margin:6px 0 10px;color:var(--BoatService-forest);font-family:"Playfair Display",Georgia,serif;font-size:23px;}
 
-.BoatService__contactInfo a:hover {
-  text-decoration: underline;
-}
+.BoatService__supportCard>p{margin:0 0 20px;color:var(--BoatService-muted);font-size:11.5px;line-height:1.8;}
 
-/* ==============================
-   FULLSCREEN LIGHTBOX
-============================== */
-
-.BoatService__lightbox {
-  position: fixed;
-  z-index: 999999;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 25px 18px;
-  background: rgba(3, 18, 12, 0.94);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-}
+.BoatService__supportWa{display:flex;align-items:center;gap:11px;padding:12px;border:1px solid #b9e9ca;border-radius:12px;background:#fff;color:#0b5a34;text-decoration:none;transition:transform .2s ease,box-shadow .2s ease;}
 
-.BoatService__lightboxBox {
-  position: relative;
-  width: 100%;
-  max-width: 900px;
-  max-height: 95vh;
-  overflow: auto;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 18px;
-  background: #082218;
-  scrollbar-width: thin;
-}
+.BoatService__supportWa:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(37,211,102,.14);}
 
-.BoatService__lightboxClose {
-  position: absolute;
-  z-index: 2;
-  top: 14px;
-  right: 14px;
-  display: flex;
-  width: 40px;
-  height: 40px;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.65);
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
-  transition:
-    background 0.2s ease,
-    transform 0.2s ease;
-}
+.BoatService__waBadge{display:flex;width:38px;height:38px;flex-shrink:0;align-items:center;justify-content:center;border-radius:50%;background:var(--BoatService-wa);color:#07361f;}
 
-.BoatService__lightboxClose:hover {
-  transform: rotate(90deg);
-  background: var(--BoatService-green);
-}
+.BoatService__waText{display:flex;min-width:0;flex:1;flex-direction:column;gap:4px;}
 
-.BoatService__lightboxBox > img {
-  display: block;
-  width: 100%;
-  max-height: 65vh;
-  object-fit: contain;
-  background: #020e09;
-}
+.BoatService__waText strong{font-size:10.5px;}
 
-.BoatService__lightboxCaption {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 20px 25px;
-  color: #fff;
-}
+.BoatService__waText small{font-size:9px;color:var(--BoatService-muted);}
 
-.BoatService__lightboxCaption > div > span {
-  color: var(--BoatService-mint);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
+.BoatService__waArrow{font-size:18px;font-weight:800;}
 
-.BoatService__lightboxCaption h3 {
-  margin: 5px 0;
-  color: #fff;
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 22px;
-  line-height: 1.4;
-}
+.BoatService__downloads{background:#fff;}
 
-.BoatService__lightboxCaption small {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  color: #c9e3d4;
-  font-size: 11px;
-}
+.BoatService__downloadGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
 
-.BoatService__lightboxCount {
-  flex-shrink: 0;
-  color: var(--BoatService-mint);
-  font-family: "Cinzel", serif;
-  font-size: 13px;
-}
+.BoatService__downloadGrid button{display:flex;min-width:0;flex-direction:column;align-items:flex-start;gap:7px;padding:13px;border:1px solid var(--BoatService-line);border-radius:11px;background:#f8fbf9;color:var(--BoatService-forest);text-align:left;cursor:pointer;transition:border-color .2s ease,background .2s ease;}
 
-.BoatService__lightboxControls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 0 25px 22px;
-}
+.BoatService__downloadGrid button:hover,.BoatService__downloadGrid button.is-active-btn{border-color:#a8d8ba;background:#edf8f1;}
 
-.BoatService__lightboxControls button {
-  padding: 10px 15px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 25px;
-  background: rgba(255, 255, 255, 0.07);
-  color: #fff;
-  font-size: 11px;
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease;
-}
+.BoatService__downloadIcon{color:var(--BoatService-green);font-family:"Cinzel",serif;font-size:13px;font-weight:800;}
 
-.BoatService__lightboxControls button:hover {
-  border-color: var(--BoatService-mint);
-  background: rgba(21, 139, 88, 0.4);
-}
+.BoatService__downloadGrid strong{font-size:10px;}
 
-.BoatService__lightboxWa {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px 16px;
-  border-radius: 25px;
-  background: var(--BoatService-wa);
-  color: #052e1c;
-  font-size: 11px;
-  font-weight: 800;
-  text-decoration: none;
-  transition:
-    background 0.2s ease,
-    transform 0.2s ease;
-}
+.BoatService__downloadGrid small{color:var(--BoatService-muted);font-size:9px;}
+
+.BoatService__contactInfo{display:flex;align-items:flex-start;gap:12px;padding:13px 0;border-bottom:1px solid #edf2ee;}
+
+.BoatService__contactInfo:last-child{border-bottom:0;}
 
-.BoatService__lightboxWa:hover {
-  transform: translateY(-2px);
-  background: var(--BoatService-wa-hover);
+.BoatService__contactInfoIcon{display:flex;width:34px;height:34px;flex-shrink:0;align-items:center;justify-content:center;border-radius:10px;background:#edf7f0;color:var(--BoatService-green);}
+
+.BoatService__contactInfoIcon--wa{background:#e2f9e9;color:#0a6938;}
+
+.BoatService__contactInfo>div{min-width:0;}
+
+.BoatService__contactInfo strong{display:block;margin-bottom:5px;color:var(--BoatService-forest);font-size:10.5px;}
+
+.BoatService__contactInfo p,.BoatService__contactInfo a{display:block;margin:0;color:var(--BoatService-muted);font-size:10.5px;line-height:1.7;overflow-wrap:anywhere;}
+
+.BoatService__contactInfo a{text-decoration:none;}
+
+.BoatService__contactInfo a:hover{color:var(--BoatService-green);}
+
+/* LIGHTBOX */
+
+.BoatService__lightbox{position:fixed;z-index:9999;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(2,16,11,.94);backdrop-filter:blur(10px);}
+
+.BoatService__lightboxBox{position:relative;width:min(100%,1000px);max-height:92vh;padding:16px;border:1px solid rgba(255,255,255,.15);border-radius:18px;background:#09251b;box-shadow:0 30px 80px rgba(0,0,0,.4);}
+
+.BoatService__lightboxBox>img{display:block;width:100%;max-height:65vh;border-radius:12px;object-fit:contain;background:#06170f;}
+
+.BoatService__lightboxClose{position:absolute;z-index:3;top:26px;right:26px;display:flex;width:38px;height:38px;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.25);border-radius:50%;background:rgba(0,0,0,.65);color:#fff;font-size:17px;cursor:pointer;}
+
+.BoatService__lightboxCaption{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:17px 4px;color:#fff;}
+
+.BoatService__lightboxCaption>div>span{color:#88d9aa;font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;}
+
+.BoatService__lightboxCaption h3{margin:5px 0;color:#fff;font-family:"Playfair Display",Georgia,serif;font-size:21px;}
+
+.BoatService__lightboxCaption small{display:flex;align-items:center;gap:6px;color:#bdd5c7;font-size:10px;}
+
+.BoatService__lightboxCount{color:#a8c8b5;font-size:11px;font-weight:700;white-space:nowrap;}
+
+.BoatService__lightboxControls{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+
+.BoatService__lightboxControls button{min-height:40px;padding:9px 16px;border:1px solid rgba(255,255,255,.2);border-radius:30px;background:transparent;color:#fff;font-size:11px;font-weight:700;cursor:pointer;transition:background .2s ease,border-color .2s ease;}
+
+.BoatService__lightboxControls button:hover{border-color:var(--BoatService-green);background:var(--BoatService-green);}
+
+.BoatService__lightboxWa{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:9px 18px;border-radius:30px;background:var(--BoatService-wa);color:#052e1c;font-size:11px;font-weight:800;text-decoration:none;}
+
+/* TABLET */
+
+@media(max-width:1150px){
+.BoatService__layout{grid-template-columns:minmax(0,1.5fr) minmax(280px,.9fr);}
+.BoatService__main{padding:50px 30px 70px;}
+.BoatService__sidebar{padding:50px 22px 60px;}
+.BoatService__packageGrid{grid-template-columns:repeat(2,minmax(0,1fr));}
+.BoatService__featureGrid{grid-template-columns:repeat(2,minmax(0,1fr));}
 }
 
-/* ==============================
-   TABLET RESPONSIVE
-============================== */
-
-@media (max-width: 1100px) {
-  .BoatService__layout {
-    grid-template-columns: minmax(0, 1.6fr) minmax(270px, 0.9fr);
-  }
-
-  .BoatService__main {
-    padding: 48px 28px 65px;
-  }
-
-  .BoatService__sidebar {
-    gap: 20px;
-    padding: 48px 20px 65px;
-  }
-
-  .BoatService__featureGrid,
-  .BoatService__packageGrid {
-    grid-template-columns: 1fr;
-    gap: 14px;
-  }
-
-  .BoatService__specBox {
-    padding: 21px;
-  }
-
-  .BoatService__stats {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .BoatService__stat:nth-child(3) {
-    border-left: 0;
-  }
-
-  .BoatService__stat:nth-child(n + 3) {
-    border-top: 1px solid var(--BoatService-line);
-  }
-
-  .BoatService__galleryPageGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .BoatService__actionBanner {
-    align-items: flex-start;
-    flex-direction: column;
-    padding: 26px;
-  }
-
-  .BoatService__bannerActions {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
+/* SMALL TABLET */
+
+@media(max-width:900px){
+.BoatService__layout{grid-template-columns:1fr;}
+.BoatService__main{padding:45px 30px 55px;}
+.BoatService__sidebar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;padding:35px 30px;border-top:1px solid var(--BoatService-line);border-left:0;}
+.BoatService__contactBox{grid-column:1/-1;}
+.BoatService__heroImage{height:420px;}
 }
+
+/* MOBILE */
 
-/* ==============================
-   SMALL TABLET RESPONSIVE
-============================== */
-
-@media (max-width: 860px) {
-  .BoatService__layout {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .BoatService__main {
-    padding: 45px 30px 55px;
-  }
-
-  .BoatService__sidebar {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: start;
-    gap: 20px;
-    padding: 35px 30px 45px;
-    border-top: 1px solid var(--BoatService-line);
-    border-left: 0;
-  }
-
-  .BoatService__sideBox {
-    padding: 24px 20px;
-  }
-
-  .BoatService__stats {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .BoatService__stat:nth-child(3) {
-    border-left: 1px solid var(--BoatService-line);
-  }
-
-  .BoatService__stat:nth-child(n + 3) {
-    border-top: 0;
-  }
-
-  .BoatService__featureGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .BoatService__packageGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .BoatService__specBox {
-    padding: 18px 14px;
-  }
-
-  .BoatService__specBox h3 {
-    font-size: 13px;
-  }
-
-  .BoatService__specBox p {
-    font-size: 11px;
-  }
-
-  .BoatService__actionBanner {
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .BoatService__bannerActions {
-    flex-direction: column;
-    flex-wrap: nowrap;
-  }
-
-  .BoatService__galleryPageGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
+@media(max-width:600px){
+.BoatService__main{padding:35px 17px 45px;}
+.BoatService__sidebar{grid-template-columns:1fr;padding:25px 17px;}
+.BoatService__contactBox{grid-column:auto;}
+.BoatService__eyebrow{gap:8px;font-size:9px;letter-spacing:1.3px;}
+.BoatService__pageTitle{font-size:clamp(29px,8vw,39px);}
+.BoatService__lead{font-size:12px;line-height:1.8;}
+.BoatService__heroImage{height:280px;}
+.BoatService__heroChip{top:10px;left:10px;padding:7px 10px;font-size:9px;}
+.BoatService__heroCaption{right:10px;bottom:10px;max-width:calc(100% - 20px);padding:8px 11px;font-size:9px;}
+.BoatService__stats{grid-template-columns:repeat(2,minmax(0,1fr));}
+.BoatService__stat{padding:15px 8px;}
+.BoatService__stat:nth-child(3){border-left:0;border-top:1px solid var(--BoatService-line);}
+.BoatService__stat:nth-child(4){border-top:1px solid var(--BoatService-line);}
+.BoatService__stat strong{font-size:18px;}
+.BoatService__stat span{font-size:9px;}
+.BoatService__featureGrid{grid-template-columns:1fr;gap:12px;}
+.BoatService__specBox{padding:20px;}
+.BoatService__packageGrid{grid-template-columns:1fr;}
+.BoatService__packageCard{padding:22px 17px 17px;}
+.BoatService__actionBanner{align-items:stretch;flex-direction:column;padding:24px 19px;}
+.BoatService__actionBanner h3{font-size:21px;}
+.BoatService__bannerActions{width:100%;}
+.BoatService__bannerActions button,.BoatService__bannerActions a{width:100%;}
+.BoatService__planTrigger{gap:10px;padding:15px 13px;font-size:12px;}
+.BoatService__planAnswer{padding:0 14px 18px 42px;font-size:11.5px;}
+.BoatService__routeBox{padding:20px 17px;}
+.BoatService__form{padding:22px 16px;}
+.BoatService__formHeading h3{font-size:22px;}
+.BoatService__formGrid{grid-template-columns:1fr;gap:0;}
+.BoatService__inputGroup--full{grid-column:auto;}
+.BoatService__formFooter{align-items:stretch;flex-direction:column;}
+.BoatService__formFooter button{width:100%;}
+.BoatService__successCard{padding:24px 15px;}
+.BoatService__successCard h2{font-size:24px;}
+.BoatService__successDetails{grid-template-columns:1fr;}
+.BoatService__successDetails>div:nth-child(odd){border-right:0;}
+.BoatService__galleryPageGrid{grid-template-columns:1fr;gap:13px;}
+.BoatService__galleryPageCard img{height:260px;}
+.BoatService__galleryCardTitle{font-size:18px;}
+.BoatService__sideBox{padding:20px;}
+.BoatService__supportCard{padding:22px;}
+.BoatService__lightbox{padding:10px;}
+.BoatService__lightboxBox{padding:10px;}
+.BoatService__lightboxBox>img{max-height:55vh;}
+.BoatService__lightboxCaption{align-items:flex-start;}
+.BoatService__lightboxCaption h3{font-size:17px;}
+.BoatService__lightboxControls{flex-wrap:wrap;}
+.BoatService__lightboxControls button,.BoatService__lightboxWa{flex:1;}
+.BoatService__passengerHeading{align-items:flex-start;flex-direction:column;}
+.BoatService__passengerTableWrapper{padding:5px;}
+.BoatService__passengerTable{border-spacing:5px;}
+.BoatService__passengerOption{min-height:42px;font-size:12px;}
 }
 
-/* ==============================
-   MOBILE RESPONSIVE
-============================== */
-
-@media (max-width: 600px) {
-  .BoatService__main {
-    padding: 35px 17px 42px;
-  }
-
-  .BoatService__sidebar {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 17px;
-    padding: 28px 17px 38px;
-  }
-
-  .BoatService__pageTitle {
-    font-size: clamp(28px, 8vw, 38px);
-    letter-spacing: -0.5px;
-  }
-
-  .BoatService__eyebrow {
-    gap: 9px;
-    font-size: 9px;
-    letter-spacing: 1.5px;
-  }
-
-  .BoatService__eyebrowLine {
-    width: 20px;
-  }
-
-  .BoatService__lead {
-    margin: 15px 0 25px;
-    font-size: 12.5px;
-    line-height: 1.8;
-  }
-
-  .BoatService__heroImage {
-    height: 260px;
-  }
-
-  .BoatService__heroChip {
-    top: 10px;
-    left: 10px;
-    padding: 7px 11px;
-    font-size: 10px;
-  }
-
-  .BoatService__heroCaption {
-    right: 10px;
-    bottom: 10px;
-    padding: 8px 12px;
-    font-size: 9.5px;
-  }
-
-  .BoatService__stats {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .BoatService__stat {
-    padding: 14px 10px;
-  }
-
-  .BoatService__stat strong {
-    font-size: 18px;
-  }
-
-  .BoatService__stat:nth-child(3) {
-    border-left: 0;
-  }
-
-  .BoatService__stat:nth-child(n + 3) {
-    border-top: 1px solid var(--BoatService-line);
-  }
-
-  .BoatService__featureGrid,
-  .BoatService__packageGrid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 12px;
-  }
-
-  .BoatService__specBox {
-    padding: 20px;
-  }
-
-  .BoatService__subHeader h2 {
-    font-size: 22px;
-  }
-
-  .BoatService__actionBanner {
-    align-items: stretch;
-    flex-direction: column;
-    gap: 18px;
-    padding: 24px 18px;
-  }
-
-  .BoatService__actionBanner h3 {
-    font-size: 20px;
-  }
-
-  .BoatService__bannerActions {
-    width: 100%;
-    flex-direction: column;
-  }
-
-  .BoatService__btnPrimary,
-  .BoatService__btnWhatsApp {
-    width: 100%;
-    white-space: normal;
-  }
-
-  .BoatService__planTrigger {
-    gap: 11px;
-    padding: 16px;
-    font-size: 12.5px;
-  }
-
-  .BoatService__planAnswer {
-    padding: 0 16px 18px;
-    font-size: 12px;
-  }
-
-  .BoatService__routeBox {
-    padding: 22px 18px;
-  }
-
-  .BoatService__form {
-    padding: 22px 16px;
-  }
-
-  .BoatService__formGrid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0;
-  }
-
-  .BoatService__inputGroup input,
-  .BoatService__inputGroup select,
-  .BoatService__inputGroup textarea {
-    font-size: 16px; /* stops iOS zoom on focus */
-  }
-
-  .BoatService__formSuccess {
-    padding: 32px 16px;
-  }
-
-  .BoatService__summary {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .BoatService__successActions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .BoatService__galleryPageGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-  }
-
-  .BoatService__lightboxCaption {
-    padding: 16px 18px;
-  }
-
-  .BoatService__lightboxCaption h3 {
-    font-size: 18px;
-  }
-
-  .BoatService__lightboxControls {
-    flex-wrap: wrap;
-    padding: 0 18px 18px;
-  }
-
-  .BoatService__lightboxWa {
-    order: -1;
-    width: 100%;
-  }
-
-  .BoatService__lightboxControls button {
-    flex: 1;
-  }
+/* EXTRA SMALL MOBILE */
+
+@media(max-width:380px){
+.BoatService__main{padding-right:13px;padding-left:13px;}
+.BoatService__sidebar{padding-right:13px;padding-left:13px;}
+.BoatService__pageTitle{font-size:28px;}
+.BoatService__heroImage{height:240px;}
+.BoatService__passengerTable{border-spacing:3px;}
+.BoatService__passengerOption{min-height:38px;font-size:11px;}
+.BoatService__downloadGrid{grid-template-columns:1fr;}
+.BoatService__lightboxControls{gap:6px;}
+.BoatService__lightboxControls button,.BoatService__lightboxWa{padding:8px 10px;font-size:9px;}
 }
+
+/* REDUCED MOTION */
 
-/* ==============================
-   REDUCED MOTION
-============================== */
-
-@media (prefers-reduced-motion: reduce) {
-  .BoatService *,
-  .BoatService *::before,
-  .BoatService *::after {
-    scroll-behavior: auto !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+@media(prefers-reduced-motion:reduce){
+.BoatService *,.BoatService *::before,.BoatService *::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}
 }

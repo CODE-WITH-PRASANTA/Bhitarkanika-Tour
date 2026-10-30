@@ -1,5 +1,7 @@
+
 import React, { useEffect, useState } from "react";
 import "./SaltWaterCrocodile.css";
+
 import crocImgOne from "../../assets/crocodile-1.jpeg";
 import crocImgTwo from "../../assets/crocodile-2.jpeg";
 import crocImgThree from "../../assets/crocodile-3.jpeg";
@@ -8,42 +10,12 @@ import crocImgFive from "../../assets/crocodile-5.jpeg";
 import crocImgSix from "../../assets/crocodile-6.jpeg";
 
 const galleryImages = [
-  {
-    src: crocImgOne,
-    title: "Estuarine Apex Predator Basking",
-    location: "Dangmal Mudflat Riverbank",
-    category: "Giant Croc Sighting",
-  },
-  {
-    src: crocImgTwo,
-    title: "Crocodylus Porosus Hatchling Center",
-    location: "Dangmal Breeding Research Facility",
-    category: "Conservation Hub",
-  },
-  {
-    src: crocImgThree,
-    title: "Suajore Tidal Creek Giant",
-    location: "Suajore Mangrove Channels",
-    category: "Creek Cruiser",
-  },
-  {
-    src: crocImgFour,
-    title: "Territorial Delta Bull",
-    location: "Baitarani Confluence Banks",
-    category: "Deep Delta",
-  },
-  {
-    src: crocImgFive,
-    title: "Camouflaged in Mangrove Roots",
-    location: "Khola Creek Channel",
-    category: "Mangrove Ambush",
-  },
-  {
-    src: crocImgSix,
-    title: "20-Foot Delta Giant on Mudflats",
-    location: "Bhitarkanika Core Riverbed",
-    category: "Mega Fauna",
-  },
+  { src: crocImgOne, title: "Estuarine Apex Predator Basking", location: "Dangmal Mudflat Riverbank", category: "Giant Croc Sighting" },
+  { src: crocImgTwo, title: "Crocodylus Porosus Hatchling Center", location: "Dangmal Breeding Research Facility", category: "Conservation Hub" },
+  { src: crocImgThree, title: "Suajore Tidal Creek Giant", location: "Suajore Mangrove Channels", category: "Creek Cruiser" },
+  { src: crocImgFour, title: "Territorial Delta Bull", location: "Baitarani Confluence Banks", category: "Deep Delta" },
+  { src: crocImgFive, title: "Camouflaged in Mangrove Roots", location: "Khola Creek Channel", category: "Mangrove Ambush" },
+  { src: crocImgSix, title: "20-Foot Delta Giant on Mudflats", location: "Bhitarkanika Core Riverbed", category: "Mega Fauna" },
 ];
 
 const navTabs = [
@@ -59,8 +31,7 @@ const safariPackages = [
     title: "Low-Tide Mudflat Creek Safari",
     route: "Khola Jetty → Dangmal Riverbed → Suajore Creeks → Return",
     duration: "3.5 to 4 Hours (Tide Synchronized)",
-    highlights:
-      "Basking saltwater crocodiles along mudflats, 16–20+ foot apex delta bulls, mangrove monitor lizards, and mudskippers.",
+    highlights: "Basking saltwater crocodiles along mudflats, 16–20+ foot apex delta bulls, mangrove monitor lizards, and mudskippers.",
     capacity: "Forest-Authorized Motor Vessels (Up to 8 / 14 / 20 Seats)",
   },
   {
@@ -68,8 +39,7 @@ const safariPackages = [
     title: "Dangmal Breeding & Museum Expedition",
     route: "Khola Ghat → Dangmal Island Jetty → Captive Breeding Center → Core Delta",
     duration: "4 to 5 Hours",
-    highlights:
-      "Guided walk through the captive breeding & research center, white crocodile enclosures, museum, and river creek cruise.",
+    highlights: "Guided walk through the captive breeding & research center, white crocodile enclosures, museum, and river creek cruise.",
     capacity: "Eco-Cruiser Vessel with Forest Certified Naturalist",
   },
   {
@@ -77,8 +47,7 @@ const safariPackages = [
     title: "Gupti Estuary & Delta Confluence Tour",
     route: "Gupti Gate → Brahmani & Baitarani Estuary → Habalikhati Edge",
     duration: "Full Day / 6–7 Hours (High Tide Dependent)",
-    highlights:
-      "Open saltwater delta cruise, estuarine crocodile river runs, coastal creeks, and mudflat marine biodiversity.",
+    highlights: "Open saltwater delta cruise, estuarine crocodile river runs, coastal creeks, and mudflat marine biodiversity.",
     capacity: "High-Stability Marine Safari Cruiser (Up to 12 Pax)",
   },
 ];
@@ -111,13 +80,12 @@ const SaltWaterCrocodile = () => {
   const [activeImage, setActiveImage] = useState(null);
   const [faqIndex, setFaqIndex] = useState(0);
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [selectedPassengers, setSelectedPassengers] = useState(2);
 
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
 
-    if (tabId === "species-guide") {
-      setFaqIndex(0);
-    }
+    if (tabId === "species-guide") setFaqIndex(0);
 
     if (tabId === "book-safari") {
       setFormSubmitted(false);
@@ -133,16 +101,15 @@ const SaltWaterCrocodile = () => {
     if (activeImage === null) return undefined;
 
     const handleKeyDown = (event) => {
-      if (event.key === "Escape") {
-        setActiveImage(null);
-      }
+      if (event.key === "Escape") setActiveImage(null);
+
       if (event.key === "ArrowRight") {
         setActiveImage((current) => (current + 1) % galleryImages.length);
       }
+
       if (event.key === "ArrowLeft") {
         setActiveImage(
-          (current) =>
-            (current - 1 + galleryImages.length) % galleryImages.length
+          (current) => (current - 1 + galleryImages.length) % galleryImages.length
         );
       }
     };
@@ -159,9 +126,8 @@ const SaltWaterCrocodile = () => {
   return (
     <section className="SaltWaterCrocodile" id="saltwater-crocodile">
       <div className="SaltWaterCrocodile__layout">
-        {/* MAIN CONTENT */}
         <main className="SaltWaterCrocodile__main" key={activeTab}>
-          {/* 1. CROCODILE BOAT SAFARI */}
+          {/* CROCODILE SAFARI PAGE */}
           {activeTab === "croc-safari" && (
             <div className="SaltWaterCrocodile__viewPane">
               <div className="SaltWaterCrocodile__eyebrow">
@@ -187,7 +153,6 @@ const SaltWaterCrocodile = () => {
                   src={crocImgOne}
                   alt="Giant saltwater crocodile basking on the mudflats of Bhitarkanika"
                 />
-
                 <figcaption className="SaltWaterCrocodile__heroCaption">
                   <span className="SaltWaterCrocodile__heroCaptionDot" />
                   <span>
@@ -196,7 +161,6 @@ const SaltWaterCrocodile = () => {
                 </figcaption>
               </figure>
 
-              {/* SAFARI HIGHLIGHT PILLARS */}
               <div className="SaltWaterCrocodile__featureGrid">
                 <div className="SaltWaterCrocodile__specBox">
                   <span className="SaltWaterCrocodile__specNum">01</span>
@@ -226,7 +190,6 @@ const SaltWaterCrocodile = () => {
                 </div>
               </div>
 
-              {/* SAFARI PACKAGES */}
               <div className="SaltWaterCrocodile__packageSection">
                 <div className="SaltWaterCrocodile__subHeader">
                   <span>EXPEDITIONS BY BHITARAKANIKA BOAT SERVICE</span>
@@ -235,13 +198,8 @@ const SaltWaterCrocodile = () => {
 
                 <div className="SaltWaterCrocodile__packageGrid">
                   {safariPackages.map((pkg) => (
-                    <div
-                      key={pkg.title}
-                      className="SaltWaterCrocodile__packageCard"
-                    >
-                      <span className="SaltWaterCrocodile__packageTag">
-                        {pkg.tag}
-                      </span>
+                    <div key={pkg.title} className="SaltWaterCrocodile__packageCard">
+                      <span className="SaltWaterCrocodile__packageTag">{pkg.tag}</span>
                       <h3>{pkg.title}</h3>
                       <p className="SaltWaterCrocodile__packageRoute">
                         <strong>Route:</strong> {pkg.route}
@@ -250,9 +208,7 @@ const SaltWaterCrocodile = () => {
                         <span>⏱ {pkg.duration}</span>
                         <span>👥 {pkg.capacity}</span>
                       </div>
-                      <p className="SaltWaterCrocodile__packageDesc">
-                        {pkg.highlights}
-                      </p>
+                      <p className="SaltWaterCrocodile__packageDesc">{pkg.highlights}</p>
                     </div>
                   ))}
                 </div>
@@ -262,11 +218,10 @@ const SaltWaterCrocodile = () => {
                 <div>
                   <h3>Ready to Spot Giant Crocodiles with Bhitarakanika Boat Service?</h3>
                   <p>
-                    Pre-reserve private or shared safari boats to secure preferred gate clearance
-                    and certified naturalist allocation during prime basking windows.
+                    Pre-reserve private or shared safari boats to secure preferred gate
+                    clearance and certified naturalist allocation during prime basking windows.
                   </p>
                 </div>
-
                 <button
                   type="button"
                   className="SaltWaterCrocodile__btnPrimary"
@@ -278,7 +233,7 @@ const SaltWaterCrocodile = () => {
             </div>
           )}
 
-          {/* 2. SPECIES & EXPEDITION GUIDE */}
+          {/* SPECIES AND SIGHTING GUIDE */}
           {activeTab === "species-guide" && (
             <div className="SaltWaterCrocodile__viewPane">
               <div className="SaltWaterCrocodile__eyebrow">
@@ -302,9 +257,7 @@ const SaltWaterCrocodile = () => {
                   return (
                     <div
                       key={item.q}
-                      className={`SaltWaterCrocodile__planItem ${
-                        isOpen ? "is-open" : ""
-                      }`}
+                      className={`SaltWaterCrocodile__planItem ${isOpen ? "is-open" : ""}`}
                     >
                       <button
                         type="button"
@@ -315,7 +268,6 @@ const SaltWaterCrocodile = () => {
                         <span>
                           {String(index + 1).padStart(2, "0")}. {item.q}
                         </span>
-
                         <span className="SaltWaterCrocodile__planToggle">
                           {isOpen ? "−" : "+"}
                         </span>
@@ -331,30 +283,27 @@ const SaltWaterCrocodile = () => {
 
               <div className="SaltWaterCrocodile__routeBox">
                 <h3>Prime Sighting Hotspots Across the Estuary</h3>
-
                 <ul>
                   <li>
-                    <strong>Khola to Dangmal Creek Channel:</strong> The primary river artery
-                    with shallow silt mudflats, providing the highest density of basking
-                    crocodiles during the midday sun.
+                    <strong>Khola to Dangmal Creek Channel:</strong> The primary river
+                    artery with shallow silt mudflats, providing the highest density of
+                    basking crocodiles during the midday sun.
                   </li>
-
                   <li>
-                    <strong>Suajore & Bhitarkanika Core Creek:</strong> Narrow mangrove passages
-                    offering close, calm views of territorial males and juveniles resting near root systems.
+                    <strong>Suajore & Bhitarkanika Core Creek:</strong> Narrow mangrove
+                    passages offering close, calm views of territorial males and juveniles
+                    resting near root systems.
                   </li>
-
                   <li>
-                    <strong>Dangmal Crocodile Breeding Center:</strong> Forest Department research
-                    station featuring captive rearing tanks, white crocodile pools, and the skeletal
-                    remains of record-sized specimens.
+                    <strong>Dangmal Crocodile Breeding Center:</strong> Forest Department
+                    research station featuring captive rearing tanks, white crocodile pools,
+                    and the skeletal remains of record-sized specimens.
                   </li>
                 </ul>
-
                 <p className="SaltWaterCrocodile__routeNote">
-                  <strong>Annual Breeding Closure Advisory:</strong> Bhitarkanika National Park
-                  is strictly closed to visitors every year from <strong>May 1 to July 31</strong> during
-                  the peak crocodile nesting season.
+                  <strong>Annual Breeding Closure Advisory:</strong> Bhitarkanika National
+                  Park is strictly closed to visitors every year from{" "}
+                  <strong>May 1 to July 31</strong> during the peak crocodile nesting season.
                 </p>
               </div>
 
@@ -362,11 +311,10 @@ const SaltWaterCrocodile = () => {
                 <div>
                   <h3>Have Specific Group or Timing Inquiries?</h3>
                   <p>
-                    Speak with our dock managers at Bhitarakanika Boat Service for updated daily
-                    tide charts, water levels, and private naturalist hire.
+                    Speak with our dock managers at Bhitarakanika Boat Service for updated
+                    daily tide charts, water levels, and private naturalist hire.
                   </p>
                 </div>
-
                 <button
                   type="button"
                   className="SaltWaterCrocodile__btnPrimary"
@@ -378,7 +326,7 @@ const SaltWaterCrocodile = () => {
             </div>
           )}
 
-          {/* 3. BOOK CROCODILE SAFARI */}
+          {/* BOOKING PAGE */}
           {activeTab === "book-safari" && (
             <div className="SaltWaterCrocodile__viewPane">
               <div className="SaltWaterCrocodile__eyebrow">
@@ -399,21 +347,20 @@ const SaltWaterCrocodile = () => {
               {formSubmitted ? (
                 <div className="SaltWaterCrocodile__formSuccess">
                   <span className="SaltWaterCrocodile__checkIcon">✓</span>
-
-                  <h3>Crocodile Safari Request Logged!</h3>
-
+                  <h3>Crocodile Safari Request Submitted!</h3>
                   <p>
-                    Your request has been received by Bhitarakanika Boat Service. Our tour desk
-                    will verify tide timings for your date and confirm your boat allocation along
-                    with permit guidance.
+                    Your request has been received. Our team will contact you to confirm
+                    your safari date, departure time and boat availability.
                   </p>
-
                   <button
                     type="button"
                     className="SaltWaterCrocodile__btnPrimary"
-                    onClick={() => setFormSubmitted(false)}
+                    onClick={() => {
+                      setFormSubmitted(false);
+                      setSelectedPassengers(2);
+                    }}
                   >
-                    Submit Another Booking Request
+                    Submit Another Booking
                   </button>
                 </div>
               ) : (
@@ -426,59 +373,70 @@ const SaltWaterCrocodile = () => {
                 >
                   <div className="SaltWaterCrocodile__formHeading">
                     <span>BHITARAKANIKA BOAT SERVICE</span>
-                    <h3>Crocodile Safari Booking Form</h3>
+                    <h3>Safari Boat Booking Form</h3>
                     <p>
-                      Mandatory fields required for vessel licensing and forest passenger manifests (*).
+                      Complete your details below to reserve your Bhitarkanika boat safari.
+                      Fields marked * are required.
                     </p>
                   </div>
 
                   <div className="SaltWaterCrocodile__formGrid">
                     <div className="SaltWaterCrocodile__inputGroup">
-                      <label htmlFor="SaltWaterCrocodile-name">
-                        Lead Passenger Name *
-                      </label>
+                      <label htmlFor="croc-name">Lead Passenger Name *</label>
                       <input
-                        id="SaltWaterCrocodile-name"
+                        id="croc-name"
                         name="name"
                         type="text"
-                        placeholder="e.g. Debashis Mohapatra"
+                        placeholder="Enter your full name"
                         autoComplete="name"
                         required
                       />
                     </div>
 
                     <div className="SaltWaterCrocodile__inputGroup">
-                      <label htmlFor="SaltWaterCrocodile-email">Email Address *</label>
+                      <label htmlFor="croc-email">Email Address *</label>
                       <input
-                        id="SaltWaterCrocodile-email"
+                        id="croc-email"
                         name="email"
                         type="email"
-                        placeholder="debashis@example.com"
+                        placeholder="Enter your email address"
                         autoComplete="email"
                         required
                       />
                     </div>
 
                     <div className="SaltWaterCrocodile__inputGroup">
-                      <label htmlFor="SaltWaterCrocodile-phone">
-                        WhatsApp / Contact Number *
-                      </label>
+                      <label htmlFor="croc-phone">WhatsApp / Mobile Number *</label>
                       <input
-                        id="SaltWaterCrocodile-phone"
+                        id="croc-phone"
                         name="phone"
                         type="tel"
-                        placeholder="+91 94370 XXXXX"
+                        placeholder="Enter mobile number"
                         autoComplete="tel"
                         required
                       />
                     </div>
 
                     <div className="SaltWaterCrocodile__inputGroup">
-                      <label htmlFor="SaltWaterCrocodile-date">
-                        Expected Safari Date *
-                      </label>
+                      <label htmlFor="croc-aadhaar">Aadhaar Card Number *</label>
                       <input
-                        id="SaltWaterCrocodile-date"
+                        id="croc-aadhaar"
+                        name="aadhaar"
+                        type="text"
+                        inputMode="numeric"
+                        placeholder="Enter 12-digit Aadhaar number"
+                        pattern="[0-9]{12}"
+                        minLength={12}
+                        maxLength={12}
+                        title="Please enter a valid 12-digit Aadhaar number"
+                        required
+                      />
+                    </div>
+
+                    <div className="SaltWaterCrocodile__inputGroup">
+                      <label htmlFor="croc-date">Expected Safari Date *</label>
+                      <input
+                        id="croc-date"
                         name="travelDate"
                         type="date"
                         min={new Date().toISOString().split("T")[0]}
@@ -487,96 +445,116 @@ const SaltWaterCrocodile = () => {
                     </div>
 
                     <div className="SaltWaterCrocodile__inputGroup">
-                      <label htmlFor="SaltWaterCrocodile-entryGate">
-                        Preferred Departure Jetty
-                      </label>
-                      <select
-                        id="SaltWaterCrocodile-entryGate"
-                        name="entryGate"
-                        defaultValue="Khola Gate (Direct to Core Crocodile Creeks)"
-                      >
-                        <option value="Khola Gate (Direct to Core Crocodile Creeks)">
-                          Khola Gate (Direct to Core Crocodile Creeks)
-                        </option>
-                        <option value="Gupti Gate (Estuary & Coastal Mudflats)">
-                          Gupti Gate (Estuary & Coastal Mudflats)
-                        </option>
-                        <option value="Chandbali Ghat (River Delta Approach)">
-                          Chandbali Ghat (River Delta Approach)
-                        </option>
-                      </select>
-                    </div>
-
-                    <div className="SaltWaterCrocodile__inputGroup">
-                      <label htmlFor="SaltWaterCrocodile-guests">
-                        Number of Passengers
-                      </label>
-                      <select
-                        id="SaltWaterCrocodile-guests"
-                        name="guests"
-                        defaultValue="1–4 Persons (Private Small Boat)"
-                      >
-                        <option value="1–4 Persons (Private Small Boat)">
-                          1–4 Persons (Private Small Boat)
-                        </option>
-                        <option value="5–8 Persons (Standard Safari Vessel)">
-                          5–8 Persons (Standard Safari Vessel)
-                        </option>
-                        <option value="9–14 Persons (Large Group Cruiser)">
-                          9–14 Persons (Large Group Cruiser)
-                        </option>
-                        <option value="15+ Persons (Corporate / Group Tour)">
-                          15+ Persons (Corporate / Group Tour)
-                        </option>
+                      <label htmlFor="croc-time">Booking Time *</label>
+                      <select id="croc-time" name="bookingTime" defaultValue="" required>
+                        <option value="" disabled>Booking Time</option>
+                        <optgroup label="Morning Safari">
+                          <option value="07:00 AM">07:00 AM</option>
+                          <option value="08:00 AM">08:00 AM</option>
+                          <option value="09:00 AM">09:00 AM</option>
+                          <option value="10:00 AM">10:00 AM</option>
+                          <option value="11:00 AM">11:00 AM</option>
+                        </optgroup>
+                        <optgroup label="Afternoon Safari">
+                          <option value="01:00 PM">01:00 PM</option>
+                          <option value="02:00 PM">02:00 PM</option>
+                          <option value="03:00 PM">03:00 PM</option>
+                          <option value="04:00 PM">04:00 PM</option>
+                          <option value="05:00 PM">05:00 PM</option>
+                        </optgroup>
                       </select>
                     </div>
 
                     <div className="SaltWaterCrocodile__inputGroup SaltWaterCrocodile__inputGroup--full">
-                      <label htmlFor="SaltWaterCrocodile-service">
-                        Select Safari Experience Tier
-                      </label>
-                      <select
-                        id="SaltWaterCrocodile-service"
-                        name="service"
-                        defaultValue="Morning Wildlife & Crocodile Safari (4 hrs) — Peak Basking Window"
-                      >
-                        <option value="Morning Wildlife & Crocodile Safari (4 hrs) — Peak Basking Window">
-                          Morning Wildlife & Crocodile Safari (4 hrs) — Peak Basking Window
+                      <label htmlFor="croc-gate">Preferred Entry Jetty *</label>
+                      <select id="croc-gate" name="entryGate" defaultValue="" required>
+                        <option value="" disabled>Select Entry Jetty</option>
+                        <option value="Khola to Dangamal">Khola to Dangamal</option>
+                        <option value="Jaynagar to Dangamal">Jaynagar to Dangamal</option>
+                      </select>
+                    </div>
+
+                    <div className="SaltWaterCrocodile__inputGroup SaltWaterCrocodile__inputGroup--full">
+                      <label>Number of Passengers *</label>
+
+                      <div className="SaltWaterCrocodile__passengerBox">
+                        <div className="SaltWaterCrocodile__passengerHeader">
+                          <div>
+                            <strong>Select Passengers</strong>
+                            <span>Choose your total group size</span>
+                          </div>
+                          <div className="SaltWaterCrocodile__passengerCount">
+                            {selectedPassengers}{" "}
+                            {selectedPassengers === 1 ? "Person" : "Persons"}
+                          </div>
+                        </div>
+
+                        <div className="SaltWaterCrocodile__passengerGrid">
+                          {Array.from({ length: 18 }, (_, index) => {
+                            const number = index + 1;
+                            const isSelected = selectedPassengers === number;
+
+                            return (
+                              <label
+                                key={number}
+                                className={`SaltWaterCrocodile__passengerOption ${
+                                  isSelected ? "is-selected" : ""
+                                }`}
+                              >
+                                <input
+                                  type="radio"
+                                  name="guests"
+                                  value={number}
+                                  checked={isSelected}
+                                  onChange={() => setSelectedPassengers(number)}
+                                />
+                                <span>{number}</span>
+                              </label>
+                            );
+                          })}
+                        </div>
+
+                        <div className="SaltWaterCrocodile__passengerFooter">
+                          <span>
+                            <span className="SaltWaterCrocodile__passengerDot" />
+                            Selected passengers: {selectedPassengers}
+                          </span>
+                          <span>Maximum capacity: 18 persons</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="SaltWaterCrocodile__inputGroup SaltWaterCrocodile__inputGroup--full">
+                      <label htmlFor="croc-service">Select Safari Service *</label>
+                      <select id="croc-service" name="service" defaultValue="" required>
+                        <option value="" disabled>Select Your Safari Service</option>
+                        <option value="Low-Tide Mudflat Creek Safari">
+                          Low-Tide Mudflat Creek Safari
                         </option>
-                        <option value="Afternoon Creek Safari (3 hrs)">
-                          Afternoon Creek Safari (3 hrs)
+                        <option value="Dangmal Breeding & Museum Expedition">
+                          Dangmal Breeding & Museum Expedition
                         </option>
-                        <option value="Full Day Gupti & Habalikhati Coastal Cruise (6-7 hrs)">
-                          Full Day Gupti & Habalikhati Coastal Cruise (6-7 hrs)
-                        </option>
-                        <option value="Wildlife Photography Low-Speed Private Charter">
-                          Wildlife Photography Low-Speed Private Charter
+                        <option value="Gupti Estuary & Delta Confluence Tour">
+                          Gupti Estuary & Delta Confluence Tour
                         </option>
                       </select>
                     </div>
                   </div>
 
-                  <div className="SaltWaterCrocodile__inputGroup">
-                    <label htmlFor="SaltWaterCrocodile-notes">
-                      Special Requirements / Notes
-                    </label>
-                    <textarea
-                      id="SaltWaterCrocodile-notes"
-                      name="notes"
-                      rows="4"
-                      placeholder="Let Bhitarakanika Boat Service know if you need dedicated wildlife spotters, cottage accommodations, or custom departure timing..."
-                    />
-                  </div>
+                
 
-                  <button type="submit" className="SaltWaterCrocodile__submitBtn">
-                    Submit Safari Booking Request ↗
-                  </button>
+                  <div className="SaltWaterCrocodile__formBottom">
+                    <p><span>*</span> Please check your details before continuing.</p>
+                    <button type="submit" className="SaltWaterCrocodile__submitBtn">
+                      Continue Booking <span>↗</span>
+                    </button>
+                  </div>
                 </form>
               )}
             </div>
           )}
 
-          {/* 4. CROCODILE GALLERY */}
+          {/* CROCODILE GALLERY */}
           {activeTab === "croc-gallery" && (
             <div className="SaltWaterCrocodile__viewPane">
               <div className="SaltWaterCrocodile__eyebrow">
@@ -603,7 +581,6 @@ const SaltWaterCrocodile = () => {
                     aria-label={`View ${img.title}`}
                   >
                     <img src={img.src} alt={img.title} loading="lazy" />
-
                     <span className="SaltWaterCrocodile__galleryCardOverlay">
                       <span>{img.category}</span>
                       <span className="SaltWaterCrocodile__galleryCardTitle">
@@ -622,7 +599,6 @@ const SaltWaterCrocodile = () => {
 
         {/* RIGHT SIDEBAR */}
         <aside className="SaltWaterCrocodile__sidebar">
-          {/* NAVIGATION */}
           <div className="SaltWaterCrocodile__sideBox">
             <div className="SaltWaterCrocodile__sideTitle">
               <span />
@@ -652,12 +628,8 @@ const SaltWaterCrocodile = () => {
             </nav>
           </div>
 
-          {/* SUPPORT CARD */}
           <div className="SaltWaterCrocodile__supportCard">
-            <div
-              className="SaltWaterCrocodile__supportIcon"
-              aria-hidden="true"
-            >
+            <div className="SaltWaterCrocodile__supportIcon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none">
                 <path
                   d="M5 13v-2a7 7 0 0 1 14 0v2"
@@ -665,30 +637,12 @@ const SaltWaterCrocodile = () => {
                   strokeWidth="1.8"
                   strokeLinecap="round"
                 />
-                <rect
-                  x="3.5"
-                  y="11"
-                  width="4"
-                  height="7"
-                  rx="1.5"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                />
-                <rect
-                  x="16.5"
-                  y="11"
-                  width="4"
-                  height="7"
-                  rx="1.5"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                />
-                <path
-                  d="M18 18c0 2-2 3-5 3h-1"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                />
+                <rect x="3.5" y="11" width="4" height="7" rx="1.5"
+                  stroke="currentColor" strokeWidth="1.8" />
+                <rect x="16.5" y="11" width="4" height="7" rx="1.5"
+                  stroke="currentColor" strokeWidth="1.8" />
+                <path d="M18 18c0 2-2 3-5 3h-1"
+                  stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
               </svg>
             </div>
 
@@ -698,8 +652,8 @@ const SaltWaterCrocodile = () => {
             </div>
 
             <p>
-              Tidal levels dictate daily crocodile basking quality. Speak directly with our dock
-              operators for today's tide charts and departure schedules.
+              Tidal levels dictate daily crocodile basking quality. Speak directly with our
+              dock operators for today's tide charts and departure schedules.
             </p>
 
             <button
@@ -712,7 +666,6 @@ const SaltWaterCrocodile = () => {
             </button>
           </div>
 
-          {/* ESSENTIALS */}
           <div className="SaltWaterCrocodile__sideBox SaltWaterCrocodile__downloads">
             <div className="SaltWaterCrocodile__sideTitle">
               <span />
@@ -742,7 +695,6 @@ const SaltWaterCrocodile = () => {
             </div>
           </div>
 
-          {/* CONTACT INFO */}
           <div className="SaltWaterCrocodile__sideBox SaltWaterCrocodile__contactBox">
             <div className="SaltWaterCrocodile__sideTitle">
               <span />
@@ -750,10 +702,7 @@ const SaltWaterCrocodile = () => {
             </div>
 
             <div className="SaltWaterCrocodile__contactInfo">
-              <span
-                className="SaltWaterCrocodile__contactInfoIcon"
-                aria-hidden="true"
-              >
+              <span className="SaltWaterCrocodile__contactInfoIcon" aria-hidden="true">
                 📍
               </span>
               <div>
@@ -765,10 +714,7 @@ const SaltWaterCrocodile = () => {
             </div>
 
             <div className="SaltWaterCrocodile__contactInfo">
-              <span
-                className="SaltWaterCrocodile__contactInfoIcon"
-                aria-hidden="true"
-              >
+              <span className="SaltWaterCrocodile__contactInfoIcon" aria-hidden="true">
                 ✉
               </span>
               <div>
@@ -780,10 +726,7 @@ const SaltWaterCrocodile = () => {
             </div>
 
             <div className="SaltWaterCrocodile__contactInfo">
-              <span
-                className="SaltWaterCrocodile__contactInfoIcon"
-                aria-hidden="true"
-              >
+              <span className="SaltWaterCrocodile__contactInfoIcon" aria-hidden="true">
                 🕒
               </span>
               <div>
@@ -795,7 +738,7 @@ const SaltWaterCrocodile = () => {
         </aside>
       </div>
 
-      {/* FULLSCREEN LIGHTBOX */}
+      {/* FULLSCREEN IMAGE LIGHTBOX */}
       {activeImage !== null && (
         <div
           className="SaltWaterCrocodile__lightbox"
@@ -840,8 +783,7 @@ const SaltWaterCrocodile = () => {
                 type="button"
                 onClick={() =>
                   setActiveImage(
-                    (activeImage - 1 + galleryImages.length) %
-                      galleryImages.length
+                    (activeImage - 1 + galleryImages.length) % galleryImages.length
                   )
                 }
                 aria-label="Previous photograph"

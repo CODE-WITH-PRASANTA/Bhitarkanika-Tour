@@ -39,6 +39,33 @@
   box-sizing: border-box;
 }
 
+/* =========================================
+   AADHAAR INPUT FIELD
+========================================= */
+
+.enquire-now-aadhar-note {
+  display: block;
+  margin-top: 2px;
+  color: #89948c;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.enquire-now-field input[aria-invalid="true"] {
+  border-color: #dc5555;
+}
+
+.enquire-now-error {
+  color: #dc5555;
+  font-size: 11px;
+  line-height: 1.5;
+  margin: 5px 0 0;
+}
+
+.enquire-now-field input[name="aadhar"] {
+  letter-spacing: 1px;
+}
+
 /* =========================================================
    SIDE TRIGGER BUTTON
    ========================================================= */

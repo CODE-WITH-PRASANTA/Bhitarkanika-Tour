@@ -111,6 +111,7 @@ const NarrowCreek = () => {
   const [activeImage, setActiveImage] = useState(null);
   const [faqIndex, setFaqIndex] = useState(0);
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [selectedPassengers, setSelectedPassengers] = useState(2);
 
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
@@ -405,7 +406,10 @@ const NarrowCreek = () => {
                   <button
                     type="button"
                     className="NarrowCreek__btnPrimary"
-                    onClick={() => setFormSubmitted(false)}
+                    onClick={() => {
+                      setFormSubmitted(false);
+                      setSelectedPassengers(2);
+                    }}
                   >
                     Submit Another Booking Request
                   </button>
@@ -433,7 +437,7 @@ const NarrowCreek = () => {
                         id="NarrowCreek-name"
                         name="name"
                         type="text"
-                        placeholder="e.g. Debashis Mohapatra"
+                        placeholder="Enter full name"
                         autoComplete="name"
                         required
                       />
@@ -445,7 +449,7 @@ const NarrowCreek = () => {
                         id="NarrowCreek-email"
                         name="email"
                         type="email"
-                        placeholder="debashis@example.com"
+                        placeholder="Enter email address"
                         autoComplete="email"
                         required
                       />
@@ -457,9 +461,23 @@ const NarrowCreek = () => {
                         id="NarrowCreek-phone"
                         name="phone"
                         type="tel"
-                        placeholder="+91 94370 XXXXX"
+                        placeholder="+91 98765 43210"
                         autoComplete="tel"
+                        pattern="[+0-9()\\s-]{8,18}"
                         required
+                      />
+                    </div>
+
+                    <div className="NarrowCreek__inputGroup">
+                      <label htmlFor="NarrowCreek-aadhaar">Aadhaar Card Number</label>
+                      <input
+                        id="NarrowCreek-aadhaar"
+                        name="aadhaar"
+                        type="text"
+                        inputMode="numeric"
+                        placeholder="Enter 12-digit Aadhaar number"
+                        maxLength={12}
+                        pattern="[0-9]{12}"
                       />
                     </div>
 
@@ -475,11 +493,29 @@ const NarrowCreek = () => {
                     </div>
 
                     <div className="NarrowCreek__inputGroup">
-                      <label htmlFor="NarrowCreek-entryGate">Preferred Departure Jetty</label>
+                      <label htmlFor="NarrowCreek-time">Booking Time *</label>
+                      <select
+                        id="NarrowCreek-time"
+                        name="bookingTime"
+                        defaultValue=""
+                        required
+                      >
+                        <option value="" disabled>Select booking time</option>
+                        <option value="6:30 AM - 8:30 AM">6:30 AM - 8:30 AM</option>
+                        <option value="8:30 AM - 10:30 AM">8:30 AM - 10:30 AM</option>
+                        <option value="10:30 AM - 12:30 PM">10:30 AM - 12:30 PM</option>
+                        <option value="12:30 PM - 2:30 PM">12:30 PM - 2:30 PM</option>
+                        <option value="2:30 PM - 4:30 PM">2:30 PM - 4:30 PM</option>
+                      </select>
+                    </div>
+
+                    <div className="NarrowCreek__inputGroup NarrowCreek__inputGroup--full">
+                      <label htmlFor="NarrowCreek-entryGate">Preferred Departure Jetty *</label>
                       <select
                         id="NarrowCreek-entryGate"
                         name="entryGate"
                         defaultValue="Khola Gate (Direct to Suajore Narrow Creeks)"
+                        required
                       >
                         <option value="Khola Gate (Direct to Suajore Narrow Creeks)">
                           Khola Gate (Direct to Suajore Narrow Creeks)
@@ -493,34 +529,41 @@ const NarrowCreek = () => {
                       </select>
                     </div>
 
-                    <div className="NarrowCreek__inputGroup">
-                      <label htmlFor="NarrowCreek-guests">Number of Passengers</label>
-                      <select
-                        id="NarrowCreek-guests"
-                        name="guests"
-                        defaultValue="1–4 Persons (Private Small Creek Boat)"
+                    <div className="NarrowCreek__inputGroup NarrowCreek__inputGroup--full">
+                      <label>Number of Passengers *</label>
+                      <div
+                        className="NarrowCreek__passengerGrid"
+                        role="group"
+                        aria-label="Select number of passengers"
                       >
-                        <option value="1–4 Persons (Private Small Creek Boat)">
-                          1–4 Persons (Private Small Creek Boat)
-                        </option>
-                        <option value="5–8 Persons (Standard Safari Vessel)">
-                          5–8 Persons (Standard Safari Vessel)
-                        </option>
-                        <option value="9–14 Persons (Large Group Cruiser)">
-                          9–14 Persons (Large Group Cruiser)
-                        </option>
-                        <option value="15+ Persons (Corporate / Group Tour)">
-                          15+ Persons (Corporate / Group Tour)
-                        </option>
-                      </select>
+                        {Array.from({ length: 18 }, (_, index) => index + 1).map((count) => (
+                          <button
+                            key={count}
+                            type="button"
+                            className={selectedPassengers === count ? "is-selected" : ""}
+                            aria-pressed={selectedPassengers === count}
+                            onClick={() => setSelectedPassengers(count)}
+                          >
+                            {count}
+                          </button>
+                        ))}
+                      </div>
+                      <input type="hidden" name="guests" value={selectedPassengers} />
+                      <div className="NarrowCreek__passengerInfo">
+                        <span>
+                          Selected passengers: <strong>{selectedPassengers}</strong>
+                        </span>
+                        <span>Maximum 18 passengers</span>
+                      </div>
                     </div>
 
                     <div className="NarrowCreek__inputGroup NarrowCreek__inputGroup--full">
-                      <label htmlFor="NarrowCreek-service">Select Experience Tier</label>
+                      <label htmlFor="NarrowCreek-service">Select Safari Experience *</label>
                       <select
                         id="NarrowCreek-service"
                         name="service"
                         defaultValue="Suajore Tidal Creek Safari (3.5 - 4 hrs) — Tide Synchronized"
+                        required
                       >
                         <option value="Suajore Tidal Creek Safari (3.5 - 4 hrs) — Tide Synchronized">
                           Suajore Tidal Creek Safari (3.5 - 4 hrs) — Tide Synchronized
@@ -536,18 +579,6 @@ const NarrowCreek = () => {
                         </option>
                       </select>
                     </div>
-                  </div>
-
-                  <div className="NarrowCreek__inputGroup">
-                    <label htmlFor="NarrowCreek-notes">
-                      Special Requirements / Pick-up Details
-                    </label>
-                    <textarea
-                      id="NarrowCreek-notes"
-                      name="notes"
-                      rows="4"
-                      placeholder="Let Bhitarakanika Boat Service know if you need dedicated birding guides, telephoto tripods, cottage accommodation, or customized departure timing..."
-                    />
                   </div>
 
                   <button type="submit" className="NarrowCreek__submitBtn">

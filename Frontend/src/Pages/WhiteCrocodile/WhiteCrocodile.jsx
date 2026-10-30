@@ -111,6 +111,7 @@ const WhiteCrocodile = () => {
   const [activeImage, setActiveImage] = useState(null);
   const [faqIndex, setFaqIndex] = useState(0);
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [selectedPassengers, setSelectedPassengers] = useState(2);
 
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
@@ -121,6 +122,7 @@ const WhiteCrocodile = () => {
 
     if (tabId === "book-safari") {
       setFormSubmitted(false);
+      setSelectedPassengers(2);
     }
 
     document.getElementById("white-crocodile")?.scrollIntoView({
@@ -433,140 +435,79 @@ const WhiteCrocodile = () => {
 
                   <div className="WhiteCrocodile__formGrid">
                     <div className="WhiteCrocodile__inputGroup">
-                      <label htmlFor="WhiteCrocodile-name">
-                        Lead Passenger Name *
-                      </label>
-                      <input
-                        id="WhiteCrocodile-name"
-                        name="name"
-                        type="text"
-                        placeholder="e.g. Debashis Mohapatra"
-                        autoComplete="name"
-                        required
-                      />
+                      <label htmlFor="WhiteCrocodile-name">Lead Passenger Name *</label>
+                      <input id="WhiteCrocodile-name" name="name" type="text" placeholder="Enter full name" autoComplete="name" required />
                     </div>
 
                     <div className="WhiteCrocodile__inputGroup">
-                      <label htmlFor="WhiteCrocodile-email">
-                        Email Address *
-                      </label>
-                      <input
-                        id="WhiteCrocodile-email"
-                        name="email"
-                        type="email"
-                        placeholder="debashis@example.com"
-                        autoComplete="email"
-                        required
-                      />
+                      <label htmlFor="WhiteCrocodile-email">Email Address *</label>
+                      <input id="WhiteCrocodile-email" name="email" type="email" placeholder="Enter email address" autoComplete="email" required />
                     </div>
 
                     <div className="WhiteCrocodile__inputGroup">
-                      <label htmlFor="WhiteCrocodile-phone">
-                        WhatsApp / Contact Number *
-                      </label>
-                      <input
-                        id="WhiteCrocodile-phone"
-                        name="phone"
-                        type="tel"
-                        placeholder="+91 94370 XXXXX"
-                        autoComplete="tel"
-                        required
-                      />
+                      <label htmlFor="WhiteCrocodile-phone">WhatsApp / Mobile Number *</label>
+                      <input id="WhiteCrocodile-phone" name="phone" type="tel" placeholder="+91 98765 43210" autoComplete="tel" pattern="[+0-9()\\s-]{8,18}" required />
                     </div>
 
                     <div className="WhiteCrocodile__inputGroup">
-                      <label htmlFor="WhiteCrocodile-date">
-                        Expected Safari Date *
-                      </label>
-                      <input
-                        id="WhiteCrocodile-date"
-                        name="travelDate"
-                        type="date"
-                        min={new Date().toISOString().split("T")[0]}
-                        required
-                      />
+                      <label htmlFor="WhiteCrocodile-aadhaar">Aadhaar Card Number</label>
+                      <input id="WhiteCrocodile-aadhaar" name="aadhaar" type="text" inputMode="numeric" placeholder="Enter 12-digit Aadhaar number" maxLength={12} pattern="[0-9]{12}" />
                     </div>
 
                     <div className="WhiteCrocodile__inputGroup">
-                      <label htmlFor="WhiteCrocodile-entryGate">
-                        Preferred Departure Jetty
-                      </label>
-                      <select
-                        id="WhiteCrocodile-entryGate"
-                        name="entryGate"
-                        defaultValue="Khola Gate (Direct to Dangmal White Croc Enclosure)"
-                      >
-                        <option value="Khola Gate (Direct to Dangmal White Croc Enclosure)">
-                          Khola Gate (Direct to Dangmal White Croc Enclosure)
-                        </option>
-                        <option value="Gupti Gate (Estuary & Coastal Route)">
-                          Gupti Gate (Estuary & Coastal Route)
-                        </option>
-                        <option value="Chandbali Ghat (River Approach)">
-                          Chandbali Ghat (River Approach)
-                        </option>
-                      </select>
+                      <label htmlFor="WhiteCrocodile-date">Expected Visit Date *</label>
+                      <input id="WhiteCrocodile-date" name="travelDate" type="date" min={new Date().toISOString().split("T")[0]} required />
                     </div>
 
                     <div className="WhiteCrocodile__inputGroup">
-                      <label htmlFor="WhiteCrocodile-guests">
-                        Number of Passengers
-                      </label>
-                      <select
-                        id="WhiteCrocodile-guests"
-                        name="guests"
-                        defaultValue="1–4 Persons (Private Small Boat)"
-                      >
-                        <option value="1–4 Persons (Private Small Boat)">
-                          1–4 Persons (Private Small Boat)
-                        </option>
-                        <option value="5–8 Persons (Standard Safari Vessel)">
-                          5–8 Persons (Standard Safari Vessel)
-                        </option>
-                        <option value="9–14 Persons (Large Group Cruiser)">
-                          9–14 Persons (Large Group Cruiser)
-                        </option>
-                        <option value="15+ Persons (Corporate / School Tour)">
-                          15+ Persons (Corporate / School Tour)
-                        </option>
+                      <label htmlFor="WhiteCrocodile-time">Booking Time *</label>
+                      <select id="WhiteCrocodile-time" name="safariTime" defaultValue="" required>
+                        <option value="" disabled>Select booking time</option>
+                        <optgroup label="Morning Safari">
+                          <option value="6:00 AM - 9:00 AM">6:00 AM - 9:00 AM</option>
+                          <option value="9:00 AM - 12:00 PM">9:00 AM - 12:00 PM</option>
+                        </optgroup>
+                        <optgroup label="Afternoon Safari">
+                          <option value="12:00 PM - 3:00 PM">12:00 PM - 3:00 PM</option>
+                          <option value="3:00 PM - 5:00 PM">3:00 PM - 5:00 PM</option>
+                        </optgroup>
                       </select>
                     </div>
 
                     <div className="WhiteCrocodile__inputGroup WhiteCrocodile__inputGroup--full">
-                      <label htmlFor="WhiteCrocodile-service">
-                        Select Safari Experience Tier
-                      </label>
-                      <select
-                        id="WhiteCrocodile-service"
-                        name="service"
-                        defaultValue="Dangmal Research & White Croc Expedition (4 hrs)"
-                      >
-                        <option value="Dangmal Research & White Croc Expedition (4 hrs)">
-                          Dangmal Research & White Croc Expedition (4 hrs) — Peak Basking Window
-                        </option>
-                        <option value="Captive Rearing & Hatchery Trail (5 hrs)">
-                          Captive Rearing & Hatchery Trail (5 hrs)
-                        </option>
-                        <option value="Full Day Delta & White Croc Safari (6 hrs)">
-                          Full Day Delta & White Croc Safari (6 hrs)
-                        </option>
-                        <option value="Wildlife Photography Low-Speed Private Charter">
-                          Wildlife Photography Low-Speed Private Charter
-                        </option>
+                      <label htmlFor="WhiteCrocodile-entryGate">Preferred Entry Jetty *</label>
+                      <select id="WhiteCrocodile-entryGate" name="entryGate" defaultValue="Khola Gate (Direct to Dangmal White Croc Enclosure)" required>
+                        <option value="Khola Gate (Direct to Dangmal White Croc Enclosure)">Khola Gate (Direct to Dangmal White Croc Enclosure)</option>
+                        <option value="Gupti Gate (Estuary & Coastal Route)">Gupti Gate (Estuary & Coastal Route)</option>
+                        <option value="Chandbali Ghat (River Approach)">Chandbali Ghat (River Approach)</option>
                       </select>
                     </div>
-                  </div>
 
-                  <div className="WhiteCrocodile__inputGroup">
-                    <label htmlFor="WhiteCrocodile-notes">
-                      Special Requirements / Pick-up Details
-                    </label>
-                    <textarea
-                      id="WhiteCrocodile-notes"
-                      name="notes"
-                      rows="4"
-                      placeholder="Let Bhitarakanika Boat Service know if you need forest resthouse assistance, binoculars, a dedicated reptile naturalist, or senior citizen assistance..."
-                    />
+                    <div className="WhiteCrocodile__inputGroup WhiteCrocodile__inputGroup--full">
+                      <label>Number of Passengers *</label>
+                      <div className="WhiteCrocodile__passengerGrid" role="group" aria-label="Select number of passengers">
+                        {Array.from({ length: 18 }, (_, index) => index + 1).map((count) => (
+                          <button key={count} type="button" className={selectedPassengers === count ? "is-selected" : ""} aria-pressed={selectedPassengers === count} onClick={() => setSelectedPassengers(count)}>
+                            {count}
+                          </button>
+                        ))}
+                      </div>
+                      <input type="hidden" name="guests" value={selectedPassengers} />
+                      <div className="WhiteCrocodile__passengerInfo">
+                        <span>Selected passengers: <strong>{selectedPassengers}</strong></span>
+                        <span>Maximum 18 passengers</span>
+                      </div>
+                    </div>
+
+                    <div className="WhiteCrocodile__inputGroup WhiteCrocodile__inputGroup--full">
+                      <label htmlFor="WhiteCrocodile-service">Select Safari Experience *</label>
+                      <select id="WhiteCrocodile-service" name="service" defaultValue="Dangmal Research & White Croc Expedition (4 hrs)" required>
+                        <option value="Dangmal Research & White Croc Expedition (4 hrs)">Dangmal Research & White Croc Expedition (4 hrs) — Peak Basking Window</option>
+                        <option value="Captive Rearing & Hatchery Trail (5 hrs)">Captive Rearing & Hatchery Trail (5 hrs)</option>
+                        <option value="Full Day Delta & White Croc Safari (6 hrs)">Full Day Delta & White Croc Safari (6 hrs)</option>
+                        <option value="Wildlife Photography Low-Speed Private Charter">Wildlife Photography Low-Speed Private Charter</option>
+                      </select>
+                    </div>
                   </div>
 
                   <button

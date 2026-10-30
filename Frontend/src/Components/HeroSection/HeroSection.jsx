@@ -4,7 +4,7 @@ import "./HeroSection.css";
 import heroImage1 from "../../assets/a.jpeg";
 import heroImage2 from "../../assets/b.jpeg";
 import heroImage3 from "../../assets/c.jpeg";
-import heroImage4 from "../../assets/d.jpeg";
+import heroImage4 from "../../assets/ev-vechile-4.png";
 import heroImage5 from "../../assets/e.jpeg";
 import heroImage6 from "../../assets/f.jpeg";
 import heroImage7 from "../../assets/g.jpeg";
@@ -49,7 +49,7 @@ const heroSlides = [
   {
     image: heroImage4,
     eyebrow: "Estuarine Habitat",
-    title: "ENCOUNTER THE",
+    title: "EXPLORE THE",
     highlight: "APEX REPTILES",
     description:
       "Get an up-close glimpse of Bhitarkanika's famous saltwater crocodiles in their undisturbed habitat, alongside unique stilt and breathing roots.",
@@ -70,7 +70,7 @@ const heroSlides = [
     title: "EXPLORE WITH",
     highlight: "CERTIFIED GUIDES",
     description:
-      "Enjoy family and group boat rides equipped with safety jackets, eco-tour permits and knowledgeable local naturalists.",
+      "Enjoy family and group boat rides equipped with safety jackets, Eco-Tour Guide and knowledgeable local naturalists.",
     ctaText: "Book Group Tours",
   },
   {
@@ -93,7 +93,7 @@ const heroSlides = [
   },
 ];
 
-const trustPoints = ["Certified Boat Captains", "Safety Jackets Provided", "Eco-Tour Permits"];
+const trustPoints = ["Certified Boat Captains", "Safety Jackets Provided", "Eco-Tour Guide"];
 
 // ============================================
 // COMPONENT

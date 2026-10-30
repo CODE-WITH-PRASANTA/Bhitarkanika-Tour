@@ -21,14 +21,14 @@ const Topbar = () => {
       id: 2,
       icon: MapPin,
       title: "Visit Our Zoo",
-      description: "Bhitarakanika, Kendrapara , Odisha",
+      description: "Khola Boating Point,Rajnagar,Kendrapara,Odisha,754248",
     },
     {
       id: 3,
       icon: MessagesSquare,
       title: "Email Us",
-      description: "info@example.com",
-      href: "mailto:info@example.com",
+      description: " bhitarkanikaboatservice@gmail.com",
+      href: " bhitarkanikaboatservice@gmail.com",
     },
   ];
 

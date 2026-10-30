@@ -111,6 +111,7 @@ const SeaFood = () => {
   const [activeImage, setActiveImage] = useState(null);
   const [faqIndex, setFaqIndex] = useState(0);
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [selectedDiners, setSelectedDiners] = useState(2);
 
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
@@ -244,115 +245,106 @@ const SeaFood = () => {
                         <span>⏱ {pkg.duration}</span>
                         <span>👥 {pkg.capacity}</span>
                       </div>
-                      <p className="SeaFood__packageDesc">
-                        {pkg.highlights}
-                      </p>
+                      <p>{pkg.highlights}</p>
+                      <button
+                        type="button"
+                        className="SeaFood__textLink"
+                        onClick={() => handleTabChange("book-dining")}
+                      >
+                        Reserve This Meal <span>↗</span>
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* 2. CULINARY GUIDE */}
+          {activeTab === "culinary-guide" && (
+            <div className="SeaFood__viewPane">
+              <div className="SeaFood__eyebrow">
+                <span className="SeaFood__eyebrowLine" />
+                <span>BHITARAKANIKA BOAT SERVICE • SOURCING & PREPARATION</span>
+              </div>
+
+              <h1 className="SeaFood__pageTitle">
+                From the Estuary <span>to Your Dining Table.</span>
+              </h1>
+
+              <p className="SeaFood__lead">
+                Discover the local ingredients, fishing traditions, and careful preparation
+                behind every coastal meal served during your Bhitarkanika experience.
+              </p>
+
+              <div className="SeaFood__guideGrid">
+                <article className="SeaFood__guideCard">
+                  <span className="SeaFood__guideNumber">01</span>
+                  <h3>Locally Sourced Ingredients</h3>
+                  <p>
+                    Our menus highlight seasonal estuarine fish, mud crabs, prawns, local
+                    vegetables, and ingredients sourced through nearby fishing communities.
+                  </p>
+                </article>
+
+                <article className="SeaFood__guideCard">
+                  <span className="SeaFood__guideNumber">02</span>
+                  <h3>Traditional Coastal Cooking</h3>
+                  <p>
+                    Regional cooking methods bring together mustard, turmeric, coconut,
+                    aromatic spices, and traditional Odia recipes.
+                  </p>
+                </article>
+
+                <article className="SeaFood__guideCard">
+                  <span className="SeaFood__guideNumber">03</span>
+                  <h3>Safari Meal Coordination</h3>
+                  <p>
+                    Advance meal requests help coordinate packed lunches and dining schedules
+                    with your planned boat safari.
+                  </p>
+                </article>
+              </div>
+
+              <div className="SeaFood__faqSection">
+                <div className="SeaFood__subHeader">
+                  <span>HELPFUL INFORMATION</span>
+                  <h2>Seafood Dining FAQs</h2>
+                </div>
+
+                <div className="SeaFood__faqList">
+                  {culinaryFAQs.map((faq, index) => (
+                    <div
+                      key={faq.q}
+                      className={`SeaFood__faqItem ${
+                        faqIndex === index ? "is-open" : ""
+                      }`}
+                    >
+                      <button
+                        type="button"
+                        className="SeaFood__faqQuestion"
+                        onClick={() =>
+                          setFaqIndex(faqIndex === index ? -1 : index)
+                        }
+                        aria-expanded={faqIndex === index}
+                      >
+                        <span>{faq.q}</span>
+                        <span>{faqIndex === index ? "−" : "+"}</span>
+                      </button>
+
+                      {faqIndex === index && (
+                        <div className="SeaFood__faqAnswer">
+                          <p>{faq.a}</p>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="SeaFood__actionBanner">
+              <div className="SeaFood__guideCTA">
                 <div>
-                  <h3>Craving Fresh Mud Crabs or Tiger Prawns on Your Safari?</h3>
-                  <p>
-                    Pre-reserve your meal package with Bhitarakanika Boat Service to guarantee
-                    morning catch reservations and customized spice preparations.
-                  </p>
-                </div>
-
-                <button
-                  type="button"
-                  className="SeaFood__btnPrimary"
-                  onClick={() => handleTabChange("book-dining")}
-                >
-                  Reserve Seafood Feast ↗
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* 2. CULINARY & SOURCING GUIDE */}
-          {activeTab === "culinary-guide" && (
-            <div className="SeaFood__viewPane">
-              <div className="SeaFood__eyebrow">
-                <span className="SeaFood__eyebrowLine" />
-                <span>FRESHWATER & DELTA HARVEST GUIDELINES</span>
-              </div>
-
-              <h1 className="SeaFood__pageTitle">
-                Everything Required <span>To Plan Your Seafood Feast.</span>
-              </h1>
-
-              <p className="SeaFood__lead">
-                Learn about local seasonal seafood availability, spice levels, hygienic
-                preparation standards, and dining options across the sanctuary.
-              </p>
-
-              <div className="SeaFood__planAccordion">
-                {culinaryFAQs.map((item, index) => {
-                  const isOpen = faqIndex === index;
-
-                  return (
-                    <div
-                      key={item.q}
-                      className={`SeaFood__planItem ${
-                        isOpen ? "is-open" : ""
-                      }`}
-                    >
-                      <button
-                        type="button"
-                        aria-expanded={isOpen}
-                        className="SeaFood__planTrigger"
-                        onClick={() => setFaqIndex(isOpen ? -1 : index)}
-                      >
-                        <span>
-                          {String(index + 1).padStart(2, "0")}. {item.q}
-                        </span>
-
-                        <span className="SeaFood__planToggle">
-                          {isOpen ? "−" : "+"}
-                        </span>
-                      </button>
-
-                      {isOpen && (
-                        <p className="SeaFood__planAnswer">{item.a}</p>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-
-              <div className="SeaFood__routeBox">
-                <h3>Top Regional Specialties & Customizations</h3>
-
-                <ul>
-                  <li>
-                    <strong>Kankada Jhola (Estuarine Mud Crab Curry):</strong> Cooked in a rich
-                    onion-ginger-garlic and garam masala gravy, celebrated for succulent claw meat.
-                  </li>
-
-                  <li>
-                    <strong>Chingudi Malai & Besara:</strong> Jumbo tiger prawns prepared with
-                    fresh coconut milk or traditional stone-ground mustard paste and green chillies.
-                  </li>
-
-                  <li>
-                    <strong>Custom Dietary Adjustments:</strong> Mild spice preparations for
-                    children, non-mustard gravies, gluten-free rice options, and pure vegetarian
-                    alternatives are always accommodated with prior notice.
-                  </li>
-                </ul>
-
-                <p className="SeaFood__routeNote">
-                  <strong>Sustainable Sourcing Commitment:</strong> Bhitarakanika Boat Service
-                  strictly supports ethical artisan fishers outside sanctuary core breeding
-                  waters, respecting seasonal marine conservation periods.
-                </p>
-              </div>
-
-              <div className="SeaFood__actionBanner">
-                <div>
+                  <span>PERSONALIZED DINING ARRANGEMENTS</span>
                   <h3>Have Large Group or Specific Dietary Inquiries?</h3>
                   <p>
                     Talk directly to our catering desk at Bhitarakanika Boat Service for
@@ -404,7 +396,10 @@ const SeaFood = () => {
                   <button
                     type="button"
                     className="SeaFood__btnPrimary"
-                    onClick={() => setFormSubmitted(false)}
+                    onClick={() => {
+                      setFormSubmitted(false);
+                      setSelectedDiners(2);
+                    }}
                   >
                     Submit Another Dining Request
                   </button>
@@ -432,7 +427,7 @@ const SeaFood = () => {
                         id="SeaFood-name"
                         name="name"
                         type="text"
-                        placeholder="e.g. Debashis Mohapatra"
+                        placeholder="Enter lead guest full name"
                         autoComplete="name"
                         required
                       />
@@ -444,26 +439,46 @@ const SeaFood = () => {
                         id="SeaFood-email"
                         name="email"
                         type="email"
-                        placeholder="debashis@example.com"
+                        placeholder="Enter your email address"
                         autoComplete="email"
                         required
                       />
                     </div>
 
                     <div className="SeaFood__inputGroup">
-                      <label htmlFor="SeaFood-phone">WhatsApp / Mobile Number *</label>
+                      <label htmlFor="SeaFood-phone">
+                        WhatsApp / Mobile Number *
+                      </label>
                       <input
                         id="SeaFood-phone"
                         name="phone"
                         type="tel"
                         placeholder="+91 94370 XXXXX"
                         autoComplete="tel"
+                        pattern="[+0-9()\\s-]{8,18}"
+                        title="Enter a valid mobile number"
                         required
                       />
                     </div>
 
                     <div className="SeaFood__inputGroup">
-                      <label htmlFor="SeaFood-date">Dining Date *</label>
+                      <label htmlFor="SeaFood-aadhaar">
+                        Aadhaar Card Number <span>(Optional)</span>
+                      </label>
+                      <input
+                        id="SeaFood-aadhaar"
+                        name="aadhaar"
+                        type="text"
+                        inputMode="numeric"
+                        placeholder="Enter 12-digit Aadhaar number"
+                        pattern="[0-9]{12}"
+                        maxLength="12"
+                        title="Aadhaar number must contain exactly 12 digits"
+                      />
+                    </div>
+
+                    <div className="SeaFood__inputGroup">
+                      <label htmlFor="SeaFood-date">Expected Dining Date *</label>
                       <input
                         id="SeaFood-date"
                         name="travelDate"
@@ -474,11 +489,46 @@ const SeaFood = () => {
                     </div>
 
                     <div className="SeaFood__inputGroup">
-                      <label htmlFor="SeaFood-diningVenue">Preferred Dining Venue</label>
+                      <label htmlFor="SeaFood-time">Preferred Dining Time *</label>
+                      <select
+                        id="SeaFood-time"
+                        name="diningTime"
+                        defaultValue=""
+                        required
+                      >
+                        <option value="" disabled>
+                          Select dining time
+                        </option>
+                        <option value="7:00 AM - 9:00 AM">
+                          7:00 AM - 9:00 AM
+                        </option>
+                        <option value="9:00 AM - 11:00 AM">
+                          9:00 AM - 11:00 AM
+                        </option>
+                        <option value="11:00 AM - 1:00 PM">
+                          11:00 AM - 1:00 PM
+                        </option>
+                        <option value="1:00 PM - 3:00 PM">
+                          1:00 PM - 3:00 PM
+                        </option>
+                        <option value="3:00 PM - 5:00 PM">
+                          3:00 PM - 5:00 PM
+                        </option>
+                        <option value="7:30 PM - 10:00 PM">
+                          7:30 PM - 10:00 PM
+                        </option>
+                      </select>
+                    </div>
+
+                    <div className="SeaFood__inputGroup SeaFood__inputGroup--full">
+                      <label htmlFor="SeaFood-diningVenue">
+                        Preferred Dining Venue *
+                      </label>
                       <select
                         id="SeaFood-diningVenue"
                         name="venue"
                         defaultValue="Khola Jetty Waterfront Dining Pavilion"
+                        required
                       >
                         <option value="Khola Jetty Waterfront Dining Pavilion">
                           Khola Jetty Waterfront Dining Pavilion
@@ -495,34 +545,51 @@ const SeaFood = () => {
                       </select>
                     </div>
 
-                    <div className="SeaFood__inputGroup">
-                      <label htmlFor="SeaFood-guests">Number of Diners</label>
-                      <select
-                        id="SeaFood-guests"
-                        name="guests"
-                        defaultValue="1–2 Persons (Couple Feast)"
+                    <div className="SeaFood__inputGroup SeaFood__inputGroup--full">
+                      <label>Number of Diners *</label>
+                      <div
+                        className="SeaFood__passengerGrid"
+                        role="group"
+                        aria-label="Select number of diners"
                       >
-                        <option value="1–2 Persons (Couple Feast)">
-                          1–2 Persons (Couple Feast)
-                        </option>
-                        <option value="3–5 Persons (Family Dining)">
-                          3–5 Persons (Family Dining)
-                        </option>
-                        <option value="6–10 Persons (Group Feast)">
-                          6–10 Persons (Group Feast)
-                        </option>
-                        <option value="11+ Persons (Tour Group / Corporate Banquet)">
-                          11+ Persons (Tour Group / Corporate Banquet)
-                        </option>
-                      </select>
+                        {Array.from({ length: 18 }, (_, index) => index + 1).map(
+                          (number) => (
+                            <button
+                              key={number}
+                              type="button"
+                              className={`SeaFood__passengerBtn ${
+                                selectedDiners === number ? "is-active" : ""
+                              }`}
+                              onClick={() => setSelectedDiners(number)}
+                              aria-pressed={selectedDiners === number}
+                            >
+                              {number}
+                            </button>
+                          )
+                        )}
+                      </div>
+
+                      <input
+                        type="hidden"
+                        name="guests"
+                        value={selectedDiners}
+                      />
+
+                      <small className="SeaFood__passengerHint">
+                        Selected: {selectedDiners}{" "}
+                        {selectedDiners === 1 ? "Diner" : "Diners"} (Maximum 18)
+                      </small>
                     </div>
 
                     <div className="SeaFood__inputGroup SeaFood__inputGroup--full">
-                      <label htmlFor="SeaFood-package">Select Seafood Dining Tier</label>
+                      <label htmlFor="SeaFood-package">
+                        Select Seafood Dining Package *
+                      </label>
                       <select
                         id="SeaFood-package"
                         name="package"
                         defaultValue="Royal Delta Mud Crab & Jumbo Prawn Special Thali"
+                        required
                       >
                         <option value="Royal Delta Mud Crab & Jumbo Prawn Special Thali">
                           Royal Delta Mud Crab & Jumbo Prawn Special Thali
@@ -538,18 +605,6 @@ const SeaFood = () => {
                         </option>
                       </select>
                     </div>
-                  </div>
-
-                  <div className="SeaFood__inputGroup">
-                    <label htmlFor="SeaFood-notes">
-                      Special Dietary Notes / Spice Level
-                    </label>
-                    <textarea
-                      id="SeaFood-notes"
-                      name="notes"
-                      rows="4"
-                      placeholder="Specify spice preferences (mild/medium/spicy), requests for accompanying vegetarian thalis, or crab claw cracking assistance..."
-                    />
                   </div>
 
                   <button type="submit" className="SeaFood__submitBtn">
