@@ -111,6 +111,7 @@ const Museum = () => {
   const [activeImage, setActiveImage] = useState(null);
   const [faqIndex, setFaqIndex] = useState(0);
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [selectedPassengers, setSelectedPassengers] = useState(2);
 
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
@@ -410,7 +411,10 @@ const Museum = () => {
                   <button
                     type="button"
                     className="Museum__btnPrimary"
-                    onClick={() => setFormSubmitted(false)}
+                    onClick={() => {
+                      setFormSubmitted(false);
+                      setSelectedPassengers(2);
+                    }}
                   >
                     Submit Another Tour Request
                   </button>
@@ -438,7 +442,7 @@ const Museum = () => {
                         id="Museum-name"
                         name="name"
                         type="text"
-                        placeholder="e.g. Debashis Mohapatra"
+                        placeholder="Enter full name"
                         autoComplete="name"
                         required
                       />
@@ -450,7 +454,7 @@ const Museum = () => {
                         id="Museum-email"
                         name="email"
                         type="email"
-                        placeholder="debashis@example.com"
+                        placeholder="Enter email address"
                         autoComplete="email"
                         required
                       />
@@ -462,9 +466,23 @@ const Museum = () => {
                         id="Museum-phone"
                         name="phone"
                         type="tel"
-                        placeholder="+91 94370 XXXXX"
+                        placeholder="+91 98765 43210"
                         autoComplete="tel"
+                        pattern="[+0-9()\\s-]{8,18}"
                         required
+                      />
+                    </div>
+
+                    <div className="Museum__inputGroup">
+                      <label htmlFor="Museum-aadhaar">Aadhaar Card Number</label>
+                      <input
+                        id="Museum-aadhaar"
+                        name="aadhaar"
+                        type="text"
+                        inputMode="numeric"
+                        placeholder="Enter 12-digit Aadhaar number"
+                        maxLength={12}
+                        pattern="[0-9]{12}"
                       />
                     </div>
 
@@ -480,11 +498,29 @@ const Museum = () => {
                     </div>
 
                     <div className="Museum__inputGroup">
-                      <label htmlFor="Museum-entryGate">Departure Jetty Point</label>
+                      <label htmlFor="Museum-time">Booking Time *</label>
+                      <select
+                        id="Museum-time"
+                        name="bookingTime"
+                        defaultValue=""
+                        required
+                      >
+                        <option value="" disabled>Select booking time</option>
+                        <option value="7:00 AM - 9:00 AM">7:00 AM - 9:00 AM</option>
+                        <option value="9:00 AM - 11:00 AM">9:00 AM - 11:00 AM</option>
+                        <option value="11:00 AM - 1:00 PM">11:00 AM - 1:00 PM</option>
+                        <option value="1:00 PM - 3:00 PM">1:00 PM - 3:00 PM</option>
+                        <option value="3:00 PM - 5:00 PM">3:00 PM - 5:00 PM</option>
+                      </select>
+                    </div>
+
+                    <div className="Museum__inputGroup Museum__inputGroup--full">
+                      <label htmlFor="Museum-entryGate">Departure Jetty Point *</label>
                       <select
                         id="Museum-entryGate"
                         name="entryGate"
                         defaultValue="Khola Gate (Direct Cruise to Dangmal Museum Pier)"
+                        required
                       >
                         <option value="Khola Gate (Direct Cruise to Dangmal Museum Pier)">
                           Khola Gate (Direct Cruise to Dangmal Museum Pier)
@@ -498,34 +534,41 @@ const Museum = () => {
                       </select>
                     </div>
 
-                    <div className="Museum__inputGroup">
-                      <label htmlFor="Museum-guests">Party Size</label>
-                      <select
-                        id="Museum-guests"
-                        name="guests"
-                        defaultValue="1–4 Persons (Private Small Boat + Museum)"
+                    <div className="Museum__inputGroup Museum__inputGroup--full">
+                      <label>Number of Passengers *</label>
+                      <div
+                        className="Museum__passengerGrid"
+                        role="group"
+                        aria-label="Select number of passengers"
                       >
-                        <option value="1–4 Persons (Private Small Boat + Museum)">
-                          1–4 Persons (Private Small Boat + Museum)
-                        </option>
-                        <option value="5–8 Persons (Standard Safari Vessel)">
-                          5–8 Persons (Standard Safari Vessel)
-                        </option>
-                        <option value="9–14 Persons (Large Group Cruiser)">
-                          9–14 Persons (Large Group Cruiser)
-                        </option>
-                        <option value="15+ Persons (Educational / Corporate Tour)">
-                          15+ Persons (Educational / Corporate Tour)
-                        </option>
-                      </select>
+                        {Array.from({ length: 18 }, (_, index) => index + 1).map((count) => (
+                          <button
+                            key={count}
+                            type="button"
+                            className={selectedPassengers === count ? "is-selected" : ""}
+                            aria-pressed={selectedPassengers === count}
+                            onClick={() => setSelectedPassengers(count)}
+                          >
+                            {count}
+                          </button>
+                        ))}
+                      </div>
+                      <input type="hidden" name="guests" value={selectedPassengers} />
+                      <div className="Museum__passengerInfo">
+                        <span>
+                          Selected passengers: <strong>{selectedPassengers}</strong>
+                        </span>
+                        <span>Maximum 18 passengers</span>
+                      </div>
                     </div>
 
                     <div className="Museum__inputGroup Museum__inputGroup--full">
-                      <label htmlFor="Museum-service">Select Experience Package</label>
+                      <label htmlFor="Museum-service">Select Experience Package *</label>
                       <select
                         id="Museum-service"
                         name="service"
                         defaultValue="Boat Safari + Dangmal Museum & Heritage Tour (4-5 hrs)"
+                        required
                       >
                         <option value="Boat Safari + Dangmal Museum & Heritage Tour (4-5 hrs)">
                           Boat Safari + Dangmal Museum & Heritage Tour (4-5 hrs)
@@ -541,18 +584,6 @@ const Museum = () => {
                         </option>
                       </select>
                     </div>
-                  </div>
-
-                  <div className="Museum__inputGroup">
-                    <label htmlFor="Museum-notes">
-                      Special Requests / Educational Focus
-                    </label>
-                    <textarea
-                      id="Museum-notes"
-                      name="notes"
-                      rows="4"
-                      placeholder="Let Bhitarakanika Boat Service know if you need audio-visual hall arrangements, student concessions, dedicated eco-guides, or cottage accommodation..."
-                    />
                   </div>
 
                   <button type="submit" className="Museum__submitBtn">

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./SkyWalk.css";
+
 import skywalkImgOne from "../../assets/skywalk-1.png";
 import skywalkImgTwo from "../../assets/skywalk-2.png";
 import skywalkImgThree from "../../assets/skywalk-3.jpeg";
@@ -8,42 +9,12 @@ import skywalkImgFive from "../../assets/skywalk-5.png";
 import skywalkImgSix from "../../assets/skywalk-6.jpeg";
 
 const galleryImages = [
-  {
-    src: skywalkImgOne,
-    title: "Elevated Mangrove Skywalk Pathway",
-    location: "Dangmal Core Forest Canopy",
-    category: "Canopy Walkway",
-  },
-  {
-    src: skywalkImgTwo,
-    title: "Panoramic Wetland Observation Deck",
-    location: "Bhitarkanika High Watchtower",
-    category: "Observation Point",
-  },
-  {
-    src: skywalkImgThree,
-    title: "Canopy Eye-Level Birding Platform",
-    location: "Bagagahana Perch Line",
-    category: "Avian Spotting",
-  },
-  {
-    src: skywalkImgFour,
-    title: "Creek Aerial Overlook Trail",
-    location: "Dangmal Backwater Curve",
-    category: "Tidal Aerial View",
-  },
-  {
-    src: skywalkImgFive,
-    title: "Ancient Sundari Tree Canopy Span",
-    location: "Core Boardwalk Section",
-    category: "Botanical Canopy",
-  },
-  {
-    src: skywalkImgSix,
-    title: "Golden Hour Forest Vista",
-    location: "Delta Sky Observation Tower",
-    category: "Sunset Deck",
-  },
+  { src: skywalkImgOne, title: "Elevated Mangrove Skywalk Pathway", location: "Dangmal Core Forest Canopy", category: "Canopy Walkway" },
+  { src: skywalkImgTwo, title: "Panoramic Wetland Observation Deck", location: "Bhitarkanika High Watchtower", category: "Observation Point" },
+  { src: skywalkImgThree, title: "Canopy Eye-Level Birding Platform", location: "Bagagahana Perch Line", category: "Avian Spotting" },
+  { src: skywalkImgFour, title: "Creek Aerial Overlook Trail", location: "Dangmal Backwater Curve", category: "Tidal Aerial View" },
+  { src: skywalkImgFive, title: "Ancient Sundari Tree Canopy Span", location: "Core Boardwalk Section", category: "Botanical Canopy" },
+  { src: skywalkImgSix, title: "Golden Hour Forest Vista", location: "Delta Sky Observation Tower", category: "Sunset Deck" },
 ];
 
 const navTabs = [
@@ -59,8 +30,7 @@ const skywalkExperiences = [
     title: "Dangmal Canopy Skywalk & Forest Trail",
     route: "Dangmal Jetty → Elevated Wooden Boardwalk → Central Canopy Deck → Forest Museum",
     duration: "2 to 2.5 Hours",
-    highlights:
-      "Stroll safely above the tidal mudflats, view kingfishers and monitor lizards at eye level, and examine giant Sundari tree crowns.",
+    highlights: "Stroll safely above the tidal mudflats, view kingfishers and monitor lizards at eye level, and examine giant Sundari tree crowns.",
     capacity: "Available for Families, Birders & Educational Groups",
   },
   {
@@ -68,8 +38,7 @@ const skywalkExperiences = [
     title: "Watchtower Apex & Creek Panorama",
     route: "Core Forest Trail → Multi-Tier Watchtower Deck → Crocodile Pond Overlook",
     duration: "1.5 to 2 Hours",
-    highlights:
-      "Sweeping 360-degree aerial views of the Brahmani-Baitarani delta waterways, openbill flight paths, and distant basking crocodiles.",
+    highlights: "Sweeping 360-degree aerial views of the Brahmani-Baitarani delta waterways, openbill flight paths, and distant basking crocodiles.",
     capacity: "Guided Forest Batch Departures",
   },
   {
@@ -77,8 +46,7 @@ const skywalkExperiences = [
     title: "Full Day Safari & Canopy Expedition",
     route: "Khola Jetty Boat Safari → Dangmal Skywalk → Core River Creeks → Return",
     duration: "5 to 6 Hours (Comprehensive Package)",
-    highlights:
-      "Seamless blend of tidal creek motorboating by Bhitarkanika Boat Service followed by a guided elevated walk through the core canopy.",
+    highlights: "Seamless blend of tidal creek motorboating by Bhitarkanika Boat Service followed by a guided elevated walk through the core canopy.",
     capacity: "Custom Private Cruisers & Forest Naturalist",
   },
 ];
@@ -90,19 +58,19 @@ const skywalkFAQs = [
   },
   {
     q: "Is the elevated boardwalk safe for elderly visitors and children?",
-    a: "Yes. The skywalk is a sturdy, high-railed wooden structure built securely above the tidal flood line and mudflats, offering a completely level, barrier-free walking experience away from ground hazards and wildlife contact.",
+    a: "Yes. The skywalk is a sturdy, high-railed wooden structure built securely above the tidal flood line and mudflats, offering a level walking experience away from ground hazards and wildlife contact.",
   },
   {
     q: "What wildlife can be spotted from the skywalk and observation decks?",
-    a: "Because you are elevated within the tree canopy, it provides unmatched vantage points for spotting Mangrove Pittas, Black-capped Kingfishers, spotted deer grazing in glades, water monitor lizards, tree-climbing crabs, and basking estuarine crocodiles below.",
+    a: "Because you are elevated within the tree canopy, it provides vantage points for spotting Mangrove Pittas, Black-capped Kingfishers, spotted deer, water monitor lizards, tree-climbing crabs, and basking estuarine crocodiles below.",
   },
   {
     q: "Are separate entry permits required for the Skywalk?",
-    a: "Access to the Skywalk and watchtowers is included under the general Bhitarkanika Wildlife Sanctuary entry permits. Bhitarkanika Boat Service manages all passenger permit clearances and guide allocations at the jetty counters.",
+    a: "Access to the Skywalk and watchtowers is included under the general Bhitarkanika Wildlife Sanctuary entry permits. Bhitarkanika Boat Service manages passenger permit clearances and guide allocations at the jetty counters.",
   },
   {
     q: "What is the best time of day to experience the Skywalk?",
-    a: "Early mornings (7:00 AM – 10:00 AM) and late afternoons (2:30 PM – 4:30 PM) offer the coolest canopy breezes, active bird choruses, and golden photographic lighting across the delta treetops.",
+    a: "Early mornings (7:00 AM – 10:00 AM) and late afternoons (2:30 PM – 4:30 PM) offer cooler canopy breezes, active bird choruses, and golden photographic lighting across the delta treetops.",
   },
 ];
 
@@ -111,13 +79,12 @@ const SkyWalk = () => {
   const [activeImage, setActiveImage] = useState(null);
   const [faqIndex, setFaqIndex] = useState(0);
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [selectedPassengers, setSelectedPassengers] = useState(2);
 
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
 
-    if (tabId === "visit-guide") {
-      setFaqIndex(0);
-    }
+    if (tabId === "visit-guide") setFaqIndex(0);
 
     if (tabId === "book-visit") {
       setFormSubmitted(false);
@@ -133,16 +100,15 @@ const SkyWalk = () => {
     if (activeImage === null) return undefined;
 
     const handleKeyDown = (event) => {
-      if (event.key === "Escape") {
-        setActiveImage(null);
-      }
+      if (event.key === "Escape") setActiveImage(null);
+
       if (event.key === "ArrowRight") {
         setActiveImage((current) => (current + 1) % galleryImages.length);
       }
+
       if (event.key === "ArrowLeft") {
         setActiveImage(
-          (current) =>
-            (current - 1 + galleryImages.length) % galleryImages.length
+          (current) => (current - 1 + galleryImages.length) % galleryImages.length
         );
       }
     };
@@ -159,7 +125,6 @@ const SkyWalk = () => {
   return (
     <section className="SkyWalk" id="skywalk-experience">
       <div className="SkyWalk__layout">
-        {/* MAIN CONTENT */}
         <main className="SkyWalk__main" key={activeTab}>
           {/* 1. SKYWALK OVERVIEW */}
           {activeTab === "skywalk-overview" && (
@@ -175,19 +140,18 @@ const SkyWalk = () => {
 
               <p className="SkyWalk__lead">
                 Step above the coastal tides and wander along the elevated timber
-                skywalks of Bhitarkanika. Seamlessly integrated with our signature river
-                cruises, this aerial nature trail lets you explore the untouched core canopy of
-                Dangmal, witness rare birds at eye level, and view estuarine wildlife from secure
-                observation decks.
+                skywalks of Bhitarkanika. Seamlessly integrated with our signature
+                river cruises, this aerial nature trail lets you explore the untouched
+                core canopy of Dangmal, witness rare birds at eye level, and view
+                estuarine wildlife from secure observation decks.
               </p>
 
               <figure className="SkyWalk__heroFigure">
                 <img
                   className="SkyWalk__heroImage"
                   src={skywalkImgOne}
-                  alt="Elevated wooden skywalk and boardwalk above Bhitarkanika mangrove canopy"
+                  alt="Elevated wooden skywalk above Bhitarkanika mangrove canopy"
                 />
-
                 <figcaption className="SkyWalk__heroCaption">
                   <span className="SkyWalk__heroCaptionDot" />
                   <span>
@@ -196,14 +160,13 @@ const SkyWalk = () => {
                 </figcaption>
               </figure>
 
-              {/* HIGHLIGHT PILLARS */}
               <div className="SkyWalk__featureGrid">
                 <div className="SkyWalk__specBox">
                   <span className="SkyWalk__specNum">01</span>
                   <h3>Canopy-Level Immersion</h3>
                   <p>
-                    Walk safely 10 to 15 feet above the tidal silt floor through dense
-                    crowns of Sundari, Avicennia, and intertwining climber vines.
+                    Walk safely above the tidal silt floor through dense crowns of
+                    Sundari, Avicennia, and intertwining climber vines.
                   </p>
                 </div>
 
@@ -211,8 +174,8 @@ const SkyWalk = () => {
                   <span className="SkyWalk__specNum">02</span>
                   <h3>Multi-Tier Watchtower</h3>
                   <p>
-                    Ascend panoramic vantage platforms overlooking river confluences,
-                    waterfowl heronries, and distant saltwater crocodile mudflats.
+                    Ascend panoramic vantage platforms overlooking river
+                    confluences, waterfowl heronries, and distant crocodile mudflats.
                   </p>
                 </div>
 
@@ -220,13 +183,12 @@ const SkyWalk = () => {
                   <span className="SkyWalk__specNum">03</span>
                   <h3>Boat & Trail Sync</h3>
                   <p>
-                    Coordinated jetty transfers from Khola directly to the Dangmal forest
-                    trailhead with certified Forest Department eco-guides.
+                    Coordinated jetty transfers from Khola directly to the Dangmal
+                    forest trailhead with certified Forest Department eco-guides.
                   </p>
                 </div>
               </div>
 
-              {/* EXPERIENCES */}
               <div className="SkyWalk__packageSection">
                 <div className="SkyWalk__subHeader">
                   <span>CANOPY PACKAGES & TRAILS</span>
@@ -245,9 +207,7 @@ const SkyWalk = () => {
                         <span>⏱ {pkg.duration}</span>
                         <span>👥 {pkg.capacity}</span>
                       </div>
-                      <p className="SkyWalk__packageDesc">
-                        {pkg.highlights}
-                      </p>
+                      <p className="SkyWalk__packageDesc">{pkg.highlights}</p>
                     </div>
                   ))}
                 </div>
@@ -255,13 +215,14 @@ const SkyWalk = () => {
 
               <div className="SkyWalk__actionBanner">
                 <div>
-                  <h3>Plan Your Skywalk & Boat Safari with Bhitarakanika Boat Service</h3>
+                  <h3>
+                    Plan Your Skywalk & Boat Safari with Bhitarakanika Boat Service
+                  </h3>
                   <p>
-                    Combine your river creek cruise with reserved access to the Dangmal
-                    canopy boardwalk and watchtower observation platforms.
+                    Combine your river creek cruise with reserved access to the
+                    Dangmal canopy boardwalk and watchtower observation platforms.
                   </p>
                 </div>
-
                 <button
                   type="button"
                   className="SkyWalk__btnPrimary"
@@ -297,9 +258,7 @@ const SkyWalk = () => {
                   return (
                     <div
                       key={item.q}
-                      className={`SkyWalk__planItem ${
-                        isOpen ? "is-open" : ""
-                      }`}
+                      className={`SkyWalk__planItem ${isOpen ? "is-open" : ""}`}
                     >
                       <button
                         type="button"
@@ -310,7 +269,6 @@ const SkyWalk = () => {
                         <span>
                           {String(index + 1).padStart(2, "0")}. {item.q}
                         </span>
-
                         <span className="SkyWalk__planToggle">
                           {isOpen ? "−" : "+"}
                         </span>
@@ -326,31 +284,28 @@ const SkyWalk = () => {
 
               <div className="SkyWalk__routeBox">
                 <h3>Connecting Transit & Trail Access</h3>
-
                 <ul>
                   <li>
-                    <strong>From Khola Departure Jetty:</strong> Board authorized safari
-                    crafts via Bhitarakanika Boat Service. A picturesque 30-minute cruise
-                    delivers passengers directly to Dangmal Ghat for immediate skywalk access.
+                    <strong>From Khola Departure Jetty:</strong> Board authorized
+                    safari crafts via Bhitarakanika Boat Service. A picturesque
+                    cruise delivers passengers directly to Dangmal Ghat.
                   </li>
-
                   <li>
-                    <strong>Dangmal Trail Loop:</strong> The skywalk forms a circular
-                    elevated route linking the interpretive nature center, captive breeding
-                    enclosures, the historical watchtower, and the core wetland trail.
+                    <strong>Dangmal Trail Loop:</strong> The skywalk links the
+                    interpretive nature center, captive breeding enclosures,
+                    historical watchtower, and core wetland trail.
                   </li>
-
                   <li>
-                    <strong>Best Footwear & Attire:</strong> Comfortable flat walking shoes are
-                    recommended. Earth-tone clothing is advised for optimal bird and wildlife
-                    photography from the canopy deck.
+                    <strong>Best Footwear & Attire:</strong> Comfortable flat
+                    walking shoes are recommended. Earth-tone clothing is advised
+                    for wildlife photography from the canopy deck.
                   </li>
                 </ul>
 
                 <p className="SkyWalk__routeNote">
-                  <strong>Sanctuary Regulation:</strong> Feeding wild animals from the skywalk,
-                  running along boardwalk rails, and using personal drones are strictly prohibited
-                  by the Forest Department.
+                  <strong>Sanctuary Regulation:</strong> Feeding wild animals from
+                  the skywalk, running along boardwalk rails, and using personal
+                  drones are strictly prohibited by the Forest Department.
                 </p>
               </div>
 
@@ -358,11 +313,10 @@ const SkyWalk = () => {
                 <div>
                   <h3>Arranging a Group or School Educational Tour?</h3>
                   <p>
-                    Talk directly to Bhitarakanika Boat Service coordinators for specialized
-                    naturalist-led canopy walks and group permit clearance.
+                    Talk directly to Bhitarakanika Boat Service coordinators for
+                    specialized naturalist-led canopy walks and group permit clearance.
                   </p>
                 </div>
-
                 <button
                   type="button"
                   className="SkyWalk__btnPrimary"
@@ -387,27 +341,27 @@ const SkyWalk = () => {
               </h1>
 
               <p className="SkyWalk__lead">
-                Submit your expected travel dates and party details. Bhitarakanika Boat
-                Service will synchronize your boat departure from Khola Jetty with Dangmal
-                Skywalk passes and dedicated naturalist guides.
+                Submit your expected travel dates and party details. Bhitarakanika
+                Boat Service will synchronize your boat departure from Khola Jetty
+                with Dangmal Skywalk passes and dedicated naturalist guides.
               </p>
 
               {formSubmitted ? (
                 <div className="SkyWalk__formSuccess">
                   <span className="SkyWalk__checkIcon">✓</span>
-
                   <h3>Skywalk Booking Inquiry Received!</h3>
-
                   <p>
-                    Your canopy tour request has been recorded with Bhitarakanika Boat Service.
-                    Our tour desk will verify boat availability, align forest permits, and
-                    contact you shortly with the schedule.
+                    Your canopy tour request has been received. Our tour desk will
+                    verify boat availability, align forest permits, and contact you
+                    with the schedule.
                   </p>
-
                   <button
                     type="button"
                     className="SkyWalk__btnPrimary"
-                    onClick={() => setFormSubmitted(false)}
+                    onClick={() => {
+                      setFormSubmitted(false);
+                      setSelectedPassengers(2);
+                    }}
                   >
                     Submit Another Request
                   </button>
@@ -424,20 +378,19 @@ const SkyWalk = () => {
                     <span>BHITARAKANIKA BOAT SERVICE</span>
                     <h3>Skywalk & Boat Safari Booking Form</h3>
                     <p>
-                      Mandatory passenger credentials for Forest Department entry manifests (*).
+                      Complete your details below to reserve your Skywalk experience.
+                      Fields marked * are required.
                     </p>
                   </div>
 
                   <div className="SkyWalk__formGrid">
                     <div className="SkyWalk__inputGroup">
-                      <label htmlFor="SkyWalk-name">
-                        Lead Visitor Name *
-                      </label>
+                      <label htmlFor="SkyWalk-name">Lead Passenger Name *</label>
                       <input
                         id="SkyWalk-name"
                         name="name"
                         type="text"
-                        placeholder="e.g. Debashis Mohapatra"
+                        placeholder="Enter your full name"
                         autoComplete="name"
                         required
                       />
@@ -449,7 +402,7 @@ const SkyWalk = () => {
                         id="SkyWalk-email"
                         name="email"
                         type="email"
-                        placeholder="debashis@example.com"
+                        placeholder="Enter your email address"
                         autoComplete="email"
                         required
                       />
@@ -457,22 +410,38 @@ const SkyWalk = () => {
 
                     <div className="SkyWalk__inputGroup">
                       <label htmlFor="SkyWalk-phone">
-                        WhatsApp / Contact Number *
+                        WhatsApp / Mobile Number *
                       </label>
                       <input
                         id="SkyWalk-phone"
                         name="phone"
                         type="tel"
-                        placeholder="+91 94370 XXXXX"
+                        placeholder="Enter mobile number"
                         autoComplete="tel"
                         required
                       />
                     </div>
 
                     <div className="SkyWalk__inputGroup">
-                      <label htmlFor="SkyWalk-date">
-                        Expected Visit Date *
+                      <label htmlFor="SkyWalk-aadhaar">
+                        Aadhaar Card Number *
                       </label>
+                      <input
+                        id="SkyWalk-aadhaar"
+                        name="aadhaar"
+                        type="text"
+                        inputMode="numeric"
+                        placeholder="Enter 12-digit Aadhaar number"
+                        pattern="[0-9]{12}"
+                        minLength={12}
+                        maxLength={12}
+                        title="Please enter a valid 12-digit Aadhaar number"
+                        required
+                      />
+                    </div>
+
+                    <div className="SkyWalk__inputGroup">
+                      <label htmlFor="SkyWalk-date">Expected Visit Date *</label>
                       <input
                         id="SkyWalk-date"
                         name="travelDate"
@@ -483,14 +452,46 @@ const SkyWalk = () => {
                     </div>
 
                     <div className="SkyWalk__inputGroup">
+                      <label htmlFor="SkyWalk-time">Preferred Safari Time *</label>
+                      <select
+                        id="SkyWalk-time"
+                        name="bookingTime"
+                        defaultValue=""
+                        required
+                      >
+                        <option value="" disabled>
+                          Select Safari Time
+                        </option>
+                        <optgroup label="Morning Safari">
+                          <option value="07:00 AM">07:00 AM</option>
+                          <option value="08:00 AM">08:00 AM</option>
+                          <option value="09:00 AM">09:00 AM</option>
+                          <option value="10:00 AM">10:00 AM</option>
+                          <option value="11:00 AM">11:00 AM</option>
+                        </optgroup>
+                        <optgroup label="Afternoon Safari">
+                          <option value="01:00 PM">01:00 PM</option>
+                          <option value="02:00 PM">02:00 PM</option>
+                          <option value="03:00 PM">03:00 PM</option>
+                          <option value="04:00 PM">04:00 PM</option>
+                          <option value="05:00 PM">05:00 PM</option>
+                        </optgroup>
+                      </select>
+                    </div>
+
+                    <div className="SkyWalk__inputGroup SkyWalk__inputGroup--full">
                       <label htmlFor="SkyWalk-entryGate">
-                        Departure Jetty Point
+                        Preferred Entry Jetty *
                       </label>
                       <select
                         id="SkyWalk-entryGate"
                         name="entryGate"
-                        defaultValue="Khola Gate (Direct Cruise to Dangmal Skywalk)"
+                        defaultValue=""
+                        required
                       >
+                        <option value="" disabled>
+                          Select Entry Jetty
+                        </option>
                         <option value="Khola Gate (Direct Cruise to Dangmal Skywalk)">
                           Khola Gate (Direct Cruise to Dangmal Skywalk)
                         </option>
@@ -503,39 +504,69 @@ const SkyWalk = () => {
                       </select>
                     </div>
 
-                    <div className="SkyWalk__inputGroup">
-                      <label htmlFor="SkyWalk-guests">
-                        Party Size
-                      </label>
-                      <select
-                        id="SkyWalk-guests"
-                        name="guests"
-                        defaultValue="1–4 Persons (Private Small Boat + Skywalk)"
-                      >
-                        <option value="1–4 Persons (Private Small Boat + Skywalk)">
-                          1–4 Persons (Private Small Boat + Skywalk)
-                        </option>
-                        <option value="5–8 Persons (Standard Group Cruiser)">
-                          5–8 Persons (Standard Group Cruiser)
-                        </option>
-                        <option value="9–14 Persons (Large Family / Group Tour)">
-                          9–14 Persons (Large Family / Group Tour)
-                        </option>
-                        <option value="15+ Persons (Educational / Corporate Camp)">
-                          15+ Persons (Educational / Corporate Camp)
-                        </option>
-                      </select>
+                    <div className="SkyWalk__inputGroup SkyWalk__inputGroup--full">
+                      <label>Number of Passengers *</label>
+
+                      <div className="SkyWalk__passengerBox">
+                        <div className="SkyWalk__passengerHeader">
+                          <div>
+                            <strong>Select Passengers</strong>
+                            <span>Choose your total group size</span>
+                          </div>
+                          <div className="SkyWalk__passengerCount">
+                            {selectedPassengers}{" "}
+                            {selectedPassengers === 1 ? "Person" : "Persons"}
+                          </div>
+                        </div>
+
+                        <div className="SkyWalk__passengerGrid">
+                          {Array.from({ length: 18 }, (_, index) => {
+                            const number = index + 1;
+                            const isSelected = selectedPassengers === number;
+
+                            return (
+                              <label
+                                key={number}
+                                className={`SkyWalk__passengerOption ${
+                                  isSelected ? "is-selected" : ""
+                                }`}
+                              >
+                                <input
+                                  type="radio"
+                                  name="guests"
+                                  value={number}
+                                  checked={isSelected}
+                                  onChange={() => setSelectedPassengers(number)}
+                                />
+                                <span>{number}</span>
+                              </label>
+                            );
+                          })}
+                        </div>
+
+                        <div className="SkyWalk__passengerFooter">
+                          <span>
+                            <span className="SkyWalk__passengerDot" />
+                            Selected passengers: {selectedPassengers}
+                          </span>
+                          <span>Maximum capacity: 18 persons</span>
+                        </div>
+                      </div>
                     </div>
 
                     <div className="SkyWalk__inputGroup SkyWalk__inputGroup--full">
                       <label htmlFor="SkyWalk-service">
-                        Select Experience Package
+                        Select Skywalk Experience *
                       </label>
                       <select
                         id="SkyWalk-service"
                         name="service"
-                        defaultValue="Boat Safari + Dangmal Canopy Skywalk Combo (4-5 hrs)"
+                        defaultValue=""
+                        required
                       >
+                        <option value="" disabled>
+                          Select Your Skywalk Experience
+                        </option>
                         <option value="Boat Safari + Dangmal Canopy Skywalk Combo (4-5 hrs)">
                           Boat Safari + Dangmal Canopy Skywalk Combo (4-5 hrs)
                         </option>
@@ -552,21 +583,16 @@ const SkyWalk = () => {
                     </div>
                   </div>
 
-                  <div className="SkyWalk__inputGroup">
-                    <label htmlFor="SkyWalk-notes">
-                      Special Requests / Senior Citizen Assistance
-                    </label>
-                    <textarea
-                      id="SkyWalk-notes"
-                      name="notes"
-                      rows="4"
-                      placeholder="Let Bhitarakanika Boat Service know if anyone requires extra boarding assistance, spotting scopes, binoculars, or forest resthouse reservations..."
-                    />
-                  </div>
+                  {/* Special Requests textarea intentionally removed */}
 
-                  <button type="submit" className="SkyWalk__submitBtn">
-                    Submit Skywalk Booking Request ↗
-                  </button>
+                  <div className="SkyWalk__formBottom">
+                    <p>
+                      <span>*</span> Please check your details before continuing.
+                    </p>
+                    <button type="submit" className="SkyWalk__submitBtn">
+                      Continue Booking <span>↗</span>
+                    </button>
+                  </div>
                 </form>
               )}
             </div>
@@ -585,8 +611,9 @@ const SkyWalk = () => {
               </h1>
 
               <p className="SkyWalk__lead">
-                Preview views along the elevated wooden boardwalks, watchtower perches,
-                and creek bridges across Bhitarkanika. Click any image to view details in full screen.
+                Preview views along the elevated wooden boardwalks, watchtower
+                perches, and creek bridges across Bhitarkanika. Click any image to
+                view details in full screen.
               </p>
 
               <div className="SkyWalk__galleryPageGrid">
@@ -599,7 +626,6 @@ const SkyWalk = () => {
                     aria-label={`View ${img.title}`}
                   >
                     <img src={img.src} alt={img.title} loading="lazy" />
-
                     <span className="SkyWalk__galleryCardOverlay">
                       <span>{img.category}</span>
                       <span className="SkyWalk__galleryCardTitle">
@@ -618,17 +644,13 @@ const SkyWalk = () => {
 
         {/* RIGHT SIDEBAR */}
         <aside className="SkyWalk__sidebar">
-          {/* NAVIGATION */}
           <div className="SkyWalk__sideBox">
             <div className="SkyWalk__sideTitle">
               <span />
               <h2>Explore Skywalk</h2>
             </div>
 
-            <nav
-              className="SkyWalk__serviceNav"
-              aria-label="Explore skywalk navigation"
-            >
+            <nav className="SkyWalk__serviceNav" aria-label="Explore skywalk navigation">
               {navTabs.map((tab) => {
                 const isSelected = activeTab === tab.id;
 
@@ -648,7 +670,6 @@ const SkyWalk = () => {
             </nav>
           </div>
 
-          {/* SUPPORT CARD */}
           <div className="SkyWalk__supportCard">
             <div className="SkyWalk__supportIcon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none">
@@ -668,8 +689,9 @@ const SkyWalk = () => {
             </div>
 
             <p>
-              Tidal schedules affect boat transfers connecting to the Dangmal Skywalk.
-              Reach out to our jetty tour desk for today's tide charts and trail availability.
+              Tidal schedules affect boat transfers connecting to the Dangmal
+              Skywalk. Reach out to our jetty tour desk for today's tide charts and
+              trail availability.
             </p>
 
             <button
@@ -682,7 +704,6 @@ const SkyWalk = () => {
             </button>
           </div>
 
-          {/* QUICK LINKS */}
           <div className="SkyWalk__sideBox SkyWalk__downloads">
             <div className="SkyWalk__sideTitle">
               <span />
@@ -712,7 +733,6 @@ const SkyWalk = () => {
             </div>
           </div>
 
-          {/* CONTACT INFORMATION */}
           <div className="SkyWalk__sideBox SkyWalk__contactBox">
             <div className="SkyWalk__sideTitle">
               <span />
@@ -720,12 +740,7 @@ const SkyWalk = () => {
             </div>
 
             <div className="SkyWalk__contactInfo">
-              <span
-                className="SkyWalk__contactInfoIcon"
-                aria-hidden="true"
-              >
-                📍
-              </span>
+              <span className="SkyWalk__contactInfoIcon" aria-hidden="true">📍</span>
               <div>
                 <strong>Primary Jetty & Dispatch</strong>
                 <p>
@@ -735,12 +750,7 @@ const SkyWalk = () => {
             </div>
 
             <div className="SkyWalk__contactInfo">
-              <span
-                className="SkyWalk__contactInfoIcon"
-                aria-hidden="true"
-              >
-                ✉
-              </span>
+              <span className="SkyWalk__contactInfoIcon" aria-hidden="true">✉</span>
               <div>
                 <strong>Official Trail Inquiries</strong>
                 <a href="mailto:safari@bhitarakanikaboatservice.com">
@@ -750,12 +760,7 @@ const SkyWalk = () => {
             </div>
 
             <div className="SkyWalk__contactInfo">
-              <span
-                className="SkyWalk__contactInfoIcon"
-                aria-hidden="true"
-              >
-                🕒
-              </span>
+              <span className="SkyWalk__contactInfoIcon" aria-hidden="true">🕒</span>
               <div>
                 <strong>Skywalk & Gate Operating Hours</strong>
                 <p>6:30 AM to 5:00 PM (Sunset Clearance Strictly Enforced)</p>
@@ -810,8 +815,7 @@ const SkyWalk = () => {
                 type="button"
                 onClick={() =>
                   setActiveImage(
-                    (activeImage - 1 + galleryImages.length) %
-                      galleryImages.length
+                    (activeImage - 1 + galleryImages.length) % galleryImages.length
                   )
                 }
                 aria-label="Previous photograph"

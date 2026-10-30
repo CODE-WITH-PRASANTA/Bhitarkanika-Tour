@@ -9,13 +9,12 @@
   --SaltWaterCrocodile-line: #e1ede5;
   --SaltWaterCrocodile-soft: #f4f8f5;
   --SaltWaterCrocodile-radius: 16px;
-  --SaltWaterCrocodile-ease: cubic-bezier(0.16, 1, 0.3, 1);
 
   width: 100%;
   margin: 0;
   color: var(--SaltWaterCrocodile-ink);
   background: #fff;
-  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
   overflow-wrap: anywhere;
 }
 
@@ -40,13 +39,13 @@
 .SaltWaterCrocodile input:focus-visible,
 .SaltWaterCrocodile select:focus-visible,
 .SaltWaterCrocodile textarea:focus-visible {
-  outline: 3px solid rgba(21, 139, 88, 0.35);
+  outline: 3px solid rgba(21, 139, 88, 0.3);
   outline-offset: 3px;
 }
 
-/* ==============================
+/* =====================================
    MAIN LAYOUT
-============================== */
+===================================== */
 
 .SaltWaterCrocodile__layout {
   display: grid;
@@ -71,15 +70,14 @@
   padding: 65px clamp(20px, 3vw, 44px) 80px;
   background: #f7faf8;
   border-left: 1px solid var(--SaltWaterCrocodile-line);
-  align-self: stretch;
 }
 
-/* ==============================
+/* =====================================
    VIEW ANIMATION
-============================== */
+===================================== */
 
 .SaltWaterCrocodile__viewPane {
-  animation: SaltWaterCrocodile-slideFade 0.36s var(--SaltWaterCrocodile-ease) both;
+  animation: SaltWaterCrocodile-slideFade 0.36s ease both;
 }
 
 @keyframes SaltWaterCrocodile-slideFade {
@@ -87,15 +85,16 @@
     opacity: 0;
     transform: translateY(14px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-/* ==============================
+/* =====================================
    PAGE HEADING
-============================== */
+===================================== */
 
 .SaltWaterCrocodile__eyebrow {
   display: inline-flex;
@@ -142,9 +141,9 @@
   line-height: 1.85;
 }
 
-/* ==============================
+/* =====================================
    HERO IMAGE
-============================== */
+===================================== */
 
 .SaltWaterCrocodile__heroFigure {
   position: relative;
@@ -160,7 +159,7 @@
   width: 100%;
   height: clamp(280px, 36vw, 490px);
   object-fit: cover;
-  transition: transform 0.8s var(--SaltWaterCrocodile-ease);
+  transition: transform 0.8s ease;
 }
 
 .SaltWaterCrocodile__heroFigure:hover .SaltWaterCrocodile__heroImage {
@@ -194,9 +193,9 @@
   box-shadow: 0 0 0 4px rgba(115, 230, 168, 0.2);
 }
 
-/* ==============================
+/* =====================================
    FEATURE CARDS
-============================== */
+===================================== */
 
 .SaltWaterCrocodile__featureGrid {
   display: grid;
@@ -211,10 +210,7 @@
   border: 1px solid var(--SaltWaterCrocodile-line);
   border-radius: 13px;
   background: var(--SaltWaterCrocodile-soft);
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease,
-    border-color 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .SaltWaterCrocodile__specBox:hover {
@@ -247,9 +243,9 @@
   line-height: 1.8;
 }
 
-/* ==============================
+/* =====================================
    SAFARI PACKAGES
-============================== */
+===================================== */
 
 .SaltWaterCrocodile__packageSection {
   margin-bottom: 36px;
@@ -287,9 +283,7 @@
   border: 1px solid var(--SaltWaterCrocodile-line);
   border-radius: 13px;
   background: #fff;
-  transition:
-    border-color 0.25s ease,
-    box-shadow 0.25s ease;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .SaltWaterCrocodile__packageCard:hover {
@@ -344,9 +338,9 @@
   line-height: 1.7;
 }
 
-/* ==============================
+/* =====================================
    ACTION BANNER
-============================== */
+===================================== */
 
 .SaltWaterCrocodile__actionBanner {
   display: flex;
@@ -355,14 +349,9 @@
   gap: 22px;
   margin-top: 20px;
   padding: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--SaltWaterCrocodile-radius);
   background:
-    radial-gradient(
-      circle at 100% 0,
-      rgba(33, 181, 115, 0.17),
-      transparent 45%
-    ),
+    radial-gradient(circle at 100% 0, rgba(33, 181, 115, 0.17), transparent 45%),
     linear-gradient(135deg, #0e3d2e, #061c14);
   color: #fff;
 }
@@ -396,10 +385,7 @@
   font-weight: 700;
   white-space: nowrap;
   cursor: pointer;
-  transition:
-    background 0.25s ease,
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
+  transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .SaltWaterCrocodile__btnPrimary:hover {
@@ -408,9 +394,9 @@
   box-shadow: 0 8px 22px rgba(21, 139, 88, 0.3);
 }
 
-/* ==============================
-   ACCORDION
-============================== */
+/* =====================================
+   FAQ ACCORDION
+===================================== */
 
 .SaltWaterCrocodile__planAccordion {
   display: flex;
@@ -424,9 +410,7 @@
   border: 1px solid var(--SaltWaterCrocodile-line);
   border-radius: 12px;
   background: #fff;
-  transition:
-    border-color 0.25s ease,
-    box-shadow 0.25s ease;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .SaltWaterCrocodile__planItem.is-open {
@@ -449,7 +433,6 @@
   font-weight: 700;
   line-height: 1.7;
   cursor: pointer;
-  transition: background 0.25s ease;
 }
 
 .SaltWaterCrocodile__planTrigger:hover {
@@ -478,9 +461,9 @@
   line-height: 1.9;
 }
 
-/* ==============================
+/* =====================================
    ROUTE / SIGHTING BOX
-============================== */
+===================================== */
 
 .SaltWaterCrocodile__routeBox {
   padding: 27px;
@@ -523,40 +506,45 @@
   line-height: 1.8;
 }
 
-/* ==============================
-   BOOKING FORM
-============================== */
+/* =====================================
+   BOOKING FORM - MATCHED DESIGN
+===================================== */
 
 .SaltWaterCrocodile__form {
-  padding: 30px;
-  border: 1px solid var(--SaltWaterCrocodile-line);
-  border-radius: var(--SaltWaterCrocodile-radius);
-  background: var(--SaltWaterCrocodile-soft);
+  width: 100%;
+  padding: 32px;
+  border: 1px solid #dfece3;
+  border-radius: 15px;
+  background: #f5f9f6;
+  box-shadow: 0 8px 30px rgba(8, 40, 30, 0.045);
 }
 
 .SaltWaterCrocodile__formHeading {
   margin-bottom: 27px;
   padding-bottom: 20px;
-  border-bottom: 1px solid var(--SaltWaterCrocodile-line);
+  border-bottom: 1px solid #dce9df;
 }
 
 .SaltWaterCrocodile__formHeading > span {
-  color: var(--SaltWaterCrocodile-green);
+  display: block;
+  margin-bottom: 8px;
+  color: #158b58;
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 1.8px;
 }
 
 .SaltWaterCrocodile__formHeading h3 {
-  margin: 7px 0;
-  color: var(--SaltWaterCrocodile-forest);
+  margin: 0 0 8px;
+  color: #08281e;
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 24px;
+  font-size: 26px;
+  font-weight: 700;
 }
 
 .SaltWaterCrocodile__formHeading p {
   margin: 0;
-  color: var(--SaltWaterCrocodile-muted);
+  color: #718277;
   font-size: 12px;
   line-height: 1.7;
 }
@@ -572,7 +560,7 @@
   min-width: 0;
   flex-direction: column;
   gap: 8px;
-  margin-bottom: 19px;
+  margin-bottom: 20px;
 }
 
 .SaltWaterCrocodile__inputGroup--full {
@@ -580,10 +568,9 @@
 }
 
 .SaltWaterCrocodile__inputGroup label {
-  color: var(--SaltWaterCrocodile-forest);
+  color: #183b2c;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.3px;
 }
 
 .SaltWaterCrocodile__inputGroup input,
@@ -591,64 +578,226 @@
 .SaltWaterCrocodile__inputGroup textarea {
   width: 100%;
   min-width: 0;
-  min-height: 46px;
+  min-height: 48px;
   padding: 12px 14px;
-  border: 1px solid #d4e2d8;
-  border-radius: 8px;
+  border: 1px solid #d9e5dc;
+  border-radius: 7px;
+  outline: none;
   background: #fff;
-  color: var(--SaltWaterCrocodile-ink);
+  color: #183b2c;
+  font-family: "Plus Jakarta Sans", sans-serif;
   font-size: 12px;
-  line-height: 1.6;
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+  transition: all 0.25s ease;
 }
 
 .SaltWaterCrocodile__inputGroup input::placeholder,
 .SaltWaterCrocodile__inputGroup textarea::placeholder {
-  color: #98a99e;
+  color: #a2afa6;
 }
 
 .SaltWaterCrocodile__inputGroup input:focus,
 .SaltWaterCrocodile__inputGroup select:focus,
 .SaltWaterCrocodile__inputGroup textarea:focus {
-  border-color: var(--SaltWaterCrocodile-green);
-  box-shadow: 0 0 0 3px rgba(21, 139, 88, 0.12);
-  outline: none;
+  border-color: #158b58;
+  box-shadow: 0 0 0 3px rgba(21, 139, 88, 0.1);
+}
+
+.SaltWaterCrocodile__inputGroup select {
+  cursor: pointer;
+}
+
+.SaltWaterCrocodile__inputGroup select optgroup {
+  color: #158b58;
+  font-weight: 700;
 }
 
 .SaltWaterCrocodile__inputGroup textarea {
-  min-height: 120px;
+  min-height: 110px;
   resize: vertical;
+}
+
+/* PASSENGER SELECTOR */
+
+.SaltWaterCrocodile__passengerBox {
+  width: 100%;
+  padding: 20px;
+  border: 1px solid #dce9df;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.SaltWaterCrocodile__passengerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 19px;
+}
+
+.SaltWaterCrocodile__passengerHeader > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.SaltWaterCrocodile__passengerHeader strong {
+  color: #183b2c;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.SaltWaterCrocodile__passengerHeader span {
+  color: #87968b;
+  font-size: 10px;
+}
+
+.SaltWaterCrocodile__passengerCount {
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: #eaf6ee;
+  color: #158b58;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.SaltWaterCrocodile__passengerGrid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.SaltWaterCrocodile__passengerOption {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  height: 45px;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  border: 1px solid #dce9df;
+  border-radius: 7px;
+  background: #f8fbf9;
+  color: #53675b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.SaltWaterCrocodile__passengerOption input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.SaltWaterCrocodile__passengerOption span {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.SaltWaterCrocodile__passengerOption:hover {
+  border-color: #158b58;
+  background: #edf7f0;
+  color: #158b58;
+}
+
+.SaltWaterCrocodile__passengerOption.is-selected {
+  border-color: #158b58;
+  background: #158b58;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(21, 139, 88, 0.18);
+}
+
+.SaltWaterCrocodile__passengerOption:focus-within {
+  outline: 3px solid rgba(21, 139, 88, 0.2);
+  outline-offset: 2px;
+}
+
+.SaltWaterCrocodile__passengerFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 17px;
+  padding-top: 13px;
+  border-top: 1px solid #e8f0ea;
+  color: #718277;
+  font-size: 10px;
+}
+
+.SaltWaterCrocodile__passengerFooter > span:first-child {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.SaltWaterCrocodile__passengerDot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #158b58;
+}
+
+/* FORM FOOTER */
+
+.SaltWaterCrocodile__formBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 8px;
+  padding-top: 20px;
+  border-top: 1px solid #dce9df;
+}
+
+.SaltWaterCrocodile__formBottom p {
+  margin: 0;
+  color: #7b8b80;
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.SaltWaterCrocodile__formBottom p span {
+  color: #e05252;
 }
 
 .SaltWaterCrocodile__submitBtn {
   display: inline-flex;
+  min-width: 190px;
+  min-height: 47px;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  min-height: 49px;
-  padding: 14px 24px;
+  gap: 12px;
+  padding: 12px 22px;
   border: 0;
-  border-radius: 9px;
-  background: var(--SaltWaterCrocodile-green);
+  border-radius: 7px;
+  background: #158b58;
   color: #fff;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   cursor: pointer;
-  transition:
-    background 0.25s ease,
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
+  transition: all 0.25s ease;
 }
 
 .SaltWaterCrocodile__submitBtn:hover {
   transform: translateY(-2px);
-  background: var(--SaltWaterCrocodile-green-hover);
-  box-shadow: 0 10px 24px rgba(21, 139, 88, 0.22);
+  background: #0f6f46;
+  box-shadow: 0 7px 18px rgba(21, 139, 88, 0.2);
 }
 
-/* FORM SUCCESS */
+.SaltWaterCrocodile__submitBtn span {
+  font-size: 15px;
+}
+
+/* SUCCESS MESSAGE */
 
 .SaltWaterCrocodile__formSuccess {
   padding: 45px 28px;
@@ -685,9 +834,9 @@
   line-height: 1.9;
 }
 
-/* ==============================
-   CROCODILE GALLERY
-============================== */
+/* =====================================
+   GALLERY
+===================================== */
 
 .SaltWaterCrocodile__galleryPageGrid {
   display: grid;
@@ -716,7 +865,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.65s var(--SaltWaterCrocodile-ease);
+  transition: transform 0.65s ease;
 }
 
 .SaltWaterCrocodile__galleryPageCard:hover > img {
@@ -763,9 +912,9 @@
   line-height: 1.6;
 }
 
-/* ==============================
-   SIDEBAR BOXES
-============================== */
+/* =====================================
+   SIDEBAR
+===================================== */
 
 .SaltWaterCrocodile__sideBox {
   min-width: 0;
@@ -800,84 +949,68 @@
   line-height: 1.4;
 }
 
-/* ==============================
-   SIDEBAR NAVIGATION
-============================== */
+/* SIDEBAR NAVIGATION */
 
 .SaltWaterCrocodile__serviceNav {
   display: flex;
   flex-direction: column;
-  gap: 9px;
+  gap: 8px;
 }
 
 .SaltWaterCrocodile__serviceNav button {
   display: flex;
-  width: 100%;
-  min-height: 49px;
   align-items: center;
-  gap: 13px;
-  padding: 13px 15px;
+  gap: 12px;
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 13px;
   border: 1px solid transparent;
-  border-radius: 9px;
-  background: #f3f7f4;
-  color: #2b4035;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--SaltWaterCrocodile-muted);
   text-align: left;
   font-size: 12px;
   font-weight: 600;
-  line-height: 1.6;
   cursor: pointer;
-  transition:
-    background 0.25s var(--SaltWaterCrocodile-ease),
-    color 0.25s ease,
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
-}
-
-.SaltWaterCrocodile__navArrow {
-  flex-shrink: 0;
-  color: var(--SaltWaterCrocodile-green);
-  font-size: 15px;
-  transition: transform 0.25s ease;
+  transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
 }
 
 .SaltWaterCrocodile__serviceNav button:hover {
   transform: translateX(3px);
-  background: #e7f3ec;
-  color: var(--SaltWaterCrocodile-forest);
+  background: #f2f8f4;
+  color: var(--SaltWaterCrocodile-green);
 }
 
 .SaltWaterCrocodile__serviceNav button.is-highlighted {
-  transform: translateX(3px);
-  border-color: var(--SaltWaterCrocodile-green);
-  background: var(--SaltWaterCrocodile-green);
-  color: #fff;
-  box-shadow: 0 8px 20px -4px rgba(21, 139, 88, 0.3);
+  border-color: #d7ebdf;
+  background: #eaf6ee;
+  color: var(--SaltWaterCrocodile-green);
 }
 
-.SaltWaterCrocodile__serviceNav button.is-highlighted .SaltWaterCrocodile__navArrow {
-  transform: translate(2px, -2px);
-  color: #fff;
+.SaltWaterCrocodile__navArrow {
+  display: inline-flex;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: #f0f6f2;
+  color: var(--SaltWaterCrocodile-green);
+  font-size: 13px;
 }
 
-/* ==============================
-   SUPPORT CARD
-============================== */
+/* SUPPORT CARD */
 
 .SaltWaterCrocodile__supportCard {
   position: relative;
   overflow: hidden;
-  padding: 29px 24px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 28px 24px;
   border-radius: var(--SaltWaterCrocodile-radius);
   background:
-    radial-gradient(
-      circle at 100% 0,
-      rgba(33, 181, 115, 0.22),
-      transparent 50%
-    ),
-    linear-gradient(155deg, #0d3829, #061c14);
+    radial-gradient(circle at 100% 0, rgba(65, 189, 128, 0.22), transparent 45%),
+    linear-gradient(145deg, #0d3c2c, #061d15);
   color: #fff;
-  box-shadow: 0 16px 36px -10px rgba(6, 28, 20, 0.24);
 }
 
 .SaltWaterCrocodile__supportIcon {
@@ -886,42 +1019,38 @@
   height: 48px;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 13px;
-  background: rgba(255, 255, 255, 0.1);
-  color: #79e3aa;
+  margin-bottom: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #8be5b3;
 }
 
 .SaltWaterCrocodile__supportIcon svg {
-  width: 24px;
-  height: 24px;
-}
-
-.SaltWaterCrocodile__supportHeading {
-  margin-top: 20px;
+  width: 25px;
+  height: 25px;
 }
 
 .SaltWaterCrocodile__supportHeading > span {
-  color: #79e3aa;
+  color: #8be5b3;
   font-size: 9px;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
 }
 
 .SaltWaterCrocodile__supportHeading h3 {
-  margin: 7px 0 0;
+  margin: 8px 0 12px;
   color: #fff;
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 23px;
-  font-weight: 600;
-  line-height: 1.35;
+  font-size: 24px;
+  line-height: 1.3;
 }
 
 .SaltWaterCrocodile__supportCard > p {
-  margin: 13px 0 0;
-  color: #b9d5c6;
+  margin: 0 0 22px;
+  color: #c1d9cc;
   font-size: 11.5px;
-  line-height: 1.9;
+  line-height: 1.85;
 }
 
 .SaltWaterCrocodile__supportLink {
@@ -930,26 +1059,23 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-top: 22px;
-  padding: 16px 0 0;
-  border: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  background: none;
-  color: #79e3aa;
-  text-align: left;
-  font-size: 12px;
+  padding: 13px 15px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 11px;
   font-weight: 700;
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: background 0.25s ease, border-color 0.25s ease;
 }
 
 .SaltWaterCrocodile__supportLink:hover {
-  color: #fff;
+  border-color: rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.15);
 }
 
-/* ==============================
-   QUICK LINKS
-============================== */
+/* QUICK LINKS */
 
 .SaltWaterCrocodile__downloadGrid {
   display: grid;
@@ -960,45 +1086,37 @@
 .SaltWaterCrocodile__downloadGrid button {
   display: flex;
   min-width: 0;
-  min-height: 132px;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
-  padding: 13px 11px;
+  gap: 7px;
+  padding: 15px 12px;
   border: 1px solid var(--SaltWaterCrocodile-line);
-  border-radius: 11px;
-  background: var(--SaltWaterCrocodile-soft);
+  border-radius: 10px;
+  background: #fbfdfb;
   text-align: left;
   cursor: pointer;
-  transition:
-    transform 0.25s var(--SaltWaterCrocodile-ease),
-    border-color 0.25s ease,
-    background 0.25s ease,
-    box-shadow 0.25s ease;
-}
-
-.SaltWaterCrocodile__downloadGrid button.is-active-btn {
-  border-color: var(--SaltWaterCrocodile-green);
-  background: #eef8f2;
+  transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
 }
 
 .SaltWaterCrocodile__downloadGrid button:hover {
   transform: translateY(-3px);
-  border-color: #a4d8b6;
-  background: #fff;
-  box-shadow: 0 8px 20px rgba(21, 139, 88, 0.08);
+  border-color: #a4d7b7;
+  background: #f1f8f3;
+}
+
+.SaltWaterCrocodile__downloadGrid button.is-active-btn {
+  border-color: #a4d7b7;
+  background: #edf7f0;
 }
 
 .SaltWaterCrocodile__downloadIcon {
   display: flex;
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   align-items: center;
   justify-content: center;
-  margin-bottom: 12px;
-  border: 1px solid #c2e4ce;
-  border-radius: 50%;
-  background: #fff;
+  border-radius: 8px;
+  background: #e6f4eb;
   color: var(--SaltWaterCrocodile-green);
   font-family: "Cinzel", serif;
   font-size: 11px;
@@ -1008,51 +1126,59 @@
 .SaltWaterCrocodile__downloadGrid strong {
   color: var(--SaltWaterCrocodile-forest);
   font-size: 11px;
-  line-height: 1.6;
 }
 
 .SaltWaterCrocodile__downloadGrid small {
-  margin-top: 5px;
   color: var(--SaltWaterCrocodile-muted);
-  font-size: 9px;
-  line-height: 1.6;
+  font-size: 9.5px;
 }
 
-/* ==============================
-   CONTACT INFORMATION
-============================== */
+/* CONTACT INFORMATION */
 
 .SaltWaterCrocodile__contactInfo {
-  display: grid;
-  grid-template-columns: 27px minmax(0, 1fr);
-  align-items: start;
-  gap: 11px;
-  margin-top: 21px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--SaltWaterCrocodile-line);
 }
 
 .SaltWaterCrocodile__contactInfo:first-of-type {
-  margin-top: 0;
+  padding-top: 0;
+}
+
+.SaltWaterCrocodile__contactInfo:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
 }
 
 .SaltWaterCrocodile__contactInfoIcon {
-  font-size: 17px;
-  line-height: 1.5;
+  display: flex;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: #edf7f0;
+  color: var(--SaltWaterCrocodile-green);
+  font-size: 14px;
 }
 
 .SaltWaterCrocodile__contactInfo strong {
   display: block;
   margin-bottom: 5px;
   color: var(--SaltWaterCrocodile-forest);
-  font-size: 12px;
+  font-size: 10.5px;
   font-weight: 700;
 }
 
 .SaltWaterCrocodile__contactInfo p,
 .SaltWaterCrocodile__contactInfo a {
-  display: inline-block;
+  display: block;
   margin: 0;
   color: var(--SaltWaterCrocodile-muted);
-  font-size: 11px;
+  font-size: 10px;
   line-height: 1.8;
   overflow-wrap: anywhere;
 }
@@ -1066,32 +1192,31 @@
   text-decoration: underline;
 }
 
-/* ==============================
-   LIGHTBOX
-============================== */
+/* =====================================
+   IMAGE LIGHTBOX
+===================================== */
 
 .SaltWaterCrocodile__lightbox {
   position: fixed;
-  z-index: 999999;
+  z-index: 9999;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 25px 18px;
-  background: rgba(3, 18, 12, 0.94);
-  backdrop-filter: blur(14px);
+  padding: 24px;
+  background: rgba(2, 15, 10, 0.92);
+  backdrop-filter: blur(8px);
 }
 
 .SaltWaterCrocodile__lightboxBox {
   position: relative;
-  width: 100%;
-  max-width: 900px;
-  max-height: 95vh;
+  width: min(100%, 1000px);
+  max-height: 92vh;
   overflow: auto;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 16px;
-  background: #082218;
-  scrollbar-width: thin;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  background: #071d14;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
 }
 
 .SaltWaterCrocodile__lightboxClose {
@@ -1104,15 +1229,13 @@
   height: 40px;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(0, 0, 0, 0.55);
   color: #fff;
-  font-size: 16px;
+  font-size: 18px;
   cursor: pointer;
-  transition:
-    background 0.2s ease,
-    transform 0.2s ease;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .SaltWaterCrocodile__lightboxClose:hover {
@@ -1123,9 +1246,9 @@
 .SaltWaterCrocodile__lightboxBox > img {
   display: block;
   width: 100%;
-  max-height: 65vh;
+  max-height: 68vh;
   object-fit: contain;
-  background: #020e09;
+  background: #020a06;
 }
 
 .SaltWaterCrocodile__lightboxCaption {
@@ -1133,107 +1256,97 @@
   align-items: center;
   justify-content: space-between;
   gap: 18px;
-  padding: 20px 25px;
+  padding: 20px 24px;
   color: #fff;
 }
 
 .SaltWaterCrocodile__lightboxCaption > div > span {
-  color: #79e3aa;
-  font-size: 10px;
+  color: #8be5b3;
+  font-size: 9px;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
 }
 
 .SaltWaterCrocodile__lightboxCaption h3 {
-  margin: 5px 0;
+  margin: 6px 0;
   color: #fff;
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 22px;
-  line-height: 1.4;
+  font-size: 21px;
 }
 
 .SaltWaterCrocodile__lightboxCaption small {
-  color: #c9e3d4;
+  color: #b7d6c6;
   font-size: 11px;
 }
 
 .SaltWaterCrocodile__lightboxCount {
   flex-shrink: 0;
-  color: #79e3aa;
-  font-family: "Cinzel", serif;
-  font-size: 13px;
+  color: #a7c7b5;
+  font-size: 11px;
+  font-weight: 700;
 }
 
 .SaltWaterCrocodile__lightboxControls {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 15px;
-  padding: 0 25px 20px;
+  gap: 12px;
+  padding: 0 24px 22px;
 }
 
 .SaltWaterCrocodile__lightboxControls button {
-  padding: 10px 15px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 25px;
-  background: rgba(255, 255, 255, 0.07);
+  min-width: 120px;
+  padding: 11px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.08);
   color: #fff;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .SaltWaterCrocodile__lightboxControls button:hover {
-  border-color: #79e3aa;
-  background: rgba(21, 139, 88, 0.4);
+  border-color: var(--SaltWaterCrocodile-green);
+  background: var(--SaltWaterCrocodile-green);
 }
 
-/* ==============================
-   TABLET RESPONSIVE
-============================== */
+/* =====================================
+   RESPONSIVE - LAPTOP
+===================================== */
 
 @media (max-width: 1100px) {
   .SaltWaterCrocodile__layout {
-    grid-template-columns: minmax(0, 1.6fr) minmax(270px, 0.9fr);
+    grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.9fr);
   }
 
   .SaltWaterCrocodile__main {
-    padding: 48px 28px 65px;
+    padding: 52px 30px 70px;
   }
 
   .SaltWaterCrocodile__sidebar {
     gap: 20px;
-    padding: 48px 20px 65px;
+    padding: 52px 20px 65px;
   }
 
   .SaltWaterCrocodile__featureGrid,
   .SaltWaterCrocodile__packageGrid {
-    grid-template-columns: 1fr;
-    gap: 14px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .SaltWaterCrocodile__specBox {
-    padding: 21px;
+  .SaltWaterCrocodile__packageCard:last-child {
+    grid-column: 1 / -1;
   }
 
   .SaltWaterCrocodile__galleryPageGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-
-  .SaltWaterCrocodile__actionBanner {
-    align-items: flex-start;
-    flex-direction: column;
-    padding: 26px;
-  }
 }
 
-/* ==============================
-   SMALL TABLET RESPONSIVE
-============================== */
+/* =====================================
+   RESPONSIVE - TABLET
+===================================== */
 
 @media (max-width: 860px) {
   .SaltWaterCrocodile__layout {
@@ -1241,102 +1354,95 @@
   }
 
   .SaltWaterCrocodile__main {
-    padding: 45px 30px 55px;
+    padding: 48px 28px 55px;
   }
 
   .SaltWaterCrocodile__sidebar {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: start;
-    gap: 20px;
-    padding: 35px 30px 45px;
+    gap: 18px;
+    padding: 30px 28px 45px;
     border-top: 1px solid var(--SaltWaterCrocodile-line);
     border-left: 0;
   }
 
-  .SaltWaterCrocodile__sideBox {
-    padding: 24px 20px;
+  .SaltWaterCrocodile__sidebar > * {
+    min-width: 0;
   }
 
-  .SaltWaterCrocodile__featureGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .SaltWaterCrocodile__contactBox {
+    grid-column: 1 / -1;
   }
 
-  .SaltWaterCrocodile__packageGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .SaltWaterCrocodile__supportCard {
+    height: 100%;
   }
 
-  .SaltWaterCrocodile__specBox {
-    padding: 18px 14px;
+  .SaltWaterCrocodile__pageTitle {
+    font-size: clamp(32px, 6vw, 46px);
   }
 
-  .SaltWaterCrocodile__specBox h3 {
-    font-size: 13px;
-  }
-
-  .SaltWaterCrocodile__specBox p {
-    font-size: 11px;
-  }
-
-  .SaltWaterCrocodile__actionBanner {
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .SaltWaterCrocodile__formGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .SaltWaterCrocodile__galleryPageGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .SaltWaterCrocodile__heroImage {
+    height: clamp(260px, 48vw, 420px);
   }
 }
 
-/* ==============================
-   MOBILE RESPONSIVE
-============================== */
+/* =====================================
+   RESPONSIVE - MOBILE
+===================================== */
 
 @media (max-width: 600px) {
   .SaltWaterCrocodile__main {
-    padding: 35px 17px 42px;
+    padding: 35px 16px 45px;
   }
 
   .SaltWaterCrocodile__sidebar {
     grid-template-columns: minmax(0, 1fr);
-    gap: 17px;
-    padding: 28px 17px 38px;
+    padding: 24px 16px 35px;
   }
 
-  .SaltWaterCrocodile__pageTitle {
-    font-size: clamp(28px, 8vw, 38px);
-    letter-spacing: -0.5px;
+  .SaltWaterCrocodile__contactBox {
+    grid-column: auto;
   }
 
   .SaltWaterCrocodile__eyebrow {
-    gap: 9px;
-    font-size: 9px;
-    letter-spacing: 1.5px;
+    gap: 8px;
+    font-size: 9.5px;
+    letter-spacing: 1.2px;
   }
 
   .SaltWaterCrocodile__eyebrowLine {
     width: 20px;
   }
 
+  .SaltWaterCrocodile__pageTitle {
+    font-size: clamp(29px, 8vw, 38px);
+    letter-spacing: -0.5px;
+  }
+
   .SaltWaterCrocodile__lead {
-    margin: 15px 0 25px;
+    margin: 15px 0 24px;
     font-size: 12.5px;
     line-height: 1.8;
   }
 
+  .SaltWaterCrocodile__heroFigure {
+    margin-bottom: 25px;
+    border-radius: 12px;
+  }
+
   .SaltWaterCrocodile__heroImage {
-    height: 260px;
+    height: 270px;
   }
 
   .SaltWaterCrocodile__heroCaption {
     right: 10px;
     bottom: 10px;
-    padding: 8px 12px;
-    font-size: 9.5px;
+    gap: 8px;
+    max-width: calc(100% - 20px);
+    padding: 8px 11px;
+    font-size: 9px;
   }
 
   .SaltWaterCrocodile__featureGrid,
@@ -1345,8 +1451,17 @@
     gap: 12px;
   }
 
+  .SaltWaterCrocodile__packageCard:last-child {
+    grid-column: auto;
+  }
+
   .SaltWaterCrocodile__specBox {
     padding: 20px;
+  }
+
+  .SaltWaterCrocodile__subHeader h2 {
+    font-size: 21px;
+    line-height: 1.4;
   }
 
   .SaltWaterCrocodile__actionBanner {
@@ -1380,8 +1495,14 @@
     padding: 22px 18px;
   }
 
+  /* BOOKING FORM MOBILE */
+
   .SaltWaterCrocodile__form {
-    padding: 21px 16px;
+    padding: 22px 15px;
+  }
+
+  .SaltWaterCrocodile__formHeading h3 {
+    font-size: 22px;
   }
 
   .SaltWaterCrocodile__formGrid {
@@ -1389,15 +1510,107 @@
     gap: 0;
   }
 
+  .SaltWaterCrocodile__inputGroup--full {
+    grid-column: auto;
+  }
+
+  .SaltWaterCrocodile__passengerBox {
+    padding: 14px 11px;
+  }
+
+  .SaltWaterCrocodile__passengerGrid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .SaltWaterCrocodile__passengerOption {
+    height: 39px;
+  }
+
+  .SaltWaterCrocodile__passengerHeader {
+    align-items: flex-start;
+  }
+
+  .SaltWaterCrocodile__passengerFooter {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .SaltWaterCrocodile__formBottom {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .SaltWaterCrocodile__submitBtn {
+    width: 100%;
+  }
+
   .SaltWaterCrocodile__galleryPageGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
   }
+
+  .SaltWaterCrocodile__galleryPageCard {
+    aspect-ratio: 3 / 4;
+  }
+
+  .SaltWaterCrocodile__galleryCardOverlay {
+    padding: 10px;
+  }
+
+  .SaltWaterCrocodile__galleryCardTitle {
+    font-size: 11px;
+  }
+
+  .SaltWaterCrocodile__galleryLocation {
+    font-size: 9px;
+  }
+
+  .SaltWaterCrocodile__sideBox {
+    padding: 22px 18px;
+  }
+
+  .SaltWaterCrocodile__lightbox {
+    padding: 12px;
+  }
+
+  .SaltWaterCrocodile__lightboxCaption {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 16px;
+  }
+
+  .SaltWaterCrocodile__lightboxCaption h3 {
+    font-size: 18px;
+  }
+
+  .SaltWaterCrocodile__lightboxControls {
+    padding: 0 16px 16px;
+  }
+
+  .SaltWaterCrocodile__lightboxControls button {
+    min-width: 0;
+    flex: 1;
+  }
 }
 
-/* ==============================
+@media (max-width: 360px) {
+  .SaltWaterCrocodile__passengerGrid {
+    gap: 5px;
+  }
+
+  .SaltWaterCrocodile__passengerOption {
+    height: 35px;
+  }
+
+  .SaltWaterCrocodile__passengerOption span {
+    font-size: 11px;
+  }
+}
+
+/* =====================================
    REDUCED MOTION
-============================== */
+===================================== */
 
 @media (prefers-reduced-motion: reduce) {
   .SaltWaterCrocodile *,

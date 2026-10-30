@@ -1,271 +1,705 @@
-/* Container & Alignment */
+
+/* =========================================
+   JOURNEY SECTION
+========================================= */
+
 .journey-section {
   width: 100%;
-  background-color: #ffffff;
-  padding: 80px 20px;
-  box-sizing: border-box;
-  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  padding: 100px 0;
+  background: #f8faf6;
+  overflow: hidden;
 }
 
 .journey-container {
-  max-width: 1240px;
+  width: 100%;
+  max-width: 1500px;
+  padding: 0 60px;
   margin: 0 auto;
 }
 
-/* Header */
+/* =========================================
+   HEADER
+========================================= */
+
 .journey-header {
+  max-width: 800px;
+  margin: 0 auto 55px;
   text-align: center;
-  margin-bottom: 45px;
 }
 
 .journey-badge {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  color: #5cb82b;
-  font-family: 'Caveat', cursive, 'Segoe UI', sans-serif;
-  font-size: 21px;
+  justify-content: center;
+  gap: 9px;
+  padding: 10px 20px;
+  border-radius: 50px;
+  background: #e9f4df;
+  color: #397a35;
+  font-size: 13px;
   font-weight: 700;
-  margin-bottom: 8px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
 }
 
-.badge-arrow, .badge-wave {
-  font-size: 18px;
+.journey-badge svg {
+  font-size: 14px;
 }
 
 .journey-main-title {
-  font-size: 40px;
-  font-weight: 900;
-  color: #14171a;
-  margin: 0;
-  letter-spacing: -0.5px;
+  color: #172d23;
+  font-size: clamp(34px, 4vw, 55px);
+  line-height: 1.15;
+  font-weight: 800;
+  margin: 0 0 18px;
+  letter-spacing: -1.8px;
 }
 
-/* 3-Column Grid */
+.journey-main-title span {
+  display: block;
+  color: #5c963e;
+}
+
+.journey-header-description {
+  max-width: 650px;
+  margin: 0 auto;
+  color: #727c73;
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+/* =========================================
+   ATTRACTION GRID
+   DESKTOP: 3 COLUMNS x 2 ROWS = 6 CARDS
+========================================= */
+
 .journey-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: 390px;
+  gap: 25px;
+  width: 100%;
 }
 
-/* Destination Card */
+/* =========================================
+   DESTINATION CARD
+========================================= */
+
 .destination-card {
   position: relative;
-  height: 310px;
-  border-radius: 16px;
+  width: 100%;
+  height: 390px;
   overflow: hidden;
+  border-radius: 18px;
+  background: #243d2c;
   cursor: pointer;
-  background-color: #2b333a;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  isolation: isolate;
+  outline: none;
+  box-shadow: 0 10px 30px rgba(23, 45, 35, 0.08);
+  transition:
+    transform 0.4s ease,
+    box-shadow 0.4s ease;
 }
 
 .destination-card:hover,
-.destination-card.active {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.16);
+.destination-card.active,
+.destination-card:focus-visible {
+  transform: translateY(-7px);
+  box-shadow: 0 18px 38px rgba(23, 45, 35, 0.2);
 }
 
 .card-bg-img {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s ease;
+  object-position: center;
+  transition: transform 0.8s ease;
 }
 
 .destination-card:hover .card-bg-img,
-.destination-card.active .card-bg-img {
-  transform: scale(1.08);
+.destination-card.active .card-bg-img,
+.destination-card:focus-visible .card-bg-img {
+  transform: scale(1.1);
 }
 
-.empty-img-placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #374149;
-  color: #b5c2c7;
-  font-size: 14px;
-  font-weight: 600;
-  text-align: center;
-  padding: 15px;
-}
-
-/* Dark Backdrop Overlay */
 .card-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0.75) 100%);
-  transition: background 0.35s ease;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    180deg,
+    rgba(5, 20, 12, 0.05) 0%,
+    rgba(5, 20, 12, 0.15) 35%,
+    rgba(5, 20, 12, 0.85) 100%
+  );
+  transition: background 0.4s ease;
 }
 
 .destination-card:hover .card-overlay,
-.destination-card.active .card-overlay {
-  background: rgba(18, 25, 29, 0.62);
+.destination-card.active .card-overlay,
+.destination-card:focus-visible .card-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(5, 20, 12, 0.12) 0%,
+    rgba(5, 20, 12, 0.35) 30%,
+    rgba(5, 20, 12, 0.94) 100%
+  );
 }
 
-/* Content & Position Animation */
-.card-info-content {
+/* =========================================
+   CARD NUMBER
+========================================= */
+
+.card-number {
   position: absolute;
-  bottom: 24px;
-  left: 0;
-  right: 0;
+  top: 20px;
+  left: 20px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  z-index: 5;
-  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  width: 43px;
+  height: 43px;
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* =========================================
+   CARD CONTENT
+========================================= */
+
+.card-info-content {
+  position: absolute;
+  left: 25px;
+  right: 25px;
+  bottom: 25px;
+  color: #fff;
+  z-index: 2;
+}
+
+.card-category {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #d8ffb9;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.card-category svg {
+  font-size: 12px;
 }
 
 .place-title {
-  color: #ffffff;
-  font-size: 22px;
+  color: #fff;
+  font-size: clamp(20px, 2vw, 26px);
   font-weight: 800;
+  line-height: 1.25;
+  margin: 0 0 8px;
+  transition: transform 0.3s ease;
+}
+
+.card-specification {
+  color: #e2f5d9;
+  font-size: 12px;
+  font-weight: 600;
   margin: 0;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+  line-height: 1.5;
 }
 
-/* Tour Badge Wrapper & Animation */
-.tour-badge-wrapper {
+.card-description {
+  max-height: 0;
+  overflow: hidden;
   opacity: 0;
-  transform: translateY(12px) scale(0.9);
-  transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  margin-top: 10px;
-  pointer-events: none;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 13px;
+  line-height: 1.7;
+  margin: 0;
+  transform: translateY(12px);
+  transition:
+    max-height 0.45s ease,
+    opacity 0.35s ease,
+    transform 0.35s ease,
+    margin 0.35s ease;
 }
 
-/* Move title to center and stay visible when active or hovered */
-.destination-card:hover .card-info-content,
-.destination-card.active .card-info-content {
-  bottom: 40%;
-  transform: translateY(20%);
-}
-
-.destination-card:hover .tour-badge-wrapper,
-.destination-card.active .tour-badge-wrapper {
+.destination-card:hover .card-description,
+.destination-card.active .card-description,
+.destination-card:focus-visible .card-description {
+  max-height: 110px;
   opacity: 1;
-  transform: translateY(0) scale(1);
+  margin-top: 10px;
+  transform: translateY(0);
 }
 
-/* Green Ribbon Tour Badge */
-.tour-ribbon {
-  position: relative;
-  background-color: #5cb82b;
-  color: #ffffff;
-  padding: 6px 20px;
-  border-radius: 12px;
-  font-size: 13.5px;
-  font-weight: 700;
-  display: inline-block;
-  box-shadow: 0 4px 12px rgba(92, 184, 43, 0.4);
-}
-
-/* 6th Promo Banner Card */
-.promo-banner-card {
-  position: relative;
-  height: 310px;
-  border-radius: 16px;
-  background: radial-gradient(circle at 100% 0%, #e2f6d6 0%, #fffbf2 50%, #fdeacc 100%);
+.card-location-icon {
+  position: absolute;
+  top: 20px;
+  right: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  font-size: 14px;
+}
+
+/* =========================================
+   PAGINATION
+========================================= */
+
+.journey-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  margin: 55px auto 0;
+}
+
+.journey-pagination-numbers {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.journey-page-number,
+.journey-pagination-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #dce6d8;
+  background: #fff;
+  color: #263d2e;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.journey-page-number {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.journey-page-number:hover,
+.journey-page-number.selected {
+  color: #fff;
+  background: #477d3d;
+  border-color: #477d3d;
+}
+
+.journey-pagination-arrow {
+  gap: 9px;
+  height: 45px;
+  padding: 0 17px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.journey-pagination-arrow:hover:not(:disabled) {
+  color: #fff;
+  background: #477d3d;
+  border-color: #477d3d;
+}
+
+.journey-pagination-arrow:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.journey-page-information {
+  margin: 18px 0 0;
   text-align: center;
-  padding: 30px 20px;
-  box-sizing: border-box;
+  color: #818b80;
+  font-size: 13px;
+}
+
+.journey-page-information strong {
+  color: #477d3d;
+}
+
+/* =========================================
+   PROMOTIONAL BOAT SERVICE CARD
+   OUTSIDE THE ATTRACTION GRID
+========================================= */
+
+.promo-banner-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 290px;
+  padding: 55px 65px;
+  margin-top: 75px;
   overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
-  border: 1px solid #f2edd9;
+  border-radius: 22px;
+  background: linear-gradient(120deg, #173b2b, #356d43);
+  isolation: isolate;
 }
 
-.plane-sketch {
-  position: absolute;
-  opacity: 0.6;
-}
-
-.sketch-top {
-  top: 24px;
-  left: 24px;
-  transform: rotate(-10deg);
-}
-
-.sketch-bottom {
-  bottom: 24px;
-  right: 24px;
-  transform: rotate(25deg);
-}
-
-.promo-content {
+.promo-banner-content {
   position: relative;
   z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  max-width: 650px;
 }
 
-.discount-tag {
-  background-color: #f7a833;
-  color: #ffffff;
-  padding: 6px 18px;
+.promo-small-label {
+  display: inline-block;
+  color: #c8edac;
   font-size: 12px;
   font-weight: 800;
-  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
   margin-bottom: 15px;
-  text-transform: capitalize;
-  box-shadow: 0 4px 10px rgba(247, 168, 51, 0.25);
 }
 
-.promo-title {
-  color: #151a1d;
-  font-size: 26px;
-  font-weight: 900;
-  line-height: 1.25;
-  margin: 0 0 22px 0;
+.promo-banner-content h3 {
+  color: #fff;
+  font-size: clamp(28px, 3vw, 42px);
+  line-height: 1.2;
+  font-weight: 800;
+  margin: 0 0 15px;
 }
 
-.btn-view-destinations {
-  background-color: #5cb82b;
-  color: #ffffff;
+.promo-banner-content p {
+  max-width: 550px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 15px;
+  line-height: 1.8;
+  margin: 0 0 25px;
+}
+
+.promo-banner-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px 24px;
+  border-radius: 50px;
+  background: #d8ff9f;
+  color: #193d29;
+  font-size: 13px;
+  font-weight: 800;
   text-decoration: none;
-  font-size: 13.5px;
-  font-weight: 700;
-  padding: 11px 24px;
-  border-radius: 6px;
   transition: all 0.3s ease;
-  display: inline-block;
 }
 
-.btn-view-destinations:hover {
-  background-color: #4ca022;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(92, 184, 43, 0.3);
+.promo-banner-button:hover {
+  background: #fff;
+  color: #193d29;
+  transform: translateY(-3px);
 }
 
-/* Responsive Styles */
-@media (max-width: 992px) {
+.promo-banner-decoration {
+  position: absolute;
+  right: 8%;
+  top: 50%;
+  transform: translateY(-50%) rotate(-15deg);
+  color: rgba(255, 255, 255, 0.09);
+  font-size: 200px;
+  pointer-events: none;
+}
+
+/* =========================================
+   BOTTOM NOTE
+========================================= */
+
+.journey-bottom-note {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 12px;
+  max-width: 850px;
+  margin: 35px auto 0;
+  text-align: center;
+}
+
+.journey-bottom-note svg {
+  flex-shrink: 0;
+  margin-top: 5px;
+  color: #5c963e;
+  font-size: 15px;
+}
+
+.journey-bottom-note p {
+  color: #778176;
+  font-size: 13px;
+  line-height: 1.8;
+  margin: 0;
+}
+
+/* =========================================
+   LARGE DESKTOP
+========================================= */
+
+@media (min-width: 1500px) {
+  .journey-container {
+    max-width: 1600px;
+  }
+
   .journey-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    grid-auto-rows: 420px;
+    gap: 30px;
+  }
+
+  .destination-card {
+    height: 420px;
   }
 }
 
-@media (max-width: 600px) {
+/* =========================================
+   TABLET
+   2 COLUMNS x 3 ROWS = 6 CARDS
+========================================= */
+
+@media (max-width: 1024px) {
+  .journey-container {
+    padding: 0 35px;
+  }
+
+  .journey-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 360px;
+    gap: 20px;
+  }
+
+  .destination-card {
+    height: 360px;
+  }
+
+  .card-info-content {
+    left: 20px;
+    right: 20px;
+    bottom: 22px;
+  }
+
+  .promo-banner-card {
+    padding: 45px;
+  }
+}
+
+/* =========================================
+   SMALL TABLET
+========================================= */
+
+@media (max-width: 768px) {
   .journey-section {
-    padding: 50px 16px;
+    padding: 75px 0;
+  }
+
+  .journey-container {
+    padding: 0 25px;
+  }
+
+  .journey-header {
+    margin-bottom: 40px;
+  }
+
+  .journey-main-title {
+    font-size: 38px;
+  }
+
+  .journey-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 330px;
+    gap: 16px;
+  }
+
+  .destination-card {
+    height: 330px;
+  }
+
+  .place-title {
+    font-size: 21px;
+  }
+
+  .card-description {
+    font-size: 12px;
+  }
+
+  .promo-banner-card {
+    min-height: 260px;
+    padding: 35px;
+    margin-top: 55px;
+  }
+
+  .promo-banner-decoration {
+    right: 2%;
+    font-size: 150px;
+  }
+}
+
+/* =========================================
+   MOBILE
+   1 COLUMN x 6 ROWS = 6 CARDS
+========================================= */
+
+@media (max-width: 576px) {
+  .journey-section {
+    padding: 60px 0;
+  }
+
+  .journey-container {
+    padding: 0 18px;
+  }
+
+  .journey-header {
+    margin-bottom: 30px;
+  }
+
+  .journey-badge {
+    padding: 9px 15px;
+    font-size: 10px;
+  }
+
+  .journey-main-title {
+    font-size: 31px;
+    letter-spacing: -1px;
+  }
+
+  .journey-header-description {
+    font-size: 13px;
+    line-height: 1.7;
   }
 
   .journey-grid {
     grid-template-columns: 1fr;
-    gap: 16px;
+    grid-auto-rows: 370px;
+    gap: 18px;
   }
 
-  .destination-card,
+  .destination-card {
+    height: 370px;
+  }
+
+  .card-info-content {
+    left: 22px;
+    right: 22px;
+    bottom: 23px;
+  }
+
+  .place-title {
+    font-size: 23px;
+  }
+
+  .card-description {
+    max-height: 110px;
+    opacity: 1;
+    margin-top: 10px;
+    transform: translateY(0);
+  }
+
+  .journey-pagination {
+    gap: 10px;
+    margin-top: 35px;
+  }
+
+  .journey-pagination-numbers {
+    gap: 6px;
+  }
+
+  .journey-page-number {
+    width: 36px;
+    height: 36px;
+    font-size: 12px;
+  }
+
+  .journey-pagination-arrow {
+    height: 36px;
+    padding: 0 10px;
+    gap: 6px;
+    font-size: 11px;
+  }
+
+  .journey-pagination-arrow svg {
+    font-size: 10px;
+  }
+
+  .journey-page-information {
+    font-size: 11px;
+  }
+
   .promo-banner-card {
-    height: 270px;
+    min-height: auto;
+    padding: 35px 24px;
+    margin-top: 45px;
+  }
+
+  .promo-banner-content h3 {
+    font-size: 27px;
+  }
+
+  .promo-banner-content p {
+    font-size: 13px;
+  }
+
+  .promo-banner-decoration {
+    right: -30px;
+    top: 20px;
+    transform: none;
+    font-size: 110px;
+  }
+
+  .journey-bottom-note {
+    gap: 8px;
+    text-align: left;
+  }
+
+  .journey-bottom-note p {
+    font-size: 11px;
+  }
+}
+
+/* =========================================
+   EXTRA SMALL MOBILE
+========================================= */
+
+@media (max-width: 380px) {
+  .journey-container {
+    padding: 0 14px;
+  }
+
+  .journey-grid {
+    grid-auto-rows: 340px;
+  }
+
+  .destination-card {
+    height: 340px;
+  }
+
+  .journey-pagination {
+    gap: 6px;
+  }
+
+  .journey-pagination-numbers {
+    gap: 4px;
+  }
+
+  .journey-page-number {
+    width: 32px;
+    height: 32px;
+  }
+
+  .journey-pagination-arrow {
+    padding: 0 8px;
+    font-size: 10px;
   }
 }

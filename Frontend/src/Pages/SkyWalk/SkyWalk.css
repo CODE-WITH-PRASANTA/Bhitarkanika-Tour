@@ -1,22 +1,32 @@
-@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
+/* =====================================
+   SKYWALK - DESIGN TOKENS
+===================================== */
 
 .SkyWalk {
   --SkyWalk-green: #158b58;
-  --SkyWalk-green-hover: #0f6f46;
+  --SkyWalk-green-dark: #0f6f46;
   --SkyWalk-forest: #08281e;
-  --SkyWalk-ink: #142820;
-  --SkyWalk-muted: #597164;
-  --SkyWalk-line: #e1ede5;
-  --SkyWalk-soft: #f4f8f5;
-  --SkyWalk-radius: 16px;
-  --SkyWalk-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --SkyWalk-ink: #183b2c;
+  --SkyWalk-muted: #718277;
+  --SkyWalk-soft: #eaf6ee;
+  --SkyWalk-bg: #f5f9f6;
+  --SkyWalk-line: #dce9df;
+  --SkyWalk-radius: 15px;
+  --SkyWalk-shadow: 0 8px 30px rgba(8, 40, 30, 0.045);
+  --SkyWalk-serif: "Playfair Display", Georgia, serif;
+  --SkyWalk-sans: "Plus Jakarta Sans", sans-serif;
+}
 
+/* =====================================
+   BASE LAYOUT
+===================================== */
+
+.SkyWalk {
   width: 100%;
-  margin: 0;
-  color: var(--SkyWalk-ink);
+  padding: 70px 24px 90px;
   background: #fff;
-  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
-  overflow-wrap: anywhere;
+  color: var(--SkyWalk-ink);
+  font-family: var(--SkyWalk-sans);
 }
 
 .SkyWalk *,
@@ -25,67 +35,31 @@
   box-sizing: border-box;
 }
 
-.SkyWalk button,
-.SkyWalk input,
-.SkyWalk select,
-.SkyWalk textarea {
-  font: inherit;
-}
-
 .SkyWalk button {
-  -webkit-tap-highlight-color: transparent;
+  font-family: inherit;
 }
-
-.SkyWalk button:focus-visible,
-.SkyWalk input:focus-visible,
-.SkyWalk select:focus-visible,
-.SkyWalk textarea:focus-visible {
-  outline: 3px solid rgba(21, 139, 88, 0.35);
-  outline-offset: 3px;
-}
-
-/* ==============================
-   MAIN LAYOUT
-============================== */
 
 .SkyWalk__layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.85fr) minmax(310px, 0.95fr);
-  align-items: stretch;
-  width: 100%;
-  max-width: 1540px;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 40px;
+  max-width: 1280px;
   margin: 0 auto;
+  align-items: start;
 }
 
 .SkyWalk__main {
   min-width: 0;
-  padding: 65px clamp(24px, 4.5vw, 76px) 90px;
-  background: #fff;
 }
-
-.SkyWalk__sidebar {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  gap: 26px;
-  padding: 65px clamp(20px, 3vw, 44px) 80px;
-  background: #f7faf8;
-  border-left: 1px solid var(--SkyWalk-line);
-  align-self: stretch;
-}
-
-/* ==============================
-   VIEW ANIMATION
-============================== */
 
 .SkyWalk__viewPane {
-  animation: SkyWalk-slideFade 0.36s var(--SkyWalk-ease) both;
+  animation: SkyWalkFade 0.4s ease both;
 }
 
-@keyframes SkyWalk-slideFade {
+@keyframes SkyWalkFade {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -93,23 +67,24 @@
   }
 }
 
-/* ==============================
-   PAGE HEADING
-============================== */
+/* =====================================
+   HEADINGS & INTRO
+===================================== */
 
 .SkyWalk__eyebrow {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
   color: var(--SkyWalk-green);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 1.8px;
 }
 
 .SkyWalk__eyebrowLine {
-  width: 28px;
+  display: inline-block;
+  width: 34px;
   height: 2px;
   flex-shrink: 0;
   border-radius: 2px;
@@ -117,72 +92,64 @@
 }
 
 .SkyWalk__pageTitle {
-  margin: 0;
+  margin: 0 0 18px;
   color: var(--SkyWalk-forest);
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: clamp(32px, 3.8vw, 50px);
+  font-family: var(--SkyWalk-serif);
+  font-size: clamp(30px, 4.2vw, 46px);
   font-weight: 700;
-  line-height: 1.16;
-  letter-spacing: -0.8px;
+  line-height: 1.18;
 }
 
-.SkyWalk__pageTitle > span {
+.SkyWalk__pageTitle span {
   display: block;
-  margin-top: 5px;
   color: var(--SkyWalk-green);
   font-style: italic;
-  font-weight: 500;
 }
 
 .SkyWalk__lead {
-  max-width: 760px;
-  margin: 18px 0 32px;
+  max-width: 720px;
+  margin: 0 0 32px;
   color: var(--SkyWalk-muted);
-  font-size: 14.5px;
-  line-height: 1.85;
+  font-size: 14px;
+  line-height: 1.9;
 }
 
-/* ==============================
+/* =====================================
    HERO IMAGE
-============================== */
+===================================== */
 
 .SkyWalk__heroFigure {
   position: relative;
-  margin: 0 0 38px;
+  margin: 0 0 30px;
   overflow: hidden;
   border-radius: var(--SkyWalk-radius);
-  background: #e6eee8;
-  box-shadow: 0 16px 38px -12px rgba(10, 45, 34, 0.15);
+  background: var(--SkyWalk-forest);
+  box-shadow: var(--SkyWalk-shadow);
 }
 
 .SkyWalk__heroImage {
   display: block;
   width: 100%;
-  height: clamp(280px, 36vw, 490px);
+  height: auto;
+  max-height: 460px;
+  aspect-ratio: 16 / 8;
   object-fit: cover;
-  transition: transform 0.8s var(--SkyWalk-ease);
-}
-
-.SkyWalk__heroFigure:hover .SkyWalk__heroImage {
-  transform: scale(1.035);
 }
 
 .SkyWalk__heroCaption {
   position: absolute;
-  right: 16px;
-  bottom: 16px;
-  display: inline-flex;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
   align-items: center;
   gap: 10px;
-  max-width: calc(100% - 32px);
-  padding: 11px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 30px;
-  background: rgba(7, 35, 26, 0.86);
+  padding: 40px 22px 18px;
+  background: linear-gradient(to top, rgba(8, 40, 30, 0.82), rgba(8, 40, 30, 0));
   color: #fff;
-  font-size: 11.5px;
-  line-height: 1.6;
-  backdrop-filter: blur(12px);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.5;
 }
 
 .SkyWalk__heroCaptionDot {
@@ -190,54 +157,49 @@
   height: 8px;
   flex-shrink: 0;
   border-radius: 50%;
-  background: #73e6a8;
-  box-shadow: 0 0 0 4px rgba(115, 230, 168, 0.2);
+  background: #4ade80;
+  box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.25);
 }
 
-/* ==============================
-   FEATURE CARDS
-============================== */
+/* =====================================
+   FEATURE GRID
+===================================== */
 
 .SkyWalk__featureGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-  margin-bottom: 38px;
+  gap: 18px;
+  margin-bottom: 52px;
 }
 
 .SkyWalk__specBox {
-  min-width: 0;
-  padding: 24px 19px;
-  border: 1px solid var(--SkyWalk-line);
-  border-radius: 13px;
-  background: var(--SkyWalk-soft);
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease,
-    border-color 0.3s ease;
+  padding: 24px 22px;
+  border: 1px solid #dfece3;
+  border-radius: 12px;
+  background: var(--SkyWalk-bg);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .SkyWalk__specBox:hover {
-  transform: translateY(-4px);
-  border-color: #b7ddc5;
-  box-shadow: 0 12px 28px rgba(10, 45, 34, 0.07);
+  border-color: var(--SkyWalk-green);
+  box-shadow: 0 8px 22px rgba(21, 139, 88, 0.08);
 }
 
 .SkyWalk__specNum {
   display: block;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   color: var(--SkyWalk-green);
-  font-family: "Cinzel", serif;
-  font-size: 14px;
+  font-family: var(--SkyWalk-serif);
+  font-size: 26px;
   font-weight: 700;
+  line-height: 1;
 }
 
 .SkyWalk__specBox h3 {
-  margin: 0 0 9px;
+  margin: 0 0 8px;
   color: var(--SkyWalk-forest);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
-  line-height: 1.5;
 }
 
 .SkyWalk__specBox p {
@@ -247,191 +209,201 @@
   line-height: 1.8;
 }
 
-/* ==============================
-   EXPERIENCES SECTION
-============================== */
+/* =====================================
+   PACKAGES
+===================================== */
 
 .SkyWalk__packageSection {
-  margin-bottom: 36px;
+  margin-bottom: 44px;
 }
 
 .SkyWalk__subHeader {
-  margin-bottom: 18px;
+  margin-bottom: 24px;
 }
 
-.SkyWalk__subHeader span {
+.SkyWalk__subHeader > span {
+  display: block;
+  margin-bottom: 8px;
   color: var(--SkyWalk-green);
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 1.8px;
 }
 
 .SkyWalk__subHeader h2 {
-  margin: 6px 0 0;
+  margin: 0;
   color: var(--SkyWalk-forest);
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 24px;
+  font-family: var(--SkyWalk-serif);
+  font-size: 28px;
+  line-height: 1.25;
 }
 
 .SkyWalk__packageGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
+  gap: 18px;
 }
 
 .SkyWalk__packageCard {
   position: relative;
   display: flex;
+  min-width: 0;
   flex-direction: column;
-  padding: 22px 18px;
+  padding: 26px 22px 24px;
   border: 1px solid var(--SkyWalk-line);
-  border-radius: 13px;
+  border-radius: 12px;
   background: #fff;
-  transition:
-    border-color 0.25s ease,
-    box-shadow 0.25s ease;
+  box-shadow: var(--SkyWalk-shadow);
+  transition: transform 0.25s ease, border-color 0.25s ease;
 }
 
 .SkyWalk__packageCard:hover {
-  border-color: #a4d7b7;
-  box-shadow: 0 10px 24px rgba(10, 45, 34, 0.06);
+  transform: translateY(-4px);
+  border-color: var(--SkyWalk-green);
 }
 
 .SkyWalk__packageTag {
   display: inline-block;
   align-self: flex-start;
-  margin-bottom: 10px;
-  padding: 3px 9px;
-  border-radius: 4px;
-  background: #e7f5ed;
+  margin-bottom: 14px;
+  padding: 6px 10px;
+  border-radius: 5px;
+  background: var(--SkyWalk-soft);
   color: var(--SkyWalk-green);
   font-size: 9px;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 1.2px;
 }
 
 .SkyWalk__packageCard h3 {
-  margin: 0 0 8px;
+  margin: 0 0 12px;
   color: var(--SkyWalk-forest);
-  font-size: 15px;
-  font-weight: 700;
+  font-family: var(--SkyWalk-serif);
+  font-size: 19px;
+  line-height: 1.35;
 }
 
 .SkyWalk__packageRoute {
-  margin: 0 0 12px;
-  color: var(--SkyWalk-muted);
-  font-size: 11.5px;
-  line-height: 1.7;
+  margin: 0 0 14px;
+  color: var(--SkyWalk-ink);
+  font-size: 11px;
+  line-height: 1.75;
+}
+
+.SkyWalk__packageRoute strong {
+  color: var(--SkyWalk-green);
 }
 
 .SkyWalk__packageMeta {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  padding: 10px 0;
-  margin-bottom: 10px;
+  gap: 6px;
+  margin-bottom: 14px;
+  padding: 12px 0;
   border-top: 1px dashed var(--SkyWalk-line);
   border-bottom: 1px dashed var(--SkyWalk-line);
-  color: var(--SkyWalk-forest);
+  color: #53675b;
   font-size: 11px;
   font-weight: 600;
+  line-height: 1.5;
 }
 
 .SkyWalk__packageDesc {
   margin: 0;
   color: var(--SkyWalk-muted);
-  font-size: 11.5px;
-  line-height: 1.7;
+  font-size: 12px;
+  line-height: 1.8;
 }
 
-/* ==============================
-   ACTION BANNER
-============================== */
+/* =====================================
+   ACTION BANNER & PRIMARY BUTTON
+===================================== */
 
 .SkyWalk__actionBanner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 22px;
-  margin-top: 20px;
-  padding: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  gap: 24px;
+  margin-top: 36px;
+  padding: 30px 32px;
   border-radius: var(--SkyWalk-radius);
-  background:
-    radial-gradient(
-      circle at 100% 0,
-      rgba(33, 181, 115, 0.17),
-      transparent 45%
-    ),
-    linear-gradient(135deg, #0e3d2e, #061c14);
+  background: var(--SkyWalk-forest);
   color: #fff;
 }
 
 .SkyWalk__actionBanner h3 {
   margin: 0 0 8px;
   color: #fff;
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 22px;
-  line-height: 1.4;
+  font-family: var(--SkyWalk-serif);
+  font-size: 21px;
+  line-height: 1.35;
 }
 
 .SkyWalk__actionBanner p {
+  max-width: 520px;
   margin: 0;
-  color: #b7d6c6;
+  color: rgba(255, 255, 255, 0.72);
   font-size: 12px;
   line-height: 1.8;
 }
 
 .SkyWalk__btnPrimary {
   display: inline-flex;
+  min-height: 47px;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  padding: 13px 23px;
-  border: 1px solid transparent;
-  border-radius: 30px;
+  gap: 10px;
+  padding: 12px 24px;
+  border: 0;
+  border-radius: 7px;
   background: var(--SkyWalk-green);
   color: #fff;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   white-space: nowrap;
   cursor: pointer;
-  transition:
-    background 0.25s ease,
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
+  transition: all 0.25s ease;
 }
 
 .SkyWalk__btnPrimary:hover {
   transform: translateY(-2px);
-  background: #1cb572;
-  box-shadow: 0 8px 22px rgba(21, 139, 88, 0.3);
+  background: var(--SkyWalk-green-dark);
+  box-shadow: 0 7px 18px rgba(21, 139, 88, 0.25);
 }
 
-/* ==============================
-   ACCORDION
-============================== */
+.SkyWalk__actionBanner .SkyWalk__btnPrimary {
+  background: #fff;
+  color: var(--SkyWalk-forest);
+}
+
+.SkyWalk__actionBanner .SkyWalk__btnPrimary:hover {
+  background: #e6f5ec;
+  box-shadow: 0 7px 18px rgba(0, 0, 0, 0.25);
+}
+
+/* =====================================
+   FAQ ACCORDION
+===================================== */
 
 .SkyWalk__planAccordion {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-bottom: 30px;
+  margin-bottom: 36px;
 }
 
 .SkyWalk__planItem {
   overflow: hidden;
   border: 1px solid var(--SkyWalk-line);
-  border-radius: 12px;
+  border-radius: 10px;
   background: #fff;
-  transition:
-    border-color 0.25s ease,
-    box-shadow 0.25s ease;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .SkyWalk__planItem.is-open {
-  border-color: #a4d7b7;
-  box-shadow: 0 8px 20px rgba(10, 45, 34, 0.06);
+  border-color: var(--SkyWalk-green);
+  background: var(--SkyWalk-bg);
+  box-shadow: var(--SkyWalk-shadow);
 }
 
 .SkyWalk__planTrigger {
@@ -439,124 +411,650 @@
   width: 100%;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
-  padding: 19px 21px;
+  gap: 16px;
+  padding: 18px 20px;
   border: 0;
-  background: #fff;
+  background: transparent;
   color: var(--SkyWalk-forest);
-  text-align: left;
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 700;
-  line-height: 1.7;
+  line-height: 1.55;
+  text-align: left;
   cursor: pointer;
-  transition: background 0.25s ease;
 }
 
-.SkyWalk__planTrigger:hover {
-  background: #f8fbf9;
+.SkyWalk__planTrigger:focus-visible {
+  outline: 3px solid rgba(21, 139, 88, 0.25);
+  outline-offset: -3px;
 }
 
 .SkyWalk__planToggle {
   display: inline-flex;
-  width: 29px;
-  height: 29px;
+  width: 28px;
+  height: 28px;
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: #edf7f0;
+  background: var(--SkyWalk-soft);
   color: var(--SkyWalk-green);
-  font-size: 20px;
+  font-size: 18px;
   line-height: 1;
+  transition: all 0.25s ease;
+}
+
+.SkyWalk__planItem.is-open .SkyWalk__planToggle {
+  background: var(--SkyWalk-green);
+  color: #fff;
 }
 
 .SkyWalk__planAnswer {
   margin: 0;
-  padding: 0 21px 21px;
+  padding: 0 20px 20px;
   color: var(--SkyWalk-muted);
-  font-size: 13px;
+  font-size: 12.5px;
   line-height: 1.9;
+  animation: SkyWalkFade 0.3s ease both;
 }
 
-/* ==============================
-   ROUTE / FIELD BOX
-============================== */
+/* =====================================
+   ROUTE BOX
+===================================== */
 
 .SkyWalk__routeBox {
-  padding: 27px;
-  border: 1px dashed #bddfcb;
-  border-radius: 14px;
-  background: var(--SkyWalk-soft);
+  padding: 28px 28px 24px;
+  border: 1px solid #dfece3;
+  border-left: 4px solid var(--SkyWalk-green);
+  border-radius: 12px;
+  background: var(--SkyWalk-bg);
 }
 
 .SkyWalk__routeBox h3 {
-  margin: 0 0 17px;
+  margin: 0 0 16px;
   color: var(--SkyWalk-forest);
-  font-family: "Playfair Display", Georgia, serif;
+  font-family: var(--SkyWalk-serif);
   font-size: 21px;
 }
 
 .SkyWalk__routeBox ul {
   display: flex;
   flex-direction: column;
-  gap: 13px;
-  margin: 0;
-  padding-left: 19px;
+  gap: 12px;
+  margin: 0 0 18px;
+  padding: 0;
+  list-style: none;
 }
 
 .SkyWalk__routeBox li {
+  position: relative;
+  padding-left: 22px;
   color: var(--SkyWalk-muted);
   font-size: 12.5px;
-  line-height: 1.8;
+  line-height: 1.85;
 }
 
-.SkyWalk__routeBox li::marker {
-  color: var(--SkyWalk-green);
+.SkyWalk__routeBox li::before {
+  content: "";
+  position: absolute;
+  top: 9px;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--SkyWalk-green);
+}
+
+.SkyWalk__routeBox li strong {
+  color: var(--SkyWalk-ink);
 }
 
 .SkyWalk__routeNote {
-  margin: 18px 0 0;
-  padding-top: 15px;
-  border-top: 1px solid var(--SkyWalk-line);
-  color: var(--SkyWalk-muted);
-  font-size: 11.5px;
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 8px;
+  background: #fff4f2;
+  color: #8a3b3b;
+  font-size: 12px;
   line-height: 1.8;
 }
 
-/* ==============================
-   BOOKING FORM
-============================== */
+.SkyWalk__routeNote strong {
+  color: #b83a3a;
+}
+
+/* =====================================
+   GALLERY
+===================================== */
+
+.SkyWalk__galleryPageGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.SkyWalk__galleryPageCard {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 12px;
+  background: var(--SkyWalk-forest);
+  text-align: left;
+  cursor: pointer;
+}
+
+.SkyWalk__galleryPageCard img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.SkyWalk__galleryPageCard:hover img,
+.SkyWalk__galleryPageCard:focus-visible img {
+  transform: scale(1.06);
+}
+
+.SkyWalk__galleryPageCard:focus-visible {
+  outline: 3px solid var(--SkyWalk-green);
+  outline-offset: 3px;
+}
+
+.SkyWalk__galleryCardOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 18px 16px;
+  background: linear-gradient(to top, rgba(8, 40, 30, 0.9) 0%, rgba(8, 40, 30, 0.1) 60%, rgba(8, 40, 30, 0) 100%);
+  color: #fff;
+}
+
+.SkyWalk__galleryCardOverlay > span:first-child {
+  align-self: flex-start;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: var(--SkyWalk-green);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.SkyWalk__galleryCardTitle {
+  font-family: var(--SkyWalk-serif);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.SkyWalk__galleryLocation {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 10px;
+}
+
+/* =====================================
+   SIDEBAR
+===================================== */
+
+.SkyWalk__sidebar {
+  position: sticky;
+  top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.SkyWalk__sideBox {
+  padding: 24px 22px;
+  border: 1px solid #dfece3;
+  border-radius: 12px;
+  background: var(--SkyWalk-bg);
+}
+
+.SkyWalk__sideTitle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.SkyWalk__sideTitle > span {
+  width: 4px;
+  height: 20px;
+  flex-shrink: 0;
+  border-radius: 2px;
+  background: var(--SkyWalk-green);
+}
+
+.SkyWalk__sideTitle h2 {
+  margin: 0;
+  color: var(--SkyWalk-forest);
+  font-family: var(--SkyWalk-serif);
+  font-size: 18px;
+}
+
+/* nav buttons */
+
+.SkyWalk__serviceNav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.SkyWalk__serviceNav button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--SkyWalk-line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--SkyWalk-ink);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.SkyWalk__navArrow {
+  display: inline-flex;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--SkyWalk-soft);
+  color: var(--SkyWalk-green);
+  font-size: 13px;
+  transition: all 0.25s ease;
+}
+
+.SkyWalk__serviceNav button:hover {
+  border-color: var(--SkyWalk-green);
+  transform: translateX(3px);
+}
+
+.SkyWalk__serviceNav button.is-highlighted {
+  border-color: var(--SkyWalk-green);
+  background: var(--SkyWalk-green);
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(21, 139, 88, 0.2);
+}
+
+.SkyWalk__serviceNav button.is-highlighted .SkyWalk__navArrow {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.SkyWalk__serviceNav button:focus-visible,
+.SkyWalk__downloadGrid button:focus-visible,
+.SkyWalk__supportLink:focus-visible,
+.SkyWalk__btnPrimary:focus-visible,
+.SkyWalk__submitBtn:focus-visible {
+  outline: 3px solid rgba(21, 139, 88, 0.35);
+  outline-offset: 2px;
+}
+
+/* support card */
+
+.SkyWalk__supportCard {
+  padding: 26px 22px;
+  border-radius: 12px;
+  background: var(--SkyWalk-forest);
+  color: #fff;
+}
+
+.SkyWalk__supportIcon {
+  display: inline-flex;
+  width: 46px;
+  height: 46px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #4ade80;
+}
+
+.SkyWalk__supportIcon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.SkyWalk__supportHeading span {
+  display: block;
+  margin-bottom: 6px;
+  color: #4ade80;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+}
+
+.SkyWalk__supportHeading h3 {
+  margin: 0 0 12px;
+  color: #fff;
+  font-family: var(--SkyWalk-serif);
+  font-size: 20px;
+}
+
+.SkyWalk__supportCard > p {
+  margin: 0 0 20px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.SkyWalk__supportLink {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 7px;
+  background: transparent;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.SkyWalk__supportLink:hover {
+  border-color: var(--SkyWalk-green);
+  background: var(--SkyWalk-green);
+}
+
+/* quick links */
+
+.SkyWalk__downloadGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.SkyWalk__downloadGrid button {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 14px 12px;
+  border: 1px solid var(--SkyWalk-line);
+  border-radius: 8px;
+  background: #fff;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.SkyWalk__downloadIcon {
+  display: inline-flex;
+  width: 30px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6px;
+  border-radius: 7px;
+  background: var(--SkyWalk-soft);
+  color: var(--SkyWalk-green);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.SkyWalk__downloadGrid strong {
+  color: var(--SkyWalk-forest);
+  font-size: 12px;
+}
+
+.SkyWalk__downloadGrid small {
+  color: var(--SkyWalk-muted);
+  font-size: 10px;
+}
+
+.SkyWalk__downloadGrid button:hover,
+.SkyWalk__downloadGrid button.is-active-btn {
+  border-color: var(--SkyWalk-green);
+}
+
+.SkyWalk__downloadGrid button.is-active-btn {
+  background: var(--SkyWalk-green);
+}
+
+.SkyWalk__downloadGrid button.is-active-btn strong,
+.SkyWalk__downloadGrid button.is-active-btn small {
+  color: #fff;
+}
+
+.SkyWalk__downloadGrid button.is-active-btn .SkyWalk__downloadIcon {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+/* contact */
+
+.SkyWalk__contactInfo {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--SkyWalk-line);
+}
+
+.SkyWalk__contactInfo:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.SkyWalk__contactInfoIcon {
+  display: inline-flex;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: var(--SkyWalk-soft);
+  color: var(--SkyWalk-green);
+  font-size: 14px;
+}
+
+.SkyWalk__contactInfo > div {
+  min-width: 0;
+}
+
+.SkyWalk__contactInfo strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--SkyWalk-forest);
+  font-size: 12px;
+}
+
+.SkyWalk__contactInfo p {
+  margin: 0;
+  color: var(--SkyWalk-muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.SkyWalk__contactInfo a {
+  color: var(--SkyWalk-green);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.7;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.SkyWalk__contactInfo a:hover {
+  text-decoration: underline;
+}
+
+/* =====================================
+   LIGHTBOX
+===================================== */
+
+.SkyWalk__lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(4, 20, 14, 0.92);
+  animation: SkyWalkFade 0.25s ease both;
+}
+
+.SkyWalk__lightboxBox {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+  max-height: 100%;
+  overflow: hidden;
+  border-radius: 14px;
+  background: var(--SkyWalk-forest);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+}
+
+.SkyWalk__lightboxBox > img {
+  display: block;
+  width: 100%;
+  max-height: 68vh;
+  object-fit: contain;
+  background: #04140e;
+}
+
+.SkyWalk__lightboxClose {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  display: inline-flex;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+
+.SkyWalk__lightboxClose:hover {
+  background: var(--SkyWalk-green);
+}
+
+.SkyWalk__lightboxCaption {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px 8px;
+  color: #fff;
+}
+
+.SkyWalk__lightboxCaption span:first-child {
+  display: block;
+  margin-bottom: 6px;
+  color: #4ade80;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+}
+
+.SkyWalk__lightboxCaption h3 {
+  margin: 0 0 4px;
+  font-family: var(--SkyWalk-serif);
+  font-size: 20px;
+}
+
+.SkyWalk__lightboxCaption small {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 11px;
+}
+
+.SkyWalk__lightboxCount {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.SkyWalk__lightboxControls {
+  display: flex;
+  gap: 10px;
+  padding: 12px 22px 20px;
+}
+
+.SkyWalk__lightboxControls button {
+  min-height: 42px;
+  padding: 10px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 7px;
+  background: transparent;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.SkyWalk__lightboxControls button:hover {
+  border-color: var(--SkyWalk-green);
+  background: var(--SkyWalk-green);
+}
+
+/* =====================================
+   BOOKING FORM - BOATSERVICE STYLE
+===================================== */
 
 .SkyWalk__form {
-  padding: 30px;
-  border: 1px solid var(--SkyWalk-line);
-  border-radius: var(--SkyWalk-radius);
-  background: var(--SkyWalk-soft);
+  width: 100%;
+  padding: 32px;
+  border: 1px solid #dfece3;
+  border-radius: 15px;
+  background: #f5f9f6;
+  box-shadow: 0 8px 30px rgba(8, 40, 30, 0.045);
 }
 
 .SkyWalk__formHeading {
   margin-bottom: 27px;
   padding-bottom: 20px;
-  border-bottom: 1px solid var(--SkyWalk-line);
+  border-bottom: 1px solid #dce9df;
 }
 
 .SkyWalk__formHeading > span {
-  color: var(--SkyWalk-green);
+  display: block;
+  margin-bottom: 8px;
+  color: #158b58;
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 1.8px;
 }
 
 .SkyWalk__formHeading h3 {
-  margin: 7px 0;
-  color: var(--SkyWalk-forest);
+  margin: 0 0 8px;
+  color: #08281e;
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 24px;
+  font-size: 26px;
 }
 
 .SkyWalk__formHeading p {
   margin: 0;
-  color: var(--SkyWalk-muted);
+  color: #718277;
   font-size: 12px;
   line-height: 1.7;
 }
@@ -572,7 +1070,7 @@
   min-width: 0;
   flex-direction: column;
   gap: 8px;
-  margin-bottom: 19px;
+  margin-bottom: 20px;
 }
 
 .SkyWalk__inputGroup--full {
@@ -580,72 +1078,225 @@
 }
 
 .SkyWalk__inputGroup label {
-  color: var(--SkyWalk-forest);
+  color: #183b2c;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.3px;
 }
 
 .SkyWalk__inputGroup input,
-.SkyWalk__inputGroup select,
-.SkyWalk__inputGroup textarea {
+.SkyWalk__inputGroup select {
   width: 100%;
   min-width: 0;
-  min-height: 46px;
+  min-height: 48px;
   padding: 12px 14px;
-  border: 1px solid #d4e2d8;
-  border-radius: 8px;
+  border: 1px solid #d9e5dc;
+  border-radius: 7px;
+  outline: none;
   background: #fff;
-  color: var(--SkyWalk-ink);
+  color: #183b2c;
+  font-family: "Plus Jakarta Sans", sans-serif;
   font-size: 12px;
-  line-height: 1.6;
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+  transition: all 0.25s ease;
 }
 
-.SkyWalk__inputGroup input::placeholder,
-.SkyWalk__inputGroup textarea::placeholder {
-  color: #98a99e;
+.SkyWalk__inputGroup input::placeholder {
+  color: #a2afa6;
 }
 
 .SkyWalk__inputGroup input:focus,
-.SkyWalk__inputGroup select:focus,
-.SkyWalk__inputGroup textarea:focus {
-  border-color: var(--SkyWalk-green);
-  box-shadow: 0 0 0 3px rgba(21, 139, 88, 0.12);
-  outline: none;
+.SkyWalk__inputGroup select:focus {
+  border-color: #158b58;
+  box-shadow: 0 0 0 3px rgba(21, 139, 88, 0.1);
 }
 
-.SkyWalk__inputGroup textarea {
-  min-height: 120px;
-  resize: vertical;
+.SkyWalk__inputGroup select {
+  cursor: pointer;
+}
+
+.SkyWalk__inputGroup select optgroup {
+  color: #158b58;
+  font-weight: 700;
+}
+
+/* PASSENGER SELECTOR */
+
+.SkyWalk__passengerBox {
+  width: 100%;
+  padding: 20px;
+  border: 1px solid #dce9df;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.SkyWalk__passengerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 19px;
+}
+
+.SkyWalk__passengerHeader > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.SkyWalk__passengerHeader strong {
+  color: #183b2c;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.SkyWalk__passengerHeader span {
+  color: #87968b;
+  font-size: 10px;
+}
+
+.SkyWalk__passengerCount {
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: #eaf6ee;
+  color: #158b58;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.SkyWalk__passengerGrid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.SkyWalk__passengerOption {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  height: 45px;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  border: 1px solid #dce9df;
+  border-radius: 7px;
+  background: #f8fbf9;
+  color: #53675b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.SkyWalk__passengerOption input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.SkyWalk__passengerOption span {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.SkyWalk__passengerOption:hover {
+  border-color: #158b58;
+  background: #edf7f0;
+  color: #158b58;
+}
+
+.SkyWalk__passengerOption.is-selected {
+  border-color: #158b58;
+  background: #158b58;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(21, 139, 88, 0.18);
+}
+
+.SkyWalk__passengerOption:focus-within {
+  outline: 3px solid rgba(21, 139, 88, 0.2);
+  outline-offset: 2px;
+}
+
+.SkyWalk__passengerFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 17px;
+  padding-top: 13px;
+  border-top: 1px solid #e8f0ea;
+  color: #718277;
+  font-size: 10px;
+}
+
+.SkyWalk__passengerFooter > span:first-child {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.SkyWalk__passengerDot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #158b58;
+}
+
+/* FORM FOOTER */
+
+.SkyWalk__formBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 8px;
+  padding-top: 20px;
+  border-top: 1px solid #dce9df;
+}
+
+.SkyWalk__formBottom p {
+  margin: 0;
+  color: #7b8b80;
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.SkyWalk__formBottom p span {
+  color: #e05252;
 }
 
 .SkyWalk__submitBtn {
   display: inline-flex;
+  min-width: 190px;
+  min-height: 47px;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  min-height: 49px;
-  padding: 14px 24px;
+  gap: 12px;
+  padding: 12px 22px;
   border: 0;
-  border-radius: 9px;
-  background: var(--SkyWalk-green);
+  border-radius: 7px;
+  background: #158b58;
   color: #fff;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   cursor: pointer;
-  transition:
-    background 0.25s ease,
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
+  transition: all 0.25s ease;
 }
 
 .SkyWalk__submitBtn:hover {
   transform: translateY(-2px);
-  background: var(--SkyWalk-green-hover);
-  box-shadow: 0 10px 24px rgba(21, 139, 88, 0.22);
+  background: #0f6f46;
+  box-shadow: 0 7px 18px rgba(21, 139, 88, 0.2);
+}
+
+.SkyWalk__submitBtn span {
+  font-size: 15px;
 }
 
 /* FORM SUCCESS */
@@ -679,709 +1330,131 @@
 }
 
 .SkyWalk__formSuccess p {
-  margin: 0 0 23px;
+  max-width: 520px;
+  margin: 0 auto 23px;
   color: var(--SkyWalk-muted);
   font-size: 12px;
   line-height: 1.9;
 }
 
-/* ==============================
-   GALLERY
-============================== */
-
-.SkyWalk__galleryPageGrid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-}
-
-.SkyWalk__galleryPageCard {
-  position: relative;
-  display: block;
-  width: 100%;
-  min-width: 0;
-  padding: 0;
-  overflow: hidden;
-  aspect-ratio: 4 / 4.5;
-  border: 0;
-  border-radius: 12px;
-  background: #0d2a1f;
-  text-align: left;
-  cursor: pointer;
-  isolation: isolate;
-}
-
-.SkyWalk__galleryPageCard > img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.65s var(--SkyWalk-ease);
-}
-
-.SkyWalk__galleryPageCard:hover > img {
-  transform: scale(1.08);
-}
-
-.SkyWalk__galleryCardOverlay {
-  position: absolute;
-  z-index: 1;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-  gap: 5px;
-  padding: 15px;
-  background: linear-gradient(
-    180deg,
-    transparent 20%,
-    rgba(6, 26, 19, 0.25) 48%,
-    rgba(6, 26, 19, 0.92) 100%
-  );
-  color: #fff;
-}
-
-.SkyWalk__galleryCardOverlay > span:first-child {
-  color: #79e3aa;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-}
-
-.SkyWalk__galleryCardTitle {
-  color: #fff;
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1.5;
-}
-
-.SkyWalk__galleryLocation {
-  color: #d4e6dc;
-  font-size: 10px;
-  line-height: 1.6;
-}
-
-/* ==============================
-   SIDEBAR BOXES
-============================== */
-
-.SkyWalk__sideBox {
-  min-width: 0;
-  padding: 27px 23px;
-  border: 1px solid var(--SkyWalk-line);
-  border-radius: var(--SkyWalk-radius);
-  background: #fff;
-  box-shadow: 0 6px 20px rgba(10, 45, 34, 0.035);
-}
-
-.SkyWalk__sideTitle {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 21px;
-}
-
-.SkyWalk__sideTitle > span {
-  width: 4px;
-  height: 26px;
-  flex-shrink: 0;
-  border-radius: 4px;
-  background: var(--SkyWalk-green);
-}
-
-.SkyWalk__sideTitle h2 {
-  margin: 0;
-  color: var(--SkyWalk-forest);
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 1.4;
-}
-
-/* ==============================
-   SIDEBAR NAVIGATION
-============================== */
-
-.SkyWalk__serviceNav {
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-}
-
-.SkyWalk__serviceNav button {
-  display: flex;
-  width: 100%;
-  min-height: 49px;
-  align-items: center;
-  gap: 13px;
-  padding: 13px 15px;
-  border: 1px solid transparent;
-  border-radius: 9px;
-  background: #f3f7f4;
-  color: #2b4035;
-  text-align: left;
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1.6;
-  cursor: pointer;
-  transition:
-    background 0.25s var(--SkyWalk-ease),
-    color 0.25s ease,
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
-}
-
-.SkyWalk__navArrow {
-  flex-shrink: 0;
-  color: var(--SkyWalk-green);
-  font-size: 15px;
-  transition: transform 0.25s ease;
-}
-
-.SkyWalk__serviceNav button:hover {
-  transform: translateX(3px);
-  background: #e7f3ec;
-  color: var(--SkyWalk-forest);
-}
-
-.SkyWalk__serviceNav button.is-highlighted {
-  transform: translateX(3px);
-  border-color: var(--SkyWalk-green);
-  background: var(--SkyWalk-green);
-  color: #fff;
-  box-shadow: 0 8px 20px -4px rgba(21, 139, 88, 0.3);
-}
-
-.SkyWalk__serviceNav button.is-highlighted .SkyWalk__navArrow {
-  transform: translate(2px, -2px);
-  color: #fff;
-}
-
-/* ==============================
-   SUPPORT CARD
-============================== */
-
-.SkyWalk__supportCard {
-  position: relative;
-  overflow: hidden;
-  padding: 29px 24px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--SkyWalk-radius);
-  background:
-    radial-gradient(
-      circle at 100% 0,
-      rgba(33, 181, 115, 0.22),
-      transparent 50%
-    ),
-    linear-gradient(155deg, #0d3829, #061c14);
-  color: #fff;
-  box-shadow: 0 16px 36px -10px rgba(6, 28, 20, 0.24);
-}
-
-.SkyWalk__supportIcon {
-  display: flex;
-  width: 48px;
-  height: 48px;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 13px;
-  background: rgba(255, 255, 255, 0.1);
-  color: #79e3aa;
-}
-
-.SkyWalk__supportIcon svg {
-  width: 24px;
-  height: 24px;
-}
-
-.SkyWalk__supportHeading {
-  margin-top: 20px;
-}
-
-.SkyWalk__supportHeading > span {
-  color: #79e3aa;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 2px;
-}
-
-.SkyWalk__supportHeading h3 {
-  margin: 7px 0 0;
-  color: #fff;
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 23px;
-  font-weight: 600;
-  line-height: 1.35;
-}
-
-.SkyWalk__supportCard > p {
-  margin: 13px 0 0;
-  color: #b9d5c6;
-  font-size: 11.5px;
-  line-height: 1.9;
-}
-
-.SkyWalk__supportLink {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 22px;
-  padding: 16px 0 0;
-  border: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  background: none;
-  color: #79e3aa;
-  text-align: left;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-
-.SkyWalk__supportLink:hover {
-  color: #fff;
-}
-
-/* ==============================
-   QUICK LINKS
-============================== */
-
-.SkyWalk__downloadGrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.SkyWalk__downloadGrid button {
-  display: flex;
-  min-width: 0;
-  min-height: 132px;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 13px 11px;
-  border: 1px solid var(--SkyWalk-line);
-  border-radius: 11px;
-  background: var(--SkyWalk-soft);
-  text-align: left;
-  cursor: pointer;
-  transition:
-    transform 0.25s var(--SkyWalk-ease),
-    border-color 0.25s ease,
-    background 0.25s ease,
-    box-shadow 0.25s ease;
-}
-
-.SkyWalk__downloadGrid button.is-active-btn {
-  border-color: var(--SkyWalk-green);
-  background: #eef8f2;
-}
-
-.SkyWalk__downloadGrid button:hover {
-  transform: translateY(-3px);
-  border-color: #a4d8b6;
-  background: #fff;
-  box-shadow: 0 8px 20px rgba(21, 139, 88, 0.08);
-}
-
-.SkyWalk__downloadIcon {
-  display: flex;
-  width: 32px;
-  height: 32px;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 12px;
-  border: 1px solid #c2e4ce;
-  border-radius: 50%;
-  background: #fff;
-  color: var(--SkyWalk-green);
-  font-family: "Cinzel", serif;
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.SkyWalk__downloadGrid strong {
-  color: var(--SkyWalk-forest);
-  font-size: 11px;
-  line-height: 1.6;
-}
-
-.SkyWalk__downloadGrid small {
-  margin-top: 5px;
-  color: var(--SkyWalk-muted);
-  font-size: 9px;
-  line-height: 1.6;
-}
-
-/* ==============================
-   CONTACT INFORMATION
-============================== */
-
-.SkyWalk__contactInfo {
-  display: grid;
-  grid-template-columns: 27px minmax(0, 1fr);
-  align-items: start;
-  gap: 11px;
-  margin-top: 21px;
-}
-
-.SkyWalk__contactInfo:first-of-type {
-  margin-top: 0;
-}
-
-.SkyWalk__contactInfoIcon {
-  font-size: 17px;
-  line-height: 1.5;
-}
-
-.SkyWalk__contactInfo strong {
-  display: block;
-  margin-bottom: 5px;
-  color: var(--SkyWalk-forest);
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.SkyWalk__contactInfo p,
-.SkyWalk__contactInfo a {
-  display: inline-block;
-  margin: 0;
-  color: var(--SkyWalk-muted);
-  font-size: 11px;
-  line-height: 1.8;
-  overflow-wrap: anywhere;
-}
-
-.SkyWalk__contactInfo a {
-  color: var(--SkyWalk-green);
-  text-decoration: none;
-}
-
-.SkyWalk__contactInfo a:hover {
-  text-decoration: underline;
-}
-
-/* ==============================
-   LIGHTBOX
-============================== */
-
-.SkyWalk__lightbox {
-  position: fixed;
-  z-index: 999999;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 25px 18px;
-  background: rgba(3, 18, 12, 0.94);
-  backdrop-filter: blur(14px);
-}
-
-.SkyWalk__lightboxBox {
-  position: relative;
-  width: 100%;
-  max-width: 900px;
-  max-height: 95vh;
-  overflow: auto;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 16px;
-  background: #082218;
-  scrollbar-width: thin;
-}
-
-.SkyWalk__lightboxClose {
-  position: absolute;
-  z-index: 2;
-  top: 14px;
-  right: 14px;
-  display: flex;
-  width: 40px;
-  height: 40px;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.65);
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
-  transition:
-    background 0.2s ease,
-    transform 0.2s ease;
-}
-
-.SkyWalk__lightboxClose:hover {
-  transform: rotate(90deg);
-  background: var(--SkyWalk-green);
-}
-
-.SkyWalk__lightboxBox > img {
-  display: block;
-  width: 100%;
-  max-height: 65vh;
-  object-fit: contain;
-  background: #020e09;
-}
-
-.SkyWalk__lightboxCaption {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 20px 25px;
-  color: #fff;
-}
-
-.SkyWalk__lightboxCaption > div > span {
-  color: #79e3aa;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-.SkyWalk__lightboxCaption h3 {
-  margin: 5px 0;
-  color: #fff;
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 22px;
-  line-height: 1.4;
-}
-
-.SkyWalk__lightboxCaption small {
-  color: #c9e3d4;
-  font-size: 11px;
-}
-
-.SkyWalk__lightboxCount {
-  flex-shrink: 0;
-  color: #79e3aa;
-  font-family: "Cinzel", serif;
-  font-size: 13px;
-}
-
-.SkyWalk__lightboxControls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  padding: 0 25px 20px;
-}
-
-.SkyWalk__lightboxControls button {
-  padding: 10px 15px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 25px;
-  background: rgba(255, 255, 255, 0.07);
-  color: #fff;
-  font-size: 11px;
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease;
-}
-
-.SkyWalk__lightboxControls button:hover {
-  border-color: #79e3aa;
-  background: rgba(21, 139, 88, 0.4);
-}
-
-/* ==============================
-   TABLET RESPONSIVE
-============================== */
+/* =====================================
+   RESPONSIVE - TABLET
+===================================== */
 
 @media (max-width: 1100px) {
   .SkyWalk__layout {
-    grid-template-columns: minmax(0, 1.6fr) minmax(270px, 0.9fr);
-  }
-
-  .SkyWalk__main {
-    padding: 48px 28px 65px;
-  }
-
-  .SkyWalk__sidebar {
-    gap: 20px;
-    padding: 48px 20px 65px;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 28px;
   }
 
   .SkyWalk__featureGrid,
   .SkyWalk__packageGrid {
-    grid-template-columns: 1fr;
-    gap: 14px;
-  }
-
-  .SkyWalk__specBox {
-    padding: 21px;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .SkyWalk__galleryPageGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-
-  .SkyWalk__actionBanner {
-    align-items: flex-start;
-    flex-direction: column;
-    padding: 26px;
-  }
 }
 
-/* ==============================
-   SMALL TABLET RESPONSIVE
-============================== */
+@media (max-width: 900px) {
+  .SkyWalk {
+    padding: 48px 18px 70px;
+  }
 
-@media (max-width: 860px) {
   .SkyWalk__layout {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .SkyWalk__main {
-    padding: 45px 30px 55px;
+  /* sidebar moves above content as a compact tab area */
+  .SkyWalk__sidebar {
+    position: static;
+    order: -1;
   }
 
-  .SkyWalk__sidebar {
+  .SkyWalk__serviceNav {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: start;
-    gap: 20px;
-    padding: 35px 30px 45px;
-    border-top: 1px solid var(--SkyWalk-line);
-    border-left: 0;
-  }
-
-  .SkyWalk__sideBox {
-    padding: 24px 20px;
-  }
-
-  .SkyWalk__featureGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .SkyWalk__packageGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .SkyWalk__specBox {
-    padding: 18px 14px;
-  }
-
-  .SkyWalk__specBox h3 {
-    font-size: 13px;
-  }
-
-  .SkyWalk__specBox p {
-    font-size: 11px;
-  }
-
-  .SkyWalk__actionBanner {
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .SkyWalk__formGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .SkyWalk__galleryPageGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-/* ==============================
-   MOBILE RESPONSIVE
-============================== */
-
-@media (max-width: 600px) {
-  .SkyWalk__main {
-    padding: 35px 17px 42px;
-  }
-
-  .SkyWalk__sidebar {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 17px;
-    padding: 28px 17px 38px;
-  }
-
-  .SkyWalk__pageTitle {
-    font-size: clamp(28px, 8vw, 38px);
-    letter-spacing: -0.5px;
-  }
-
-  .SkyWalk__eyebrow {
-    gap: 9px;
-    font-size: 9px;
-    letter-spacing: 1.5px;
-  }
-
-  .SkyWalk__eyebrowLine {
-    width: 20px;
-  }
-
-  .SkyWalk__lead {
-    margin: 15px 0 25px;
-    font-size: 12.5px;
-    line-height: 1.8;
-  }
-
-  .SkyWalk__heroImage {
-    height: 260px;
-  }
-
-  .SkyWalk__heroCaption {
-    right: 10px;
-    bottom: 10px;
-    padding: 8px 12px;
-    font-size: 9.5px;
   }
 
   .SkyWalk__featureGrid,
   .SkyWalk__packageGrid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 12px;
-  }
-
-  .SkyWalk__specBox {
-    padding: 20px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .SkyWalk__actionBanner {
     align-items: flex-start;
     flex-direction: column;
-    gap: 18px;
-    padding: 22px 18px;
+  }
+}
+
+/* =====================================
+   BOOKING FORM RESPONSIVE
+===================================== */
+
+@media (max-width: 600px) {
+  .SkyWalk {
+    padding: 36px 14px 60px;
   }
 
-  .SkyWalk__actionBanner h3 {
-    font-size: 20px;
+  .SkyWalk__serviceNav {
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .SkyWalk__btnPrimary {
+  .SkyWalk__featureGrid,
+  .SkyWalk__packageGrid,
+  .SkyWalk__galleryPageGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .SkyWalk__galleryPageCard {
+    aspect-ratio: 4 / 3;
+  }
+
+  .SkyWalk__heroImage {
+    aspect-ratio: 4 / 3;
+  }
+
+  .SkyWalk__subHeader h2 {
+    font-size: 23px;
+  }
+
+  .SkyWalk__actionBanner {
+    padding: 24px 20px;
+  }
+
+  .SkyWalk__actionBanner .SkyWalk__btnPrimary {
     width: 100%;
-    white-space: normal;
-  }
-
-  .SkyWalk__planTrigger {
-    gap: 12px;
-    padding: 16px;
-    font-size: 12.5px;
-  }
-
-  .SkyWalk__planAnswer {
-    padding: 0 16px 17px;
-    font-size: 12px;
   }
 
   .SkyWalk__routeBox {
     padding: 22px 18px;
   }
 
+  .SkyWalk__lightbox {
+    padding: 12px;
+  }
+
+  .SkyWalk__lightboxCaption {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px 16px 6px;
+  }
+
+  .SkyWalk__lightboxControls {
+    padding: 10px 16px 16px;
+  }
+
+  .SkyWalk__lightboxControls button {
+    flex: 1;
+  }
+
   .SkyWalk__form {
-    padding: 21px 16px;
+    padding: 22px 15px;
+  }
+
+  .SkyWalk__formHeading h3 {
+    font-size: 22px;
   }
 
   .SkyWalk__formGrid {
@@ -1389,23 +1462,65 @@
     gap: 0;
   }
 
-  .SkyWalk__galleryPageGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
+  .SkyWalk__inputGroup--full {
+    grid-column: auto;
+  }
+
+  .SkyWalk__passengerBox {
+    padding: 14px 11px;
+  }
+
+  .SkyWalk__passengerGrid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .SkyWalk__passengerOption {
+    height: 39px;
+  }
+
+  .SkyWalk__passengerHeader {
+    align-items: flex-start;
+  }
+
+  .SkyWalk__passengerFooter {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .SkyWalk__formBottom {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .SkyWalk__submitBtn {
+    width: 100%;
   }
 }
 
-/* ==============================
+@media (max-width: 360px) {
+  .SkyWalk__passengerGrid {
+    gap: 5px;
+  }
+
+  .SkyWalk__passengerOption {
+    height: 35px;
+  }
+
+  .SkyWalk__passengerOption span {
+    font-size: 11px;
+  }
+}
+
+/* =====================================
    REDUCED MOTION
-============================== */
+===================================== */
 
 @media (prefers-reduced-motion: reduce) {
   .SkyWalk *,
   .SkyWalk *::before,
   .SkyWalk *::after {
-    scroll-behavior: auto !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    animation: none !important;
+    transition: none !important;
   }
 }
