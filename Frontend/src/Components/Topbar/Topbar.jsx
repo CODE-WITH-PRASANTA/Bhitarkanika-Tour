@@ -1,12 +1,6 @@
-
 import React from "react";
-import {
-  AlarmClock,
-  MapPin,
-  MessagesSquare,
-} from "lucide-react";
+import { AlarmClock, Mail } from "lucide-react";
 
-import logo from "../../assets/mlogo.png";
 import "./Topbar.css";
 
 const Topbar = () => {
@@ -14,69 +8,51 @@ const Topbar = () => {
     {
       id: 1,
       icon: AlarmClock,
-      title: "Openning Hours",
+      title: "Opening Hours",
       description: "Mon - Sat: 08:00 - 05:00",
     },
     {
       id: 2,
-      icon: MapPin,
-      title: "Visit Our Zoo",
-      description: "Khola Boating Point,Rajnagar,Kendrapara,Odisha,754248",
-    },
-    {
-      id: 3,
-      icon: MessagesSquare,
+      icon: Mail,
       title: "Email Us",
-      description: " bhitarkanikaboatservice@gmail.com",
-      href: " bhitarkanikaboatservice@gmail.com",
+      description: "bhitarkanikaboatservice@gmail.com",
+      href: "mailto:bhitarkanikaboatservice@gmail.com",
     },
   ];
 
   return (
     <header className="topbar">
       <div className="topbar-container">
-        {/* Logo */}
-        <a href="/" className="topbar-logo" aria-label="WildDale Home">
-          <img
-            src={logo}
-            alt="WildDale Awesome Safari"
-            className="topbar-logo-image"
-          />
-        </a>
+        {topbarItems.map((item) => {
+          const Icon = item.icon;
 
-        {/* Information Items */}
-        <div className="topbar-information">
-          {topbarItems.map((item) => {
-            const Icon = item.icon;
+          const content = (
+            <>
+              <span className="topbar-icon">
+                <Icon size={18} strokeWidth={2} />
+              </span>
 
-            return (
-              <div className="topbar-information-item" key={item.id}>
-                <div className="topbar-icon">
-                  <Icon size={39} strokeWidth={1.6} />
-                </div>
+              <span className="topbar-content">
+                <span className="topbar-title">{item.title}</span>
+                <span className="topbar-text">{item.description}</span>
+              </span>
+            </>
+          );
 
-                <div className="topbar-information-content">
-                  <span className="topbar-information-title">
-                    {item.title}
-                  </span>
-
-                  {item.href ? (
-                    <a
-                      href={item.href}
-                      className="topbar-information-description"
-                    >
-                      {item.description}
-                    </a>
-                  ) : (
-                    <span className="topbar-information-description">
-                      {item.description}
-                    </span>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+          return item.href ? (
+            <a
+              href={item.href}
+              className="topbar-item topbar-item-link"
+              key={item.id}
+            >
+              {content}
+            </a>
+          ) : (
+            <div className="topbar-item" key={item.id}>
+              {content}
+            </div>
+          );
+        })}
       </div>
     </header>
   );

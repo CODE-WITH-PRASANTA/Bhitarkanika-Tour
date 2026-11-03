@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./HeroSection.css";
 
-import heroImage1 from "../../assets/a.jpeg";
-import heroImage2 from "../../assets/b.jpeg";
-import heroImage3 from "../../assets/c.jpeg";
+import heroImage1 from "../../assets/a.png";
+import heroImage2 from "../../assets/b.png";
+import heroImage3 from "../../assets/c.png";
 import heroImage4 from "../../assets/ev-vechile-4.png";
-import heroImage5 from "../../assets/e.jpeg";
-import heroImage6 from "../../assets/f.jpeg";
-import heroImage7 from "../../assets/g.jpeg";
-import heroImage8 from "../../assets/h.jpeg";
+import heroImage5 from "../../assets/e.png";
+import heroImage6 from "../../assets/f.png";
+import heroImage7 from "../../assets/g.png";
+import heroImage8 from "../../assets/h.png";
 
 // ============================================
 // SETTINGS
@@ -22,8 +22,8 @@ const heroSlides = [
   {
     image: heroImage1,
     eyebrow: "Mangrove Boat Safari",
-    title: "SAIL THROUGH",
-    highlight: "MANGROVE CREEKS",
+    title: "EXPLORE THE",
+    highlight: "WILD WATERWAYS",
     description:
       "Experience safe, certified boat safaris through the tranquil tidal waters of Bhitarkanika National Park, surrounded by lush estuarine mangrove forests.",
     ctaText: "Book River Safari",
@@ -67,11 +67,11 @@ const heroSlides = [
   {
     image: heroImage6,
     eyebrow: "Guided Group Safaris",
-    title: "EXPLORE WITH",
-    highlight: "CERTIFIED GUIDES",
+    title: " Bhitarkanika National Park",
+    highlight: "Mini Amazon of India",
     description:
-      "Enjoy family and group boat rides equipped with safety jackets, Eco-Tour Guide and knowledgeable local naturalists.",
-    ctaText: "Book Group Tours",
+      "Cruise through breathtaking mangrove forests, spot majestic saltwater crocodiles, and discover Odisha’s extraordinary wildlife with experienced local guides.",
+    ctaText: "Explore Boat Safaris",
   },
   {
     image: heroImage7,

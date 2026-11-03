@@ -11,6 +11,8 @@ import {
   Minus,
   CheckCircle2,
 } from "lucide-react";
+
+import logo from "../../assets/mlogo.png";
 import "./Navbar.css";
 
 const services = [
@@ -133,17 +135,19 @@ const Navbar = () => {
     <>
       <header className="navbar">
         <div className="navbar-container">
-
-          {/* Mobile Menu */}
-          <button
-            type="button"
-            className="navbar-mobile-toggle"
-            onClick={() => setMenuOpen((prev) => !prev)}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
+          {/* Logo (left corner) */}
+          <Link
+            to="/"
+            className="navbar-logo"
+            onClick={closeMenu}
+            aria-label="Bhitarkanika Boat Service Home"
           >
-            {menuOpen ? <X size={23} /> : <Menu size={23} />}
-          </button>
+            <img
+              src={logo}
+              alt="Bhitarkanika Boat Service"
+              className="navbar-logo-image"
+            />
+          </Link>
 
           {/* Navigation */}
           <nav
@@ -160,9 +164,7 @@ const Navbar = () => {
                   end={link.end}
                   onClick={closeMenu}
                   className={({ isActive }) =>
-                    `navbar-link ${
-                      isActive ? "navbar-link-active" : ""
-                    }`
+                    `navbar-link ${isActive ? "navbar-link-active" : ""}`
                   }
                 >
                   {link.title}
@@ -192,17 +194,14 @@ const Navbar = () => {
                   aria-haspopup="true"
                   onClick={() => setServicesOpen((prev) => !prev)}
                 >
-                 Boat Booking
-                  <ChevronDown
-                    size={15}
-                    className="navbar-chevron"
-                  />
+                  Boat Booking
+                  <ChevronDown size={15} className="navbar-chevron" />
                 </button>
 
                 <div className="navbar-services-dropdown">
                   <div className="navbar-dropdown-heading">
                     <span className="navbar-dropdown-label">
-                      EXPLORE WILDDALE
+                      EXPLORE BHITARKANIKA
                     </span>
                     <h3>Our Services</h3>
                   </div>
@@ -243,9 +242,7 @@ const Navbar = () => {
                   to={link.path}
                   onClick={closeMenu}
                   className={({ isActive }) =>
-                    `navbar-link ${
-                      isActive ? "navbar-link-active" : ""
-                    }`
+                    `navbar-link ${isActive ? "navbar-link-active" : ""}`
                   }
                 >
                   {link.title}
@@ -266,9 +263,7 @@ const Navbar = () => {
               </span>
 
               <span className="navbar-support-text">
-                <span className="navbar-support-label">
-                  24/7 Hotline
-                </span>
+                <span className="navbar-support-label">24/7 Hotline</span>
                 <span className="navbar-support-number">
                   +91 832 898 2394
                 </span>
@@ -286,6 +281,17 @@ const Navbar = () => {
               </span>
             </button>
           </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            type="button"
+            className="navbar-mobile-toggle"
+            onClick={() => setMenuOpen((prev) => !prev)}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+          >
+            {menuOpen ? <X size={23} /> : <Menu size={23} />}
+          </button>
         </div>
       </header>
 
@@ -310,9 +316,7 @@ const Navbar = () => {
                   EXPLORE BHITARKANIKA
                 </span>
                 <h2 id="boat-booking-title">Book Your Boat</h2>
-                <p>
-                  Plan your journey and enjoy a memorable boat experience.
-                </p>
+                <p>Plan your journey and enjoy a memorable boat experience.</p>
               </div>
 
               <button
@@ -333,9 +337,9 @@ const Navbar = () => {
 
                 <h3>Booking Request Submitted!</h3>
                 <p>
-                  Thank you, {formData.fullName}. Your booking request
-                  for {formData.boatPackage} has been recorded.
-                  Our team will contact you soon.
+                  Thank you, {formData.fullName}. Your booking request for{" "}
+                  {formData.boatPackage} has been recorded. Our team will
+                  contact you soon.
                 </p>
 
                 <button
@@ -482,9 +486,7 @@ const Navbar = () => {
                       onChange={(e) =>
                         setFormData((prev) => ({
                           ...prev,
-                          phone: e.target.value
-                            .replace(/\D/g, "")
-                            .slice(0, 10),
+                          phone: e.target.value.replace(/\D/g, "").slice(0, 10),
                         }))
                       }
                       pattern="[0-9]{10}"
@@ -563,10 +565,7 @@ const Navbar = () => {
                     <span>*</span> Required fields
                   </p>
 
-                  <button
-                    type="submit"
-                    className="boat-booking-submit"
-                  >
+                  <button type="submit" className="boat-booking-submit">
                     Submit Booking
                     <ArrowUpRight size={18} />
                   </button>
