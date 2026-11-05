@@ -21,6 +21,9 @@ import { FaWhatsapp } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import "./HomeContact.css";
 
+// Put your crocodile photo in the assets folder and update the file name/extension here
+import crocodileImage from "../../assets/crocodilehome.jpeg";
+
 // ============================================
 // BUSINESS DETAILS (edit here)
 // ============================================
@@ -33,9 +36,10 @@ const EMAIL = "safari@bhitarkanikaboats.com";
 const BOOK_TRIP_PATH = "/services/boat-service";
 const ADDRESS = "Khola Entry Ghat, Rajnagar, Kendrapara, Odisha 754225";
 
-// Replace with your own photo, e.g. import contactImage from "../../assets/contact-boat.jpg"
-const CONTACT_IMAGE =
-  "https://images.unsplash.com/photo-1456926631375-92c8ce872def?auto=format&fit=crop&w=1100&q=80";
+// Crocodile photo shown on the left card.
+// If the crocodile is cut off, change the position (e.g. "70% center", "center top")
+const CONTACT_IMAGE = crocodileImage;
+const CONTACT_IMAGE_POSITION = "60% center";
 
 const GUEST_OPTIONS = [
   "1 Guest",
@@ -319,9 +323,12 @@ const HomeContact = ({ onFormSubmitSuccess }) => {
             <div className="home-contact-info-media">
               <div
                 className="home-contact-info-photo"
-                style={{ backgroundImage: `url(${CONTACT_IMAGE})` }}
+                style={{
+                  backgroundImage: `url(${CONTACT_IMAGE})`,
+                  backgroundPosition: CONTACT_IMAGE_POSITION,
+                }}
                 role="img"
-                aria-label="Wildlife and mangroves of Bhitarkanika"
+                aria-label="Saltwater crocodile of Bhitarkanika"
               />
               <span className="home-contact-chip">
                 <Ship size={15} />

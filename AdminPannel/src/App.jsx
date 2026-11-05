@@ -8,6 +8,7 @@ import Enquiry from "./Components/Enquiry/Enquiry";
 import TourBooking from "./Components/TourBooking/TourBooking";
 import Gallary from "./Components/Gallary/Gallary";
 import Hotelbooking from "./Components/Hotelbooking/Hotelbooking";
+import Expores from "./Components/Expores/Expores";
 
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
           <Route path="/tour-booking" element={<TourBooking />} />
           <Route path="/gallery" element={<Gallary />} />
           <Route path="/hotel-booking" element={<Hotelbooking />} />
+          <Route path="/explores" element={<Expores/>} />
         </Route>
       </Routes>
     </BrowserRouter>

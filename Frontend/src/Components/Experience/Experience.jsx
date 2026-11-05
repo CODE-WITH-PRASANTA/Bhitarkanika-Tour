@@ -16,48 +16,65 @@ import boatService3 from "../../assets/boat-service-3.png";
 // ============================================
 
 const BRAND_NAME = "Bhitarkanika Boat Service";
-const TIME_SLOTS = [
-  "06:00 AM",
-  "07:00 AM",
-  "08:00 AM",
-  "09:00 AM",
-  "10:00 AM",
-  "11:00 AM",
-  "12:00 PM",
-  "02:00 PM",
-  "04:00 PM",
+
+const MAX_PEOPLE = 18;
+const BOAT_TAX = 50; // govt tax per boat (Rs.)
+const TAX_UP_TO_9 = 40; // govt tax per person when 9 or fewer people (Rs.)
+const TAX_10_PLUS = 25; // govt tax per person when more than 9 people (Rs.)
+
+// Time slots are chosen inside the booking popup (not shown on the card front).
+const SLOT_OPTIONS = [
+  { key: "morning", name: "Morning Slot", start: "7:00 AM", end: "11:30 AM", icon: "☀️" },
+  { key: "afternoon", name: "Afternoon Slot", start: "1:00 PM", end: "5:00 PM", icon: "🌤️" },
 ];
+const FULL_DAY_SLOT = {
+  key: "fullday",
+  name: "Full Day",
+  start: "7:00 AM",
+  end: "5:00 PM",
+  icon: "⏱️",
+};
+const ALL_SLOTS = [...SLOT_OPTIONS, FULL_DAY_SLOT];
+
+const slotText = (s) => `${s.name} · ${s.start} – ${s.end}`;
+const slotPdf = (s) => `${s.name} (${s.start} to ${s.end})`;
 
 // ============================================
 // BOAT SERVICE DATA  (3 cards)
-// Standard prices are the ones you gave. Medium / Premium prices and the
-// "perks" lines are placeholders - edit them to your real packages.
+// Card 1 and 2: fixed fare, no packages, route map, govt taxes added.
+// Card 3: full-day photography boat with packages (Standard = Rs. 8000).
+// Medium / Premium prices, "tag" and "features" are placeholders - edit to your real packages.
 // ============================================
 
 const boatData = [
   {
     id: 1,
     slug: "jaynagar-to-bhitarkanika",
-    title: "Jaynagar Boat Package",
-    tagline: "Glide through quiet mangrove creeks on a private boat ride.",
+    eyebrow: "Start from Jaynagar",
+    title: "Bhitarkanika Boat Package",
+    tagline: "Glide through quiet mangrove creeks on a private boat ride from Jaynagar.",
     image: boatService1,
     duration: "1 DAY",
     category: "BOAT RIDE",
     from: "Jaynagar",
     to: "Bhitarkanika",
     priceUnit: "per boat",
-    startingFrom: 1000,
-    oldStartingFrom: 1300,
-    packages: [
-      { key: "standard", name: "Standard", price: 4000, perks: "Private boat with life jackets included." },
-      { key: "medium", name: "Medium", price: 5000, perks: "Standard + local guide and wildlife spotting." },
-      { key: "premium", name: "Premium", price: 6500, perks: "Medium + snacks, water and priority boarding." },
-    ],
+    fare: 4000,
+    govtTax: true,
+    fullDay: false,
+    packages: null,
+    map: {
+      fromLabel: "Jaynagar",
+      toLabel: "Bhitarkanika",
+      origin: "Jaynagar, Kendrapara, Odisha",
+      destination: "Bhitarkanika National Park, Odisha",
+    },
   },
   {
     id: 2,
     slug: "khola-to-bhitarkanika",
-    title: "Khola Boat Package",
+    eyebrow: "Start from Khola",
+    title: "Bhitarkanika Boat Package",
     tagline: "Start from the Khola boating point and cruise into the wild.",
     image: boatService2,
     duration: "1 DAY",
@@ -65,18 +82,22 @@ const boatData = [
     from: "Khola (Boating Point)",
     to: "Bhitarkanika",
     priceUnit: "per boat",
-    startingFrom: 2000,
-    oldStartingFrom: 2500,
-    packages: [
-      { key: "standard", name: "Standard", price: 3500, perks: "Private boat with life jackets included." },
-      { key: "medium", name: "Medium", price: 4500, perks: "Standard + local guide and wildlife spotting." },
-      { key: "premium", name: "Premium", price: 6000, perks: "Medium + snacks, water and priority boarding." },
-    ],
+    fare: 3500,
+    govtTax: true,
+    fullDay: false,
+    packages: null,
+    map: {
+      fromLabel: "Khola",
+      toLabel: "Bhitarkanika",
+      origin: "Khola Boating Point, Kendrapara, Odisha",
+      destination: "Bhitarkanika National Park, Odisha",
+    },
   },
   {
     id: 3,
-    slug: "bhitarkanika-photography-boat",
-    title: "Photography Boat Package",
+    slug: "bhitarkanika-photographer-full-day-boat",
+    eyebrow: "Khola / Jaynagar",
+    title: "Photographer Full Day Boat Booking",
     tagline: "A full day on the water built around the best photo spots.",
     image: boatService3,
     duration: "FULL DAY",
@@ -84,76 +105,53 @@ const boatData = [
     from: "Khola / Jaynagar",
     to: "Bhitarkanika Photo Spots",
     priceUnit: "per day",
-    startingFrom: 3000,
-    oldStartingFrom: 3800,
+    startingFrom: 8000,
+    govtTax: false,
+    fullDay: true,
+    fare: null,
+    map: null,
     packages: [
-      { key: "standard", name: "Standard", price: 10000, perks: "Full-day private boat for photography." },
-      { key: "medium", name: "Medium", price: 12500, perks: "Standard + photo-friendly stops and a guide." },
-      { key: "premium", name: "Premium", price: 15000, perks: "Medium + sunrise slot, snacks and a dedicated guide." },
+      {
+        key: "standard",
+        name: "Standard",
+        price: 8000,
+        icon: "🚤",
+        tag: "",
+        perks: "Full-day private boat for photography.",
+        features: [
+          "Full-day private boat for photography",
+          "On the water 7:00 AM – 5:00 PM",
+          "Start from Khola or Jaynagar",
+        ],
+      },
+      {
+        key: "medium",
+        name: "Medium",
+        price: 12500,
+        icon: "📷",
+        tag: "Most Popular",
+        perks: "Standard + photo-friendly stops and a guide.",
+        features: [
+          "Everything in Standard",
+          "Photo-friendly stops on the route",
+          "Local guide included",
+        ],
+      },
+      {
+        key: "premium",
+        name: "Premium",
+        price: 15000,
+        icon: "🌅",
+        tag: "Best Value",
+        perks: "Medium + sunrise slot, snacks and a dedicated guide.",
+        features: [
+          "Everything in Medium",
+          "Golden sunrise photo slot",
+          "Snacks & refreshments on board",
+          "Dedicated guide all day",
+        ],
+      },
     ],
-  },
-];
-
-// ============================================
-// HOTEL DATA  (3 nearest OYO stays - same images as before)
-// Replace the titles / locations with the exact OYO properties you list.
-// "totalRooms" is only used by the demo availability check.
-// ============================================
-
-const hotelData = [
-  {
-    id: 1,
-    slug: "oyo-premium-nature-resort",
-    title: "OYO Premium Nature Resort",
-    image:
-      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=85",
-    location: "Near Bhitarkanika, Odisha",
-    distance: "Nearest OYO stay to the boating point",
-    rating: "4.5",
-    breakfast: "BREAKFAST INCLUDED",
-    amenities: ["Free Wi-Fi", "Restaurant", "Room Service"],
-    roomType: "Deluxe Room",
-    bed: "King Bed",
-    cancellation: "Free Cancellation",
-    price: 2000,
-    oldPrice: 2600,
-    totalRooms: 6,
-  },
-  {
-    id: 2,
-    slug: "oyo-family-comfort-stay",
-    title: "OYO Family Comfort Stay",
-    image:
-      "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1000&q=85",
-    location: "Rajnagar, Kendrapara",
-    distance: "Comfortable family accommodation",
-    rating: "4.4",
-    breakfast: "MEALS AVAILABLE",
-    amenities: ["Restaurant", "Family Rooms", "Parking"],
-    roomType: "Family Room",
-    bed: "Double Bed",
-    cancellation: "Flexible Policy",
-    price: 3000,
-    oldPrice: 3800,
-    totalRooms: 5,
-  },
-  {
-    id: 3,
-    slug: "oyo-nature-view-retreat",
-    title: "OYO Nature View Retreat",
-    image:
-      "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1000&q=85",
-    location: "Kendrapara, Odisha",
-    distance: "Relaxing holiday retreat",
-    rating: "4.6",
-    breakfast: "BREAKFAST INCLUDED",
-    amenities: ["Restaurant", "Garden", "Room Service"],
-    roomType: "Premium Room",
-    bed: "King Bed",
-    cancellation: "Free Cancellation",
-    price: 4000,
-    oldPrice: 5000,
-    totalRooms: 4,
   },
 ];
 
@@ -170,13 +168,6 @@ const parseISO = (iso) => {
   return new Date(y, m - 1, d);
 };
 const todayString = () => toISO(new Date());
-const addDays = (iso, n) => {
-  const d = parseISO(iso);
-  d.setDate(d.getDate() + n);
-  return toISO(d);
-};
-const nightsBetween = (a, b) =>
-  Math.round((parseISO(b) - parseISO(a)) / 86400000);
 
 const formatDate = (iso) => {
   if (!iso) return "";
@@ -195,58 +186,28 @@ const generateBookingId = (prefix = "BTK") =>
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-// ---- Demo availability engine ------------------------------------------
-// There is no hotel backend yet, so availability is generated from the hotel
-// and the date (same input always gives the same answer). When you have a real
-// API, replace getAvailability() with a fetch() call.
-const mix = (n) => {
-  n ^= n >>> 16;
-  n = Math.imul(n, 0x45d9f3b) >>> 0;
-  n ^= n >>> 16;
-  n = Math.imul(n, 0x45d9f3b) >>> 0;
-  n ^= n >>> 16;
-  return n >>> 0;
-};
+const personWord = (n) => (n === 1 ? "person" : "people");
 
-const hashString = (str) => {
-  let h = 2166136261;
-  for (let i = 0; i < str.length; i++) {
-    h ^= str.charCodeAt(i);
-    h = Math.imul(h, 16777619);
-  }
-  return mix(h >>> 0);
-};
+// Govt tax rule: 9 people or fewer = Rs. 40 each, more than 9 = Rs. 25 each.
+const taxPerPerson = (people) => (people > 9 ? TAX_10_PLUS : TAX_UP_TO_9);
 
-const roomsLeftOnNight = (hotel, iso) => {
-  const v = hashString(`${hotel.id}|${iso}`) % 10;
-  if (v === 0) return 0; // roughly 1 night in 10 is sold out
-  return Math.min(hotel.totalRooms, (v % 5) + 1);
-};
-
-const getAvailability = (hotel, checkIn, nights, rooms) => {
-  let left = Infinity;
-  for (let i = 0; i < nights; i++) {
-    left = Math.min(left, roomsLeftOnNight(hotel, addDays(checkIn, i)));
-  }
-  if (left === Infinity) left = 0;
-  const status = left === 0 ? "soldout" : left >= rooms ? "available" : "limited";
-  return { status, left };
-};
-
-const findNextAvailable = (hotel, checkIn, nights, rooms) => {
-  for (let offset = 1; offset <= 45; offset++) {
-    const start = addDays(checkIn, offset);
-    if (getAvailability(hotel, start, nights, rooms).status === "available") {
-      return start;
-    }
-  }
-  return null;
+const calcBill = (tour, pkg, people) => {
+  const fare = pkg ? pkg.price : tour.fare;
+  const perPerson = tour.govtTax ? taxPerPerson(people) : 0;
+  const personTax = perPerson * people;
+  const boatTax = tour.govtTax ? BOAT_TAX : 0;
+  return {
+    fare,
+    perPerson,
+    personTax,
+    boatTax,
+    total: fare + personTax + boatTax,
+  };
 };
 
 const INITIAL_FORM = {
   name: "",
-  adults: 1,
-  children: 0,
+  people: 1,
   date: "",
   time: "",
   phone: "",
@@ -310,12 +271,122 @@ const ModalShell = ({ kicker, title, onClose, children }) => {
 };
 
 // ============================================
+// ROUTE MAP  (card preview + popup with directions)
+// ============================================
+
+const RouteMapPreview = ({ map, onOpen }) => (
+  <button
+    type="button"
+    className="exp-map"
+    onClick={onOpen}
+    aria-label={`View route map from ${map.fromLabel} to ${map.toLabel}`}
+  >
+    <svg viewBox="0 0 320 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id={`mapBg-${map.fromLabel}`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#eef3ea" />
+          <stop offset="1" stopColor="#dbe6d6" />
+        </linearGradient>
+      </defs>
+      <rect width="320" height="150" fill={`url(#mapBg-${map.fromLabel})`} />
+      {/* faint street grid */}
+      <g stroke="rgba(29,53,43,0.07)" strokeWidth="1">
+        <path d="M0 30H320M0 75H320M0 120H320" />
+        <path d="M60 0V150M130 0V150M200 0V150M270 0V150" />
+      </g>
+      {/* mangrove patches */}
+      <g fill="rgba(47,125,87,0.2)">
+        <ellipse cx="95" cy="40" rx="42" ry="17" />
+        <ellipse cx="225" cy="112" rx="50" ry="19" />
+        <ellipse cx="290" cy="22" rx="28" ry="12" />
+      </g>
+      {/* river */}
+      <path
+        d="M-10 118 C 55 96, 95 138, 165 112 S 275 76, 335 96 L335 160 L-10 160 Z"
+        fill="rgba(112,168,190,0.38)"
+      />
+      {/* route */}
+      <path
+        d="M52 100 C 100 36, 175 132, 268 48"
+        fill="none"
+        stroke="#ad863d"
+        strokeWidth="3.2"
+        strokeLinecap="round"
+        className="exp-map-route"
+      />
+      {/* pins */}
+      <circle cx="52" cy="100" r="9" fill="#fff" />
+      <circle cx="52" cy="100" r="6" fill="#1d352b" />
+      <circle cx="268" cy="48" r="9" fill="#fff" />
+      <circle cx="268" cy="48" r="6" fill="#ad863d" />
+      <text x="40" y="124" fontSize="11" fontWeight="800" fill="#1d352b">
+        {map.fromLabel}
+      </text>
+      <text x="268" y="32" fontSize="11" fontWeight="800" fill="#1d352b" textAnchor="end">
+        {map.toLabel}
+      </text>
+    </svg>
+    <span className="exp-map-cta">
+      View route map <b aria-hidden="true">→</b>
+    </span>
+  </button>
+);
+
+const MapModal = ({ tour, onClose }) => {
+  const { origin, destination, fromLabel, toLabel } = tour.map;
+  const embedUrl = `https://maps.google.com/maps?saddr=${encodeURIComponent(
+    origin
+  )}&daddr=${encodeURIComponent(destination)}&output=embed`;
+  const openUrl = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(
+    origin
+  )}&destination=${encodeURIComponent(destination)}&travelmode=driving`;
+
+  return (
+    <ModalShell kicker="Route map" title={`${fromLabel} → ${toLabel}`} onClose={onClose}>
+      {(close) => (
+        <div className="bk-body">
+          <div className="bk-map-wrap">
+            <iframe
+              title={`Route from ${fromLabel} to ${toLabel}`}
+              src={embedUrl}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+            />
+          </div>
+          <p className="bk-note">
+            The map shows the road route to reach the {fromLabel} boating point. The boat
+            ride into Bhitarkanika continues by water from there.
+          </p>
+          <div className="bk-actions bk-actions-end">
+            <button type="button" className="bk-btn bk-btn-ghost" onClick={close}>
+              Close
+            </button>
+            <a
+              className="bk-btn bk-btn-primary"
+              href={openUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open in Google Maps <span>↗</span>
+            </a>
+          </div>
+        </div>
+      )}
+    </ModalShell>
+  );
+};
+
+// ============================================
 // BOAT BOOKING MODAL
 // ============================================
 
 const BookingModal = ({ tour, pkg, onClose }) => {
   const [step, setStep] = useState("form"); // "form" | "success"
-  const [form, setForm] = useState(INITIAL_FORM);
+  const [form, setForm] = useState({
+    ...INITIAL_FORM,
+    time: tour.fullDay ? FULL_DAY_SLOT.key : "",
+  });
   const [errors, setErrors] = useState({});
   const [booking, setBooking] = useState(null);
   const [downloading, setDownloading] = useState(false);
@@ -326,29 +397,43 @@ const BookingModal = ({ tour, pkg, onClose }) => {
     return () => clearTimeout(t);
   }, []);
 
+  const peopleNum = Math.min(
+    MAX_PEOPLE,
+    Math.max(0, parseInt(form.people, 10) || 0)
+  );
+  const bill = calcBill(tour, pkg, peopleNum);
+  const fareLabel = pkg ? `${pkg.name} package fare` : "Boat fare";
+  const selectedSlot = ALL_SLOTS.find((s) => s.key === form.time);
+
   const setField = (field, value) => {
     setForm((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) setErrors((prev) => ({ ...prev, [field]: "" }));
   };
 
-  const changeCount = (field, delta) => {
-    const min = field === "adults" ? 1 : 0;
-    setField(field, Math.min(20, Math.max(min, form[field] + delta)));
+  const changePeople = (delta) =>
+    setField("people", Math.min(MAX_PEOPLE, Math.max(1, peopleNum + delta)));
+
+  const handlePeopleInput = (e) => {
+    const digits = e.target.value.replace(/\D/g, "").slice(0, 2);
+    setField("people", digits === "" ? "" : Math.min(MAX_PEOPLE, parseInt(digits, 10)));
+  };
+
+  const handlePeopleBlur = () => {
+    if (!peopleNum) setField("people", 1);
   };
 
   const handleDigits = (field, maxLength) => (e) => {
     setField(field, e.target.value.replace(/\D/g, "").slice(0, maxLength));
   };
 
-  // Boat packages are priced per boat / per day, not per head.
-  const totalAmount = pkg.price;
-
   const validate = () => {
     const next = {};
     if (form.name.trim().length < 2) next.name = "Please enter your full name.";
+    if (peopleNum < 1 || peopleNum > MAX_PEOPLE)
+      next.people = `Enter 1 to ${MAX_PEOPLE} people.`;
     if (!form.date) next.date = "Please choose a date.";
     else if (form.date < todayString()) next.date = "Date cannot be in the past.";
-    if (!form.time) next.time = "Please choose a time.";
+    if (!form.time) next.time = "Please choose a time slot.";
     if (!/^[6-9]\d{9}$/.test(form.phone))
       next.phone = "Enter a valid 10-digit mobile number.";
     if (form.aadhar && form.aadhar.length !== 12)
@@ -371,15 +456,21 @@ const BookingModal = ({ tour, pkg, onClose }) => {
         year: "numeric",
       }),
       ...form,
+      people: peopleNum,
       name: form.name.trim(),
       email: form.email.trim(),
-      total: totalAmount,
+      bill,
+      govtTax: tour.govtTax,
+      fareLabel,
+      timeLabel: slotText(selectedSlot),
+      timePdf: slotPdf(selectedSlot),
+      total: bill.total,
       tourTitle: tour.title,
       from: tour.from,
       to: tour.to,
       duration: tour.duration,
       category: tour.category,
-      pkgName: pkg.name,
+      pkgName: pkg ? pkg.name : null,
       priceUnit: tour.priceUnit,
     };
 
@@ -402,6 +493,7 @@ const BookingModal = ({ tour, pkg, onClose }) => {
       const green = [29, 53, 43];
       const gold = [173, 134, 61];
       const rs = (n) => `Rs. ${Number(n).toLocaleString("en-IN")}`;
+      const b = booking.bill;
 
       // Header band
       doc.setFillColor(...green);
@@ -429,14 +521,16 @@ const BookingModal = ({ tour, pkg, onClose }) => {
       doc.setFontSize(10);
       doc.text(`Issued on: ${booking.issuedOn}`, W - 14, 30, { align: "right" });
 
-      // Package block
+      // Title
       doc.setTextColor(...green);
       doc.setFont("helvetica", "bold");
       doc.setFontSize(17);
       doc.text(booking.tourTitle, 14, 72);
 
-      // Package pill
-      const pillText = `${booking.pkgName.toUpperCase()} PACKAGE`;
+      // Pill (package name, or category when there is no package)
+      const pillText = booking.pkgName
+        ? `${booking.pkgName.toUpperCase()} PACKAGE`
+        : booking.category;
       doc.setFontSize(8.5);
       const pillW = doc.getTextWidth(pillText) + 10;
       doc.setFillColor(...gold);
@@ -485,7 +579,7 @@ const BookingModal = ({ tour, pkg, onClose }) => {
       const col1 = 14;
       const col2 = 110;
       let y = 124;
-      const rowGap = 19;
+      const rowGap = 16;
 
       drawField("Guest name", booking.name, col1, y);
       drawField("Phone number", `+91 ${booking.phone}`, col2, y);
@@ -494,34 +588,52 @@ const BookingModal = ({ tour, pkg, onClose }) => {
       drawField("Aadhar number", maskAadhar(booking.aadhar), col2, y);
       y += rowGap;
       drawField("Travel date", formatDate(booking.date), col1, y);
-      drawField("Preferred time", booking.time, col2, y);
+      drawField("Time slot", booking.timePdf, col2, y);
       y += rowGap;
-      drawField("Adults", booking.adults, col1, y);
-      drawField("Children", booking.children, col2, y);
+      drawField("People", booking.people, col1, y);
+      drawField("Boat", "1 private boat", col2, y);
       y += rowGap + 1;
 
-      // Payment box
+      // Fare breakdown box
+      const lines = booking.govtTax
+        ? [
+            [booking.fareLabel, rs(b.fare)],
+            [
+              `Govt tax: Rs. ${b.perPerson} x ${booking.people} ${personWord(booking.people)}`,
+              rs(b.personTax),
+            ],
+            ["Govt boat tax (1 boat)", rs(b.boatTax)],
+          ]
+        : [[booking.fareLabel, rs(b.fare)]];
+
+      const boxH = 16 + lines.length * 7 + 18;
       doc.setFillColor(248, 246, 238);
       doc.setDrawColor(...gold);
-      doc.roundedRect(14, y, W - 28, 32, 3, 3, "FD");
+      doc.roundedRect(14, y, W - 28, boxH, 3, 3, "FD");
 
       doc.setFont("helvetica", "normal");
       doc.setFontSize(10);
       doc.setTextColor(90, 100, 95);
-      doc.text(`Package: ${booking.pkgName} (${booking.priceUnit})`, 20, y + 12);
-      doc.text(
-        `Guests: ${booking.adults} Adults, ${booking.children} Children`,
-        20,
-        y + 20
-      );
+      let ly = y + 11;
+      lines.forEach(([label, amount]) => {
+        doc.text(label, 20, ly);
+        doc.text(amount, W - 20, ly, { align: "right" });
+        ly += 7;
+      });
+
+      doc.setDrawColor(...gold);
+      doc.setLineDashPattern([1, 1], 0);
+      doc.line(20, ly - 3, W - 20, ly - 3);
+      doc.setLineDashPattern([], 0);
+
       doc.setFont("helvetica", "bold");
       doc.setFontSize(9);
       doc.setTextColor(...gold);
-      doc.text("ESTIMATED TOTAL", W - 20, y + 11, { align: "right" });
-      doc.setFontSize(20);
+      doc.text("FINAL PRICE", 20, ly + 5);
+      doc.setFontSize(16);
       doc.setTextColor(...green);
-      doc.text(rs(booking.total), W - 20, y + 24, { align: "right" });
-      y += 44;
+      doc.text(rs(booking.total), W - 20, ly + 6, { align: "right" });
+      y += boxH + 10;
 
       // Notes
       doc.setFont("helvetica", "bold");
@@ -533,7 +645,7 @@ const BookingModal = ({ tour, pkg, onClose }) => {
       doc.setTextColor(95, 105, 100);
       const notes = [
         "This is a booking request. Our team will contact you to confirm availability and payment.",
-        "Please carry a valid photo ID during the boat ride.",
+        "Children aged 3 years and above need a ticket. Please carry a valid photo ID.",
         "Timings may change depending on weather and tide conditions.",
       ];
       notes.forEach((n, i) => doc.text(`-  ${n}`, 14, y + 7 + i * 6));
@@ -575,18 +687,20 @@ const BookingModal = ({ tour, pkg, onClose }) => {
               <div>
                 <h3>{tour.title}</h3>
                 <p>
-                  {pkg.name} package · {tour.duration}
+                  {pkg ? `${pkg.name} package · ` : ""}
+                  {tour.duration}
                 </p>
                 <p className="bk-tour-route">
                   {tour.from} <b>→</b> {tour.to}
                 </p>
                 <strong>
-                  {formatPrice(pkg.price)} <small>{tour.priceUnit}</small>
+                  {formatPrice(bill.fare)} <small>{tour.priceUnit}</small>
                 </strong>
               </div>
             </div>
 
             <div className="bk-grid">
+              {/* NAME */}
               <div className={`${fieldClass("name")} bk-span-2`}>
                 <label htmlFor="bk-name">Full name</label>
                 <input
@@ -601,51 +715,108 @@ const BookingModal = ({ tour, pkg, onClose }) => {
                 {errors.name && <em>{errors.name}</em>}
               </div>
 
-              <div className="bk-field">
-                <label>Adults</label>
+              {/* PEOPLE (left) */}
+              <div className={fieldClass("people")}>
+                <label htmlFor="bk-people">People</label>
                 <div className="bk-counter">
                   <button
                     type="button"
-                    onClick={() => changeCount("adults", -1)}
-                    disabled={form.adults <= 1}
-                    aria-label="Decrease adults"
+                    onClick={() => changePeople(-1)}
+                    disabled={peopleNum <= 1}
+                    aria-label="Decrease people"
                   >
                     −
                   </button>
-                  <span>{form.adults}</span>
+                  <input
+                    id="bk-people"
+                    className="bk-counter-input"
+                    type="text"
+                    inputMode="numeric"
+                    value={form.people}
+                    onChange={handlePeopleInput}
+                    onBlur={handlePeopleBlur}
+                    aria-label="Number of people"
+                  />
                   <button
                     type="button"
-                    onClick={() => changeCount("adults", 1)}
-                    aria-label="Increase adults"
+                    onClick={() => changePeople(1)}
+                    disabled={peopleNum >= MAX_PEOPLE}
+                    aria-label="Increase people"
                   >
                     +
                   </button>
                 </div>
+                <small className="bk-hint">Maximum {MAX_PEOPLE} people</small>
+                {errors.people && <em>{errors.people}</em>}
               </div>
 
-              <div className="bk-field">
-                <label>Children</label>
-                <div className="bk-counter">
-                  <button
-                    type="button"
-                    onClick={() => changeCount("children", -1)}
-                    disabled={form.children <= 0}
-                    aria-label="Decrease children"
-                  >
-                    −
-                  </button>
-                  <span>{form.children}</span>
-                  <button
-                    type="button"
-                    onClick={() => changeCount("children", 1)}
-                    aria-label="Increase children"
-                  >
-                    +
-                  </button>
+              {/* RIGHT BOX: govt tax per person (live) or package fare */}
+              {tour.govtTax ? (
+                <div className="bk-field">
+                  <label>Govt tax per person</label>
+                  <div className="bk-box">
+                    <span className="bk-box-main">
+                      <b>{formatPrice(bill.perPerson)}</b> × {peopleNum}{" "}
+                      {personWord(peopleNum)}
+                    </span>
+                    <strong className="bk-box-value bk-pop" key={bill.personTax}>
+                      {formatPrice(bill.personTax)}
+                    </strong>
+                  </div>
+                  <small className="bk-hint">
+                    {formatPrice(TAX_UP_TO_9)} up to 9 · {formatPrice(TAX_10_PLUS)} for 10+
+                  </small>
                 </div>
-              </div>
+              ) : (
+                <div className="bk-field">
+                  <label>{fareLabel}</label>
+                  <div className="bk-box">
+                    <span className="bk-box-main">1 private boat</span>
+                    <strong className="bk-box-value">{formatPrice(bill.fare)}</strong>
+                  </div>
+                  <small className="bk-hint">{tour.priceUnit}</small>
+                </div>
+              )}
 
-              <div className={fieldClass("date")}>
+              {/* BOAT FARE + BOAT TAX */}
+              {tour.govtTax && (
+                <>
+                  <div className="bk-field">
+                    <label>{fareLabel}</label>
+                    <div className="bk-box">
+                      <span className="bk-box-main">1 private boat</span>
+                      <strong className="bk-box-value">{formatPrice(bill.fare)}</strong>
+                    </div>
+                    <small className="bk-hint">{tour.priceUnit}</small>
+                  </div>
+
+                  <div className="bk-field">
+                    <label>Govt tax for boat</label>
+                    <div className="bk-box">
+                      <span className="bk-box-main">
+                        <b>{formatPrice(BOAT_TAX)}</b> × 1 boat
+                      </span>
+                      <strong className="bk-box-value">{formatPrice(bill.boatTax)}</strong>
+                    </div>
+                    <small className="bk-hint">{formatPrice(BOAT_TAX)} per boat</small>
+                  </div>
+
+                  {/* TICKET NOTICE */}
+                  <div className="bk-notice bk-span-2" role="note">
+                    <div className="bk-notice-icon" aria-hidden="true">
+                      🎟️
+                    </div>
+                    <div>
+                      <h5>Children aged 3 years &amp; above need a ticket</h5>
+                      <p>Please count every child aged 3 or older in the People box above.</p>
+                    </div>
+                    <span className="bk-notice-age">3+ YRS</span>
+                  </div>
+                </>
+              )}
+
+              {/* DATE + TIME */}
+              <div className={`${fieldClass("date")} bk-m-full`}>
                 <label htmlFor="bk-date">Choose date</label>
                 <input
                   id="bk-date"
@@ -657,24 +828,40 @@ const BookingModal = ({ tour, pkg, onClose }) => {
                 {errors.date && <em>{errors.date}</em>}
               </div>
 
-              <div className={fieldClass("time")}>
+              <div className={`${fieldClass("time")} bk-m-full`}>
                 <label htmlFor="bk-time">Choose time</label>
-                <select
-                  id="bk-time"
-                  value={form.time}
-                  onChange={(e) => setField("time", e.target.value)}
-                >
-                  <option value="">Select a time</option>
-                  {TIME_SLOTS.map((slot) => (
-                    <option key={slot} value={slot}>
-                      {slot}
-                    </option>
-                  ))}
-                </select>
+                {tour.fullDay ? (
+                  <input
+                    id="bk-time"
+                    type="text"
+                    className="bk-readonly"
+                    value={slotText(FULL_DAY_SLOT)}
+                    readOnly
+                  />
+                ) : (
+                  <select
+                    id="bk-time"
+                    value={form.time}
+                    onChange={(e) => setField("time", e.target.value)}
+                  >
+                    <option value="">Select a time slot</option>
+                    {SLOT_OPTIONS.map((s) => (
+                      <option key={s.key} value={s.key}>
+                        {slotText(s)}
+                      </option>
+                    ))}
+                  </select>
+                )}
+                {selectedSlot && (
+                  <small className="bk-hint">
+                    Boat start {selectedSlot.start} · Boat end {selectedSlot.end}
+                  </small>
+                )}
                 {errors.time && <em>{errors.time}</em>}
               </div>
 
-              <div className={fieldClass("phone")}>
+              {/* PHONE + AADHAR */}
+              <div className={`${fieldClass("phone")} bk-m-full`}>
                 <label htmlFor="bk-phone">Phone number</label>
                 <input
                   id="bk-phone"
@@ -688,7 +875,7 @@ const BookingModal = ({ tour, pkg, onClose }) => {
                 {errors.phone && <em>{errors.phone}</em>}
               </div>
 
-              <div className={fieldClass("aadhar")}>
+              <div className={`${fieldClass("aadhar")} bk-m-full`}>
                 <label htmlFor="bk-aadhar">
                   Aadhar number <span className="bk-optional">(optional)</span>
                 </label>
@@ -703,6 +890,7 @@ const BookingModal = ({ tour, pkg, onClose }) => {
                 {errors.aadhar && <em>{errors.aadhar}</em>}
               </div>
 
+              {/* EMAIL */}
               <div className={`${fieldClass("email")} bk-span-2`}>
                 <label htmlFor="bk-email">Email address</label>
                 <input
@@ -717,11 +905,40 @@ const BookingModal = ({ tour, pkg, onClose }) => {
               </div>
             </div>
 
-            <div className="bk-total">
-              <div>
-                <span>Estimated total</span>
-                <strong>{formatPrice(totalAmount)}</strong>
+            {/* FARE SUMMARY (left) + BUTTONS (right) */}
+            <div className="bk-footer">
+              <div className="bk-bill">
+                <span className="bk-bill-title">Fare summary</span>
+                <div className="bk-bill-row">
+                  <span>People</span>
+                  <b>{peopleNum}</b>
+                </div>
+                <div className="bk-bill-row">
+                  <span>{fareLabel}</span>
+                  <b>{formatPrice(bill.fare)}</b>
+                </div>
+                {tour.govtTax && (
+                  <>
+                    <div className="bk-bill-row">
+                      <span>
+                        Govt tax ({formatPrice(bill.perPerson)} × {peopleNum})
+                      </span>
+                      <b>{formatPrice(bill.personTax)}</b>
+                    </div>
+                    <div className="bk-bill-row">
+                      <span>Govt boat tax (1 boat)</span>
+                      <b>{formatPrice(bill.boatTax)}</b>
+                    </div>
+                  </>
+                )}
+                <div className="bk-bill-total">
+                  <span>Final price</span>
+                  <strong className="bk-pop" key={bill.total}>
+                    {formatPrice(bill.total)}
+                  </strong>
+                </div>
               </div>
+
               <div className="bk-actions">
                 <button type="button" className="bk-btn bk-btn-ghost" onClick={close}>
                   Cancel
@@ -763,7 +980,8 @@ const BookingModal = ({ tour, pkg, onClose }) => {
               <div className="bk-doc-tour">
                 <h5>{booking.tourTitle}</h5>
                 <p>
-                  {booking.pkgName} package · {booking.category} · {booking.duration}
+                  {booking.pkgName ? `${booking.pkgName} package · ` : ""}
+                  {booking.category} · {booking.duration}
                 </p>
               </div>
 
@@ -797,16 +1015,12 @@ const BookingModal = ({ tour, pkg, onClose }) => {
                   <dd>{formatDate(booking.date)}</dd>
                 </div>
                 <div>
-                  <dt>Time</dt>
-                  <dd>{booking.time}</dd>
+                  <dt>People</dt>
+                  <dd>{booking.people}</dd>
                 </div>
-                <div>
-                  <dt>Adults</dt>
-                  <dd>{booking.adults}</dd>
-                </div>
-                <div>
-                  <dt>Children</dt>
-                  <dd>{booking.children}</dd>
+                <div className="bk-doc-wide">
+                  <dt>Time slot</dt>
+                  <dd>{booking.timeLabel}</dd>
                 </div>
                 <div className="bk-doc-wide">
                   <dt>Aadhar</dt>
@@ -814,8 +1028,29 @@ const BookingModal = ({ tour, pkg, onClose }) => {
                 </div>
               </dl>
 
+              <div className="bk-doc-bill">
+                <div>
+                  <span>{booking.fareLabel}</span>
+                  <b>{formatPrice(booking.bill.fare)}</b>
+                </div>
+                {booking.govtTax && (
+                  <>
+                    <div>
+                      <span>
+                        Govt tax ({formatPrice(booking.bill.perPerson)} × {booking.people})
+                      </span>
+                      <b>{formatPrice(booking.bill.personTax)}</b>
+                    </div>
+                    <div>
+                      <span>Govt boat tax (1 boat)</span>
+                      <b>{formatPrice(booking.bill.boatTax)}</b>
+                    </div>
+                  </>
+                )}
+              </div>
+
               <div className="bk-doc-total">
-                <span>Estimated total</span>
+                <span>Final price</span>
                 <strong>{formatPrice(booking.total)}</strong>
               </div>
             </div>
@@ -841,502 +1076,18 @@ const BookingModal = ({ tour, pkg, onClose }) => {
 };
 
 // ============================================
-// HOTEL AVAILABILITY MODAL
-// ============================================
-
-const AvailabilityModal = ({ hotel, onClose }) => {
-  const [step, setStep] = useState("check"); // "check" | "details" | "success"
-  const [search, setSearch] = useState({
-    checkIn: "",
-    checkOut: "",
-    rooms: 1,
-    guests: 2,
-  });
-  const [errors, setErrors] = useState({});
-  const [checking, setChecking] = useState(false);
-  const [result, setResult] = useState(null);
-  const [guest, setGuest] = useState({ name: "", phone: "", email: "" });
-  const [guestErrors, setGuestErrors] = useState({});
-  const [reservation, setReservation] = useState(null);
-  const timerRef = useRef(null);
-
-  useEffect(() => () => clearTimeout(timerRef.current), []);
-
-  const nights =
-    search.checkIn && search.checkOut && search.checkOut > search.checkIn
-      ? nightsBetween(search.checkIn, search.checkOut)
-      : 0;
-
-  const updateSearch = (field, value) => {
-    setSearch((prev) => {
-      const next = { ...prev, [field]: value };
-      if (field === "checkIn" && value && (!prev.checkOut || prev.checkOut <= value)) {
-        next.checkOut = addDays(value, 1);
-      }
-      return next;
-    });
-    setErrors((prev) => ({ ...prev, [field]: "", checkOut: "" }));
-    setResult(null);
-  };
-
-  const changeCount = (field, delta, min, max) => {
-    updateSearch(field, Math.min(max, Math.max(min, search[field] + delta)));
-  };
-
-  const validateSearch = (s) => {
-    const next = {};
-    if (!s.checkIn) next.checkIn = "Please choose a check-in date.";
-    else if (s.checkIn < todayString()) next.checkIn = "Check-in cannot be in the past.";
-    if (!s.checkOut) next.checkOut = "Please choose a check-out date.";
-    else if (s.checkIn && s.checkOut <= s.checkIn)
-      next.checkOut = "Check-out must be after check-in.";
-    else if (s.checkIn && nightsBetween(s.checkIn, s.checkOut) > 15)
-      next.checkOut = "You can check up to 15 nights at a time.";
-    setErrors(next);
-    return Object.keys(next).length === 0;
-  };
-
-  const runCheck = (s) => {
-    if (!validateSearch(s)) return;
-    const n = nightsBetween(s.checkIn, s.checkOut);
-
-    setChecking(true);
-    setResult(null);
-    clearTimeout(timerRef.current);
-
-    timerRef.current = setTimeout(() => {
-      const { status, left } = getAvailability(hotel, s.checkIn, n, s.rooms);
-      const next =
-        status === "available" ? null : findNextAvailable(hotel, s.checkIn, n, s.rooms);
-      setResult({ status, left, next, nights: n, rooms: s.rooms });
-      setChecking(false);
-    }, 850);
-  };
-
-  const useNextDates = () => {
-    const s = {
-      ...search,
-      checkIn: result.next,
-      checkOut: addDays(result.next, result.nights),
-    };
-    setSearch(s);
-    runCheck(s);
-  };
-
-  const useFewerRooms = () => {
-    const s = { ...search, rooms: result.left };
-    setSearch(s);
-    runCheck(s);
-  };
-
-  const setGuestField = (field, value) => {
-    setGuest((prev) => ({ ...prev, [field]: value }));
-    if (guestErrors[field]) setGuestErrors((prev) => ({ ...prev, [field]: "" }));
-  };
-
-  const submitGuest = (e) => {
-    e.preventDefault();
-    const next = {};
-    if (guest.name.trim().length < 2) next.name = "Please enter your full name.";
-    if (!/^[6-9]\d{9}$/.test(guest.phone))
-      next.phone = "Enter a valid 10-digit mobile number.";
-    if (!EMAIL_REGEX.test(guest.email.trim()))
-      next.email = "Enter a valid email address.";
-    setGuestErrors(next);
-    if (Object.keys(next).length) return;
-
-    const data = {
-      id: generateBookingId("HTL"),
-      ...search,
-      nights: nightsBetween(search.checkIn, search.checkOut),
-      name: guest.name.trim(),
-      phone: guest.phone,
-      email: guest.email.trim(),
-    };
-    data.total = hotel.price * data.nights * data.rooms;
-
-    // TODO: send `data` to your backend / email service here.
-    setReservation(data);
-    setStep("success");
-  };
-
-  const total = result ? hotel.price * result.nights * result.rooms : 0;
-  const roomWord = (n) => (n === 1 ? "room" : "rooms");
-
-  const titles = {
-    check: ["Check availability", "Find Your Room"],
-    details: ["Almost done", "Your Details"],
-    success: ["Request received", "Room Requested"],
-  };
-
-  return (
-    <ModalShell kicker={titles[step][0]} title={titles[step][1]} onClose={onClose}>
-      {(close) => (
-        <>
-          {step === "check" && (
-            <div className="bk-body">
-              <div className="bk-tour">
-                <img src={hotel.image} alt="" />
-                <div>
-                  <h3>{hotel.title}</h3>
-                  <p>
-                    {hotel.location} · ★ {hotel.rating}
-                  </p>
-                  <strong>
-                    {formatPrice(hotel.price)} <small>per night</small>
-                  </strong>
-                </div>
-              </div>
-
-              <div className="bk-grid bk-grid--plain">
-                <div className={errors.checkIn ? "bk-field has-error" : "bk-field"}>
-                  <label htmlFor="av-in">Check-in</label>
-                  <input
-                    id="av-in"
-                    type="date"
-                    min={todayString()}
-                    value={search.checkIn}
-                    onChange={(e) => updateSearch("checkIn", e.target.value)}
-                  />
-                  {errors.checkIn && <em>{errors.checkIn}</em>}
-                </div>
-
-                <div className={errors.checkOut ? "bk-field has-error" : "bk-field"}>
-                  <label htmlFor="av-out">Check-out</label>
-                  <input
-                    id="av-out"
-                    type="date"
-                    min={search.checkIn ? addDays(search.checkIn, 1) : todayString()}
-                    value={search.checkOut}
-                    onChange={(e) => updateSearch("checkOut", e.target.value)}
-                  />
-                  {errors.checkOut && <em>{errors.checkOut}</em>}
-                </div>
-
-                <div className="bk-field">
-                  <label>Rooms</label>
-                  <div className="bk-counter">
-                    <button
-                      type="button"
-                      onClick={() => changeCount("rooms", -1, 1, 4)}
-                      disabled={search.rooms <= 1}
-                      aria-label="Fewer rooms"
-                    >
-                      −
-                    </button>
-                    <span>{search.rooms}</span>
-                    <button
-                      type="button"
-                      onClick={() => changeCount("rooms", 1, 1, 4)}
-                      disabled={search.rooms >= 4}
-                      aria-label="More rooms"
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-
-                <div className="bk-field">
-                  <label>Guests</label>
-                  <div className="bk-counter">
-                    <button
-                      type="button"
-                      onClick={() => changeCount("guests", -1, 1, 12)}
-                      disabled={search.guests <= 1}
-                      aria-label="Fewer guests"
-                    >
-                      −
-                    </button>
-                    <span>{search.guests}</span>
-                    <button
-                      type="button"
-                      onClick={() => changeCount("guests", 1, 1, 12)}
-                      disabled={search.guests >= 12}
-                      aria-label="More guests"
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {checking && (
-                <div className="av-result av-loading" role="status">
-                  <span className="av-spinner" aria-hidden="true" />
-                  <p>
-                    Checking {nights} {nights === 1 ? "night" : "nights"} at{" "}
-                    {hotel.title}…
-                  </p>
-                </div>
-              )}
-
-              {result && !checking && (
-                <div className={`av-result av-${result.status}`} role="status">
-                  <span className="av-icon" aria-hidden="true">
-                    {result.status === "available" ? "✓" : "✕"}
-                  </span>
-                  <div>
-                    {result.status === "available" && (
-                      <>
-                        <h4>Rooms available for your dates</h4>
-                        <p>
-                          {result.left} {roomWord(result.left)} left ·{" "}
-                          {formatPrice(hotel.price)} × {result.nights}{" "}
-                          {result.nights === 1 ? "night" : "nights"} × {result.rooms}{" "}
-                          {roomWord(result.rooms)} ={" "}
-                          <strong>{formatPrice(total)}</strong>
-                        </p>
-                      </>
-                    )}
-
-                    {result.status === "limited" && (
-                      <>
-                        <h4>
-                          Only {result.left} {roomWord(result.left)} available
-                        </h4>
-                        <p>
-                          You asked for {result.rooms} {roomWord(result.rooms)}, but
-                          only {result.left} {roomWord(result.left)} are free on these
-                          dates.
-                        </p>
-                        <button type="button" className="av-link" onClick={useFewerRooms}>
-                          Check {result.left} {roomWord(result.left)} instead
-                        </button>
-                      </>
-                    )}
-
-                    {result.status === "soldout" && (
-                      <>
-                        <h4>Sold out for these dates</h4>
-                        <p>No rooms are free at {hotel.title} on your selected dates.</p>
-                      </>
-                    )}
-
-                    {result.status !== "available" && result.next && (
-                      <button type="button" className="av-link" onClick={useNextDates}>
-                        Try {formatDate(result.next)} –{" "}
-                        {formatDate(addDays(result.next, result.nights))}
-                      </button>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              <div className="bk-total">
-                <div>
-                  <span>{result?.status === "available" ? "Total" : "Per night"}</span>
-                  <strong>
-                    {formatPrice(result?.status === "available" ? total : hotel.price)}
-                  </strong>
-                </div>
-                <div className="bk-actions">
-                  <button type="button" className="bk-btn bk-btn-ghost" onClick={close}>
-                    Cancel
-                  </button>
-                  {result?.status === "available" && !checking ? (
-                    <button
-                      type="button"
-                      className="bk-btn bk-btn-primary"
-                      onClick={() => setStep("details")}
-                    >
-                      Request Booking <span>→</span>
-                    </button>
-                  ) : (
-                    <button
-                      type="button"
-                      className="bk-btn bk-btn-primary"
-                      onClick={() => runCheck(search)}
-                      disabled={checking}
-                    >
-                      {checking ? "Checking..." : "Check Availability"} <span>→</span>
-                    </button>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {step === "details" && (
-            <form className="bk-body" onSubmit={submitGuest} noValidate>
-              <div className="bk-tour">
-                <img src={hotel.image} alt="" />
-                <div>
-                  <h3>{hotel.title}</h3>
-                  <p>
-                    {formatDate(search.checkIn)} – {formatDate(search.checkOut)} ·{" "}
-                    {nights} {nights === 1 ? "night" : "nights"}
-                  </p>
-                  <strong>
-                    {formatPrice(total)}{" "}
-                    <small>
-                      for {search.rooms} {roomWord(search.rooms)}
-                    </small>
-                  </strong>
-                </div>
-              </div>
-
-              <div className="bk-grid">
-                <div className={`${guestErrors.name ? "bk-field has-error" : "bk-field"} bk-span-2`}>
-                  <label htmlFor="av-name">Full name</label>
-                  <input
-                    id="av-name"
-                    type="text"
-                    placeholder="Enter your full name"
-                    value={guest.name}
-                    onChange={(e) => setGuestField("name", e.target.value)}
-                    autoComplete="name"
-                  />
-                  {guestErrors.name && <em>{guestErrors.name}</em>}
-                </div>
-
-                <div className={guestErrors.phone ? "bk-field has-error" : "bk-field"}>
-                  <label htmlFor="av-phone">Phone number</label>
-                  <input
-                    id="av-phone"
-                    type="tel"
-                    inputMode="numeric"
-                    placeholder="10-digit mobile number"
-                    value={guest.phone}
-                    onChange={(e) =>
-                      setGuestField("phone", e.target.value.replace(/\D/g, "").slice(0, 10))
-                    }
-                    autoComplete="tel-national"
-                  />
-                  {guestErrors.phone && <em>{guestErrors.phone}</em>}
-                </div>
-
-                <div className={guestErrors.email ? "bk-field has-error" : "bk-field"}>
-                  <label htmlFor="av-email">Email address</label>
-                  <input
-                    id="av-email"
-                    type="email"
-                    placeholder="you@example.com"
-                    value={guest.email}
-                    onChange={(e) => setGuestField("email", e.target.value)}
-                    autoComplete="email"
-                  />
-                  {guestErrors.email && <em>{guestErrors.email}</em>}
-                </div>
-              </div>
-
-              <div className="bk-total">
-                <div>
-                  <span>Total</span>
-                  <strong>{formatPrice(total)}</strong>
-                </div>
-                <div className="bk-actions">
-                  <button
-                    type="button"
-                    className="bk-btn bk-btn-ghost"
-                    onClick={() => setStep("check")}
-                  >
-                    Back
-                  </button>
-                  <button type="submit" className="bk-btn bk-btn-primary">
-                    Send Request <span>→</span>
-                  </button>
-                </div>
-              </div>
-            </form>
-          )}
-
-          {step === "success" && reservation && (
-            <div className="bk-body bk-success">
-              <div className="bk-success-top">
-                <div className="bk-check" aria-hidden="true">
-                  <svg viewBox="0 0 52 52">
-                    <circle cx="26" cy="26" r="24" />
-                    <path d="M15 27l8 8 14-16" />
-                  </svg>
-                </div>
-                <h3>Room request sent</h3>
-                <p>
-                  Thank you, {reservation.name.split(" ")[0]}! Our team will contact
-                  you shortly to confirm your stay.
-                </p>
-              </div>
-
-              <div className="bk-doc">
-                <div className="bk-doc-head">
-                  <div>
-                    <small>{hotel.title}</small>
-                    <h4>Stay Request</h4>
-                  </div>
-                  <div className="bk-doc-id">
-                    <small>Request ID</small>
-                    <strong>{reservation.id}</strong>
-                  </div>
-                </div>
-
-                <dl className="bk-doc-grid">
-                  <div>
-                    <dt>Check-in</dt>
-                    <dd>{formatDate(reservation.checkIn)}</dd>
-                  </div>
-                  <div>
-                    <dt>Check-out</dt>
-                    <dd>{formatDate(reservation.checkOut)}</dd>
-                  </div>
-                  <div>
-                    <dt>Rooms</dt>
-                    <dd>{reservation.rooms}</dd>
-                  </div>
-                  <div>
-                    <dt>Guests</dt>
-                    <dd>{reservation.guests}</dd>
-                  </div>
-                  <div>
-                    <dt>Guest name</dt>
-                    <dd>{reservation.name}</dd>
-                  </div>
-                  <div>
-                    <dt>Phone</dt>
-                    <dd>+91 {reservation.phone}</dd>
-                  </div>
-                  <div className="bk-doc-wide">
-                    <dt>Email</dt>
-                    <dd>{reservation.email}</dd>
-                  </div>
-                </dl>
-
-                <div className="bk-doc-total">
-                  <span>
-                    {reservation.nights} {reservation.nights === 1 ? "night" : "nights"}{" "}
-                    total
-                  </span>
-                  <strong>{formatPrice(reservation.total)}</strong>
-                </div>
-              </div>
-
-              <div className="bk-actions bk-actions-end">
-                <button type="button" className="bk-btn bk-btn-primary" onClick={close}>
-                  Done
-                </button>
-              </div>
-            </div>
-          )}
-        </>
-      )}
-    </ModalShell>
-  );
-};
-
-// ============================================
-// EXPERIENCE COMPONENT
+// EXPERIENCE COMPONENT  (Boat Service only)
 // ============================================
 
 const Experience = () => {
-  const [activeTab, setActiveTab] = useState("boat");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedPkg, setSelectedPkg] = useState({}); // { [tourId]: packageKey }
   const [pkgHint, setPkgHint] = useState(null); // tour id that still needs a package
   const [bookingTour, setBookingTour] = useState(null); // { tour, pkg }
-  const [checkHotel, setCheckHotel] = useState(null);
+  const [mapTour, setMapTour] = useState(null); // tour whose route map is open
   const [isMobile, setIsMobile] = useState(
     typeof window !== "undefined" ? window.innerWidth <= 650 : false
   );
-
-  const displayedItems = activeTab === "boat" ? boatData : hotelData;
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 650);
@@ -1345,15 +1096,10 @@ const Experience = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-    setCurrentIndex(0);
-  };
-
   const handlePrev = () =>
-    setCurrentIndex((i) => (i === 0 ? displayedItems.length - 1 : i - 1));
+    setCurrentIndex((i) => (i === 0 ? boatData.length - 1 : i - 1));
   const handleNext = () =>
-    setCurrentIndex((i) => (i === displayedItems.length - 1 ? 0 : i + 1));
+    setCurrentIndex((i) => (i === boatData.length - 1 ? 0 : i + 1));
 
   const handleSelectPackage = (tourId, key) => {
     setSelectedPkg((prev) => ({ ...prev, [tourId]: key }));
@@ -1361,6 +1107,11 @@ const Experience = () => {
   };
 
   const handleBookTrip = (tour) => {
+    // Cards without packages (1 and 2) book directly at the fixed fare.
+    if (!tour.packages) {
+      setBookingTour({ tour, pkg: null });
+      return;
+    }
     const pkg = tour.packages.find((p) => p.key === selectedPkg[tour.id]);
     if (!pkg) {
       setPkgHint(tour.id);
@@ -1386,71 +1137,53 @@ const Experience = () => {
             </h1>
 
             <p>
-              Private boat rides from Jaynagar and Khola, full-day photography
-              packages, and comfortable OYO stays close to the boating point.
+              Private boat rides from Jaynagar and Khola, plus full-day
+              photography packages through the mangrove creeks.
             </p>
-          </div>
-
-          <div className="exp-tabs">
-            <button
-              type="button"
-              className={activeTab === "boat" ? "exp-tab active" : "exp-tab"}
-              onClick={() => handleTabChange("boat")}
-              aria-pressed={activeTab === "boat"}
-            >
-              <span className="exp-tab-icon">✦</span>
-              Boat Service
-            </button>
-
-            <button
-              type="button"
-              className={activeTab === "hotel" ? "exp-tab active" : "exp-tab"}
-              onClick={() => handleTabChange("hotel")}
-              aria-pressed={activeTab === "hotel"}
-            >
-              <span className="exp-tab-icon">◆</span>
-              Hotels
-            </button>
           </div>
         </div>
 
-        {/* CARDS */}
+        {/* BOAT CARDS */}
         <div className="exp-cards-grid">
-          {displayedItems.map((item, index) => {
+          {boatData.map((item, index) => {
             if (isMobile && index !== currentIndex) return null;
 
-            // ---------- BOAT CARD ----------
-            if (activeTab === "boat") {
-              const chosen = item.packages.find((p) => p.key === selectedPkg[item.id]);
-              const needsPkg = pkgHint === item.id;
+            const hasPackages = Boolean(item.packages);
+            const chosen = hasPackages
+              ? item.packages.find((p) => p.key === selectedPkg[item.id])
+              : null;
+            const needsPkg = pkgHint === item.id;
 
-              return (
-                <article className="exp-tour-card" key={item.id}>
-                  <div className="exp-card-image-wrap">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="exp-card-image"
-                      loading="lazy"
-                      onError={handleImageError}
-                    />
-                    <div className="exp-image-overlay" />
-                    <span className="exp-duration">{item.duration}</span>
-                    <span className="exp-location">{item.category}</span>
-                    <span className="exp-brand-badge">
-                      <i aria-hidden="true" />
-                      {BRAND_NAME}
-                    </span>
-                    <div className="exp-image-shine" />
-                  </div>
+            return (
+              <article className="exp-tour-card" key={item.id}>
+                <div className="exp-card-image-wrap">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="exp-card-image"
+                    loading="lazy"
+                    onError={handleImageError}
+                  />
+                  <div className="exp-image-overlay" />
+                  <span className="exp-duration">{item.duration}</span>
+                  <span className="exp-location">{item.category}</span>
+                  <span className="exp-brand-badge">
+                    <i aria-hidden="true" />
+                    {BRAND_NAME}
+                  </span>
+                  <div className="exp-image-shine" />
+                </div>
 
-                  <div className="exp-card-content">
-                    <h2>{item.title}</h2>
-                    <p className="exp-tagline">{item.tagline}</p>
+                <div className="exp-card-content">
+                  <span className="exp-card-eyebrow">{item.eyebrow}</span>
+                  <h2>{item.title}</h2>
+                  <p className="exp-tagline">{item.tagline}</p>
 
-                    {/* PACKAGE SELECT */}
-                    <div className="exp-pkg">
+                  {/* PACKAGE SELECT (card 3) or ROUTE MAP (cards 1 and 2) */}
+                  {hasPackages ? (
+                    <div className="exp-pkg exp-pkg-has">
                       <span className="exp-pkg-label">Select package</span>
+
                       <div
                         className="exp-pkg-options"
                         role="radiogroup"
@@ -1469,19 +1202,75 @@ const Experience = () => {
                             }
                             onClick={() => handleSelectPackage(item.id, p.key)}
                           >
-                            {p.name}
+                            <span className="exp-pkg-pill-name">{p.name}</span>
+                            <span className="exp-pkg-pill-price">
+                              {formatPrice(p.price)}
+                            </span>
                           </button>
                         ))}
                       </div>
-                      <p className={needsPkg ? "exp-pkg-perks is-warning" : "exp-pkg-perks"}>
-                        {chosen
-                          ? chosen.perks
-                          : needsPkg
-                          ? "Please select a package to continue."
-                          : "Pick a package to see the price."}
+
+                      {/* PACKAGE DETAILS PANEL */}
+                      <div
+                        key={chosen ? chosen.key : needsPkg ? "warn" : "empty"}
+                        className={`exp-pkg-panel ${
+                          chosen ? `is-${chosen.key}` : "is-empty"
+                        } ${needsPkg && !chosen ? "is-warning" : ""}`}
+                        aria-live="polite"
+                      >
+                        {chosen ? (
+                          <>
+                            <div className="exp-pkg-panel-head">
+                              <span className="exp-pkg-panel-icon" aria-hidden="true">
+                                {chosen.icon}
+                              </span>
+                              <div className="exp-pkg-panel-title">
+                                <small>You selected</small>
+                                <strong>{chosen.name} Package</strong>
+                              </div>
+                              {chosen.tag && (
+                                <span className="exp-pkg-tag">{chosen.tag}</span>
+                              )}
+                            </div>
+
+                            <ul className="exp-pkg-features">
+                              {chosen.features.map((f, i) => (
+                                <li key={f} style={{ animationDelay: `${i * 0.08}s` }}>
+                                  <i aria-hidden="true">✓</i>
+                                  <span>{f}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </>
+                        ) : (
+                          <div className="exp-pkg-empty">
+                            <span className="exp-pkg-empty-icon" aria-hidden="true">
+                              📸
+                            </span>
+                            <strong>
+                              {needsPkg
+                                ? "Please select a package to continue"
+                                : "Choose your package"}
+                            </strong>
+                            <p>
+                              Tap Standard, Medium or Premium to see what is included.
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="exp-pkg">
+                      <span className="exp-pkg-label">Route map</span>
+                      <RouteMapPreview map={item.map} onOpen={() => setMapTour(item)} />
+                      <p className="exp-pkg-perks">
+                        Tap the map to see how to reach {item.map.fromLabel}.
                       </p>
                     </div>
+                  )}
 
+                  {/* BOTTOM GROUP: always pinned to the bottom of the card */}
+                  <div className="exp-card-bottom">
                     {/* FROM → TO */}
                     <div className="exp-route-card">
                       <div className="exp-route-point">
@@ -1500,17 +1289,21 @@ const Experience = () => {
                     <div className="exp-card-footer">
                       <div className="exp-price-box">
                         <span className="exp-price-label">
-                          {chosen ? `${chosen.name} package` : "Starting from"}
+                          {chosen
+                            ? `${chosen.name} package`
+                            : hasPackages
+                            ? "Starting from"
+                            : "Boat fare"}
                         </span>
                         <div className="exp-price-row" key={chosen ? chosen.key : "start"}>
                           <strong>
-                            {formatPrice(chosen ? chosen.price : item.startingFrom)}
+                            {formatPrice(
+                              chosen ? chosen.price : hasPackages ? item.startingFrom : item.fare
+                            )}
                           </strong>
-                          {chosen ? (
-                            <small>{item.priceUnit}</small>
-                          ) : (
-                            <del>{formatPrice(item.oldStartingFrom)}</del>
-                          )}
+                          <small>
+                            {hasPackages ? item.priceUnit : `${item.priceUnit} + govt tax`}
+                          </small>
                         </div>
                       </div>
 
@@ -1523,78 +1316,6 @@ const Experience = () => {
                       </button>
                     </div>
                   </div>
-                </article>
-              );
-            }
-
-            // ---------- HOTEL CARD ----------
-            return (
-              <article className="exp-hotel-card" key={item.id}>
-                <div className="exp-hotel-image-wrap">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="exp-hotel-image"
-                    loading="lazy"
-                    onError={handleImageError}
-                  />
-                  <div className="exp-image-overlay" />
-                  <span className="exp-breakfast">{item.breakfast}</span>
-                  <span className="exp-hotel-rating">★ {item.rating}</span>
-                </div>
-
-                <div className="exp-hotel-content">
-                  <span className="exp-oyo-tag">OYO · NEAREST STAY</span>
-
-                  <div className="exp-hotel-title-row">
-                    <div>
-                      <h2>{item.title}</h2>
-                      <p className="exp-hotel-location">
-                        <span>📍</span> {item.location}
-                      </p>
-                    </div>
-                  </div>
-
-                  <p className="exp-hotel-distance">{item.distance}</p>
-
-                  <div className="exp-amenities">
-                    {item.amenities.slice(0, 4).map((amenity) => (
-                      <span key={amenity}>✓ {amenity}</span>
-                    ))}
-                  </div>
-
-                  <div className="exp-room-info">
-                    <div>
-                      <small>ROOM</small>
-                      <strong>{item.roomType}</strong>
-                    </div>
-                    <div>
-                      <small>BED</small>
-                      <strong>{item.bed}</strong>
-                    </div>
-                    <div>
-                      <small>POLICY</small>
-                      <strong>{item.cancellation}</strong>
-                    </div>
-                  </div>
-
-                  <div className="exp-hotel-footer">
-                    <div className="exp-price-box">
-                      <span className="exp-price-label">Starting from / night</span>
-                      <div className="exp-price-row">
-                        <strong>{formatPrice(item.price)}</strong>
-                        <del>{formatPrice(item.oldPrice)}</del>
-                      </div>
-                    </div>
-
-                    <button
-                      type="button"
-                      className="exp-primary-btn"
-                      onClick={() => setCheckHotel(item)}
-                    >
-                      Check Availability <span>→</span>
-                    </button>
-                  </div>
                 </div>
               </article>
             );
@@ -1602,14 +1323,14 @@ const Experience = () => {
         </div>
 
         {/* MOBILE SLIDER CONTROLS */}
-        {isMobile && displayedItems.length > 1 && (
+        {isMobile && boatData.length > 1 && (
           <div className="exp-mobile-controls">
             <button type="button" onClick={handlePrev} aria-label="Previous item">
               ←
             </button>
 
             <div className="exp-dots">
-              {displayedItems.map((item, index) => (
+              {boatData.map((item, index) => (
                 <button
                   type="button"
                   key={item.id}
@@ -1636,9 +1357,7 @@ const Experience = () => {
         />
       )}
 
-      {checkHotel && (
-        <AvailabilityModal hotel={checkHotel} onClose={() => setCheckHotel(null)} />
-      )}
+      {mapTour && <MapModal tour={mapTour} onClose={() => setMapTour(null)} />}
     </section>
   );
 };

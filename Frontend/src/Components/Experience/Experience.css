@@ -1,5 +1,5 @@
 /* =========================================================
-   EXPERIENCE SECTION
+   EXPERIENCE SECTION  (Boat Service only)
 ========================================================= */
 
 .exp-section {
@@ -68,55 +68,6 @@
 }
 
 /* =========================================================
-   TABS
-========================================================= */
-
-.exp-tabs {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px;
-  border: 1px solid #e7e4db;
-  border-radius: 14px;
-  background: #fff;
-  box-shadow: 0 12px 35px rgba(30, 45, 38, 0.06);
-  flex-shrink: 0;
-}
-
-.exp-tab {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 46px;
-  padding: 0 17px;
-  border: 0;
-  border-radius: 10px;
-  background: transparent;
-  color: #68726d;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: 0.25s ease;
-  white-space: nowrap;
-}
-
-.exp-tab:hover {
-  color: #1e3028;
-  background: #f4f4ee;
-}
-
-.exp-tab.active {
-  color: #fff;
-  background: #1d352b;
-  box-shadow: 0 7px 18px rgba(29, 53, 43, 0.18);
-}
-
-.exp-tab-icon {
-  font-size: 15px;
-}
-
-/* =========================================================
    CARDS GRID
 ========================================================= */
 
@@ -125,14 +76,14 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 26px;
   width: 100%;
+  align-items: stretch;
 }
 
 /* =========================================================
-   CARD BASE (boat + hotel)
+   BOAT CARD
 ========================================================= */
 
-.exp-tour-card,
-.exp-hotel-card {
+.exp-tour-card {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -145,15 +96,10 @@
   box-sizing: border-box;
 }
 
-.exp-tour-card:hover,
-.exp-hotel-card:hover {
+.exp-tour-card:hover {
   transform: translateY(-7px);
   box-shadow: 0 25px 55px rgba(24, 42, 34, 0.14);
 }
-
-/* =========================================================
-   BOAT CARD
-========================================================= */
 
 .exp-card-image-wrap {
   position: relative;
@@ -280,10 +226,90 @@
   line-height: 1.55;
 }
 
-/* ---------- Package select ---------- */
+.exp-card-eyebrow {
+  display: inline-block;
+  margin-bottom: 6px;
+  color: #ad863d;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
+/* ---------- Route map preview ---------- */
+
+.exp-map {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 150px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #e1e5da;
+  border-radius: 15px;
+  background: #e7eee3;
+  box-shadow: 0 8px 20px rgba(29, 53, 43, 0.1);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.exp-map:hover {
+  transform: translateY(-2px);
+  border-color: #c9a152;
+  box-shadow: 0 14px 28px rgba(29, 53, 43, 0.18);
+}
+
+.exp-map svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.exp-map text {
+  font-family: inherit;
+}
+
+.exp-map-route {
+  stroke-dasharray: 7 7;
+  animation: expDash 1.2s linear infinite;
+}
+
+@keyframes expDash {
+  to { stroke-dashoffset: -28; }
+}
+
+.exp-map-cta {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 13px;
+  border-radius: 30px;
+  background: #1d352b;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  box-shadow: 0 6px 14px rgba(29, 53, 43, 0.3);
+  transition: background 0.25s ease;
+}
+
+.exp-map:hover .exp-map-cta {
+  background: #ad863d;
+}
+
+/* ---------- Package select / map block ---------- */
 
 .exp-pkg {
   margin-top: 16px;
+}
+
+/* Card with packages: this block grows to fill free space (no empty gap) */
+.exp-pkg-has {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
 }
 
 .exp-pkg-label {
@@ -302,22 +328,39 @@
   gap: 6px;
   padding: 4px;
   border: 1px solid #e8e6dc;
-  border-radius: 13px;
+  border-radius: 14px;
   background: #f3f4ee;
 }
 
 .exp-pkg-pill {
-  min-height: 38px;
-  padding: 0 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-height: 54px;
+  padding: 6px;
   border: 0;
-  border-radius: 10px;
+  border-radius: 11px;
   background: transparent;
   color: #5d6862;
   font-family: inherit;
-  font-size: 12px;
-  font-weight: 800;
   cursor: pointer;
   transition: 0.25s ease;
+}
+
+.exp-pkg-pill-name {
+  font-size: 12.5px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.exp-pkg-pill-price {
+  font-size: 10.5px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: #9a9f9b;
+  transition: color 0.25s ease;
 }
 
 .exp-pkg-pill:hover {
@@ -325,12 +368,22 @@
   background: #fff;
 }
 
+.exp-pkg-pill:hover .exp-pkg-pill-price {
+  color: #ad863d;
+}
+
 .exp-pkg-pill.active {
   color: #fff;
   background: linear-gradient(135deg, #c9a152, #ad863d);
-  box-shadow: 0 6px 14px rgba(173, 134, 61, 0.38);
+  box-shadow: 0 8px 18px rgba(173, 134, 61, 0.42);
+  transform: translateY(-1px);
 }
 
+.exp-pkg-pill.active .exp-pkg-pill-price {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+/* Small helper line used on cards 1 and 2 (map cards) */
 .exp-pkg-perks {
   min-height: 34px;
   margin: 8px 0 0;
@@ -339,16 +392,277 @@
   line-height: 1.5;
 }
 
-.exp-pkg-perks.is-warning {
-  color: #b8433a;
-  font-weight: 700;
+/* ---------- Package details panel (card 3) ---------- */
+
+.exp-pkg-panel {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  min-height: 170px;
+  margin-top: 12px;
+  padding: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(173, 134, 61, 0.38);
+  border-radius: 18px;
+  background: linear-gradient(145deg, #fffaf0 0%, #f8efd8 100%);
+  box-shadow: 0 12px 28px rgba(173, 134, 61, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  animation: expPanelIn 0.45s cubic-bezier(0.22, 0.8, 0.3, 1) both;
+}
+
+/* soft glow in the corner */
+.exp-pkg-panel::before {
+  content: "";
+  position: absolute;
+  top: -50px;
+  right: -40px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(225, 200, 140, 0.5), transparent 68%);
+  pointer-events: none;
+}
+
+/* shine strip */
+.exp-pkg-panel::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  transform: skewX(-20deg);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  animation: expPanelShine 3.6s ease-in-out 0.6s infinite;
+  pointer-events: none;
+}
+
+@keyframes expPanelIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes expPanelShine {
+  0%, 55% { left: -60%; }
+  100% { left: 140%; }
+}
+
+.exp-pkg-panel-head {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.exp-pkg-panel-icon {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #c9a152, #ad863d);
+  font-size: 23px;
+  box-shadow: 0 8px 16px rgba(173, 134, 61, 0.42);
+}
+
+.exp-pkg-panel-title {
+  min-width: 0;
+}
+
+.exp-pkg-panel-title small {
+  display: block;
+  color: #ad863d;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
+.exp-pkg-panel-title strong {
+  display: block;
+  margin-top: 2px;
+  color: #1d352b;
+  font-size: 17px;
+  line-height: 1.15;
+  font-weight: 800;
+}
+
+.exp-pkg-tag {
+  margin-left: auto;
+  flex-shrink: 0;
+  padding: 6px 11px;
+  border-radius: 30px;
+  background: #1d352b;
+  color: #e9d199;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: 0 6px 12px rgba(29, 53, 43, 0.25);
+}
+
+.exp-pkg-features {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.exp-pkg-features li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #3f4d46;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.35;
+  opacity: 0;
+  animation: expFeatureIn 0.4s ease forwards;
+}
+
+.exp-pkg-features li i {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #1d352b;
+  color: #e9d199;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+  box-shadow: 0 4px 8px rgba(29, 53, 43, 0.25);
+}
+
+@keyframes expFeatureIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Premium: dark green + gold, the most eye-catching */
+.exp-pkg-panel.is-premium {
+  border-color: rgba(225, 200, 140, 0.55);
+  background: linear-gradient(145deg, #2a5242 0%, #1d352b 100%);
+  box-shadow: 0 16px 34px rgba(29, 53, 43, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.exp-pkg-panel.is-premium::before {
+  background: radial-gradient(circle, rgba(225, 200, 140, 0.34), transparent 68%);
+}
+
+.exp-pkg-panel.is-premium .exp-pkg-panel-title small {
+  color: #e1c88c;
+}
+
+.exp-pkg-panel.is-premium .exp-pkg-panel-title strong {
+  color: #fff;
+}
+
+.exp-pkg-panel.is-premium .exp-pkg-tag {
+  background: linear-gradient(135deg, #e1c88c, #c9a152);
+  color: #1d352b;
+}
+
+.exp-pkg-panel.is-premium .exp-pkg-features li {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.exp-pkg-panel.is-premium .exp-pkg-features li i {
+  background: linear-gradient(135deg, #e1c88c, #c9a152);
+  color: #1d352b;
+}
+
+/* Empty state (nothing selected yet) */
+.exp-pkg-panel.is-empty {
+  align-items: center;
+  border: 1.5px dashed rgba(173, 134, 61, 0.55);
+  background: linear-gradient(145deg, #fffdf6, #f7f1de);
+  box-shadow: none;
+}
+
+.exp-pkg-panel.is-empty::after {
+  display: none;
+}
+
+.exp-pkg-empty {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.exp-pkg-empty-icon {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 4px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c9a152, #ad863d);
+  font-size: 26px;
+  box-shadow: 0 0 0 0 rgba(173, 134, 61, 0.5);
+  animation: expPulse 2s ease-out infinite;
+}
+
+@keyframes expPulse {
+  0% { box-shadow: 0 0 0 0 rgba(173, 134, 61, 0.5); }
+  70% { box-shadow: 0 0 0 16px rgba(173, 134, 61, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(173, 134, 61, 0); }
+}
+
+.exp-pkg-empty strong {
+  color: #1d352b;
+  font-size: 14.5px;
+  font-weight: 800;
+}
+
+.exp-pkg-empty p {
+  max-width: 240px;
+  margin: 0;
+  color: #727b76;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* Warning: user tapped Book Trip without choosing a package */
+.exp-pkg-panel.is-warning {
+  border-color: #c4554a;
+  background: linear-gradient(145deg, #fff6f4, #fdeae6);
   animation: expShake 0.4s ease;
+}
+
+.exp-pkg-panel.is-warning .exp-pkg-empty strong {
+  color: #b8433a;
+}
+
+.exp-pkg-panel.is-warning .exp-pkg-empty-icon {
+  background: linear-gradient(135deg, #d9695d, #b8433a);
 }
 
 @keyframes expShake {
   0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  75% { transform: translateX(5px); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+/* ---------- Bottom group (route + footer), pinned to card bottom ---------- */
+
+.exp-card-bottom {
+  margin-top: auto;
+  padding-top: 16px;
 }
 
 /* ---------- From -> To route ---------- */
@@ -358,7 +672,6 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-top: 12px;
   padding: 15px 18px;
   overflow: hidden;
   border-radius: 15px;
@@ -426,19 +739,14 @@
 
 /* ---------- Footer / price ---------- */
 
-.exp-card-footer,
-.exp-hotel-footer {
+.exp-card-footer {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   gap: 15px;
-  margin-top: auto;
+  margin-top: 18px;
   padding-top: 18px;
   border-top: 1px solid #eceae3;
-}
-
-.exp-card-footer {
-  margin-top: 22px;
 }
 
 .exp-price-box {
@@ -519,149 +827,6 @@
 }
 
 /* =========================================================
-   HOTEL CARD
-========================================================= */
-
-.exp-hotel-image-wrap {
-  position: relative;
-  flex-shrink: 0;
-  height: 255px;
-  overflow: hidden;
-  background: #e8e8e2;
-}
-
-.exp-hotel-image {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-  transition: transform 0.6s ease;
-}
-
-.exp-hotel-card:hover .exp-hotel-image {
-  transform: scale(1.06);
-}
-
-.exp-breakfast {
-  position: absolute;
-  z-index: 2;
-  top: 16px;
-  left: 16px;
-  padding: 8px 11px;
-  border-radius: 7px;
-  color: #fff;
-  background: #1d352b;
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 0.7px;
-}
-
-.exp-hotel-rating {
-  position: absolute;
-  z-index: 2;
-  right: 16px;
-  top: 16px;
-  padding: 8px 11px;
-  border-radius: 7px;
-  color: #1e2d27;
-  background: rgba(255, 255, 255, 0.94);
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.exp-hotel-content {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  padding: 23px;
-}
-
-.exp-oyo-tag {
-  align-self: flex-start;
-  margin-bottom: 10px;
-  padding: 5px 10px;
-  border-radius: 6px;
-  background: #fdecea;
-  color: #c8372d;
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
-
-.exp-hotel-title-row h2 {
-  margin: 0;
-  color: #1f3029;
-  font-size: 21px;
-  line-height: 1.25;
-}
-
-.exp-hotel-location {
-  display: flex;
-  gap: 6px;
-  margin: 8px 0 0;
-  color: #777f7b;
-  font-size: 12px;
-}
-
-.exp-hotel-location span {
-  color: #ad863d;
-}
-
-.exp-hotel-distance {
-  margin: 13px 0 0;
-  color: #8a918d;
-  font-size: 12px;
-}
-
-.exp-amenities {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-  margin-top: 17px;
-}
-
-.exp-amenities span {
-  padding: 7px 9px;
-  border-radius: 6px;
-  color: #53625b;
-  background: #f3f5f0;
-  font-size: 10px;
-  font-weight: 700;
-}
-
-.exp-room-info {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin: 18px 0 24px;
-}
-
-.exp-room-info > div {
-  min-width: 0;
-  padding: 11px;
-  border-radius: 8px;
-  background: #f8f8f4;
-}
-
-.exp-room-info small {
-  display: block;
-  margin-bottom: 5px;
-  color: #9a9d9a;
-  font-size: 8px;
-  font-weight: 800;
-  letter-spacing: 0.8px;
-}
-
-.exp-room-info strong {
-  display: block;
-  overflow: hidden;
-  color: #37443e;
-  font-size: 10px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* =========================================================
    MOBILE CONTROLS
 ========================================================= */
 
@@ -687,7 +852,7 @@
 }
 
 /* =========================================================
-   POPUPS (neumorphic, prefix: bk-)  -  booking + availability
+   BOOKING POPUP (neumorphic, prefix: bk-)
 ========================================================= */
 
 .bk-backdrop {
@@ -820,7 +985,7 @@
   padding: 14px 28px 28px;
 }
 
-/* Selected tour / hotel strip */
+/* Selected tour strip */
 .bk-tour {
   display: flex;
   align-items: center;
@@ -1017,30 +1182,236 @@
   cursor: not-allowed;
 }
 
-/* Total + actions */
-.bk-total {
+/* People counter: typeable number */
+.bk-field .bk-counter .bk-counter-input,
+.bk-field .bk-counter .bk-counter-input:focus {
+  width: 60px;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--bk-green);
+  font-size: 17px;
+  font-weight: 800;
+  text-align: center;
+}
+
+/* Hint line under a field */
+.bk-hint {
+  display: block;
+  color: var(--bk-muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Read-only info boxes (tax, fare) */
+.bk-box {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 16px;
+  border-radius: 14px;
+  background: var(--bk-bg);
+  box-shadow: inset 4px 4px 9px var(--bk-dark), inset -4px -4px 9px var(--bk-light);
+}
+
+.bk-box-main {
+  color: var(--bk-muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.bk-box-main b {
+  margin-right: 2px;
+  color: var(--bk-green);
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.bk-box-value {
+  color: var(--bk-gold);
+  font-size: 18px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.bk-field input[readonly] {
+  color: var(--bk-green);
+  font-weight: 700;
+  cursor: default;
+}
+
+/* 3+ years ticket notice */
+.bk-notice {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  overflow: hidden;
+  border: 1px solid rgba(173, 134, 61, 0.45);
+  border-radius: 16px;
+  background: linear-gradient(135deg, #fff7e0, #fbeec6);
+  box-shadow: 0 8px 20px rgba(173, 134, 61, 0.18);
+}
+
+.bk-notice-icon {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #c9a152, #ad863d);
+  font-size: 22px;
+  box-shadow: 0 6px 14px rgba(173, 134, 61, 0.4);
+  animation: bkWiggle 2.6s ease-in-out infinite;
+}
+
+@keyframes bkWiggle {
+  0%, 80%, 100% { transform: rotate(0); }
+  86% { transform: rotate(-10deg); }
+  92% { transform: rotate(9deg); }
+  96% { transform: rotate(-5deg); }
+}
+
+.bk-notice h5 {
+  margin: 0 0 2px;
+  color: #6d4f12;
+  font-size: 13.5px;
+  font-weight: 800;
+}
+
+.bk-notice p {
+  margin: 0;
+  color: #7a6330;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.bk-notice-age {
+  margin-left: auto;
+  flex-shrink: 0;
+  padding: 6px 11px;
+  border-radius: 30px;
+  background: #1d352b;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+}
+
+/* Footer: fare summary (left) + buttons (right) */
+.bk-footer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 20px;
   margin-top: 24px;
   padding-top: 20px;
   border-top: 1px solid rgba(29, 53, 43, 0.1);
 }
 
-.bk-total > div:first-child span {
+.bk-bill {
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: var(--bk-bg);
+  box-shadow: inset 4px 4px 9px var(--bk-dark), inset -4px -4px 9px var(--bk-light);
+}
+
+.bk-bill-title {
   display: block;
+  margin-bottom: 8px;
+  color: var(--bk-gold);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+}
+
+.bk-bill-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 3px 0;
+  color: #4d5a54;
+  font-size: 12.5px;
+}
+
+.bk-bill-row b {
+  color: var(--bk-green);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.bk-bill-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(29, 53, 43, 0.25);
+}
+
+.bk-bill-total span {
   color: var(--bk-muted);
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.8px;
   text-transform: uppercase;
 }
 
-.bk-total > div:first-child strong {
+.bk-bill-total strong {
   color: var(--bk-green);
   font-size: 26px;
-  line-height: 1.2;
+  line-height: 1.1;
+}
+
+.bk-footer .bk-actions {
+  flex-direction: column;
+  min-width: 190px;
+}
+
+.bk-pop {
+  display: inline-block;
+  animation: bkPop 0.3s ease both;
+}
+
+@keyframes bkPop {
+  from { opacity: 0.3; transform: translateY(5px) scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Route map popup */
+.bk-map-wrap {
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow: 5px 5px 11px var(--bk-dark), -5px -5px 11px var(--bk-light);
+}
+
+.bk-map-wrap iframe {
+  display: block;
+  width: 100%;
+  height: 340px;
+  border: 0;
+}
+
+.bk-note {
+  margin: 14px 0 0;
+  color: var(--bk-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+a.bk-btn {
+  text-decoration: none;
 }
 
 .bk-actions {
@@ -1107,119 +1478,6 @@
 .bk-btn-primary:disabled {
   opacity: 0.7;
   cursor: wait;
-}
-
-/* ---------- Availability result ---------- */
-
-.av-result {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  margin-top: 22px;
-  padding: 16px;
-  border-radius: 16px;
-  animation: avPop 0.35s ease both;
-}
-
-@keyframes avPop {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.av-result h4 {
-  margin: 0 0 4px;
-  color: var(--bk-green);
-  font-size: 15px;
-}
-
-.av-result p {
-  margin: 0;
-  color: #4d5a54;
-  font-size: 12.5px;
-  line-height: 1.6;
-}
-
-.av-result p strong {
-  color: var(--bk-green);
-}
-
-.av-icon {
-  width: 38px;
-  height: 38px;
-  flex-shrink: 0;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  color: #fff;
-  font-size: 18px;
-  font-weight: 800;
-}
-
-.av-available {
-  border: 1px solid #b9dcc6;
-  background: #e4f3ea;
-}
-
-.av-available .av-icon {
-  background: #2f7d57;
-}
-
-.av-limited {
-  border: 1px solid #ecd49a;
-  background: #fff6e1;
-}
-
-.av-limited .av-icon {
-  background: #d39a22;
-}
-
-.av-soldout {
-  border: 1px solid #efb9b3;
-  background: #fdeceb;
-}
-
-.av-soldout .av-icon {
-  background: #c4554a;
-}
-
-.av-loading {
-  align-items: center;
-  background: var(--bk-bg);
-  box-shadow: inset 4px 4px 9px var(--bk-dark), inset -4px -4px 9px var(--bk-light);
-}
-
-.av-spinner {
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-  border: 3px solid rgba(29, 53, 43, 0.18);
-  border-top-color: #1d352b;
-  border-radius: 50%;
-  animation: avSpin 0.8s linear infinite;
-}
-
-@keyframes avSpin {
-  to { transform: rotate(360deg); }
-}
-
-.av-link {
-  display: block;
-  margin-top: 8px;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--bk-gold);
-  font-family: inherit;
-  font-size: 12.5px;
-  font-weight: 800;
-  text-align: left;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  cursor: pointer;
-}
-
-.av-link:hover {
-  color: var(--bk-green);
 }
 
 /* Success view */
@@ -1437,8 +1695,7 @@
 /* Focus */
 .bk-btn:focus-visible,
 .bk-close:focus-visible,
-.bk-counter button:focus-visible,
-.av-link:focus-visible {
+.bk-counter button:focus-visible {
   outline: 3px solid rgba(173, 134, 61, 0.45);
   outline-offset: 2px;
 }
@@ -1454,12 +1711,6 @@
   .exp-header {
     align-items: flex-start;
     flex-direction: column;
-  }
-  .exp-tabs {
-    width: 100%;
-  }
-  .exp-tab {
-    flex: 1;
   }
   .exp-cards-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1478,7 +1729,7 @@
   }
 }
 
-/* Popups: tablets & phones */
+/* Popup: tablets & phones */
 @media (max-width: 640px) {
   .bk-backdrop {
     align-items: flex-end;
@@ -1507,8 +1758,8 @@
     grid-template-columns: 1fr 1fr;
     gap: 14px 12px;
   }
-  /* Date, time, phone, aadhar, email go full width on phones */
-  .bk-grid:not(.bk-grid--plain) .bk-field:nth-of-type(n + 4) {
+  /* Date, time, phone, aadhar go full width on phones */
+  .bk-grid > .bk-m-full {
     grid-column: 1 / -1;
   }
   .bk-field input,
@@ -1519,15 +1770,46 @@
     width: 74px;
     height: 58px;
   }
-  .bk-total {
-    flex-direction: column;
-    align-items: stretch;
+  .bk-footer {
+    grid-template-columns: 1fr;
     gap: 14px;
   }
-  .bk-total > div:first-child {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  .bk-footer .bk-actions {
+    flex-direction: row;
+    min-width: 0;
+  }
+  .bk-bill-total strong {
+    font-size: 23px;
+  }
+  .bk-box {
+    padding: 0 12px;
+  }
+  .bk-box-main {
+    font-size: 11.5px;
+  }
+  .bk-box-main b {
+    font-size: 14px;
+  }
+  .bk-box-value {
+    font-size: 15px;
+  }
+  .bk-notice {
+    gap: 10px;
+    padding: 12px;
+  }
+  .bk-notice-icon {
+    width: 38px;
+    height: 38px;
+    font-size: 19px;
+  }
+  .bk-notice h5 {
+    font-size: 12.5px;
+  }
+  .bk-notice p {
+    font-size: 11px;
+  }
+  .bk-map-wrap iframe {
+    height: 280px;
   }
   .bk-actions {
     width: 100%;
@@ -1568,8 +1850,11 @@
   .bk-grid {
     grid-template-columns: 1fr;
   }
-  .bk-grid .bk-field:nth-of-type(n) {
+  .bk-grid > * {
     grid-column: 1 / -1;
+  }
+  .bk-notice-age {
+    display: none;
   }
   .bk-doc-grid {
     grid-template-columns: 1fr;
@@ -1613,40 +1898,16 @@
     font-size: 12px;
     line-height: 1.65;
   }
-  .exp-tabs {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 4px;
-    padding: 4px;
-    border-radius: 11px;
-    box-sizing: border-box;
-  }
-  .exp-tab {
-    min-width: 0;
-    min-height: 40px;
-    padding: 0 4px;
-    border-radius: 8px;
-    font-size: 11px;
-    line-height: 1;
-  }
-  .exp-tab-icon {
-    display: none;
-  }
   .exp-cards-grid {
     display: block;
     width: 100%;
   }
-  .exp-tour-card,
-  .exp-hotel-card {
+  .exp-tour-card {
     width: 100%;
     border-radius: 16px;
   }
   .exp-card-image-wrap {
     height: 225px;
-  }
-  .exp-hotel-image-wrap {
-    height: 215px;
   }
   .exp-duration,
   .exp-location {
@@ -1668,12 +1929,10 @@
     padding: 6px 11px 6px 9px;
     font-size: 10px;
   }
-  .exp-card-content,
-  .exp-hotel-content {
+  .exp-card-content {
     padding: 16px;
   }
-  .exp-card-content h2,
-  .exp-hotel-title-row h2 {
+  .exp-card-content h2 {
     font-size: 18px;
   }
   .exp-tagline {
@@ -1687,6 +1946,38 @@
     min-height: 0;
     font-size: 11px;
   }
+  .exp-pkg-pill {
+    min-height: 50px;
+  }
+  .exp-pkg-pill-name {
+    font-size: 12px;
+  }
+  .exp-pkg-pill-price {
+    font-size: 10px;
+  }
+  .exp-pkg-panel {
+    min-height: 0;
+    padding: 15px;
+    gap: 12px;
+  }
+  .exp-pkg-panel-icon {
+    width: 42px;
+    height: 42px;
+    font-size: 21px;
+  }
+  .exp-pkg-panel-title strong {
+    font-size: 15.5px;
+  }
+  .exp-pkg-tag {
+    padding: 5px 9px;
+    font-size: 8.5px;
+  }
+  .exp-pkg-features li {
+    font-size: 12px;
+  }
+  .exp-card-bottom {
+    padding-top: 13px;
+  }
   .exp-route-card {
     padding: 13px 14px;
     gap: 10px;
@@ -1694,12 +1985,11 @@
   .exp-route-point strong {
     font-size: 12px;
   }
-  .exp-card-footer,
-  .exp-hotel-footer {
+  .exp-card-footer {
     align-items: stretch;
     flex-direction: column;
     gap: 12px;
-    margin-top: 17px;
+    margin-top: 15px;
     padding-top: 14px;
   }
   .exp-price-box {
@@ -1746,46 +2036,6 @@
   .exp-dots button.active {
     width: 19px;
   }
-  .exp-breakfast {
-    top: 12px;
-    left: 12px;
-    padding: 6px 8px;
-    font-size: 7px;
-  }
-  .exp-hotel-rating {
-    right: 12px;
-    top: 12px;
-    padding: 6px 8px;
-    font-size: 9px;
-  }
-  .exp-hotel-location {
-    font-size: 10px;
-  }
-  .exp-hotel-distance {
-    margin-top: 9px;
-    font-size: 10px;
-  }
-  .exp-amenities {
-    gap: 5px;
-    margin-top: 13px;
-  }
-  .exp-amenities span {
-    padding: 5px 7px;
-    font-size: 8px;
-  }
-  .exp-room-info {
-    gap: 7px;
-    margin: 13px 0 0;
-  }
-  .exp-room-info > div {
-    padding: 8px;
-  }
-  .exp-room-info small {
-    font-size: 7px;
-  }
-  .exp-room-info strong {
-    font-size: 9px;
-  }
 }
 
 @media (max-width: 480px) {
@@ -1801,9 +2051,6 @@
   .exp-card-image-wrap {
     height: 210px;
   }
-  .exp-hotel-image-wrap {
-    height: 200px;
-  }
 }
 
 @media (max-width: 400px) {
@@ -1813,20 +2060,15 @@
   .exp-header h1 {
     font-size: 25px;
   }
-  .exp-card-content,
-  .exp-hotel-content {
+  .exp-card-content {
     padding: 14px;
   }
   .exp-card-image-wrap {
     height: 195px;
   }
-  .exp-hotel-image-wrap {
-    height: 185px;
-  }
 }
 
 /* Focus & motion */
-.exp-tab:focus-visible,
 .exp-primary-btn:focus-visible,
 .exp-pkg-pill:focus-visible,
 .exp-mobile-controls button:focus-visible {
@@ -1836,20 +2078,26 @@
 
 @media (prefers-reduced-motion: reduce) {
   .exp-tour-card,
-  .exp-hotel-card,
   .exp-card-image,
-  .exp-hotel-image,
   .exp-route-boat,
   .exp-price-row,
-  .exp-pkg-perks.is-warning,
-  .av-result,
-  .av-spinner,
+  .exp-pkg-panel,
+  .exp-pkg-panel::after,
+  .exp-pkg-features li,
+  .exp-pkg-empty-icon,
+  .exp-map,
+  .exp-map-route,
+  .bk-pop,
+  .bk-notice-icon,
   .bk-backdrop,
   .bk-modal,
   .bk-check circle,
   .bk-check path {
     transition: none;
     animation: none;
+  }
+  .exp-pkg-features li {
+    opacity: 1;
   }
   .bk-check circle,
   .bk-check path {
@@ -1859,4 +2107,38 @@
 
 .exp-section img {
   max-width: 100%;
+}
+
+/* Booking slip: fare breakdown */
+.bk-doc-bill {
+  margin: 0 22px 16px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #f6f7f2;
+}
+
+.bk-doc-bill > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 3px 0;
+  color: #4d5a54;
+  font-size: 12.5px;
+}
+
+.bk-doc-bill b {
+  color: #1d352b;
+  white-space: nowrap;
+}
+
+@media (max-width: 650px) {
+  .exp-map {
+    height: 135px;
+  }
+  .exp-card-eyebrow {
+    font-size: 9px;
+  }
+  .bk-doc-bill {
+    margin: 0 16px 14px;
+  }
 }

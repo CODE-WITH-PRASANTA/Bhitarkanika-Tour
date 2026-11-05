@@ -11,6 +11,7 @@ import {
   X,
   FilePenLine,
   FolderKanban,
+  Leaf,
 } from "lucide-react";
 
 import logo from "../../assets/mlogo.png";
@@ -45,6 +46,11 @@ export const NAV_ITEMS = [
     label: "Gallery",
     icon: Images,
     path: "/gallery",
+  },
+  {
+    label: "Explores",
+    icon: Leaf,
+    path: "/explores",
   },
   {
     label: "Tour Booking",
