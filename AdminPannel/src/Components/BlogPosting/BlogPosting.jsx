@@ -1,5 +1,6 @@
 
-import React, { useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Editor } from "@tinymce/tinymce-react";
 import {
   BookOpen,
@@ -24,16 +25,6 @@ import {
 } from "lucide-react";
 import "./BlogPosting.css";
 
-const BLOG_CATEGORIES = [
-  "Travel Guide",
-  "Wildlife",
-  "Adventure",
-  "Culture",
-  "Photography",
-  "Travel Tips",
-  "Destination",
-];
-
 const BLOG_SEASONS = [
   "Winter",
   "Summer",
@@ -43,53 +34,17 @@ const BLOG_SEASONS = [
   "All Year Round",
 ];
 
-const INITIAL_BLOGS = [
-  {
-    id: 1,
-    title: "Exploring the Beauty of Bhitarkanika",
-    description:
-      "<p>Discover the beautiful mangrove forests, rich biodiversity, and unforgettable river experiences of Bhitarkanika.</p>",
-    location: "Bhitarkanika, Odisha",
-    idealSeason: "Winter",
-    category: "Travel Guide",
-    quote: "Nature always has a story worth discovering.",
-    tags: ["Bhitarkanika", "Nature", "Odisha"],
-    mainImage:
-      "https://images.unsplash.com/photo-1448375240586-882707db888b?w=900&auto=format&fit=crop&q=80",
-    contentImages: [],
-    date: "2026-10-20",
-  },
-  {
-    id: 2,
-    title: "A Complete Guide to Mangrove Wildlife",
-    description:
-      "<p>Explore the fascinating wildlife and natural habitats found within the mangrove ecosystem.</p>",
-    location: "Kendrapara, Odisha",
-    idealSeason: "Winter",
-    category: "Wildlife",
-    quote: "Protecting nature means protecting our future.",
-    tags: ["Wildlife", "Mangroves", "Travel"],
-    mainImage:
-      "https://images.unsplash.com/photo-1472396961693-142e6e269027?w=900&auto=format&fit=crop&q=80",
-    contentImages: [],
-    date: "2026-10-18",
-  },
-  {
-    id: 3,
-    title: "Planning Your Next Nature Adventure",
-    description:
-      "<p>Plan a refreshing getaway with scenic landscapes, memorable journeys, and responsible tourism.</p>",
-    location: "Odisha, India",
-    idealSeason: "Winter",
-    category: "Adventure",
-    quote: "The best journeys bring us closer to nature.",
-    tags: ["Adventure", "Travel Tips"],
-    mainImage:
-      "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=900&auto=format&fit=crop&q=80",
-    contentImages: [],
-    date: "2026-10-15",
-  },
-];
+const API_BASE_URL = "http://localhost:5000/api/blogs";
+const API_CATEGORIES_URL = "http://localhost:5000/api/blog-categories?active=true";
+
+const normalizeBlog = (blog) => ({
+  ...blog,
+  id: blog._id || blog.id,
+  tags: Array.isArray(blog.tags) ? blog.tags : [],
+  contentImages: Array.isArray(blog.contentImages) ? blog.contentImages : [],
+  published: blog.published !== false,
+  date: blog.date || (blog.createdAt ? blog.createdAt.slice(0, 10) : new Date().toISOString().slice(0, 10)),
+});
 
 const EMPTY_FORM = {
   title: "",
@@ -101,11 +56,16 @@ const EMPTY_FORM = {
   tags: [],
   mainImage: "",
   contentImages: [],
+  published: true,
 };
 
 const BlogPosting = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const editParamId = searchParams.get("edit");
+
   const [activeTab, setActiveTab] = useState("form");
-  const [blogs, setBlogs] = useState(INITIAL_BLOGS);
+  const [blogs, setBlogs] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState(EMPTY_FORM);
   const [editingId, setEditingId] = useState(null);
   const [search, setSearch] = useState("");
@@ -113,9 +73,74 @@ const BlogPosting = () => {
   const [tagInput, setTagInput] = useState("");
   const [notice, setNotice] = useState("");
   const [previewBlog, setPreviewBlog] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
 
   const mainImageRef = useRef(null);
   const contentImagesRef = useRef(null);
+
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      try {
+        const [blogsRes, categoriesRes] = await Promise.all([
+          fetch(API_BASE_URL),
+          fetch(API_CATEGORIES_URL),
+        ]);
+        const [blogsJson, categoriesJson] = await Promise.all([
+          blogsRes.json(),
+          categoriesRes.json(),
+        ]);
+
+        if (blogsRes.ok && blogsJson.success) {
+          setBlogs((blogsJson.data || []).map(normalizeBlog));
+        }
+        if (categoriesRes.ok && categoriesJson.success) {
+          setCategories(
+            (categoriesJson.data || []).map((item) => item.name).filter(Boolean)
+          );
+        }
+      } catch (error) {
+        setNotice("Unable to load blogs or categories from server.");
+      }
+    };
+
+    fetchInitialData();
+  }, []);
+
+  useEffect(() => {
+    if (!editParamId) return;
+
+    const loadBlogForEdit = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/${editParamId}`);
+        const result = await res.json();
+        if (!res.ok || !result.success || !result.data) {
+          throw new Error(result.message || "Blog not found.");
+        }
+
+        const blog = normalizeBlog(result.data);
+        setFormData({
+          title: blog.title || "",
+          description: blog.description || "",
+          location: blog.location || "",
+          idealSeason: blog.idealSeason || "",
+          category: blog.category || "",
+          quote: blog.quote || "",
+          tags: [...blog.tags],
+          mainImage: blog.mainImage || "",
+          contentImages: [...blog.contentImages],
+          published: blog.published,
+        });
+        setEditingId(blog.id);
+        setActiveTab("form");
+        setNotice("");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } catch (error) {
+        setNotice(error.message || "Unable to load blog for editing.");
+      }
+    };
+
+    loadBlogForEdit();
+  }, [editParamId]);
 
   const filteredBlogs = useMemo(() => {
     const term = search.trim().toLowerCase();
@@ -224,12 +249,13 @@ const BlogPosting = () => {
     setEditingId(null);
     setTagInput("");
     setNotice("");
+    if (editParamId) setSearchParams({});
 
     if (mainImageRef.current) mainImageRef.current.value = "";
     if (contentImagesRef.current) contentImagesRef.current.value = "";
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!formData.title.trim()) {
@@ -257,41 +283,80 @@ const BlogPosting = () => {
       return;
     }
 
-    const existingBlog = blogs.find((blog) => blog.id === editingId);
+    try {
+      setSubmitting(true);
+      setNotice("");
 
-    const savedBlog = {
-      ...formData,
-      id: editingId ?? Date.now(),
-      mainImage:
-        formData.mainImage instanceof File
-          ? URL.createObjectURL(formData.mainImage)
-          : formData.mainImage,
-      contentImages: formData.contentImages.map((image) =>
-        image instanceof File ? URL.createObjectURL(image) : image
-      ),
-      date: existingBlog?.date || new Date().toISOString().slice(0, 10),
-    };
+      const payload = new FormData();
+      payload.append("title", formData.title.trim());
+      payload.append("description", formData.description);
+      payload.append("location", formData.location.trim());
+      payload.append("idealSeason", formData.idealSeason);
+      payload.append("category", formData.category);
+      payload.append("quote", formData.quote || "");
+      payload.append("tags", JSON.stringify(formData.tags));
+      payload.append("published", String(formData.published));
 
-    if (editingId !== null) {
-      setBlogs((previous) =>
-        previous.map((blog) =>
-          blog.id === editingId ? savedBlog : blog
-        )
+      if (formData.mainImage instanceof File) {
+        payload.append("mainImage", formData.mainImage);
+      } else {
+        payload.append("mainImage", formData.mainImage);
+      }
+
+      const existingContentUrls = formData.contentImages.filter(
+        (image) => typeof image === "string"
       );
-      setNotice("Blog updated successfully.");
-    } else {
-      setBlogs((previous) => [savedBlog, ...previous]);
-      setNotice("Blog created successfully.");
+      payload.append(
+        "existingContentImages",
+        JSON.stringify(existingContentUrls)
+      );
+
+      formData.contentImages.forEach((image) => {
+        if (image instanceof File) {
+          payload.append("contentImages", image);
+        }
+      });
+
+      const isEditing = editingId !== null;
+      const response = await fetch(
+        isEditing ? `${API_BASE_URL}/${editingId}` : API_BASE_URL,
+        {
+          method: isEditing ? "PUT" : "POST",
+          body: payload,
+        }
+      );
+
+      const result = await response.json();
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Failed to save blog.");
+      }
+
+      const savedBlog = normalizeBlog(result.data);
+
+      if (isEditing) {
+        setBlogs((previous) =>
+          previous.map((blog) => (blog.id === editingId ? savedBlog : blog))
+        );
+        setNotice("Blog updated successfully.");
+      } else {
+        setBlogs((previous) => [savedBlog, ...previous]);
+        setNotice("Blog saved to database successfully.");
+      }
+
+      setFormData(EMPTY_FORM);
+      setEditingId(null);
+      setTagInput("");
+      if (editParamId) setSearchParams({});
+
+      if (mainImageRef.current) mainImageRef.current.value = "";
+      if (contentImagesRef.current) contentImagesRef.current.value = "";
+
+      setActiveTab("table");
+    } catch (error) {
+      setNotice(error.message || "Error saving blog.");
+    } finally {
+      setSubmitting(false);
     }
-
-    setFormData(EMPTY_FORM);
-    setEditingId(null);
-    setTagInput("");
-
-    if (mainImageRef.current) mainImageRef.current.value = "";
-    if (contentImagesRef.current) contentImagesRef.current.value = "";
-
-    setActiveTab("table");
   };
 
   const handleEdit = (blog) => {
@@ -306,18 +371,56 @@ const BlogPosting = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     const confirmed = window.confirm(
       "Are you sure you want to delete this blog?"
     );
 
     if (!confirmed) return;
 
-    setBlogs((previous) => previous.filter((blog) => blog.id !== id));
+    try {
+      const response = await fetch(`${API_BASE_URL}/${id}`, {
+        method: "DELETE",
+      });
+      const result = await response.json();
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Failed to delete blog.");
+      }
 
-    if (editingId === id) resetForm();
+      setBlogs((previous) => previous.filter((blog) => blog.id !== id));
 
-    setNotice("Blog deleted successfully.");
+      if (editingId === id) resetForm();
+
+      setNotice("Blog deleted successfully.");
+    } catch (error) {
+      setNotice(error.message || "Error deleting blog.");
+    }
+  };
+
+  const handleTogglePublish = async (blog) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/${blog.id}/publish`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ published: !blog.published }),
+      });
+      const result = await response.json();
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Failed to update publish status.");
+      }
+
+      const updated = normalizeBlog(result.data);
+      setBlogs((previous) =>
+        previous.map((item) => (item.id === blog.id ? updated : item))
+      );
+      setNotice(
+        updated.published
+          ? "Blog published successfully."
+          : "Blog moved to draft."
+      );
+    } catch (error) {
+      setNotice(error.message || "Error updating publish status.");
+    }
   };
 
   const getImageUrl = (image) => {
@@ -510,8 +613,12 @@ const BlogPosting = () => {
                   }
                   required
                 >
-                  <option value="">Choose category</option>
-                  {BLOG_CATEGORIES.map((category) => (
+                  <option value="">
+                    {categories.length
+                      ? "Choose category"
+                      : "No categories found — add one in Add Category"}
+                  </option>
+                  {categories.map((category) => (
                     <option key={category} value={category}>
                       {category}
                     </option>
@@ -714,12 +821,54 @@ const BlogPosting = () => {
             </p>
           </div>
 
+          {/* Publish / Draft Toggle */}
+          <div className="BlogPosting-form-card BlogPosting-publish-card">
+            <div className="BlogPosting-publish-copy">
+              <strong>Visibility Status</strong>
+              <span>
+                {formData.published
+                  ? "Published — visible on the public blog page"
+                  : "Draft — saved in database, hidden from public blog page"}
+              </span>
+            </div>
+
+            <div className="BlogPosting-publish-control">
+              <span
+                className={`BlogPosting-publish-label ${
+                  !formData.published ? "is-draft" : ""
+                }`}
+              >
+                Draft
+              </span>
+              <button
+                type="button"
+                role="switch"
+                aria-checked={formData.published}
+                aria-label="Toggle publish or draft status"
+                className={`BlogPosting-switch ${
+                  formData.published ? "is-published" : ""
+                }`}
+                onClick={() => updateField("published", !formData.published)}
+              >
+                <span className="BlogPosting-switch-thumb" />
+              </button>
+              <span
+                className={`BlogPosting-publish-label ${
+                  formData.published ? "is-published" : ""
+                }`}
+              >
+                Publish
+              </span>
+            </div>
+          </div>
+
           {/* Form Actions */}
           <div className="BlogPosting-form-actions">
             <button
               type="button"
               className="BlogPosting-reset-btn"
               onClick={resetForm}
+              disabled={submitting}
             >
               <RotateCcw size={17} />
               Reset Form
@@ -728,9 +877,16 @@ const BlogPosting = () => {
             <button
               type="submit"
               className="BlogPosting-submit-btn"
+              disabled={submitting}
             >
               <Save size={18} />
-              {editingId ? "Update Blog" : "Publish Blog"}
+              {submitting
+                ? "Saving..."
+                : editingId
+                  ? "Update Blog"
+                  : formData.published
+                    ? "Publish Blog"
+                    : "Save as Draft"}
             </button>
           </div>
         </form>
@@ -782,7 +938,7 @@ const BlogPosting = () => {
               aria-label="Filter blogs by category"
             >
               <option>All Categories</option>
-              {BLOG_CATEGORIES.map((category) => (
+              {categories.map((category) => (
                 <option key={category}>{category}</option>
               ))}
             </select>
@@ -803,6 +959,7 @@ const BlogPosting = () => {
                   <th>Category</th>
                   <th>Ideal Season</th>
                   <th>Tags</th>
+                  <th>Status</th>
                   <th>Date</th>
                   <th>Actions</th>
                 </tr>
@@ -852,6 +1009,31 @@ const BlogPosting = () => {
                         {blog.tags.length > 2 && (
                           <span>+{blog.tags.length - 2}</span>
                         )}
+                      </div>
+                    </td>
+
+                    <td>
+                      <div className="BlogPosting-table-switch">
+                        <button
+                          type="button"
+                          role="switch"
+                          aria-checked={blog.published}
+                          aria-label={`Toggle ${blog.title} publish or draft`}
+                          className={`BlogPosting-switch BlogPosting-switch--sm ${
+                            blog.published ? "is-published" : ""
+                          }`}
+                          onClick={() => handleTogglePublish(blog)}
+                          title="Toggle Publish / Draft"
+                        >
+                          <span className="BlogPosting-switch-thumb" />
+                        </button>
+                        <span
+                          className={`BlogPosting-status-text ${
+                            blog.published ? "is-published" : "is-draft"
+                          }`}
+                        >
+                          {blog.published ? "Published" : "Draft"}
+                        </span>
                       </div>
                     </td>
 

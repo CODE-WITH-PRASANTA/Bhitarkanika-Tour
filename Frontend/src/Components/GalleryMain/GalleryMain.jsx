@@ -2,168 +2,80 @@ import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import "./GalleryMain.css";
 
-const galleryImages = [
-  {
-    id: 1,
-    title: "Saltwater Crocodile",
-    category: "Wildlife",
-    location: "Bhitarkanika National Park",
-    image:
-      "https://images.squarespace-cdn.com/content/v1/552ce6d0e4b0d3f184888632/1439705415659-VQJQ7HYKF6J9RKBDYTON/5D3_9150.jpg",
-  },
-  {
-    id: 2,
-    title: "Olive Ridley Turtles",
-    category: "Wildlife",
-    location: "Odisha Coast",
-    image:
-      "https://res.cloudinary.com/roundglass/image/upload/f_auto/v1584218805/roundglass/sustain/Odisha_Olive-ridley_Kartik-Shanker-copy_ze1jx0.jpg",
-  },
-  {
-    id: 3,
-    title: "Birds of the Mangroves",
-    category: "Birds",
-    location: "Bhitarkanika Wetlands",
-    image:
-      "https://miro.medium.com/v2/resize%3Afit%3A1200/0%2A6UWbJD-wqfPe4MXk.jpg",
-  },
-  {
-    id: 4,
-    title: "Deep Green Forest",
-    category: "Nature",
-    location: "Mangrove Forest",
-    image:
-      "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1400&q=85",
-  },
-  {
-    id: 5,
-    title: "Deer in the Wilderness",
-    category: "Wildlife",
-    location: "Forest Habitat",
-    image:
-      "https://apps.odishatourism.gov.in/Application/uploadDocuments/UserContribution/user20200130121601619",
-  },
-  {
-    id: 6,
-    title: "Coastal Blue",
-    category: "Nature",
-    location: "Odisha Coastline",
-    image:
-      "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1400&q=85",
-  },
-  {
-    id: 7,
-    title: "Colourful Birdlife",
-    category: "Birds",
-    location: "Birdwatching Trail",
-    image:
-      "https://images.unsplash.com/photo-1552728089-57bdde30beb3?auto=format&fit=crop&w=1400&q=85",
-  },
-  {
-    id: 8,
-    title: "A Journey Through Nature",
-    category: "Boating",
-    location: "Mangrove Waterways",
-    image:
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=85",
-  },
-  {
-    id: 9,
-    title: "Forest Canopy",
-    category: "Nature",
-    location: "Green Forest Trail",
-    image:
-      "https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=1400&q=85",
-  },
-  {
-    id: 10,
-    title: "Birds in Their Natural Habitat",
-    category: "Birds",
-    location: "Wetland Sanctuary",
-    image:
-      "https://images.unsplash.com/photo-1444464666168-49d633b86797?auto=format&fit=crop&w=1400&q=85",
-  },
-  {
-    id: 11,
-    title: "Peaceful Ocean Waves",
-    category: "Nature",
-    location: "Coastal Odisha",
-    image:
-      "https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1400&q=85",
-  },
-  {
-    id: 12,
-    title: "Wild Nature",
-    category: "Wildlife",
-    location: "Natural Habitat",
-    image:
-      "https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=1400&q=85",
-  },
-  {
-    id: 13,
-    title: "The Living Forest",
-    category: "Nature",
-    location: "Mangrove Ecosystem",
-    image:
-      "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1400&q=85",
-  },
-  {
-    id: 14,
-    title: "Wings in Motion",
-    category: "Birds",
-    location: "Bird Habitat",
-    image:
-      "https://images.unsplash.com/photo-1480044965905-02098d419e96?auto=format&fit=crop&w=1400&q=85",
-  },
-  {
-    id: 15,
-    title: "River Adventure",
-    category: "Boating",
-    location: "Bhitarkanika Waterways",
-    image:
-      "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1400&q=85",
-  },
-  {
-    id: 16,
-    title: "A Natural Paradise",
-    category: "Wildlife",
-    location: "Odisha Wilderness",
-    image:
-      "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1400&q=85",
-  },
-  {
-    id: 17,
-    title: "Golden Hour",
-    category: "Nature",
-    location: "Evening Landscape",
-    image:
-      "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1400&q=85",
-  },
-  {
-    id: 18,
-    title: "Into the Wilderness",
-    category: "Nature",
-    location: "Forest Trails",
-    image:
-      "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=1400&q=85",
-  },
-];
-
-const categories = ["All", "Wildlife", "Birds", "Nature", "Boating"];
+const API_GALLERY_URL = "http://localhost:5000/api/gallery";
+const API_CATEGORIES_URL = "http://localhost:5000/api/blog-categories?active=true";
 const IMAGES_PER_PAGE = 12;
 
 const GalleryMain = () => {
+  const [galleryImages, setGalleryImages] = useState([]);
+  const [dbCategories, setDbCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedImage, setSelectedImage] = useState(null);
   const [failedImages, setFailedImages] = useState([]);
 
+  useEffect(() => {
+    const fetchGalleryAndCategories = async () => {
+      try {
+        setLoading(true);
+        const [galleryRes, categoriesRes] = await Promise.all([
+          fetch(API_GALLERY_URL),
+          fetch(API_CATEGORIES_URL),
+        ]);
+        const [galleryJson, categoriesJson] = await Promise.all([
+          galleryRes.json(),
+          categoriesRes.json(),
+        ]);
+
+        if (galleryRes.ok && galleryJson.success) {
+          const mapped = (galleryJson.data || []).map((item) => ({
+            id: item._id || item.id,
+            title: item.title,
+            category: item.category || "",
+            location: item.location || "",
+            image: item.image,
+          }));
+          setGalleryImages(mapped);
+        }
+
+        if (categoriesRes.ok && categoriesJson.success) {
+          setDbCategories(
+            (categoriesJson.data || []).map((cat) => cat.name).filter(Boolean)
+          );
+        }
+      } catch (error) {
+        console.error("Failed to fetch gallery:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGalleryAndCategories();
+  }, []);
+
+  const categories = useMemo(
+    () => [
+      "All",
+      ...Array.from(
+        new Set([
+          ...dbCategories,
+          ...galleryImages.map((item) => item.category).filter(Boolean),
+        ])
+      ),
+    ],
+    [dbCategories, galleryImages]
+  );
+
   const filteredImages = useMemo(() => {
     if (activeCategory === "All") return galleryImages;
     return galleryImages.filter((item) => item.category === activeCategory);
-  }, [activeCategory]);
+  }, [activeCategory, galleryImages]);
 
-  const totalPages = Math.ceil(filteredImages.length / IMAGES_PER_PAGE);
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredImages.length / IMAGES_PER_PAGE)
+  );
 
   const currentImages = useMemo(() => {
     const start = (currentPage - 1) * IMAGES_PER_PAGE;
@@ -384,7 +296,16 @@ const GalleryMain = () => {
           </div>
 
           {/* Gallery Cards Grid */}
-          <div className="GalleryMain__grid">
+          {loading ? (
+            <div style={{ textAlign: "center", padding: "50px 20px" }}>
+              <p>Loading gallery photographs...</p>
+            </div>
+          ) : currentImages.length === 0 ? (
+            <div style={{ textAlign: "center", padding: "50px 20px" }}>
+              <p>No gallery photographs found in this category.</p>
+            </div>
+          ) : (
+            <div className="GalleryMain__grid">
             {currentImages.map((item, index) => (
               <article
                 key={item.id}
@@ -422,7 +343,7 @@ const GalleryMain = () => {
                   )}
 
                   <span className="GalleryMain__imageNumber">
-                    {String(item.id).padStart(2, "0")}
+                    {String((currentPage - 1) * IMAGES_PER_PAGE + index + 1).padStart(2, "0")}
                   </span>
 
                   <span className="GalleryMain__imageCategory">
@@ -464,7 +385,8 @@ const GalleryMain = () => {
                 </div>
               </article>
             ))}
-          </div>
+            </div>
+          )}
 
           {/* Pagination */}
           {totalPages > 1 && (

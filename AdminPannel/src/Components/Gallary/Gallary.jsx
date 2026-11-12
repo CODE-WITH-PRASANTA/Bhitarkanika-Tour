@@ -1,5 +1,5 @@
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Images,
   Plus,
@@ -17,44 +17,13 @@ import {
 
 import "./Gallary.css";
 
-const GallaryCategories = [
-  "Wildlife",
-  "Birds",
-  "Boating",
-  "Nature",
-  "Waterfalls",
-  "Beach",
-  "Temple",
-  "Adventure",
-  "Other",
-];
+const API_GALLERY_URL = "http://localhost:5000/api/gallery";
+const API_CATEGORIES_URL = "http://localhost:5000/api/blog-categories?active=true";
 
-const GallarySampleData = [
-  {
-    id: 1,
-    title: "Mountain Escape",
-    category: "Nature",
-    location: "Eastern Himalayas",
-    image:
-      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=700&q=80",
-  },
-  {
-    id: 2,
-    title: "Tropical Paradise",
-    category: "Beach",
-    location: "Puri Beach, Odisha",
-    image:
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=700&q=80",
-  },
-  {
-    id: 3,
-    title: "Forest Adventure",
-    category: "Wildlife",
-    location: "Similipal National Park",
-    image:
-      "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=700&q=80",
-  },
-];
+const normalizeGalleryItem = (item) => ({
+  ...item,
+  id: item._id || item.id,
+});
 
 const GallaryEmptyForm = {
   title: "",
@@ -64,14 +33,44 @@ const GallaryEmptyForm = {
 };
 
 const Gallary = () => {
-  const [gallaryItems, setGallaryItems] = useState(GallarySampleData);
+  const [gallaryItems, setGallaryItems] = useState([]);
+  const [gallaryCategories, setGallaryCategories] = useState([]);
   const [gallaryForm, setGallaryForm] = useState({ ...GallaryEmptyForm });
   const [gallarySearch, setGallarySearch] = useState("");
   const [gallaryEditingId, setGallaryEditingId] = useState(null);
   const [gallaryNotice, setGallaryNotice] = useState("");
+  const [gallarySubmitting, setGallarySubmitting] = useState(false);
 
   const gallaryFileInputRef = useRef(null);
   const gallaryFormRef = useRef(null);
+
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      try {
+        const [galleryRes, categoriesRes] = await Promise.all([
+          fetch(API_GALLERY_URL),
+          fetch(API_CATEGORIES_URL),
+        ]);
+        const [galleryJson, categoriesJson] = await Promise.all([
+          galleryRes.json(),
+          categoriesRes.json(),
+        ]);
+
+        if (galleryRes.ok && galleryJson.success) {
+          setGallaryItems((galleryJson.data || []).map(normalizeGalleryItem));
+        }
+        if (categoriesRes.ok && categoriesJson.success) {
+          setGallaryCategories(
+            (categoriesJson.data || []).map((c) => c.name).filter(Boolean)
+          );
+        }
+      } catch {
+        setGallaryNotice("Unable to load gallery items or categories from server.");
+      }
+    };
+
+    fetchInitialData();
+  }, []);
 
   const gallaryFilteredItems = gallaryItems.filter((item) => {
     const query = gallarySearch.trim().toLowerCase();
@@ -111,21 +110,16 @@ const Gallary = () => {
       return;
     }
 
-    const reader = new FileReader();
+    setGallaryForm((previous) => ({
+      ...previous,
+      image: file,
+    }));
+    setGallaryNotice("");
+  };
 
-    reader.onload = () => {
-      setGallaryForm((previous) => ({
-        ...previous,
-        image: reader.result,
-      }));
-      setGallaryNotice("");
-    };
-
-    reader.onerror = () => {
-      setGallaryNotice("Unable to read the selected image.");
-    };
-
-    reader.readAsDataURL(file);
+  const getPreviewSrc = (image) => {
+    if (image instanceof File) return URL.createObjectURL(image);
+    return image || "";
   };
 
   const gallaryResetForm = () => {
@@ -138,7 +132,7 @@ const Gallary = () => {
     }
   };
 
-  const gallaryHandleSave = (event) => {
+  const gallaryHandleSave = async (event) => {
     event.preventDefault();
 
     if (
@@ -153,27 +147,55 @@ const Gallary = () => {
       return;
     }
 
-    const photograph = {
-      id: gallaryEditingId ?? Date.now(),
-      title: gallaryForm.title.trim(),
-      category: gallaryForm.category,
-      location: gallaryForm.location.trim(),
-      image: gallaryForm.image,
-    };
+    try {
+      setGallarySubmitting(true);
+      setGallaryNotice("");
 
-    if (gallaryEditingId !== null) {
-      setGallaryItems((previous) =>
-        previous.map((item) =>
-          item.id === gallaryEditingId ? photograph : item
-        )
+      const payload = new FormData();
+      payload.append("title", gallaryForm.title.trim());
+      payload.append("category", gallaryForm.category);
+      payload.append("location", gallaryForm.location.trim());
+
+      if (gallaryForm.image instanceof File) {
+        payload.append("image", gallaryForm.image);
+      } else {
+        payload.append("image", gallaryForm.image);
+      }
+
+      const isEditing = gallaryEditingId !== null;
+      const response = await fetch(
+        isEditing ? `${API_GALLERY_URL}/${gallaryEditingId}` : API_GALLERY_URL,
+        {
+          method: isEditing ? "PUT" : "POST",
+          body: payload,
+        }
       );
-      setGallaryNotice("Gallery photograph updated successfully.");
-    } else {
-      setGallaryItems((previous) => [...previous, photograph]);
-      setGallaryNotice("Gallery photograph added successfully.");
-    }
 
-    gallaryResetForm();
+      const result = await response.json();
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Failed to save gallery photograph.");
+      }
+
+      const savedItem = normalizeGalleryItem(result.data);
+
+      if (isEditing) {
+        setGallaryItems((previous) =>
+          previous.map((item) =>
+            item.id === gallaryEditingId ? savedItem : item
+          )
+        );
+        gallaryResetForm();
+        setGallaryNotice("Gallery photograph updated successfully.");
+      } else {
+        setGallaryItems((previous) => [savedItem, ...previous]);
+        gallaryResetForm();
+        setGallaryNotice("Gallery photograph saved to database successfully.");
+      }
+    } catch (error) {
+      setGallaryNotice(error.message || "Error saving gallery photograph.");
+    } finally {
+      setGallarySubmitting(false);
+    }
   };
 
   const gallaryHandleEdit = (item) => {
@@ -197,22 +219,34 @@ const Gallary = () => {
     });
   };
 
-  const gallaryHandleDelete = (id) => {
+  const gallaryHandleDelete = async (id) => {
     const confirmed = window.confirm(
       "Are you sure you want to delete this photograph?"
     );
 
     if (!confirmed) return;
 
-    setGallaryItems((previous) =>
-      previous.filter((item) => item.id !== id)
-    );
+    try {
+      const response = await fetch(`${API_GALLERY_URL}/${id}`, {
+        method: "DELETE",
+      });
+      const result = await response.json();
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Failed to delete photograph.");
+      }
 
-    if (gallaryEditingId === id) {
-      gallaryResetForm();
+      setGallaryItems((previous) =>
+        previous.filter((item) => item.id !== id)
+      );
+
+      if (gallaryEditingId === id) {
+        gallaryResetForm();
+      }
+
+      setGallaryNotice("Gallery photograph deleted successfully.");
+    } catch (error) {
+      setGallaryNotice(error.message || "Error deleting photograph.");
     }
-
-    setGallaryNotice("Gallery photograph deleted successfully.");
   };
 
   const gallaryClearSearch = () => {
@@ -294,9 +328,13 @@ const Gallary = () => {
                 onChange={gallaryHandleChange}
                 required
               >
-                <option value="">Choose category</option>
+                <option value="">
+                  {gallaryCategories.length
+                    ? "Choose category"
+                    : "No categories found — add one in Add Category"}
+                </option>
 
-                {GallaryCategories.map((category) => (
+                {gallaryCategories.map((category) => (
                   <option key={category} value={category}>
                     {category}
                   </option>
@@ -365,7 +403,7 @@ const Gallary = () => {
                 {gallaryForm.image ? (
                   <>
                     <img
-                      src={gallaryForm.image}
+                      src={getPreviewSrc(gallaryForm.image)}
                       alt="Selected gallery preview"
                     />
 

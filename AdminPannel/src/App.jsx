@@ -3,7 +3,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "./Layout/MainLayout/MainLayout";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import BlogPosting from "./Components/BlogPosting/BlogPosting";
+import BlogCategory from "./Components/BlogCategory/BlogCategory";
 import BlogManagement from "./Components/BlogManagement/BlogManagement";
+import BlogComments from "./Components/BlogComments/BlogComments";
 import Enquiry from "./Components/Enquiry/Enquiry";
 import TourBooking from "./Components/TourBooking/TourBooking";
 import Gallary from "./Components/Gallary/Gallary";
@@ -19,7 +21,9 @@ const App = () => {
           <Route index element={<Dashboard />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="/blog/posting" element={<BlogPosting />} />
+          <Route path="/blog/category" element={<BlogCategory />} />
           <Route path="/blog/management" element={<BlogManagement />} />
+          <Route path="/blog/comments" element={<BlogComments />} />
           <Route path="/enquiry" element={<Enquiry />} />
           <Route path="/tour-booking" element={<TourBooking />} />
           <Route path="/gallery" element={<Gallary />} />

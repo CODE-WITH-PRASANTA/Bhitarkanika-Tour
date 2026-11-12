@@ -1,14 +1,11 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Users,
   FileText,
   Clock3,
   MessageCircle,
   CircleCheck,
-  Download,
-  Plus,
   Search,
-  CalendarDays,
   Eye,
   Pencil,
   Trash2,
@@ -16,57 +13,47 @@ import {
   ChevronLeft,
   ChevronRight,
   X,
-  MapPin,
-  UserRound,
   Mail,
   Phone,
   CheckSquare,
-  LayoutDashboard,
-  Leaf,
+  Square,
+  Sparkles,
+  RefreshCw,
+  Send,
+  Calendar,
 } from "lucide-react";
 
 import "./Enquiry.css";
 
-const photoPool = [
-  "https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?auto=format&fit=crop&w=140&q=80",
-  "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=140&q=80",
-  "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=140&q=80",
-  "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=140&q=80",
-  "https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=140&q=80",
-  "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=140&q=80",
-  "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=140&q=80",
-  "https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=140&q=80",
-  "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=140&q=80",
-  "https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=140&q=80",
-];
+const API_ENQUIRY_URL = "http://localhost:5000/api/enquiries";
 
-const initialRows = [
-  ["Rahul Mehta", "rahul.mehta@gmail.com", "+91 98765 43210", "Bhitarkanika Tour", "12 Dec 2025", "14 Dec 2025", 2, "New", "24 Oct 2025", "10:30 AM"],
-  ["Priya Sharma", "priya.sharma@gmail.com", "+91 87654 32109", "River Safari", "5 Jan 2026", "7 Jan 2026", 4, "In Progress", "23 Oct 2025", "04:15 PM"],
-  ["Amit Kumar", "amit.kumar@yahoo.com", "+91 76543 21098", "Wildlife Experience", "20 Jan 2026", "22 Jan 2026", 3, "Replied", "22 Oct 2025", "11:20 AM"],
-  ["Sneha Patel", "sneha.patel@gmail.com", "+91 65432 10987", "Mangrove Tour", "14 Feb 2026", "16 Feb 2026", 2, "In Progress", "21 Oct 2025", "02:45 PM"],
-  ["Vikash Singh", "vikash.singh@gmail.com", "+91 98760 12345", "Family Tour", "2 Mar 2026", "5 Mar 2026", 5, "Replied", "20 Oct 2025", "09:10 AM"],
-  ["Neha Reddy", "neha.reddy@gmail.com", "+91 87650 98765", "Photography Tour", "18 Mar 2026", "20 Mar 2026", 2, "New", "19 Oct 2025", "01:30 PM"],
-  ["Sanjay Das", "sanjay.das@gmail.com", "+91 76540 67890", "Bird Watching", "10 Apr 2026", "12 Apr 2026", 3, "Closed", "18 Oct 2025", "12:10 PM"],
-  ["Kavita Gupta", "kavita.gupta@gmail.com", "+91 65430 24680", "Weekend Getaway", "24 Apr 2026", "26 Apr 2026", 2, "Replied", "17 Oct 2025", "03:45 AM"],
-  ["Arjun Das", "arjun.das@gmail.com", "+91 98765 11002", "Coastal Escape", "2 May 2026", "4 May 2026", 3, "New", "16 Oct 2025", "10:15 AM"],
-  ["Meera Nair", "meera.nair@gmail.com", "+91 87654 22011", "Nature Photography", "8 May 2026", "10 May 2026", 2, "In Progress", "15 Oct 2025", "11:40 AM"],
-  ["Rohan Patel", "rohan.patel@gmail.com", "+91 76543 33010", "Forest Adventure", "15 May 2026", "17 May 2026", 4, "Closed", "14 Oct 2025", "04:25 PM"],
-  ["Ananya Roy", "ananya.roy@gmail.com", "+91 65432 44098", "Island Tour", "21 May 2026", "23 May 2026", 2, "Replied", "13 Oct 2025", "09:50 AM"],
-].map((row, index) => ({
-  id: index + 1,
-  name: row[0],
-  email: row[1],
-  phone: row[2],
-  tour: row[3],
-  start: row[4],
-  end: row[5],
-  travelers: row[6],
-  status: row[7],
-  date: row[8],
-  time: row[9],
-  photo: photoPool[index % photoPool.length],
-}));
+const normalizeEnquiry = (item) => ({
+  ...item,
+  id: item._id || item.id,
+  tour: item.tour || item.subject || "General Enquiry",
+  start: item.start && item.start !== "Not set" ? item.start : "",
+  end: item.end && item.end !== "Not set" ? item.end : "",
+  travelers: item.travelers || 1,
+  status: item.status || "New",
+  message: item.message || "",
+  date:
+    item.date ||
+    (item.createdAt
+      ? new Date(item.createdAt).toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        })
+      : ""),
+  time:
+    item.time ||
+    (item.createdAt
+      ? new Date(item.createdAt).toLocaleTimeString("en-IN", {
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : ""),
+});
 
 const blankForm = {
   name: "",
@@ -75,63 +62,75 @@ const blankForm = {
   tour: "",
   start: "",
   end: "",
-  travelers: "2",
+  travelers: "1",
   status: "New",
+  message: "",
 };
 
-const statusClass = (status) =>
-  `Enquiry-${status.toLowerCase().replace(" ", "-")}`;
-
-const initials = (name = "") =>
-  name
-    .split(" ")
-    .filter(Boolean)
-    .map((part) => part[0])
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
+const statusClass = (status = "New") =>
+  `Enquiry-status-${status.toLowerCase().replace(/\s+/g, "-")}`;
 
 const Enquiry = () => {
-  const [rows, setRows] = useState(initialRows);
+  const [rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("All Status");
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(8);
+  const [pageSize, setPageSize] = useState(10);
   const [selected, setSelected] = useState([]);
   const [modal, setModal] = useState(null);
   const [form, setForm] = useState(blankForm);
   const [toast, setToast] = useState("");
   const [viewRow, setViewRow] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const fetchEnquiries = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch(API_ENQUIRY_URL);
+      const result = await res.json();
+      if (res.ok && result.success) {
+        setRows((result.data || []).map(normalizeEnquiry));
+      }
+    } catch {
+      notify("Unable to load enquiries from server.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchEnquiries();
+  }, []);
 
   const filtered = useMemo(() => {
     return rows.filter((row) => {
       const matchesStatus =
         status === "All Status" || row.status === status;
 
-      const matchesSearch = [
-        row.name,
-        row.email,
-        row.phone,
-        row.tour,
-        row.status,
-      ]
-        .join(" ")
-        .toLowerCase()
-        .includes(search.toLowerCase());
+      const query = search.trim().toLowerCase();
+      const matchesSearch =
+        !query ||
+        [
+          row.name,
+          row.email,
+          row.phone,
+          row.tour,
+          row.subject,
+          row.message,
+          row.status,
+        ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase()
+          .includes(query);
 
       return matchesStatus && matchesSearch;
     });
   }, [rows, search, status]);
 
-  const pageCount = Math.max(
-    1,
-    Math.ceil(filtered.length / pageSize)
-  );
-
-  const pageRows = filtered.slice(
-    (page - 1) * pageSize,
-    page * pageSize
-  );
+  const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize));
+  const pageRows = filtered.slice((page - 1) * pageSize, page * pageSize);
 
   const counts = {
     total: rows.length,
@@ -143,7 +142,7 @@ const Enquiry = () => {
 
   const notify = (message) => {
     setToast(message);
-    window.setTimeout(() => setToast(""), 2600);
+    window.setTimeout(() => setToast(""), 3000);
   };
 
   const openNew = () => {
@@ -151,13 +150,10 @@ const Enquiry = () => {
     setModal({ type: "new" });
   };
 
-  const convertDateForInput = (date) => {
-    if (!date || date === "Not set") return "";
-
-    const parsed = new Date(date);
-
+  const convertDateForInput = (dateStr) => {
+    if (!dateStr || dateStr === "Not set") return "";
+    const parsed = new Date(dateStr);
     if (Number.isNaN(parsed.getTime())) return "";
-
     return [
       parsed.getFullYear(),
       String(parsed.getMonth() + 1).padStart(2, "0"),
@@ -170,20 +166,19 @@ const Enquiry = () => {
       ...row,
       start: convertDateForInput(row.start),
       end: convertDateForInput(row.end),
-      travelers: String(row.travelers),
+      travelers: String(row.travelers || 1),
     });
-
     setModal({
       type: "edit",
       id: row.id,
     });
   };
 
-  const saveForm = (event) => {
+  const saveForm = async (event) => {
     event.preventDefault();
+    setIsSubmitting(true);
 
     const now = new Date();
-
     const date = now.toLocaleDateString("en-GB", {
       day: "2-digit",
       month: "short",
@@ -192,77 +187,140 @@ const Enquiry = () => {
 
     const formatDate = (value) => {
       if (!value) return "Not set";
-
-      return new Date(`${value}T12:00:00`).toLocaleDateString(
-        "en-GB",
-        {
-          day: "numeric",
-          month: "short",
-          year: "numeric",
-        }
-      );
+      return new Date(`${value}T12:00:00`).toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      });
     };
 
     const record = {
-      ...form,
+      name: form.name.trim(),
+      email: form.email.trim(),
+      phone: form.phone.trim(),
+      tour: form.tour.trim() || "General Enquiry",
+      subject: form.tour.trim() || "General Enquiry",
+      message: form.message.trim(),
       travelers: Math.max(1, Number(form.travelers) || 1),
-      start: formatDate(form.start),
-      end: formatDate(form.end),
+      start: form.start ? formatDate(form.start) : "Not set",
+      end: form.end ? formatDate(form.end) : "Not set",
+      status: form.status || "New",
       date,
       time: now.toLocaleTimeString("en-IN", {
         hour: "2-digit",
         minute: "2-digit",
       }),
-      photo: photoPool[Math.floor(Math.random() * photoPool.length)],
     };
 
-    if (modal.type === "edit") {
-      setRows((oldRows) =>
-        oldRows.map((row) =>
-          row.id === modal.id ? { ...row, ...record } : row
-        )
+    try {
+      const isEdit = modal.type === "edit";
+      const res = await fetch(
+        isEdit ? `${API_ENQUIRY_URL}/${modal.id}` : API_ENQUIRY_URL,
+        {
+          method: isEdit ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(record),
+        }
       );
 
-      notify("Enquiry updated successfully");
-    } else {
-      setRows((oldRows) => [
-        { ...record, id: Date.now() },
-        ...oldRows,
-      ]);
+      const result = await res.json();
+      if (!res.ok || !result.success) {
+        throw new Error(result.message || "Failed to save enquiry.");
+      }
 
-      setPage(1);
-      notify("New enquiry added successfully");
+      const saved = normalizeEnquiry(result.data);
+
+      if (isEdit) {
+        setRows((old) => old.map((r) => (r.id === modal.id ? saved : r)));
+        notify("Enquiry updated successfully");
+      } else {
+        setRows((old) => [saved, ...old]);
+        setPage(1);
+        notify("New enquiry created successfully");
+      }
+
+      setModal(null);
+    } catch (error) {
+      notify(error.message || "Error saving enquiry.");
+    } finally {
+      setIsSubmitting(false);
     }
-
-    setModal(null);
   };
 
-  const deleteRow = (id) => {
-    if (
-      window.confirm(
-        "Delete this enquiry? This action cannot be undone."
-      )
-    ) {
-      setRows((oldRows) => oldRows.filter((row) => row.id !== id));
-      setSelected((oldSelected) =>
-        oldSelected.filter((item) => item !== id)
-      );
+  const updateStatusQuickly = async (row, newStatus) => {
+    try {
+      const res = await fetch(`${API_ENQUIRY_URL}/${row.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...row, status: newStatus }),
+      });
+      const result = await res.json();
+      if (res.ok && result.success) {
+        const updated = normalizeEnquiry(result.data);
+        setRows((old) => old.map((r) => (r.id === row.id ? updated : r)));
+        if (viewRow && viewRow.id === row.id) {
+          setViewRow(updated);
+        }
+        notify(`Status updated to "${newStatus}"`);
+      }
+    } catch {
+      notify("Failed to update status");
+    }
+  };
 
-      notify("Enquiry deleted");
+  const deleteRow = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this enquiry?")) {
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_ENQUIRY_URL}/${id}`, {
+        method: "DELETE",
+      });
+      const result = await res.json();
+      if (!res.ok || !result.success) {
+        throw new Error(result.message || "Failed to delete enquiry.");
+      }
+
+      setRows((old) => old.filter((r) => r.id !== id));
+      setSelected((old) => old.filter((item) => item !== id));
+      if (viewRow && viewRow.id === id) setViewRow(null);
+      notify("Enquiry deleted successfully");
+    } catch (error) {
+      notify(error.message || "Error deleting enquiry.");
+    }
+  };
+
+  const deleteSelected = async () => {
+    if (!selected.length) return;
+    if (!window.confirm(`Delete ${selected.length} selected enquiries?`)) return;
+
+    try {
+      await Promise.all(
+        selected.map((id) =>
+          fetch(`${API_ENQUIRY_URL}/${id}`, { method: "DELETE" })
+        )
+      );
+      setRows((old) => old.filter((r) => !selected.includes(r.id)));
+      setSelected([]);
+      notify(`${selected.length} enquiries deleted`);
+    } catch {
+      notify("Some items could not be deleted.");
     }
   };
 
   const exportRows = () => {
     const headers = [
-      "Customer",
+      "Customer Name",
       "Email",
       "Phone",
-      "Tour Package",
+      "Tour/Subject",
+      "Message",
       "Travel Start",
       "Travel End",
       "Travelers",
       "Status",
-      "Date",
+      "Date Received",
     ];
 
     const csv = [
@@ -272,34 +330,27 @@ const Enquiry = () => {
         row.email,
         row.phone,
         row.tour,
-        row.start,
-        row.end,
+        row.message,
+        row.start || "N/A",
+        row.end || "N/A",
         row.travelers,
         row.status,
-        row.date,
+        `${row.date} ${row.time}`,
       ]),
     ]
       .map((line) =>
         line
-          .map(
-            (value) =>
-              `"${String(value ?? "").replaceAll('"', '""')}"`
-          )
+          .map((value) => `"${String(value ?? "").replace(/"/g, '""')}"`)
           .join(",")
       )
       .join("\n");
 
-    const blob = new Blob([csv], {
-      type: "text/csv;charset=utf-8;",
-    });
-
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-
     link.href = url;
-    link.download = "enquiries.csv";
+    link.download = `bhitarkanika_enquiries_${new Date().toISOString().slice(0, 10)}.csv`;
     link.click();
-
     URL.revokeObjectURL(url);
     notify("Enquiries exported to CSV");
   };
@@ -311,723 +362,732 @@ const Enquiry = () => {
   const toggleAll = () => {
     setSelected((oldSelected) =>
       allPageSelected
-        ? oldSelected.filter(
-            (id) => !pageRows.some((row) => row.id === id)
-          )
-        : [
-            ...new Set([
-              ...oldSelected,
-              ...pageRows.map((row) => row.id),
-            ]),
-          ]
+        ? oldSelected.filter((id) => !pageRows.some((r) => r.id === id))
+        : [...new Set([...oldSelected, ...pageRows.map((r) => r.id)])]
     );
   };
 
   return (
-    <main className="Enquiry-app-shell">
-      <div className="Enquiry-ambient Enquiry-ambient-one" />
-      <div className="Enquiry-ambient Enquiry-ambient-two" />
-
-      {/* Page Header */}
-      <header className="Enquiry-page-header">
-        <div className="Enquiry-title-line">
-          <span className="Enquiry-title-accent" />
-
-          <div>
-            <h1>Enquiries</h1>
-            <p>Manage all customer enquiries and requests</p>
-          </div>
-        </div>
-
-        <div className="Enquiry-breadcrumbs">
-          <LayoutDashboard size={15} />
-          <span>Dashboard</span>
-          <ChevronRight size={15} />
-          <b>Enquiries</b>
+    <div className="Enquiry-container">
+      {/* Premium Emerald Hero Header */}
+      <header className="Enquiry-hero">
+        <div className="Enquiry-hero-text">
+          <span className="Enquiry-badge">
+            <Sparkles size={13} />
+            CUSTOMER RELATIONSHIP
+          </span>
+          <h1>Customer Enquiries</h1>
+          <p>
+            Track, filter, and manage tour bookings and contact inquiries in one place.
+          </p>
         </div>
       </header>
 
-      {/* Statistics Cards */}
+      {/* Metrics Summary Cards */}
       <section className="Enquiry-stats-grid">
-        <Stat
-          icon={<Users />}
-          label="TOTAL ENQUIRIES"
-          value={counts.total}
-          note="All customer requests"
-          tone="blue"
-        />
+        <div
+          className={`Enquiry-stat-card ${status === "All Status" ? "active" : ""}`}
+          onClick={() => { setStatus("All Status"); setPage(1); }}
+        >
+          <div className="Enquiry-stat-icon Enquiry-icon-blue">
+            <Users size={20} />
+          </div>
+          <div className="Enquiry-stat-data">
+            <span className="Enquiry-stat-label">TOTAL</span>
+            <strong>{counts.total}</strong>
+            <small>All customer messages</small>
+          </div>
+        </div>
 
-        <Stat
-          icon={<FileText />}
-          label="NEW"
-          value={counts.new}
-          note="Needs attention"
-          tone="purple"
-        />
+        <div
+          className={`Enquiry-stat-card ${status === "New" ? "active" : ""}`}
+          onClick={() => { setStatus("New"); setPage(1); }}
+        >
+          <div className="Enquiry-stat-icon Enquiry-icon-amber">
+            <FileText size={20} />
+          </div>
+          <div className="Enquiry-stat-data">
+            <span className="Enquiry-stat-label">NEW</span>
+            <strong>{counts.new}</strong>
+            <small>Awaiting response</small>
+          </div>
+        </div>
 
-        <Stat
-          icon={<Clock3 />}
-          label="IN PROGRESS"
-          value={counts.progress}
-          note="Currently processing"
-          tone="amber"
-        />
+        <div
+          className={`Enquiry-stat-card ${status === "In Progress" ? "active" : ""}`}
+          onClick={() => { setStatus("In Progress"); setPage(1); }}
+        >
+          <div className="Enquiry-stat-icon Enquiry-icon-purple">
+            <Clock3 size={20} />
+          </div>
+          <div className="Enquiry-stat-data">
+            <span className="Enquiry-stat-label">IN PROGRESS</span>
+            <strong>{counts.progress}</strong>
+            <small>Currently handling</small>
+          </div>
+        </div>
 
-        <Stat
-          icon={<MessageCircle />}
-          label="REPLIED"
-          value={counts.replied}
-          note="Customer contacted"
-          tone="green"
-        />
+        <div
+          className={`Enquiry-stat-card ${status === "Replied" ? "active" : ""}`}
+          onClick={() => { setStatus("Replied"); setPage(1); }}
+        >
+          <div className="Enquiry-stat-icon Enquiry-icon-green">
+            <MessageCircle size={20} />
+          </div>
+          <div className="Enquiry-stat-data">
+            <span className="Enquiry-stat-label">REPLIED</span>
+            <strong>{counts.replied}</strong>
+            <small>Client contacted</small>
+          </div>
+        </div>
 
-        <Stat
-          icon={<CircleCheck />}
-          label="CLOSED"
-          value={counts.closed}
-          note="Completed enquiries"
-          tone="slate"
-        />
+        <div
+          className={`Enquiry-stat-card ${status === "Closed" ? "active" : ""}`}
+          onClick={() => { setStatus("Closed"); setPage(1); }}
+        >
+          <div className="Enquiry-stat-icon Enquiry-icon-gray">
+            <CircleCheck size={20} />
+          </div>
+          <div className="Enquiry-stat-data">
+            <span className="Enquiry-stat-label">CLOSED</span>
+            <strong>{counts.closed}</strong>
+            <small>Resolved enquiries</small>
+          </div>
+        </div>
       </section>
 
-      {/* Enquiries Table */}
-      <section className="Enquiry-panel">
-        <div className="Enquiry-panel-heading">
-          <div className="Enquiry-section-title">
-            <span className="Enquiry-section-icon">
-              <FileText size={23} />
-            </span>
+      {/* Main Table Card */}
+      <section className="Enquiry-main-card">
+        {/* Filter and Search Bar */}
+        <div className="Enquiry-toolbar">
+          <div className="Enquiry-filter-group">
+            <div className="Enquiry-select-wrap">
+              <select
+                value={status}
+                onChange={(e) => {
+                  setStatus(e.target.value);
+                  setPage(1);
+                }}
+                aria-label="Filter by status"
+              >
+                <option value="All Status">All Statuses ({rows.length})</option>
+                <option value="New">New ({counts.new})</option>
+                <option value="In Progress">In Progress ({counts.progress})</option>
+                <option value="Replied">Replied ({counts.replied})</option>
+                <option value="Closed">Closed ({counts.closed})</option>
+              </select>
+              <ChevronDown size={15} />
+            </div>
 
-            <div>
-              <h2>Enquiries List</h2>
-              <p>View and manage all incoming enquiries</p>
+            <div className="Enquiry-search-wrap">
+              <Search size={16} />
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  setPage(1);
+                }}
+                placeholder="Search by name, email, phone, or package..."
+              />
+              {search && (
+                <button
+                  type="button"
+                  className="Enquiry-clear-search"
+                  onClick={() => setSearch("")}
+                >
+                  <X size={14} />
+                </button>
+              )}
             </div>
           </div>
 
-          <div className="Enquiry-toolbar">
-            <button
-              type="button"
-              className="Enquiry-btn Enquiry-btn-light"
-              onClick={toggleAll}
-            >
-              <CheckSquare size={16} />
-              {allPageSelected ? "Deselect All" : "Select All"}
-            </button>
-
-            <button
-              type="button"
-              className="Enquiry-btn Enquiry-btn-outline"
-              onClick={exportRows}
-            >
-              <Download size={16} />
-              Export
-            </button>
-
-            <button
-              type="button"
-              className="Enquiry-btn Enquiry-btn-primary"
-              onClick={openNew}
-            >
-              <Plus size={17} />
-              New Enquiry
-            </button>
+          <div className="Enquiry-toolbar-meta">
+            Showing <b>{filtered.length ? (page - 1) * pageSize + 1 : 0}</b> to{" "}
+            <b>{Math.min(page * pageSize, filtered.length)}</b> of{" "}
+            <b>{filtered.length}</b> records
           </div>
         </div>
 
-        {/* Search and Filter */}
-        <div className="Enquiry-filter-row">
-          <label className="Enquiry-select-wrap">
-            <select
-              value={status}
-              onChange={(event) => {
-                setStatus(event.target.value);
-                setPage(1);
-              }}
-              aria-label="Filter by status"
-            >
-              <option>All Status</option>
-              <option>New</option>
-              <option>In Progress</option>
-              <option>Replied</option>
-              <option>Closed</option>
-            </select>
+        {/* Bulk Action Strip */}
+        {selected.length > 0 && (
+          <div className="Enquiry-bulk-bar">
+            <span>
+              <b>{selected.length}</b> enquiry selected
+            </span>
+            <div className="Enquiry-bulk-actions">
+              <button
+                type="button"
+                className="Enquiry-btn-bulk-danger"
+                onClick={deleteSelected}
+              >
+                <Trash2 size={14} />
+                Delete Selected
+              </button>
+              <button
+                type="button"
+                className="Enquiry-btn-bulk-light"
+                onClick={() => setSelected([])}
+              >
+                Deselect All
+              </button>
+            </div>
+          </div>
+        )}
 
-            <ChevronDown size={16} />
-          </label>
-
-          <label className="Enquiry-search-box">
-            <Search size={18} />
-
-            <input
-              value={search}
-              onChange={(event) => {
-                setSearch(event.target.value);
-                setPage(1);
-              }}
-              placeholder="Search name, email, phone, destination..."
-              aria-label="Search enquiries"
-            />
-          </label>
-
-          <span className="Enquiry-showing">
-            Showing{" "}
-            <b>
-              {filtered.length ? (page - 1) * pageSize + 1 : 0} to{" "}
-              {Math.min(page * pageSize, filtered.length)}
-            </b>{" "}
-            of <b>{filtered.length}</b> results
-          </span>
-        </div>
-
-        {/* Responsive Table */}
-        <div className="Enquiry-table-scroll">
-          <table>
+        {/* Data Table */}
+        <div className="Enquiry-table-wrapper">
+          <table className="Enquiry-table">
             <thead>
               <tr>
-                <th>
-                  <input
-                    type="checkbox"
-                    checked={allPageSelected}
-                    onChange={toggleAll}
-                    aria-label="Select visible enquiries"
-                  />
+                <th style={{ width: "44px", textAlign: "center" }}>
+                  <button
+                    type="button"
+                    className="Enquiry-check-all"
+                    onClick={toggleAll}
+                    title="Select / Deselect all"
+                  >
+                    {allPageSelected ? (
+                      <CheckSquare size={16} color="#059669" />
+                    ) : (
+                      <Square size={16} color="#94a3b8" />
+                    )}
+                  </button>
                 </th>
-                <th>#</th>
+                <th style={{ width: "40px" }}>#</th>
                 <th>CUSTOMER</th>
-                <th>EMAIL</th>
-                <th>PHONE</th>
-                <th>TOUR PACKAGE</th>
-                <th>TRAVEL DATE</th>
-                <th>TRAVELERS</th>
+                <th>CONTACT DETAILS</th>
+                <th>TOUR / SUBJECT</th>
+                <th>TRAVEL DETAILS</th>
                 <th>STATUS</th>
-                <th>DATE</th>
-                <th>ACTION</th>
+                <th>RECEIVED DATE</th>
+                <th style={{ textAlign: "right" }}>ACTIONS</th>
               </tr>
             </thead>
 
             <tbody>
-              {pageRows.map((row, index) => (
-                <tr key={row.id}>
-                  <td>
-                    <input
-                      type="checkbox"
-                      checked={selected.includes(row.id)}
-                      onChange={() =>
-                        setSelected((oldSelected) =>
-                          oldSelected.includes(row.id)
-                            ? oldSelected.filter((id) => id !== row.id)
-                            : [...oldSelected, row.id]
-                        )
-                      }
-                      aria-label={`Select ${row.name}`}
-                    />
-                  </td>
-
-                  <td className="Enquiry-row-number">
-                    {(page - 1) * pageSize + index + 1}
-                  </td>
-
-                  <td>
-                    <div className="Enquiry-customer-cell">
-                      <span
-                        className={`Enquiry-avatar Enquiry-avatar-${index % 6}`}
-                      >
-                        {initials(row.name)}
-                      </span>
-
-                      <span className="Enquiry-customer-name">
-                        {row.name}
-                      </span>
-                    </div>
-                  </td>
-
-                  <td className="Enquiry-muted-cell">{row.email}</td>
-                  <td className="Enquiry-muted-cell">{row.phone}</td>
-
-                  <td>
-                    <div className="Enquiry-tour-cell">
-                      <img
-                        src={row.photo}
-                        alt=""
-                        loading="lazy"
-                        onError={(event) => {
-                          event.currentTarget.src = photoPool[1];
-                        }}
-                      />
-                      <span>{row.tour}</span>
-                    </div>
-                  </td>
-
-                  <td>
-                    <div className="Enquiry-date-cell">
-                      <CalendarDays size={16} />
-                      <span>
-                        {row.start}
-                        <small>{row.end}</small>
-                      </span>
-                    </div>
-                  </td>
-
-                  <td>
-                    <div className="Enquiry-travelers">
-                      <Users size={15} />
-                      <span>{row.travelers} Adults</span>
-                    </div>
-                  </td>
-
-                  <td>
-                    <span
-                      className={`Enquiry-status-badge ${statusClass(row.status)}`}
-                    >
-                      <i />
-                      {row.status}
-                    </span>
-                  </td>
-
-                  <td className="Enquiry-date-created">
-                    {row.date}
-                    <small>{row.time}</small>
-                  </td>
-
-                  <td>
-                    <div className="Enquiry-action-buttons">
-                      <button
-                        type="button"
-                        className="Enquiry-icon-btn Enquiry-view"
-                        title="View enquiry"
-                        aria-label={`View ${row.name}`}
-                        onClick={() => setViewRow(row)}
-                      >
-                        <Eye size={17} />
-                      </button>
-
-                      <button
-                        type="button"
-                        className="Enquiry-icon-btn Enquiry-edit"
-                        title="Edit enquiry"
-                        aria-label={`Edit ${row.name}`}
-                        onClick={() => openEdit(row)}
-                      >
-                        <Pencil size={16} />
-                      </button>
-
-                      <button
-                        type="button"
-                        className="Enquiry-icon-btn Enquiry-delete"
-                        title="Delete enquiry"
-                        aria-label={`Delete ${row.name}`}
-                        onClick={() => deleteRow(row.id)}
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-
-              {pageRows.length === 0 && (
+              {loading ? (
                 <tr>
-                  <td colSpan="11" className="Enquiry-empty-state">
-                    <Search size={25} />
-                    <strong>No enquiries found</strong>
-                    <span>
-                      Try changing your search or status filter.
-                    </span>
+                  <td colSpan="9" className="Enquiry-empty-state">
+                    <RefreshCw className="Enquiry-spin" size={24} />
+                    <p>Loading enquiries...</p>
                   </td>
                 </tr>
+              ) : pageRows.length === 0 ? (
+                <tr>
+                  <td colSpan="9" className="Enquiry-empty-state">
+                    <Search size={32} />
+                    <strong>No enquiries found</strong>
+                    <p>Try adjusting your search keywords or status filter.</p>
+                  </td>
+                </tr>
+              ) : (
+                pageRows.map((row, index) => {
+                  const isSelected = selected.includes(row.id);
+                  const hasTravelDates = row.start || row.end;
+
+                  return (
+                    <tr
+                      key={row.id}
+                      className={isSelected ? "Enquiry-row-selected" : ""}
+                    >
+                      <td style={{ textAlign: "center" }}>
+                        <input
+                          type="checkbox"
+                          className="Enquiry-checkbox"
+                          checked={isSelected}
+                          onChange={() =>
+                            setSelected((prev) =>
+                              prev.includes(row.id)
+                                ? prev.filter((id) => id !== row.id)
+                                : [...prev, row.id]
+                            )
+                          }
+                        />
+                      </td>
+
+                      <td className="Enquiry-index-cell">
+                        {(page - 1) * pageSize + index + 1}
+                      </td>
+
+                      <td className="Enquiry-customer-cell">
+                        <strong className="Enquiry-customer-name">
+                          {row.name}
+                        </strong>
+                      </td>
+
+                      <td className="Enquiry-contact-cell">
+                        {row.email && (
+                          <div className="Enquiry-contact-item">
+                            <Mail size={13} />
+                            <a href={`mailto:${row.email}`}>{row.email}</a>
+                          </div>
+                        )}
+                        {row.phone && (
+                          <div className="Enquiry-contact-item">
+                            <Phone size={13} />
+                            <a href={`tel:${row.phone}`}>{row.phone}</a>
+                          </div>
+                        )}
+                        {!row.email && !row.phone && <span>—</span>}
+                      </td>
+
+                      <td className="Enquiry-tour-cell">
+                        <span className="Enquiry-tour-title">
+                          {row.tour || row.subject || "General Enquiry"}
+                        </span>
+                        {row.message && (
+                          <p className="Enquiry-message-preview">
+                            {row.message}
+                          </p>
+                        )}
+                      </td>
+
+                      <td className="Enquiry-travel-cell">
+                        {hasTravelDates ? (
+                          <div className="Enquiry-dates">
+                            <Calendar size={13} />
+                            <span>
+                              {row.start}
+                              {row.end && row.end !== row.start ? ` → ${row.end}` : ""}
+                            </span>
+                          </div>
+                        ) : (
+                          <span className="Enquiry-no-date">—</span>
+                        )}
+                        {row.travelers && row.travelers > 1 && (
+                          <small className="Enquiry-travelers-tag">
+                            {row.travelers} Guests
+                          </small>
+                        )}
+                      </td>
+
+                      <td>
+                        <span
+                          className={`Enquiry-status-pill ${statusClass(row.status)}`}
+                        >
+                          <span className="Enquiry-status-dot" />
+                          {row.status}
+                        </span>
+                      </td>
+
+                      <td className="Enquiry-date-cell">
+                        <span>{row.date || "—"}</span>
+                        {row.time && <small>{row.time}</small>}
+                      </td>
+
+                      <td style={{ textAlign: "right" }}>
+                        <div className="Enquiry-actions-group">
+                          <button
+                            type="button"
+                            className="Enquiry-act-btn Enquiry-act-view"
+                            title="View details"
+                            onClick={() => setViewRow(row)}
+                          >
+                            <Eye size={15} />
+                          </button>
+
+                          <button
+                            type="button"
+                            className="Enquiry-act-btn Enquiry-act-edit"
+                            title="Edit enquiry"
+                            onClick={() => openEdit(row)}
+                          >
+                            <Pencil size={15} />
+                          </button>
+
+                          <button
+                            type="button"
+                            className="Enquiry-act-btn Enquiry-act-delete"
+                            title="Delete"
+                            onClick={() => deleteRow(row.id)}
+                          >
+                            <Trash2 size={15} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>
         </div>
 
-        {/* Pagination */}
-        <footer className="Enquiry-table-footer">
-          <div className="Enquiry-entries-control">
+        {/* Pagination Footer */}
+        <div className="Enquiry-footer">
+          <div className="Enquiry-page-size">
             <span>Show</span>
-
-            <label>
-              <select
-                value={pageSize}
-                onChange={(event) => {
-                  setPageSize(Number(event.target.value));
-                  setPage(1);
-                }}
-                aria-label="Rows per page"
-              >
-                <option value={5}>5</option>
-                <option value={8}>8</option>
-                <option value={10}>10</option>
-                <option value={20}>20</option>
-              </select>
-
-              <ChevronDown size={14} />
-            </label>
-
-            <span>entries</span>
+            <select
+              value={pageSize}
+              onChange={(e) => {
+                setPageSize(Number(e.target.value));
+                setPage(1);
+              }}
+            >
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={20}>20</option>
+              <option value={50}>50</option>
+            </select>
+            <span>entries per page</span>
           </div>
 
-          <div className="Enquiry-pagination">
+          <div className="Enquiry-pagination-controls">
             <button
               type="button"
+              className="Enquiry-page-arrow"
               disabled={page <= 1}
-              onClick={() => setPage((current) => current - 1)}
-              aria-label="Previous page"
+              onClick={() => setPage((p) => p - 1)}
             >
-              <ChevronLeft size={17} />
+              <ChevronLeft size={16} />
             </button>
 
-            {Array.from(
-              { length: pageCount },
-              (_, index) => index + 1
-            )
+            {Array.from({ length: pageCount }, (_, i) => i + 1)
               .slice(
-                Math.max(0, Math.min(page - 1, pageCount - 3)),
-                Math.max(3, Math.min(page - 1, pageCount - 3)) + 3
+                Math.max(0, Math.min(page - 1, pageCount - 5)),
+                Math.max(5, Math.min(page - 1, pageCount - 5)) + 5
               )
-              .map((number) => (
+              .map((num) => (
                 <button
                   type="button"
-                  key={number}
-                  className={
-                    page === number ? "Enquiry-current" : ""
-                  }
-                  onClick={() => setPage(number)}
+                  key={num}
+                  className={`Enquiry-page-num ${page === num ? "active" : ""}`}
+                  onClick={() => setPage(num)}
                 >
-                  {number}
+                  {num}
                 </button>
               ))}
 
             <button
               type="button"
+              className="Enquiry-page-arrow"
               disabled={page >= pageCount}
-              onClick={() => setPage((current) => current + 1)}
-              aria-label="Next page"
+              onClick={() => setPage((p) => p + 1)}
             >
-              <ChevronRight size={17} />
+              <ChevronRight size={16} />
             </button>
           </div>
-        </footer>
+        </div>
       </section>
-
-      {/* Footer Watermark */}
-      <div className="Enquiry-watermark">
-        <Leaf size={12} />
-        crafted with care
-      </div>
 
       {/* Add / Edit Enquiry Modal */}
       {modal && (
         <div
           className="Enquiry-modal-backdrop"
-          onMouseDown={(event) => {
-            if (event.target === event.currentTarget) {
-              setModal(null);
-            }
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setModal(null);
           }}
         >
-          <section
-            className="Enquiry-modal-card"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="Enquiry-form-title"
-          >
+          <div className="Enquiry-modal-box">
             <div className="Enquiry-modal-header">
-              <div>
-                <span className="Enquiry-modal-icon">
-                  <FileText size={20} />
-                </span>
-
+              <div className="Enquiry-modal-title">
+                <div className="Enquiry-modal-icon-wrap">
+                  <Pencil size={18} />
+                </div>
                 <div>
-                  <h2 id="Enquiry-form-title">
-                    {modal.type === "edit"
-                      ? "Edit Enquiry"
-                      : "New Enquiry"}
-                  </h2>
-
+                  <h3>
+                    {modal.type === "edit" ? "Edit Customer Enquiry" : "Add New Enquiry"}
+                  </h3>
                   <p>
                     {modal.type === "edit"
-                      ? "Update customer enquiry details"
-                      : "Enter the customer details below to add an enquiry."}
+                      ? "Update customer information and enquiry status."
+                      : "Manually register an enquiry from phone or email."}
                   </p>
                 </div>
               </div>
-
               <button
                 type="button"
-                className="Enquiry-close-btn"
+                className="Enquiry-modal-close"
                 onClick={() => setModal(null)}
-                aria-label="Close form"
               >
-                <X size={20} />
+                <X size={18} />
               </button>
             </div>
 
-            <form onSubmit={saveForm}>
+            <form onSubmit={saveForm} className="Enquiry-modal-form">
               <div className="Enquiry-form-grid">
-                <label>
-                  Customer name *
-                  <span className="Enquiry-input-icon">
-                    <UserRound size={16} />
-                    <input
-                      required
-                      value={form.name}
-                      onChange={(event) =>
-                        setForm({ ...form, name: event.target.value })
-                      }
-                      placeholder="e.g. Rahul Mehta"
-                    />
-                  </span>
-                </label>
-
-                <label>
-                  Email address *
-                  <span className="Enquiry-input-icon">
-                    <Mail size={16} />
-                    <input
-                      required
-                      type="email"
-                      value={form.email}
-                      onChange={(event) =>
-                        setForm({ ...form, email: event.target.value })
-                      }
-                      placeholder="name@example.com"
-                    />
-                  </span>
-                </label>
-
-                <label>
-                  Phone number *
-                  <span className="Enquiry-input-icon">
-                    <Phone size={16} />
-                    <input
-                      required
-                      value={form.phone}
-                      onChange={(event) =>
-                        setForm({ ...form, phone: event.target.value })
-                      }
-                      placeholder="+91 98765 43210"
-                    />
-                  </span>
-                </label>
-
-                <label>
-                  Tour package *
-                  <span className="Enquiry-input-icon">
-                    <MapPin size={16} />
-                    <input
-                      required
-                      value={form.tour}
-                      onChange={(event) =>
-                        setForm({ ...form, tour: event.target.value })
-                      }
-                      placeholder="Tour or destination"
-                    />
-                  </span>
-                </label>
-
-                <label>
-                  Travel start date
+                <div className="Enquiry-field">
+                  <label>Customer Name *</label>
                   <input
-                    className="Enquiry-plain-input"
+                    type="text"
+                    required
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    placeholder="Full name"
+                  />
+                </div>
+
+                <div className="Enquiry-field">
+                  <label>Email Address *</label>
+                  <input
+                    type="email"
+                    required
+                    value={form.email}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    placeholder="name@example.com"
+                  />
+                </div>
+
+                <div className="Enquiry-field">
+                  <label>Phone Number</label>
+                  <input
+                    type="text"
+                    value={form.phone}
+                    onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                    placeholder="+91 98765 43210"
+                  />
+                </div>
+
+                <div className="Enquiry-field">
+                  <label>Tour Package / Subject *</label>
+                  <input
+                    type="text"
+                    required
+                    value={form.tour}
+                    onChange={(e) => setForm({ ...form, tour: e.target.value })}
+                    placeholder="Tour package or inquiry topic"
+                  />
+                </div>
+
+                <div className="Enquiry-field">
+                  <label>Travel Start Date</label>
+                  <input
                     type="date"
                     value={form.start}
-                    onChange={(event) =>
-                      setForm({ ...form, start: event.target.value })
-                    }
+                    onChange={(e) => setForm({ ...form, start: e.target.value })}
                   />
-                </label>
+                </div>
 
-                <label>
-                  Travel end date
+                <div className="Enquiry-field">
+                  <label>Travel End Date</label>
                   <input
-                    className="Enquiry-plain-input"
                     type="date"
                     min={form.start || undefined}
                     value={form.end}
-                    onChange={(event) =>
-                      setForm({ ...form, end: event.target.value })
-                    }
+                    onChange={(e) => setForm({ ...form, end: e.target.value })}
                   />
-                </label>
+                </div>
 
-                <label>
-                  Number of travelers
+                <div className="Enquiry-field">
+                  <label>Number of Guests / Travelers</label>
                   <input
-                    className="Enquiry-plain-input"
                     type="number"
                     min="1"
                     max="99"
-                    required
                     value={form.travelers}
-                    onChange={(event) =>
-                      setForm({
-                        ...form,
-                        travelers: event.target.value,
-                      })
-                    }
+                    onChange={(e) => setForm({ ...form, travelers: e.target.value })}
                   />
-                </label>
+                </div>
 
-                <label>
-                  Enquiry status
+                <div className="Enquiry-field">
+                  <label>Status</label>
                   <select
-                    className="Enquiry-plain-input"
                     value={form.status}
-                    onChange={(event) =>
-                      setForm({ ...form, status: event.target.value })
-                    }
+                    onChange={(e) => setForm({ ...form, status: e.target.value })}
                   >
-                    <option>New</option>
-                    <option>In Progress</option>
-                    <option>Replied</option>
-                    <option>Closed</option>
+                    <option value="New">New</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Replied">Replied</option>
+                    <option value="Closed">Closed</option>
                   </select>
-                </label>
+                </div>
+
+                <div className="Enquiry-field Enquiry-field-full">
+                  <label>Customer Message / Request Details</label>
+                  <textarea
+                    rows={4}
+                    value={form.message}
+                    onChange={(e) => setForm({ ...form, message: e.target.value })}
+                    placeholder="Notes or requirements provided by customer..."
+                  />
+                </div>
               </div>
 
-              <div className="Enquiry-form-actions">
+              <div className="Enquiry-modal-actions">
                 <button
                   type="button"
-                  className="Enquiry-btn Enquiry-btn-light"
+                  className="Enquiry-btn Enquiry-btn-secondary"
                   onClick={() => setModal(null)}
                 >
                   Cancel
                 </button>
-
                 <button
                   type="submit"
                   className="Enquiry-btn Enquiry-btn-primary"
+                  disabled={isSubmitting}
                 >
-                  <Plus size={16} />
-                  {modal.type === "edit" ? "Save Changes" : "Add Enquiry"}
+                  {isSubmitting ? "Saving..." : modal.type === "edit" ? "Save Changes" : "Create Enquiry"}
                 </button>
               </div>
             </form>
-          </section>
+          </div>
         </div>
       )}
 
-      {/* View Enquiry Details Modal */}
+      {/* View Details Modal */}
       {viewRow && (
         <div
           className="Enquiry-modal-backdrop"
-          onMouseDown={(event) => {
-            if (event.target === event.currentTarget) {
-              setViewRow(null);
-            }
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setViewRow(null);
           }}
         >
-          <section
-            className="Enquiry-modal-card Enquiry-detail-card"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="Enquiry-detail-title"
-          >
+          <div className="Enquiry-modal-box Enquiry-view-box">
             <div className="Enquiry-modal-header">
-              <div>
-                <span className="Enquiry-modal-icon">
-                  <Eye size={20} />
-                </span>
-
+              <div className="Enquiry-modal-title">
+                <div className="Enquiry-modal-icon-wrap">
+                  <Eye size={18} />
+                </div>
                 <div>
-                  <h2 id="Enquiry-detail-title">Enquiry Details</h2>
-                  <p>Customer request overview</p>
+                  <h3>Enquiry Overview</h3>
+                  <p>Customer details and submission log</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                className="Enquiry-modal-close"
+                onClick={() => setViewRow(null)}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="Enquiry-view-body">
+              {/* Profile Card Header */}
+              <div className="Enquiry-view-hero">
+                <div className="Enquiry-view-person">
+                  <h4>{viewRow.name}</h4>
+                  <span className={`Enquiry-status-pill ${statusClass(viewRow.status)}`}>
+                    <span className="Enquiry-status-dot" />
+                    {viewRow.status}
+                  </span>
+                </div>
+
+                <div className="Enquiry-view-quick-status">
+                  <label>Change Status:</label>
+                  <select
+                    value={viewRow.status}
+                    onChange={(e) => updateStatusQuickly(viewRow, e.target.value)}
+                  >
+                    <option value="New">New</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Replied">Replied</option>
+                    <option value="Closed">Closed</option>
+                  </select>
                 </div>
               </div>
 
-              <button
-                type="button"
-                className="Enquiry-close-btn"
-                onClick={() => setViewRow(null)}
-                aria-label="Close details"
-              >
-                <X size={20} />
-              </button>
-            </div>
+              {/* Information Grid */}
+              <div className="Enquiry-view-grid">
+                <div className="Enquiry-view-item">
+                  <span>EMAIL</span>
+                  <strong>
+                    <a href={`mailto:${viewRow.email}`}>{viewRow.email || "N/A"}</a>
+                  </strong>
+                </div>
 
-            <div className="Enquiry-detail-person">
-              <span className="Enquiry-avatar Enquiry-avatar-1">
-                {initials(viewRow.name)}
-              </span>
+                <div className="Enquiry-view-item">
+                  <span>PHONE</span>
+                  <strong>
+                    {viewRow.phone ? (
+                      <a href={`tel:${viewRow.phone}`}>{viewRow.phone}</a>
+                    ) : (
+                      "Not provided"
+                    )}
+                  </strong>
+                </div>
 
-              <div>
-                <strong>{viewRow.name}</strong>
-                <span>{viewRow.email}</span>
+                <div className="Enquiry-view-item">
+                  <span>TOUR / SUBJECT</span>
+                  <strong>{viewRow.tour || viewRow.subject || "General Enquiry"}</strong>
+                </div>
+
+                <div className="Enquiry-view-item">
+                  <span>RECEIVED ON</span>
+                  <strong>
+                    {viewRow.date} {viewRow.time ? `at ${viewRow.time}` : ""}
+                  </strong>
+                </div>
+
+                {viewRow.start && (
+                  <div className="Enquiry-view-item">
+                    <span>TRAVEL START</span>
+                    <strong>{viewRow.start}</strong>
+                  </div>
+                )}
+
+                {viewRow.end && (
+                  <div className="Enquiry-view-item">
+                    <span>TRAVEL END</span>
+                    <strong>{viewRow.end}</strong>
+                  </div>
+                )}
+
+                {viewRow.travelers && viewRow.travelers > 1 && (
+                  <div className="Enquiry-view-item">
+                    <span>GUESTS</span>
+                    <strong>{viewRow.travelers} Persons</strong>
+                  </div>
+                )}
               </div>
 
-              <span
-                className={`Enquiry-status-badge ${statusClass(viewRow.status)}`}
-              >
-                <i />
-                {viewRow.status}
-              </span>
-            </div>
-
-            <div className="Enquiry-detail-grid">
-              {[
-                ["Phone", viewRow.phone],
-                ["Tour package", viewRow.tour],
-                ["Travel dates", `${viewRow.start} – ${viewRow.end}`],
-                ["Travelers", `${viewRow.travelers} Adults`],
-                ["Enquiry received", `${viewRow.date}, ${viewRow.time}`],
-              ].map(([label, value]) => (
-                <div className="Enquiry-detail-item" key={label}>
-                  <span>{label}</span>
-                  <strong>{value}</strong>
+              {/* Message Block */}
+              {viewRow.message && (
+                <div className="Enquiry-view-message">
+                  <span>CUSTOMER MESSAGE</span>
+                  <div className="Enquiry-view-quote">
+                    <p>{viewRow.message}</p>
+                  </div>
                 </div>
-              ))}
-            </div>
+              )}
 
-            <div className="Enquiry-form-actions">
-              <button
-                type="button"
-                className="Enquiry-btn Enquiry-btn-light"
-                onClick={() => setViewRow(null)}
-              >
-                Close
-              </button>
+              <div className="Enquiry-modal-actions">
+                {viewRow.email && (
+                  <a
+                    href={`mailto:${viewRow.email}?subject=Regarding your Bhitarkanika enquiry`}
+                    className="Enquiry-btn Enquiry-btn-primary"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <Send size={15} />
+                    Reply via Email
+                  </a>
+                )}
 
-              <button
-                type="button"
-                className="Enquiry-btn Enquiry-btn-primary"
-                onClick={() => {
-                  const row = viewRow;
-                  setViewRow(null);
-                  openEdit(row);
-                }}
-              >
-                <Pencil size={16} />
-                Edit Enquiry
-              </button>
+                <button
+                  type="button"
+                  className="Enquiry-btn Enquiry-btn-secondary"
+                  onClick={() => {
+                    const row = viewRow;
+                    setViewRow(null);
+                    openEdit(row);
+                  }}
+                >
+                  <Pencil size={15} />
+                  Edit Enquiry
+                </button>
+
+                <button
+                  type="button"
+                  className="Enquiry-btn Enquiry-btn-secondary"
+                  onClick={() => setViewRow(null)}
+                >
+                  Close
+                </button>
+              </div>
             </div>
-          </section>
+          </div>
         </div>
       )}
 
-      {/* Notification */}
+      {/* Floating Toast Notification */}
       {toast && (
-        <div className="Enquiry-toast">
+        <div className="Enquiry-toast" role="alert">
           <CircleCheck size={18} />
-          {toast}
+          <span>{toast}</span>
         </div>
       )}
-    </main>
-  );
-};
-
-const Stat = ({ icon, label, value, note, tone }) => {
-  return (
-    <article className={`Enquiry-stat-card Enquiry-tone-${tone}`}>
-      <span className="Enquiry-stat-icon">{icon}</span>
-
-      <div className="Enquiry-stat-copy">
-        <span className="Enquiry-stat-label">{label}</span>
-        <strong>{value}</strong>
-        <span className="Enquiry-stat-note">{note}</span>
-      </div>
-
-      <span className="Enquiry-stat-orb" />
-    </article>
+    </div>
   );
 };
 

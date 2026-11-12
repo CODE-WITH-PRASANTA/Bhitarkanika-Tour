@@ -1,2147 +1,1073 @@
+/* ==========================================================================
+   Bhitarkanika Tour Admin - Customer Enquiries (Premium Emerald Design)
+   ========================================================================== */
 
-/* =========================================================
-   ENQUIRY DASHBOARD — FULLSCREEN LAYOUT
-========================================================= */
-
-.Enquiry-app-shell {
-  --Enquiry-green: #00bf7d;
-  --Enquiry-green-dark: #087451;
-  --Enquiry-green-deep: #073e30;
-  --Enquiry-text: #202d40;
-  --Enquiry-muted: #8a98ad;
-  --Enquiry-border: #e2eaf2;
-  --Enquiry-bg: #f3f6fb;
-  --Enquiry-white: #ffffff;
-
-  position: relative;
-  isolation: isolate;
-
-  width: 100%;
-  max-width: none;
-  min-width: 0;
-  min-height: 100vh;
-  margin: 0;
-  
-
-  overflow: hidden;
-  box-sizing: border-box;
-
-  background:
-    radial-gradient(
-      ellipse at 90% 0%,
-      rgba(220, 255, 244, 0.34),
-      transparent 35%
-    ),
-    linear-gradient(135deg, #f4f7fc 0%, #f7f9fc 100%);
-
-  color: var(--Enquiry-text);
-  font-family: Inter, "Segoe UI", Arial, sans-serif;
-  font-size: 14px;
-}
-
-.Enquiry-app-shell *,
-.Enquiry-app-shell *::before,
-.Enquiry-app-shell *::after {
-  box-sizing: border-box;
-}
-
-.Enquiry-app-shell button,
-.Enquiry-app-shell input,
-.Enquiry-app-shell select {
-  font: inherit;
-}
-
-.Enquiry-app-shell button {
-  -webkit-tap-highlight-color: transparent;
-}
-
-.Enquiry-app-shell button:focus-visible,
-.Enquiry-app-shell input:focus-visible,
-.Enquiry-app-shell select:focus-visible {
-  outline: 3px solid rgba(0, 191, 125, 0.2);
-  outline-offset: 2px;
-}
-
-.Enquiry-app-shell button:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-  transform: none;
-}
-
-/* =========================================================
-   BACKGROUND DECORATIONS
-========================================================= */
-
-.Enquiry-ambient {
-  position: absolute;
-  z-index: -1;
-  pointer-events: none;
-  border-radius: 50%;
-  filter: blur(35px);
-}
-
-.Enquiry-ambient-one {
-  top: -100px;
-  right: 10%;
-  width: 300px;
-  height: 250px;
-  background: rgba(130, 238, 195, 0.12);
-}
-
-.Enquiry-ambient-two {
-  top: 340px;
-  left: -140px;
-  width: 250px;
-  height: 300px;
-  background: rgba(176, 208, 255, 0.13);
-}
-
-/* =========================================================
-   PAGE HEADER
-========================================================= */
-
-.Enquiry-page-header {
-  width: 100%;
-  max-width: none;
-  margin: 0 0 26px;
-
+.Enquiry-container {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 22px;
+  padding: 6px 2px 32px;
+  color: #0f172a;
+  box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   1. Hero Header
+   -------------------------------------------------------------------------- */
+.Enquiry-hero {
+  display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.Enquiry-title-line {
-  display: flex;
   align-items: center;
-  gap: 14px;
-  min-width: 0;
+  gap: 24px;
+  padding: 28px 32px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #022c22 0%, #064e3b 55%, #047857 100%);
+  color: #ffffff;
+  box-shadow: 0 16px 36px -16px rgba(2, 44, 34, 0.45);
+  flex-wrap: wrap;
 }
 
-.Enquiry-title-accent {
-  display: block;
-  width: 5px;
-  height: 45px;
-  flex-shrink: 0;
-  border-radius: 10px;
-  background: linear-gradient(180deg, #00c985, #07875d);
+.Enquiry-hero-text {
+  max-width: 580px;
 }
 
-.Enquiry-title-line h1 {
-  margin: 0 0 5px;
-  color: #17243a;
-  font-size: clamp(25px, 2.3vw, 34px);
-  font-weight: 850;
-  line-height: 1.2;
-  letter-spacing: -1px;
+.Enquiry-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(167, 243, 208, 0.28);
+  color: #a7f3d0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
 }
 
-.Enquiry-title-line p {
+.Enquiry-hero-text h1 {
+  margin: 0 0 6px;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.Enquiry-hero-text p {
   margin: 0;
-  color: #8b99ad;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.5;
+  color: #d1fae5;
 }
 
-.Enquiry-breadcrumbs {
+.Enquiry-hero-actions {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  gap: 10px;
   flex-wrap: wrap;
-  gap: 9px;
-  color: #9aa6b7;
-  font-size: 12px;
 }
 
-.Enquiry-breadcrumbs svg:first-child {
-  color: #0aa878;
+/* Buttons */
+.Enquiry-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  white-space: nowrap;
 }
 
-.Enquiry-breadcrumbs b {
-  padding: 7px 11px;
-  border: 1px solid #d8f0e3;
-  border-radius: 7px;
-  background: #effaf4;
-  color: #087b55;
-  font-weight: 800;
+.Enquiry-btn:hover {
+  transform: translateY(-1px);
 }
 
-/* =========================================================
-   STATISTICS CARDS — FULL WIDTH
-========================================================= */
+.Enquiry-btn:active {
+  transform: translateY(0);
+}
 
+.Enquiry-btn-primary {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  box-shadow: 0 6px 18px -4px rgba(16, 185, 129, 0.5);
+}
+
+.Enquiry-btn-primary:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  box-shadow: 0 8px 22px -4px rgba(16, 185, 129, 0.6);
+}
+
+.Enquiry-btn-secondary {
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(8px);
+}
+
+.Enquiry-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+/* --------------------------------------------------------------------------
+   2. Metric Summary Cards
+   -------------------------------------------------------------------------- */
 .Enquiry-stats-grid {
   display: grid;
-  width: 100%;
-  max-width: none;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 16px;
-  margin: 0 0 26px;
+  gap: 14px;
 }
 
 .Enquiry-stat-card {
-  position: relative;
-  min-width: 0;
-  min-height: 130px;
-  padding: 20px 17px;
-
   display: flex;
   align-items: center;
-  gap: 15px;
-
-  overflow: hidden;
-  border: 1px solid #e1e9f2;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.94);
-
-  box-shadow: 0 5px 18px rgba(32, 57, 89, 0.035);
-  transition:
-    transform 0.22s ease,
-    box-shadow 0.22s ease,
-    border-color 0.22s ease;
+  gap: 14px;
+  padding: 16px 18px;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 14px -6px rgba(15, 23, 42, 0.08);
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .Enquiry-stat-card:hover {
-  transform: translateY(-3px);
-  border-color: #cfe9da;
-  box-shadow: 0 10px 24px rgba(32, 57, 89, 0.07);
+  border-color: #cbd5e1;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -8px rgba(15, 23, 42, 0.12);
+}
+
+.Enquiry-stat-card.active {
+  border-color: #059669;
+  background: #f0fdf4;
+  box-shadow: 0 0 0 1px #059669;
 }
 
 .Enquiry-stat-icon {
-  position: relative;
-  z-index: 1;
-
-  width: 53px;
-  height: 53px;
-  flex: 0 0 53px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 15px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
 }
 
-.Enquiry-stat-icon svg {
-  width: 23px;
-  height: 23px;
-  stroke-width: 1.9;
-}
+.Enquiry-icon-blue { background: #eff6ff; color: #2563eb; }
+.Enquiry-icon-amber { background: #fffbeb; color: #d97706; }
+.Enquiry-icon-purple { background: #f5f3ff; color: #7c3aed; }
+.Enquiry-icon-green { background: #ecfdf5; color: #059669; }
+.Enquiry-icon-gray { background: #f1f5f9; color: #475569; }
 
-.Enquiry-stat-copy {
-  position: relative;
-  z-index: 1;
-
+.Enquiry-stat-data {
   display: flex;
   flex-direction: column;
-  min-width: 0;
-  gap: 5px;
 }
 
 .Enquiry-stat-label {
-  color: #8794a9;
-  font-size: 10px;
-  font-weight: 850;
-  line-height: 1.4;
-  letter-spacing: 0.35px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  text-transform: uppercase;
 }
 
-.Enquiry-stat-copy > strong {
-  color: #202c3e;
-  font-size: 30px;
-  font-weight: 850;
-  line-height: 1;
-  letter-spacing: -1px;
+.Enquiry-stat-data strong {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.2;
 }
 
-.Enquiry-stat-note {
-  color: #96a2b5;
-  font-size: 10px;
-  line-height: 1.45;
+.Enquiry-stat-data small {
+  font-size: 11.5px;
+  color: #94a3b8;
+  margin-top: 1px;
 }
 
-.Enquiry-stat-orb {
-  position: absolute;
-  top: -22px;
-  right: -18px;
-  width: 92px;
-  height: 92px;
-  border-radius: 50%;
-  opacity: 0.48;
-  pointer-events: none;
-}
-
-.Enquiry-tone-blue {
-  border-color: #dce9ff;
-}
-
-.Enquiry-tone-blue .Enquiry-stat-icon {
-  color: #377dff;
-  background: #eaf1ff;
-}
-
-.Enquiry-tone-blue .Enquiry-stat-orb {
-  background: #eaf1ff;
-}
-
-.Enquiry-tone-purple .Enquiry-stat-icon {
-  color: #7760ff;
-  background: #f0edff;
-}
-
-.Enquiry-tone-purple .Enquiry-stat-orb {
-  background: #f0edff;
-}
-
-.Enquiry-tone-amber .Enquiry-stat-icon {
-  color: #ff9800;
-  background: #fff5df;
-}
-
-.Enquiry-tone-amber .Enquiry-stat-orb {
-  background: #fff5df;
-}
-
-.Enquiry-tone-green {
-  border-color: #d7f1e6;
-}
-
-.Enquiry-tone-green .Enquiry-stat-icon {
-  color: #00b87b;
-  background: #e5faf2;
-}
-
-.Enquiry-tone-green .Enquiry-stat-orb {
-  background: #e5faf2;
-}
-
-.Enquiry-tone-slate .Enquiry-stat-icon {
-  color: #61738d;
-  background: #edf1f6;
-}
-
-.Enquiry-tone-slate .Enquiry-stat-orb {
-  background: #edf1f6;
-}
-
-/* =========================================================
-   MAIN PANEL — FULL WIDTH
-========================================================= */
-
-.Enquiry-panel {
-  position: relative;
-  width: 100%;
-  max-width: none;
-  min-width: 0;
-  margin: 0;
-
-  overflow: hidden;
-  border: 1px solid #dfe7f0;
-  border-radius: 21px;
+/* --------------------------------------------------------------------------
+   3. Main Table Card & Controls
+   -------------------------------------------------------------------------- */
+.Enquiry-main-card {
   background: #ffffff;
-
-  box-shadow: 0 8px 28px rgba(35, 55, 85, 0.035);
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  box-shadow: 0 6px 20px -8px rgba(15, 23, 42, 0.07);
+  overflow: hidden;
 }
-
-/* =========================================================
-   PANEL HEADING
-========================================================= */
-
-.Enquiry-panel-heading {
-  width: 100%;
-  min-height: 103px;
-  padding: 22px 26px;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 18px;
-
-  border-bottom: 1px solid #e8edf4;
-}
-
-.Enquiry-section-title {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  min-width: 0;
-}
-
-.Enquiry-section-icon {
-  width: 51px;
-  height: 51px;
-  flex-shrink: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border: 1px solid #c9f6e4;
-  border-radius: 15px;
-  background: #eafff5;
-  color: #00bd80;
-}
-
-.Enquiry-section-title h2 {
-  margin: 0 0 5px;
-  color: #17304b;
-  font-size: 18px;
-  font-weight: 850;
-  line-height: 1.35;
-  letter-spacing: -0.35px;
-}
-
-.Enquiry-section-title p {
-  margin: 0;
-  color: #8b99af;
-  font-size: 12px;
-  line-height: 1.5;
-}
-
-/* =========================================================
-   BUTTONS
-========================================================= */
 
 .Enquiry-toolbar {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 20px;
+  border-bottom: 1px solid #f1f5f9;
   flex-wrap: wrap;
-  gap: 10px;
 }
 
-.Enquiry-btn {
-  min-height: 44px;
-  padding: 11px 15px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-
-  border: 1px solid transparent;
-  border-radius: 11px;
-
-  font-size: 12px;
-  font-weight: 800;
-  line-height: 1.3;
-  white-space: nowrap;
-
-  cursor: pointer;
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
-}
-
-.Enquiry-btn:not(:disabled):hover {
-  transform: translateY(-1px);
-}
-
-.Enquiry-btn-light {
-  border-color: #dfe6ef;
-  background: #f7f9fc;
-  color: #455b78;
-}
-
-.Enquiry-btn-light:hover {
-  border-color: #c9d7e8;
-  background: #edf3f9;
-}
-
-.Enquiry-btn-outline {
-  border-color: #77e2b9;
-  background: #ffffff;
-  color: #00ad76;
-}
-
-.Enquiry-btn-outline:hover {
-  border-color: #00bd80;
-  background: #f0fff8;
-}
-
-.Enquiry-btn-primary {
-  border-color: #00bd80;
-  background: linear-gradient(135deg, #00c783, #00b978);
-  color: #ffffff;
-  box-shadow: 0 5px 13px rgba(0, 184, 123, 0.13);
-}
-
-.Enquiry-btn-primary:hover {
-  border-color: #009b65;
-  background: linear-gradient(135deg, #00b978, #009b65);
-  box-shadow: 0 7px 17px rgba(0, 184, 123, 0.2);
-}
-
-/* =========================================================
-   SEARCH AND FILTER ROW
-========================================================= */
-
-.Enquiry-filter-row {
-  min-height: 87px;
-  padding: 17px 26px;
-
+.Enquiry-filter-group {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 13px;
-
-  border-bottom: 1px solid #e8edf4;
-  background: #ffffff;
+  gap: 12px;
+  flex: 1;
+  min-width: 280px;
 }
 
 .Enquiry-select-wrap {
   position: relative;
-  width: 181px;
-  max-width: none;
-  flex: 0 0 181px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .Enquiry-select-wrap select {
-  width: 100%;
-  height: 45px;
-  padding: 0 38px 0 14px;
-
   appearance: none;
-  -webkit-appearance: none;
-
-  border: 1px solid #dce5ef;
-  border-radius: 11px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 9px 32px 9px 12px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #334155;
   outline: none;
-
-  background: #ffffff;
-  color: #405773;
-  font-size: 12px;
-
   cursor: pointer;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 .Enquiry-select-wrap select:focus {
-  border-color: #7eddb9;
-  box-shadow: 0 0 0 3px rgba(0, 191, 125, 0.07);
+  border-color: #10b981;
+  background: #ffffff;
 }
 
-.Enquiry-select-wrap > svg {
+.Enquiry-select-wrap svg {
   position: absolute;
-  top: 50%;
-  right: 12px;
-  transform: translateY(-50%);
-  color: #95a5b8;
+  right: 11px;
+  pointer-events: none;
+  color: #64748b;
+}
+
+.Enquiry-search-wrap {
+  flex: 1;
+  max-width: 420px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.Enquiry-search-wrap svg:first-child {
+  position: absolute;
+  left: 12px;
+  color: #94a3b8;
   pointer-events: none;
 }
 
-.Enquiry-search-box {
-  width: auto;
-  max-width: none;
-  min-width: 220px;
-  height: 45px;
-  padding: 0 14px;
-  flex: 1 1 300px;
-
-  display: flex;
-  align-items: center;
-  gap: 11px;
-
-  border: 1px solid #dce5ef;
-  border-radius: 11px;
-  background: #ffffff;
-  color: #95a5b8;
-
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.Enquiry-search-box:focus-within {
-  border-color: #7eddb9;
-  box-shadow: 0 0 0 3px rgba(0, 191, 125, 0.07);
-}
-
-.Enquiry-search-box > svg {
-  flex-shrink: 0;
-}
-
-.Enquiry-search-box input {
+.Enquiry-search-wrap input {
   width: 100%;
-  min-width: 0;
-  height: 100%;
-  padding: 0;
+  box-sizing: border-box;
+  padding: 9px 34px 9px 36px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #f8fafc;
+  font-size: 13.5px;
+  color: #0f172a;
+  outline: none;
+  transition: all 0.15s ease;
+}
 
+.Enquiry-search-wrap input:focus {
+  border-color: #10b981;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
+}
+
+.Enquiry-clear-search {
+  position: absolute;
+  right: 10px;
   border: none;
-  outline: none;
   background: transparent;
-  color: #34465d;
-  font-size: 12px;
+  color: #94a3b8;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  padding: 2px;
 }
 
-.Enquiry-search-box input::placeholder {
-  color: #9aa7b9;
+.Enquiry-clear-search:hover {
+  color: #334155;
 }
 
-.Enquiry-search-box input:focus-visible {
-  outline: none;
-}
-
-.Enquiry-showing {
-  margin-left: auto;
-  color: #8b99af;
-  font-size: 11px;
+.Enquiry-toolbar-meta {
+  font-size: 13px;
+  color: #64748b;
   white-space: nowrap;
 }
 
-.Enquiry-showing b {
-  color: #253750;
-  font-weight: 850;
+/* Bulk Bar */
+.Enquiry-bulk-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 20px;
+  background: #ecfdf5;
+  border-bottom: 1px solid #a7f3d0;
+  color: #065f46;
+  font-size: 13.5px;
 }
 
-/* =========================================================
-   FULL-WIDTH TABLE
-========================================================= */
+.Enquiry-bulk-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
-.Enquiry-table-scroll {
-  width: 100%;
-  max-width: none;
-  min-width: 0;
-  overflow-x: auto;
-  overflow-y: hidden;
+.Enquiry-btn-bulk-danger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 7px;
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
 
+.Enquiry-btn-bulk-danger:hover {
+  background: #fecaca;
+}
+
+.Enquiry-btn-bulk-light {
+  padding: 6px 12px;
+  border-radius: 7px;
   background: #ffffff;
-  scrollbar-width: thin;
-  scrollbar-color: #ccd7e3 #f5f7fa;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
-.Enquiry-table-scroll::-webkit-scrollbar {
-  height: 7px;
-}
-
-.Enquiry-table-scroll::-webkit-scrollbar-track {
-  background: #f5f7fa;
-}
-
-.Enquiry-table-scroll::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  background: #ccd7e3;
-}
-
-.Enquiry-table-scroll::-webkit-scrollbar-thumb:hover {
-  background: #aabbd0;
-}
-
-.Enquiry-table-scroll table {
+/* --------------------------------------------------------------------------
+   4. Table Design
+   -------------------------------------------------------------------------- */
+.Enquiry-table-wrapper {
+  overflow-x: auto;
   width: 100%;
-  max-width: none;
-  min-width: 1180px;
+}
 
-  border-collapse: separate;
-  border-spacing: 0;
-  table-layout: auto;
+.Enquiry-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 960px;
   text-align: left;
 }
 
-.Enquiry-table-scroll thead {
-  background: #f7f9fc;
+.Enquiry-table thead tr {
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
 }
 
-.Enquiry-table-scroll th {
-  height: 53px;
-  padding: 13px 12px;
-
-  border-bottom: 1px solid #e4ebf3;
-  color: #5a6d86;
-  font-size: 10px;
-  font-weight: 900;
-  letter-spacing: 0.3px;
-  white-space: nowrap;
+.Enquiry-table th {
+  padding: 13px 16px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  text-transform: uppercase;
 }
 
-.Enquiry-table-scroll th:first-child,
-.Enquiry-table-scroll td:first-child {
-  padding-left: 25px;
+.Enquiry-table tbody tr {
+  border-bottom: 1px solid #f1f5f9;
+  transition: background 0.15s ease;
 }
 
-.Enquiry-table-scroll td {
-  padding: 13px 12px;
+.Enquiry-table tbody tr:hover {
+  background: #f8fafc;
+}
 
-  border-bottom: 1px solid #edf1f6;
-  color: #63748a;
-  font-size: 11px;
-  line-height: 1.55;
+.Enquiry-row-selected {
+  background: #f0fdf4 !important;
+}
+
+.Enquiry-table td {
+  padding: 14px 16px;
+  font-size: 13.5px;
+  color: #1e293b;
   vertical-align: middle;
 }
 
-.Enquiry-table-scroll tbody tr {
-  background: #ffffff;
-  transition: background 0.18s ease;
+.Enquiry-check-all {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  padding: 0;
 }
 
-.Enquiry-table-scroll tbody tr:hover {
-  background: #f9fcfa;
-}
-
-.Enquiry-table-scroll tbody tr:last-child td {
-  border-bottom: none;
-}
-
-.Enquiry-table-scroll th input[type="checkbox"],
-.Enquiry-table-scroll td input[type="checkbox"] {
+.Enquiry-checkbox {
   width: 16px;
   height: 16px;
-  margin: 0;
-  accent-color: #00bd80;
+  accent-color: #059669;
   cursor: pointer;
-  vertical-align: middle;
 }
 
-.Enquiry-row-number {
-  color: #7c8ba0 !important;
-  font-weight: 700;
+.Enquiry-index-cell {
+  color: #94a3b8;
+  font-weight: 600;
+  font-size: 12px;
 }
 
-/* =========================================================
-   CUSTOMER CELL AND AVATAR
-========================================================= */
-
+/* Customer Cell (No dummy photo) */
 .Enquiry-customer-cell {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 160px;
-}
-
-.Enquiry-avatar {
-  width: 36px;
-  height: 36px;
-  flex: 0 0 36px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  border-radius: 50%;
-
-  color: #315c77;
-  background: #e5f2ff;
-  font-size: 11px;
-  font-weight: 900;
-}
-
-.Enquiry-avatar-0 {
-  color: #315c77;
-  background: #e5f2ff;
-}
-
-.Enquiry-avatar-1 {
-  color: #7652ae;
-  background: #f0e9ff;
-}
-
-.Enquiry-avatar-2 {
-  color: #147d5b;
-  background: #def7e9;
-}
-
-.Enquiry-avatar-3 {
-  color: #a36514;
-  background: #fff0d8;
-}
-
-.Enquiry-avatar-4 {
-  color: #b34961;
-  background: #ffe8ed;
-}
-
-.Enquiry-avatar-5 {
-  color: #3d61bb;
-  background: #e8edff;
+  white-space: nowrap;
 }
 
 .Enquiry-customer-name {
-  color: #25364c;
-  font-size: 11px;
-  font-weight: 850;
-  line-height: 1.45;
-}
-
-.Enquiry-muted-cell {
-  color: #718197 !important;
-  white-space: nowrap;
-}
-
-/* =========================================================
-   TOUR PACKAGE CELL
-========================================================= */
-
-.Enquiry-tour-cell {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  min-width: 165px;
-
-  color: #3e526a;
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 1.45;
-}
-
-.Enquiry-tour-cell img {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
   display: block;
-  width: 42px;
-  height: 37px;
-  flex: 0 0 42px;
-
-  object-fit: cover;
-  border: 1px solid #e0e8e2;
-  border-radius: 8px;
-  background: #edf4ef;
 }
 
-.Enquiry-tour-cell span {
-  overflow-wrap: anywhere;
-}
-
-/* =========================================================
-   TRAVEL DATES
-========================================================= */
-
-.Enquiry-date-cell {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  min-width: 135px;
-
-  color: #556b83;
-  font-size: 11px;
-  line-height: 1.5;
-}
-
-.Enquiry-date-cell > svg {
-  flex-shrink: 0;
-  margin-top: 2px;
-  color: #00a979;
-}
-
-.Enquiry-date-cell span {
+/* Contact Cell */
+.Enquiry-contact-cell {
   display: flex;
   flex-direction: column;
   gap: 3px;
 }
 
-.Enquiry-date-cell small,
-.Enquiry-date-created small {
-  display: block;
-  color: #9aa7b8;
-  font-size: 10px;
-  line-height: 1.4;
-}
-
-.Enquiry-travelers {
-  display: inline-flex;
+.Enquiry-contact-item {
+  display: flex;
   align-items: center;
-  gap: 7px;
-  color: #5b6d82;
-  font-size: 11px;
-  white-space: nowrap;
-}
-
-.Enquiry-travelers svg {
-  color: #8b9ab0;
-}
-
-/* =========================================================
-   STATUS BADGES
-========================================================= */
-
-.Enquiry-status-badge {
-  min-height: 27px;
-  padding: 6px 10px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   gap: 6px;
+  font-size: 12.5px;
+  color: #475569;
+}
 
-  border: 1px solid transparent;
-  border-radius: 30px;
+.Enquiry-contact-item svg {
+  color: #94a3b8;
+  flex-shrink: 0;
+}
 
-  font-size: 10px;
-  font-weight: 850;
-  line-height: 1.3;
+.Enquiry-contact-item a {
+  color: #475569;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.Enquiry-contact-item a:hover {
+  color: #059669;
+  text-decoration: underline;
+}
+
+/* Tour / Message Cell */
+.Enquiry-tour-cell {
+  max-width: 240px;
+}
+
+.Enquiry-tour-title {
+  display: block;
+  font-weight: 600;
+  color: #065f46;
+  font-size: 13.5px;
+}
+
+.Enquiry-message-preview {
+  margin: 3px 0 0;
+  font-size: 12px;
+  color: #64748b;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Travel Cell */
+.Enquiry-travel-cell {
   white-space: nowrap;
 }
 
-.Enquiry-status-badge i {
+.Enquiry-dates {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: #334155;
+  font-weight: 500;
+}
+
+.Enquiry-dates svg {
+  color: #059669;
+  flex-shrink: 0;
+}
+
+.Enquiry-no-date {
+  color: #cbd5e1;
+  font-weight: 500;
+}
+
+.Enquiry-travelers-tag {
+  display: block;
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+/* Status Pill */
+.Enquiry-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.Enquiry-status-dot {
   width: 6px;
   height: 6px;
-  flex: 0 0 6px;
-  display: block;
   border-radius: 50%;
   background: currentColor;
 }
 
-.Enquiry-new {
-  border-color: #d9e8ff;
-  background: #eaf2ff;
-  color: #3479e7;
+.Enquiry-status-new {
+  background: #fef3c7;
+  color: #92400e;
 }
 
-.Enquiry-in-progress {
-  border-color: #ffe7b7;
-  background: #fff5df;
-  color: #cf8a11;
+.Enquiry-status-in-progress {
+  background: #ede9fe;
+  color: #5b21b6;
 }
 
-.Enquiry-replied {
-  border-color: #c9f2df;
-  background: #e3fbef;
-  color: #089968;
+.Enquiry-status-replied {
+  background: #dcfce7;
+  color: #166534;
 }
 
-.Enquiry-closed {
-  border-color: #e0e6ee;
-  background: #f0f3f7;
-  color: #718096;
+.Enquiry-status-closed {
+  background: #f1f5f9;
+  color: #475569;
 }
 
-/* =========================================================
-   DATE CREATED
-========================================================= */
-
-.Enquiry-date-created {
-  min-width: 110px;
-  color: #62758b !important;
-  font-size: 11px !important;
+/* Date Cell */
+.Enquiry-date-cell {
   white-space: nowrap;
 }
 
-.Enquiry-date-created small {
-  margin-top: 4px;
+.Enquiry-date-cell span {
+  display: block;
+  font-size: 12.5px;
+  color: #334155;
 }
 
-/* =========================================================
-   ACTION BUTTONS
-========================================================= */
+.Enquiry-date-cell small {
+  display: block;
+  font-size: 11px;
+  color: #94a3b8;
+}
 
-.Enquiry-action-buttons {
-  display: flex;
+/* Action Buttons */
+.Enquiry-actions-group {
+  display: inline-flex;
   align-items: center;
   gap: 6px;
 }
 
-.Enquiry-icon-btn {
-  width: 33px;
-  height: 33px;
-  flex: 0 0 33px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-
-  border: 1px solid transparent;
-  border-radius: 9px;
+.Enquiry-act-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #64748b;
+  display: grid;
+  place-items: center;
   cursor: pointer;
-
-  transition:
-    background 0.18s ease,
-    border-color 0.18s ease,
-    color 0.18s ease,
-    transform 0.18s ease;
+  transition: all 0.15s ease;
 }
 
-.Enquiry-icon-btn:hover {
-  transform: translateY(-1px);
+.Enquiry-act-view:hover {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #2563eb;
 }
 
-.Enquiry-view {
-  border-color: #dfe8f1;
-  background: #f0f4f9;
-  color: #526c8b;
+.Enquiry-act-edit:hover {
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+  color: #059669;
 }
 
-.Enquiry-view:hover {
-  border-color: #c9d9ec;
-  background: #e2ebf7;
-  color: #355b88;
+.Enquiry-act-delete:hover {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #dc2626;
 }
 
-.Enquiry-edit {
-  border-color: #d7e7ff;
-  background: #eaf2ff;
-  color: #347be8;
-}
-
-.Enquiry-edit:hover {
-  border-color: #b7d2ff;
-  background: #d9e8ff;
-  color: #1558c0;
-}
-
-.Enquiry-delete {
-  border-color: #ffdcdf;
-  background: #fff0f1;
-  color: #e94c5b;
-}
-
-.Enquiry-delete:hover {
-  border-color: #ffc2c8;
-  background: #ffdee2;
-  color: #c92639;
-}
-
-/* =========================================================
-   EMPTY STATE
-========================================================= */
-
+/* Empty State */
 .Enquiry-empty-state {
-  height: 300px;
-  padding: 35px 20px !important;
   text-align: center;
-  vertical-align: middle !important;
+  padding: 50px 20px !important;
+  color: #64748b;
 }
 
-.Enquiry-empty-state > svg {
-  display: block;
-  margin: 0 auto 14px;
-  color: #9aa9ba;
+.Enquiry-empty-state svg {
+  color: #94a3b8;
+  margin-bottom: 10px;
 }
 
 .Enquiry-empty-state strong {
   display: block;
-  margin-bottom: 7px;
-  color: #405671;
-  font-size: 14px;
-  font-weight: 850;
+  font-size: 15px;
+  color: #0f172a;
 }
 
-.Enquiry-empty-state span {
-  display: block;
-  color: #94a2b5;
-  font-size: 11px;
+.Enquiry-empty-state p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #64748b;
 }
 
-/* =========================================================
-   TABLE FOOTER AND PAGINATION
-========================================================= */
+.Enquiry-spin {
+  animation: enquirySpin 1s linear infinite;
+}
 
-.Enquiry-table-footer {
-  width: 100%;
-  min-height: 68px;
-  padding: 13px 25px;
+@keyframes enquirySpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
 
+/* --------------------------------------------------------------------------
+   5. Pagination Footer
+   -------------------------------------------------------------------------- */
+.Enquiry-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 14px 20px;
+  border-top: 1px solid #f1f5f9;
   flex-wrap: wrap;
-  gap: 14px;
-
-  border-top: 1px solid #e8edf4;
-  background: #ffffff;
+  gap: 12px;
 }
 
-.Enquiry-entries-control {
+.Enquiry-page-size {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #8190a5;
-  font-size: 11px;
+  font-size: 13px;
+  color: #64748b;
 }
 
-.Enquiry-entries-control label {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
+.Enquiry-page-size select {
+  padding: 5px 8px;
+  border-radius: 7px;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #334155;
+  outline: none;
 }
 
-.Enquiry-entries-control select {
-  width: 63px;
-  height: 34px;
-  padding: 0 24px 0 10px;
-
-  appearance: none;
-  -webkit-appearance: none;
-
-  border: 1px solid #dfe6ef;
-  border-radius: 8px;
-  background: #ffffff;
-  color: #435771;
-  font-size: 11px;
-  cursor: pointer;
-}
-
-.Enquiry-entries-control label > svg {
-  position: absolute;
-  right: 7px;
-  color: #8b9aaf;
-  pointer-events: none;
-}
-
-.Enquiry-pagination {
+.Enquiry-pagination-controls {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
   gap: 5px;
 }
 
-.Enquiry-pagination > button {
-  width: 34px;
-  height: 34px;
-  padding: 0;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  border: 1px solid #e1e8f0;
-  border-radius: 9px;
+.Enquiry-page-arrow,
+.Enquiry-page-num {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
   background: #ffffff;
-  color: #667991;
-
-  font-size: 11px;
-  font-weight: 750;
+  color: #334155;
+  font-size: 12.5px;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.18s ease;
+  display: grid;
+  place-items: center;
+  transition: all 0.15s ease;
 }
 
-.Enquiry-pagination > button:not(:disabled):hover {
-  border-color: #a9dfc4;
-  background: #effbf4;
-  color: #087451;
+.Enquiry-page-arrow:hover:not(:disabled),
+.Enquiry-page-num:hover:not(.active) {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
 }
 
-.Enquiry-pagination > button.Enquiry-current {
-  border-color: #00b97b;
-  background: #00bd80;
-  color: #ffffff;
-  box-shadow: 0 3px 8px rgba(0, 189, 128, 0.18);
-}
-
-.Enquiry-pagination > button:disabled {
-  background: #f7f9fc;
-  color: #b4bfcc;
-  opacity: 0.65;
+.Enquiry-page-arrow:disabled {
+  opacity: 0.4;
   cursor: not-allowed;
 }
 
-/* =========================================================
-   WATERMARK
-========================================================= */
-
-.Enquiry-watermark {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  padding: 17px 0 0;
-  color: #a0adba;
-  font-size: 10px;
-  letter-spacing: 0.25px;
+.Enquiry-page-num.active {
+  background: #059669;
+  border-color: #059669;
+  color: #ffffff;
 }
 
-.Enquiry-watermark svg {
-  color: #00b87b;
-}
-
-/* =========================================================
-   MODAL OVERLAY
-========================================================= */
-
+/* --------------------------------------------------------------------------
+   6. Modals (Edit / Add / View Details)
+   -------------------------------------------------------------------------- */
 .Enquiry-modal-backdrop {
   position: fixed;
   inset: 0;
   z-index: 9999;
-
-  width: 100%;
-  min-width: 0;
-  padding: 24px;
-
+  background: rgba(2, 44, 34, 0.65);
+  backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
   justify-content: center;
-
-  overflow-y: auto;
-  overscroll-behavior: contain;
-
-  background: rgba(15, 31, 48, 0.55);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  padding: 16px;
+  box-sizing: border-box;
 }
 
-/* =========================================================
-   FULL-WIDTH MODAL CARD
-========================================================= */
-
-.Enquiry-modal-card {
+.Enquiry-modal-box {
   width: 100%;
-  max-width: none;
-  min-width: 0;
-  max-height: calc(100vh - 48px);
-  max-height: calc(100dvh - 48px);
-  margin: 0;
-
+  max-width: 660px;
+  max-height: 90vh;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 25px 60px -15px rgba(2, 44, 34, 0.4);
   display: flex;
   flex-direction: column;
-
   overflow: hidden;
-  border: 1px solid #e1e9f1;
-  border-radius: 18px;
-  background: #ffffff;
-
-  box-shadow: 0 25px 75px rgba(10, 28, 49, 0.23);
-  animation: Enquiry-modal-enter 0.2s ease-out;
+  animation: enquiryModalFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes Enquiry-modal-enter {
+@keyframes enquiryModalFadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px) scale(0.99);
+    transform: scale(0.96) translateY(10px);
   }
-
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: scale(1) translateY(0);
   }
 }
 
-/* =========================================================
-   MODAL HEADER
-========================================================= */
-
 .Enquiry-modal-header {
-  flex: 0 0 auto;
-  min-height: 86px;
-  padding: 18px 22px;
-
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 15px;
-
-  border-bottom: 1px solid #e8edf3;
-  background: #ffffff;
+  align-items: center;
+  padding: 20px 24px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
 }
 
-.Enquiry-modal-header > div {
+.Enquiry-modal-title {
   display: flex;
   align-items: center;
-  gap: 13px;
-  min-width: 0;
+  gap: 12px;
 }
 
-.Enquiry-modal-icon {
-  width: 45px;
-  height: 45px;
-  flex: 0 0 45px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border: 1px solid #c9f3e0;
-  border-radius: 13px;
-  background: #eafff5;
-  color: #00ae75;
-}
-
-.Enquiry-modal-header h2 {
-  margin: 0 0 5px;
-  color: #1c3048;
-  font-size: 18px;
-  font-weight: 850;
-  line-height: 1.35;
-}
-
-.Enquiry-modal-header p {
-  margin: 0;
-  color: #8a99ac;
-  font-size: 11px;
-  line-height: 1.5;
-}
-
-.Enquiry-close-btn {
-  width: 37px;
-  height: 37px;
-  flex: 0 0 37px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-
-  border: 1px solid #e1e8f0;
+.Enquiry-modal-icon-wrap {
+  width: 40px;
+  height: 40px;
   border-radius: 10px;
-  background: #f6f8fb;
-  color: #65778c;
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
 
+.Enquiry-modal-title h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.Enquiry-modal-title p {
+  margin: 2px 0 0;
+  font-size: 12.5px;
+  color: #64748b;
+}
+
+.Enquiry-modal-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #64748b;
+  display: grid;
+  place-items: center;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
-.Enquiry-close-btn:hover {
-  border-color: #ffcbd0;
-  background: #fff0f1;
-  color: #d93649;
+.Enquiry-modal-close:hover {
+  background: #fee2e2;
+  border-color: #fecaca;
+  color: #dc2626;
 }
 
-/* =========================================================
-   FORM BODY
-========================================================= */
-
-.Enquiry-modal-card > form {
-  min-height: 0;
+.Enquiry-modal-form {
+  padding: 22px 24px;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #cbd8e5 #f6f8fb;
-}
-
-.Enquiry-modal-card > form::-webkit-scrollbar {
-  width: 6px;
-}
-
-.Enquiry-modal-card > form::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  background: #cbd8e5;
+  gap: 18px;
+  box-sizing: border-box;
 }
 
 .Enquiry-form-grid {
-  width: 100%;
-  padding: 23px 24px;
-
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 19px 17px;
+  gap: 14px 16px;
 }
 
-.Enquiry-form-grid > label {
+.Enquiry-field {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  min-width: 0;
-  color: #435770;
-  font-size: 11px;
-  font-weight: 800;
+  gap: 6px;
 }
 
-.Enquiry-input-icon {
+.Enquiry-field-full {
+  grid-column: 1 / -1;
+}
+
+.Enquiry-field label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.Enquiry-field input,
+.Enquiry-field select,
+.Enquiry-field textarea {
   width: 100%;
-  height: 45px;
-  padding: 0 12px;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+  background: #f8fafc;
+  font-size: 13.5px;
+  color: #0f172a;
+  outline: none;
+  font-family: inherit;
+  transition: all 0.15s ease;
+}
 
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  border: 1px solid #dfe7ef;
-  border-radius: 10px;
+.Enquiry-field input:focus,
+.Enquiry-field select:focus,
+.Enquiry-field textarea:focus {
+  border-color: #10b981;
   background: #ffffff;
-  color: #91a0b2;
-
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
 }
 
-.Enquiry-input-icon:focus-within {
-  border-color: #71d8ae;
-  box-shadow: 0 0 0 3px rgba(0, 189, 128, 0.07);
-}
-
-.Enquiry-input-icon > svg {
-  flex: 0 0 auto;
-}
-
-.Enquiry-input-icon input {
-  width: 100%;
-  min-width: 0;
-  height: 100%;
-  padding: 0;
-
-  border: none;
-  outline: none;
-  background: transparent;
-  color: #34465c;
-  font-size: 12px;
-}
-
-.Enquiry-input-icon input::placeholder {
-  color: #a2adbb;
-}
-
-.Enquiry-input-icon input:focus-visible {
-  outline: none;
-}
-
-.Enquiry-plain-input {
-  width: 100%;
-  max-width: none;
-  min-width: 0;
-  height: 45px;
-  padding: 0 12px;
-
-  border: 1px solid #dfe7ef;
-  border-radius: 10px;
-  outline: none;
-  background: #ffffff;
-  color: #34465c;
-
-  font-size: 12px;
-  font-weight: 500;
-
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.Enquiry-plain-input:focus {
-  border-color: #71d8ae;
-  box-shadow: 0 0 0 3px rgba(0, 189, 128, 0.07);
-}
-
-.Enquiry-plain-input::placeholder {
-  color: #a2adbb;
-}
-
-/* =========================================================
-   MODAL FORM ACTIONS
-========================================================= */
-
-.Enquiry-form-actions {
-  flex: 0 0 auto;
-  padding: 15px 24px;
-
+.Enquiry-modal-actions {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  flex-wrap: wrap;
   gap: 10px;
-
-  border-top: 1px solid #e8edf3;
-  background: #fbfcfe;
+  padding-top: 14px;
+  border-top: 1px solid #f1f5f9;
+  flex-wrap: wrap;
 }
 
-.Enquiry-form-actions .Enquiry-btn {
-  min-height: 42px;
-  padding: 10px 17px;
+/* View Modal Specifics */
+.Enquiry-view-box {
+  max-width: 620px;
 }
 
-/* =========================================================
-   VIEW DETAILS MODAL
-========================================================= */
-
-.Enquiry-detail-card {
-  width: 100%;
-  max-width: none;
+.Enquiry-view-body {
+  padding: 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
-.Enquiry-detail-person {
-  padding: 22px 24px;
-
+.Enquiry-view-hero {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-radius: 14px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
   flex-wrap: wrap;
-  gap: 13px;
-
-  border-bottom: 1px solid #e8edf3;
-  background: #fbfdfc;
+  gap: 12px;
 }
 
-.Enquiry-detail-person > .Enquiry-avatar {
-  width: 49px;
-  height: 49px;
-  flex-basis: 49px;
-  font-size: 14px;
+.Enquiry-view-person h4 {
+  margin: 0 0 6px;
+  font-size: 17px;
+  font-weight: 700;
+  color: #0f172a;
 }
 
-.Enquiry-detail-person > div {
+.Enquiry-view-quick-status {
   display: flex;
-  flex: 1;
-  min-width: 0;
-  flex-direction: column;
-  gap: 5px;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #475569;
 }
 
-.Enquiry-detail-person > div strong {
-  color: #25374d;
-  font-size: 14px;
-  font-weight: 850;
-  overflow-wrap: anywhere;
+.Enquiry-view-quick-status select {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #0f172a;
+  cursor: pointer;
+  outline: none;
 }
 
-.Enquiry-detail-person > div > span {
-  color: #8593a6;
-  font-size: 11px;
-  overflow-wrap: anywhere;
-}
-
-.Enquiry-detail-grid {
-  width: 100%;
-  padding: 22px 24px;
-
+.Enquiry-view-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 13px;
+  gap: 12px;
 }
 
-.Enquiry-detail-item {
-  min-width: 0;
-  padding: 14px;
-
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-
-  border: 1px solid #e5edf3;
-  border-radius: 11px;
-  background: #ffffff;
+.Enquiry-view-item {
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #f8fafc;
+  border: 1px solid #f1f5f9;
 }
 
-.Enquiry-detail-item > span {
-  color: #8795a8;
-  font-size: 10px;
+.Enquiry-view-item span {
+  display: block;
+  font-size: 11px;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.35px;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  margin-bottom: 4px;
 }
 
-.Enquiry-detail-item > strong {
-  color: #31465f;
-  font-size: 12px;
-  font-weight: 800;
+.Enquiry-view-item strong {
+  font-size: 13.5px;
+  color: #0f172a;
+  word-break: break-word;
+}
+
+.Enquiry-view-item strong a {
+  color: #059669;
+  text-decoration: none;
+}
+
+.Enquiry-view-item strong a:hover {
+  text-decoration: underline;
+}
+
+.Enquiry-view-message span {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  margin-bottom: 6px;
+}
+
+.Enquiry-view-quote {
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: #f0fdf4;
+  border-left: 4px solid #059669;
+  font-size: 13.5px;
   line-height: 1.6;
-  overflow-wrap: anywhere;
+  color: #14532d;
 }
 
-.Enquiry-detail-card > .Enquiry-form-actions {
-  margin-top: auto;
+.Enquiry-view-quote p {
+  margin: 0;
+  white-space: pre-wrap;
 }
 
-/* =========================================================
-   TOAST NOTIFICATION
-========================================================= */
-
+/* --------------------------------------------------------------------------
+   7. Toast Notification
+   -------------------------------------------------------------------------- */
 .Enquiry-toast {
   position: fixed;
-  z-index: 10001;
-  right: 25px;
-  bottom: 25px;
-
-  width: auto;
-  max-width: calc(100vw - 32px);
-  min-height: 49px;
-  padding: 13px 18px;
-
-  display: flex;
+  right: 24px;
+  bottom: 24px;
+  z-index: 10000;
+  display: inline-flex;
   align-items: center;
   gap: 10px;
-
-  border: 1px solid #bdebd4;
+  padding: 12px 20px;
   border-radius: 12px;
-  background: #ffffff;
-  color: #087451;
-
-  font-size: 12px;
-  font-weight: 800;
-
-  box-shadow: 0 10px 30px rgba(12, 63, 43, 0.14);
-  animation: Enquiry-toast-enter 0.2s ease-out;
+  background: #064e3b;
+  color: #ffffff;
+  font-size: 13.5px;
+  font-weight: 600;
+  box-shadow: 0 16px 36px -12px rgba(2, 44, 34, 0.6);
+  border: 1px solid #059669;
+  animation: enquiryToastIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.Enquiry-toast svg {
-  flex-shrink: 0;
-  color: #00b87b;
-}
-
-@keyframes Enquiry-toast-enter {
+@keyframes enquiryToastIn {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(16px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-/* =========================================================
-   LARGE SCREENS
-========================================================= */
-
-@media (min-width: 1600px) {
-  .Enquiry-app-shell {
-    padding: 32px 36px 24px;
-  }
-
-  .Enquiry-stats-grid {
-    gap: 19px;
-  }
-
-  .Enquiry-stat-card {
-    min-height: 140px;
-    padding: 22px;
-  }
-
-  .Enquiry-panel-heading {
-    padding: 24px 30px;
-  }
-
-  .Enquiry-filter-row {
-    padding: 19px 30px;
-  }
-}
-
-/* =========================================================
-   LAPTOP
-========================================================= */
-
-@media (max-width: 1350px) {
-  .Enquiry-app-shell {
-    padding: 23px 20px 18px;
-  }
-
+/* --------------------------------------------------------------------------
+   8. Responsive Breakpoints
+   -------------------------------------------------------------------------- */
+@media (max-width: 1200px) {
   .Enquiry-stats-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 13px;
   }
+}
 
-  .Enquiry-stat-card {
-    min-height: 112px;
-  }
-
-  .Enquiry-panel-heading {
+@media (max-width: 768px) {
+  .Enquiry-hero {
     padding: 20px;
   }
-
-  .Enquiry-filter-row {
-    padding: 15px 20px;
-  }
-}
-
-/* =========================================================
-   TABLET
-========================================================= */
-
-@media (max-width: 900px) {
-  .Enquiry-app-shell {
-    padding: 20px 16px;
-  }
-
-  .Enquiry-page-header {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 12px;
-    margin-bottom: 22px;
-  }
-
-  .Enquiry-breadcrumbs {
-    justify-content: flex-start;
-  }
-
   .Enquiry-stats-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-    margin-bottom: 20px;
   }
-
-  .Enquiry-stat-card {
-    min-height: 108px;
-    padding: 16px;
-    gap: 12px;
+  .Enquiry-form-grid,
+  .Enquiry-view-grid {
+    grid-template-columns: 1fr;
   }
-
-  .Enquiry-stat-icon {
-    width: 46px;
-    height: 46px;
-    flex-basis: 46px;
-    border-radius: 13px;
-  }
-
-  .Enquiry-stat-copy > strong {
-    font-size: 27px;
-  }
-
-  .Enquiry-panel-heading {
-    align-items: flex-start;
-    flex-direction: column;
-    padding: 19px;
-  }
-
   .Enquiry-toolbar {
-    width: 100%;
-    justify-content: flex-start;
-  }
-
-  .Enquiry-filter-row {
-    padding: 15px 19px;
-    gap: 10px;
-  }
-
-  .Enquiry-select-wrap {
-    width: 175px;
-    flex-basis: 175px;
-  }
-
-  .Enquiry-search-box {
-    flex: 1 1 260px;
-    min-width: 0;
-  }
-
-  .Enquiry-showing {
-    width: 100%;
-    margin-left: 0;
-    text-align: right;
-  }
-
-  .Enquiry-table-scroll table {
-    min-width: 1180px;
-  }
-}
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 600px) {
-  .Enquiry-app-shell {
-    padding: 15px 11px 17px;
-  }
-
-  .Enquiry-page-header {
-    gap: 12px;
-    margin-bottom: 19px;
-  }
-
-  .Enquiry-title-line {
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .Enquiry-title-accent {
-    height: 38px;
-    width: 4px;
-  }
-
-  .Enquiry-title-line h1 {
-    font-size: 26px;
-    letter-spacing: -0.7px;
-  }
-
-  .Enquiry-title-line p {
-    font-size: 11px;
-  }
-
-  .Enquiry-breadcrumbs {
-    gap: 7px;
-    font-size: 11px;
-  }
-
-  .Enquiry-stats-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-    margin-bottom: 16px;
-  }
-
-  .Enquiry-stat-card {
-    min-height: 100px;
-    padding: 12px 10px;
-    gap: 9px;
-    border-radius: 13px;
-  }
-
-  .Enquiry-stat-icon {
-    width: 38px;
-    height: 38px;
-    flex-basis: 38px;
-    border-radius: 11px;
-  }
-
-  .Enquiry-stat-icon svg {
-    width: 19px;
-    height: 19px;
-  }
-
-  .Enquiry-stat-label {
-    font-size: 8px;
-    letter-spacing: 0.15px;
-  }
-
-  .Enquiry-stat-copy > strong {
-    font-size: 25px;
-  }
-
-  .Enquiry-stat-note {
-    font-size: 9px;
-    line-height: 1.35;
-  }
-
-  .Enquiry-stat-orb {
-    width: 65px;
-    height: 65px;
-    top: -15px;
-    right: -15px;
-  }
-
-  .Enquiry-panel {
-    border-radius: 14px;
-  }
-
-  .Enquiry-panel-heading {
-    padding: 15px 13px;
-    gap: 14px;
-  }
-
-  .Enquiry-section-title {
-    gap: 10px;
-  }
-
-  .Enquiry-section-icon {
-    width: 43px;
-    height: 43px;
-    flex-basis: 43px;
-    border-radius: 12px;
-  }
-
-  .Enquiry-section-icon svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  .Enquiry-section-title h2 {
-    font-size: 16px;
-  }
-
-  .Enquiry-section-title p {
-    font-size: 10px;
-  }
-
-  .Enquiry-toolbar {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-  }
-
-  .Enquiry-toolbar .Enquiry-btn {
-    min-width: 0;
-    min-height: 41px;
-    padding: 9px 8px;
-    gap: 6px;
-    font-size: 11px;
-  }
-
-  .Enquiry-toolbar .Enquiry-btn-primary {
-    grid-column: 1 / -1;
-  }
-
-  .Enquiry-filter-row {
-    padding: 12px;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 10px;
-  }
-
-  .Enquiry-select-wrap {
-    width: 100%;
-    flex-basis: auto;
-  }
-
-  .Enquiry-select-wrap select,
-  .Enquiry-search-box {
-    height: 43px;
-  }
-
-  .Enquiry-search-box {
-    width: 100%;
-    min-width: 0;
-  }
-
-  .Enquiry-showing {
-    text-align: left;
-    font-size: 10px;
-  }
-
-  .Enquiry-table-scroll table {
-    min-width: 1180px;
-  }
-
-  .Enquiry-table-scroll th {
-    height: 47px;
-    padding: 11px 10px;
-    font-size: 9px;
-  }
-
-  .Enquiry-table-scroll td {
-    padding: 11px 10px;
-    font-size: 10px;
-  }
-
-  .Enquiry-table-scroll th:first-child,
-  .Enquiry-table-scroll td:first-child {
-    padding-left: 13px;
-  }
-
-  .Enquiry-table-footer {
-    padding: 12px;
-    align-items: flex-start;
     flex-direction: column;
-    gap: 12px;
+    align-items: stretch;
   }
-
-  .Enquiry-entries-control {
-    font-size: 10px;
+  .Enquiry-filter-group {
+    flex-direction: column;
+    align-items: stretch;
   }
-
-  .Enquiry-pagination {
-    width: 100%;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    gap: 5px;
-  }
-
-  .Enquiry-pagination > button {
-    width: 32px;
-    height: 32px;
-  }
-
-  .Enquiry-watermark {
-    padding-top: 13px;
-  }
-
-  .Enquiry-modal-backdrop {
-    padding: 12px;
-    align-items: center;
-  }
-
-  .Enquiry-modal-card {
-    width: 100%;
-    max-width: none;
-    max-height: calc(100vh - 24px);
-    max-height: calc(100dvh - 24px);
-    border-radius: 14px;
-  }
-
-  .Enquiry-modal-header {
-    min-height: 72px;
-    padding: 13px;
-    gap: 10px;
-  }
-
-  .Enquiry-modal-header > div {
-    gap: 10px;
-  }
-
-  .Enquiry-modal-icon {
-    width: 39px;
-    height: 39px;
-    flex-basis: 39px;
-    border-radius: 11px;
-  }
-
-  .Enquiry-modal-header h2 {
-    font-size: 16px;
-  }
-
-  .Enquiry-modal-header p {
-    font-size: 10px;
-  }
-
-  .Enquiry-close-btn {
-    width: 34px;
-    height: 34px;
-    flex-basis: 34px;
-  }
-
-  .Enquiry-form-grid {
-    padding: 17px 14px;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 15px;
-  }
-
-  .Enquiry-form-grid > label {
-    gap: 7px;
-    font-size: 11px;
-  }
-
-  .Enquiry-input-icon,
-  .Enquiry-plain-input {
-    height: 43px;
-  }
-
-  .Enquiry-form-actions {
-    padding: 12px 14px;
-    gap: 8px;
-  }
-
-  .Enquiry-form-actions .Enquiry-btn {
-    min-height: 40px;
-    padding: 9px 12px;
-    font-size: 11px;
-  }
-
-  .Enquiry-detail-person {
-    padding: 15px;
-    gap: 10px;
-  }
-
-  .Enquiry-detail-person > .Enquiry-avatar {
-    width: 42px;
-    height: 42px;
-    flex-basis: 42px;
-  }
-
-  .Enquiry-detail-person > div strong {
-    font-size: 12px;
-  }
-
-  .Enquiry-detail-person > div > span {
-    font-size: 10px;
-  }
-
-  .Enquiry-detail-person > .Enquiry-status-badge {
-    margin-left: auto;
-  }
-
-  .Enquiry-detail-grid {
-    padding: 14px;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 9px;
-  }
-
-  .Enquiry-detail-item {
-    padding: 12px;
-    gap: 6px;
-  }
-
-  .Enquiry-toast {
-    right: 12px;
-    bottom: 12px;
-    left: 12px;
-    width: auto;
-    max-width: none;
-    min-height: 45px;
-    padding: 11px 13px;
-    font-size: 11px;
+  .Enquiry-search-wrap {
+    max-width: 100%;
   }
 }
 
-/* =========================================================
-   EXTRA SMALL DEVICES
-========================================================= */
-
-@media (max-width: 360px) {
-  .Enquiry-app-shell {
-    padding: 12px 8px;
-  }
-
-  .Enquiry-title-line h1 {
-    font-size: 23px;
-  }
-
+@media (max-width: 480px) {
   .Enquiry-stats-grid {
-    gap: 8px;
-  }
-
-  .Enquiry-stat-card {
-    padding: 10px 8px;
-    gap: 7px;
-  }
-
-  .Enquiry-stat-icon {
-    width: 33px;
-    height: 33px;
-    flex-basis: 33px;
-  }
-
-  .Enquiry-stat-icon svg {
-    width: 17px;
-    height: 17px;
-  }
-
-  .Enquiry-stat-label {
-    font-size: 7px;
-  }
-
-  .Enquiry-stat-copy > strong {
-    font-size: 22px;
-  }
-
-  .Enquiry-stat-note {
-    font-size: 8px;
-  }
-
-  .Enquiry-toolbar .Enquiry-btn {
-    font-size: 10px;
-  }
-
-  .Enquiry-pagination {
-    gap: 4px;
-  }
-
-  .Enquiry-pagination > button {
-    width: 29px;
-    height: 29px;
-  }
-
-  .Enquiry-modal-backdrop {
-    padding: 8px;
-  }
-
-  .Enquiry-modal-card {
-    max-height: calc(100vh - 16px);
-    max-height: calc(100dvh - 16px);
-  }
-
-  .Enquiry-modal-header h2 {
-    font-size: 14px;
-  }
-
-  .Enquiry-form-actions {
-    justify-content: stretch;
-  }
-
-  .Enquiry-form-actions .Enquiry-btn {
-    flex: 1;
-  }
-}
-
-/* =========================================================
-   SHORT VIEWPORTS
-========================================================= */
-
-@media (max-height: 650px) and (min-width: 601px) {
-  .Enquiry-modal-backdrop {
-    padding-top: 12px;
-    padding-bottom: 12px;
-  }
-
-  .Enquiry-modal-card {
-    max-height: calc(100vh - 24px);
-    max-height: calc(100dvh - 24px);
-  }
-
-  .Enquiry-modal-header {
-    min-height: 65px;
-    padding: 12px 18px;
-  }
-
-  .Enquiry-form-grid {
-    padding: 15px 20px;
-    gap: 13px;
-  }
-
-  .Enquiry-form-actions {
-    padding: 11px 20px;
-  }
-}
-
-/* =========================================================
-   REDUCED MOTION ACCESSIBILITY
-========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-  .Enquiry-app-shell *,
-  .Enquiry-app-shell *::before,
-  .Enquiry-app-shell *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    grid-template-columns: 1fr;
   }
 }

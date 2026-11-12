@@ -1,112 +1,99 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import "./BlogMain.css";
 
-const POSTS = [
-  {
-    id: 1,
-    category: "Crocodiles",
-    date: "12 Oct 2026",
-    comments: 4,
-    title: "Meet the Giants of Bhitarkanika: Saltwater Crocodiles",
-    excerpt:
-      "Explore the muddy banks and winding mangrove creeks where mighty saltwater crocodiles bask in the warm afternoon sun.",
-    place: "Dangmal Creek",
-    season: "Nov – Feb",
-    image:
-      "https://images.squarespace-cdn.com/content/v1/552ce6d0e4b0d3f184888632/1439705415659-VQJQ7HYKF6J9RKBDYTON/5D3_9150.jpg",
-    imageAlt: "Saltwater crocodile resting on a muddy riverbank in Bhitarkanika",
-    link: "#",
-  },
-  {
-    id: 2,
-    category: "Turtles",
-    date: "28 Sep 2026",
-    comments: 9,
-    title: "Olive Ridley Turtles Return to Gahirmatha Beach",
-    excerpt:
-      "Discover the remarkable Olive Ridley sea turtles and the world-renowned nesting sanctuaries lining the coastal shores of Odisha.",
-    place: "Gahirmatha Coast",
-    season: "Nesting Season",
-    image:
-      "https://res.cloudinary.com/roundglass/image/upload/f_auto/v1584218805/roundglass/sustain/Odisha_Olive-ridley_Kartik-Shanker-copy_ze1jx0.jpg",
-    imageAlt: "Olive Ridley sea turtles gathering on an Odisha nesting beach",
-    link: "#",
-  },
-  {
-    id: 3,
-    category: "Birds",
-    date: "17 Sep 2026",
-    comments: 2,
-    title: "Bagagahana: A Heronry Alive With Egrets and Storks",
-    excerpt:
-      "Witness vibrant nesting colonies of egrets, painted storks, and darters canopying the quiet mangrove channels.",
-    place: "Bagagahana Heronry",
-    season: "Jul – Oct",
-    image:
-      "https://miro.medium.com/v2/resize%3Afit%3A1200/0%2A6UWbJD-wqfPe4MXk.jpg",
-    imageAlt: "A large colony of nesting waterbirds among Bhitarkanika mangroves",
-    link: "#",
-  },
-  {
-    id: 4,
-    category: "Reptiles",
-    date: "05 Aug 2026",
-    comments: 6,
-    title: "Discover the Water Monitor of the Mangrove Forest",
-    excerpt:
-      "Learn about the mighty Asian water monitor lizard and the varied reptiles thriving beneath tidal aerial root systems.",
-    place: "Mangrove Interior",
-    season: "Oct – Mar",
-    image:
-      "https://images.unsplash.com/photo-1535591273668-578e31182c4f?auto=format&fit=crop&w=1200&q=85",
-    imageAlt: "Wild reptile in a natural habitat",
-    link: "#",
-  },
-  {
-    id: 5,
-    category: "Mammals",
-    date: "22 Jul 2026",
-    comments: 3,
-    title: "Spotted Deer at Dawn in the Bhitarkanika Mangroves",
-    excerpt:
-      "Watch graceful spotted deer graze along the shoreline mist, offering quiet glimpses into undisturbed wildlife sanctuary life.",
-    place: "Dangmal Sanctuary",
-    season: "Early Morning",
-    image:
-      "https://apps.odishatourism.gov.in/Application/uploadDocuments/UserContribution/user20200130121601619",
-    imageAlt: "Spotted deer standing among the green mangrove vegetation",
-    link: "#",
-  },
-  {
-    id: 6,
-    category: "Birds",
-    date: "09 Jul 2026",
-    comments: 7,
-    title: "Kingfishers on the Water: A Boat Safari Birding Guide",
-    excerpt:
-      "Spot eight varieties of brilliant kingfishers perched above the waterways, making Bhitarkanika an unmatched birdwatcher's haven.",
-    place: "Khola Jetty Trails",
-    season: "Year Round",
-    image:
-      "https://images.unsplash.com/photo-1552728089-57bdde30beb3?auto=format&fit=crop&w=1200&q=85",
-    imageAlt: "Colorful wild bird perched in its natural environment",
-    link: "#",
-  },
-];
-
-const FILTERS = ["All", "Crocodiles", "Birds", "Turtles", "Reptiles", "Mammals"];
+const API_PUBLISHED_BLOGS_URL = "http://localhost:5000/api/blogs/published";
+const API_CATEGORIES_URL = "http://localhost:5000/api/blog-categories?active=true";
 const PETALS = [0, 1, 2, 3, 4, 5, 6, 7];
 
+const stripHtml = (html = "") =>
+  html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+
+const formatDate = (dateValue, createdAt) => {
+  const source = dateValue ? `${dateValue}T00:00:00` : createdAt;
+  if (!source) return "";
+  const parsed = new Date(source);
+  if (Number.isNaN(parsed.getTime())) return dateValue || "";
+  return parsed.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+};
+
 const BlogMain = () => {
+  const [posts, setPosts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [active, setActive] = useState("All");
   const [failedImages, setFailedImages] = useState([]);
+
+  useEffect(() => {
+    const fetchPublishedBlogsAndCategories = async () => {
+      try {
+        setLoading(true);
+        const [blogsRes, categoriesRes] = await Promise.all([
+          fetch(API_PUBLISHED_BLOGS_URL),
+          fetch(API_CATEGORIES_URL),
+        ]);
+        const [blogsJson, categoriesJson] = await Promise.all([
+          blogsRes.json(),
+          categoriesRes.json(),
+        ]);
+
+        if (blogsRes.ok && blogsJson.success) {
+          const mapped = (blogsJson.data || [])
+            .filter((blog) => blog.published === true)
+            .map((blog) => ({
+              id: blog._id || blog.id,
+              category: blog.category || "",
+              date: formatDate(blog.date, blog.createdAt),
+              comments: blog.comments ?? 0,
+              title: blog.title,
+              excerpt: stripHtml(blog.description),
+              place: blog.location || "",
+              season: blog.idealSeason || "",
+              image: blog.mainImage,
+              imageAlt: blog.title,
+              link: `/blog/${blog.slug || blog._id || blog.id}`,
+            }));
+          setPosts(mapped);
+        }
+
+        if (categoriesRes.ok && categoriesJson.success) {
+          setCategories(
+            (categoriesJson.data || []).map((cat) => cat.name).filter(Boolean)
+          );
+        }
+      } catch (error) {
+        console.error("Failed to fetch published blogs:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPublishedBlogsAndCategories();
+  }, []);
+
+  const filters = useMemo(
+    () => [
+      "All",
+      ...Array.from(
+        new Set([
+          ...categories,
+          ...posts.map((post) => post.category).filter(Boolean),
+        ])
+      ),
+    ],
+    [categories, posts]
+  );
 
   const visiblePosts = useMemo(
     () =>
       active === "All"
-        ? POSTS
-        : POSTS.filter((post) => post.category === active),
-    [active]
+        ? posts
+        : posts.filter((post) => post.category === active),
+    [active, posts]
   );
 
   const handleImageError = (id) => {
@@ -143,7 +130,7 @@ const BlogMain = () => {
             role="group"
             aria-label="Filter wildlife stories"
           >
-            {FILTERS.map((filter) => (
+            {filters.map((filter) => (
               <button
                 key={filter}
                 type="button"
@@ -169,36 +156,43 @@ const BlogMain = () => {
         </div>
 
         {/* Story Grid */}
-        <div className="BlogMain__grid">
-          {visiblePosts.map((post) => (
-            <article className="BlogMain__card" key={post.id}>
-              
-              {/* Media Wrap */}
-              <div className="BlogMain__media">
-                {!failedImages.includes(post.id) ? (
-                  <img
-                    className="BlogMain__image"
-                    src={post.image}
-                    alt={post.imageAlt}
-                    loading="lazy"
-                    decoding="async"
-                    onError={() => handleImageError(post.id)}
-                  />
-                ) : (
-                  <div
-                    className="BlogMain__imageFallback"
-                    role="img"
-                    aria-label={`${post.category} image unavailable`}
-                  >
-                    <span>{post.category}</span>
-                    <small>Bhitarkanika Sanctuary</small>
-                  </div>
-                )}
+        {loading ? (
+          <div className="BlogMain__empty">
+            <p>Loading published stories...</p>
+          </div>
+        ) : (
+          <div className="BlogMain__grid">
+            {visiblePosts.map((post, index) => (
+              <article className="BlogMain__card" key={post.id}>
+                
+                {/* Media Wrap */}
+                <div className="BlogMain__media">
+                  {!failedImages.includes(post.id) ? (
+                    <img
+                      className="BlogMain__image"
+                      src={post.image}
+                      alt={post.imageAlt}
+                      loading="lazy"
+                      decoding="async"
+                      onError={() => handleImageError(post.id)}
+                    />
+                  ) : (
+                    <div
+                      className="BlogMain__imageFallback"
+                      role="img"
+                      aria-label={`${post.category} image unavailable`}
+                    >
+                      <span>{post.category}</span>
+                      <small>Bhitarkanika Sanctuary</small>
+                    </div>
+                  )}
 
-                <div className="BlogMain__imageShade" />
-                <span className="BlogMain__tag">{post.category}</span>
-                <span className="BlogMain__imageNumber">0{post.id}</span>
-              </div>
+                  <div className="BlogMain__imageShade" />
+                  <span className="BlogMain__tag">{post.category}</span>
+                  <span className="BlogMain__imageNumber">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                </div>
 
               {/* Card Body */}
               <div className="BlogMain__body">
@@ -222,9 +216,9 @@ const BlogMain = () => {
                 </div>
 
                 <h3 className="BlogMain__title">
-                  <a className="BlogMain__titleLink" href={post.link}>
+                  <Link className="BlogMain__titleLink" to={post.link}>
                     {post.title}
-                  </a>
+                  </Link>
                 </h3>
 
                 <span className="BlogMain__more">
@@ -261,20 +255,21 @@ const BlogMain = () => {
                     </div>
                   </dl>
 
-                  <a className="BlogMain__button" href={post.link}>
+                  <Link className="BlogMain__button" to={post.link}>
                     <span>Read Full Story</span>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                       <line x1="5" y1="12" x2="19" y2="12" />
                       <polyline points="12 5 19 12 12 19" />
                     </svg>
-                  </a>
+                  </Link>
                 </div>
               </div>
             </article>
           ))}
-        </div>
+          </div>
+        )}
 
-        {visiblePosts.length === 0 && (
+        {!loading && visiblePosts.length === 0 && (
           <div className="BlogMain__empty">
             <p>No journal entries found in this category.</p>
           </div>

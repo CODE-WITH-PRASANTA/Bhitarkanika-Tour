@@ -28,7 +28,6 @@ const initialForm = {
   email: '',
   subject: '',
   message: '',
-  remember: false,
 }
 
 const ContactIcon = ({ type }) => {
@@ -130,9 +129,13 @@ const contactItems = [
   },
 ]
 
+const API_ENQUIRY_URL = 'http://localhost:5000/api/enquiries'
+
 const ContactMain = () => {
   const [form, setForm] = useState(initialForm)
   const [sent, setSent] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [errorMsg, setErrorMsg] = useState('')
 
   const handleChange = (e) => {
     const { name, value, checked, type } = e.target
@@ -143,16 +146,41 @@ const ContactMain = () => {
     }))
 
     setSent(false)
+    setErrorMsg('')
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
-    // Connect your backend API here to actually send the message.
-    console.log('Contact form data:', form)
+    try {
+      setSubmitting(true)
+      setErrorMsg('')
+      setSent(false)
 
-    setSent(true)
-    setForm(initialForm)
+      const response = await fetch(API_ENQUIRY_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name.trim(),
+          phone: form.phone.trim(),
+          email: form.email.trim(),
+          subject: form.subject.trim(),
+          message: form.message.trim(),
+        }),
+      })
+
+      const result = await response.json()
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || 'Unable to submit your enquiry.')
+      }
+
+      setSent(true)
+      setForm(initialForm)
+    } catch (error) {
+      setErrorMsg(error.message || 'Failed to send message. Please try again.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -266,22 +294,9 @@ const ContactMain = () => {
                 />
               </div>
 
-              <label className="ContactMain__check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  checked={form.remember}
-                  onChange={handleChange}
-                />
-                <span className="ContactMain__check-custom" />
-                <span>
-                  Save my details in this browser for next time.
-                </span>
-              </label>
-
-              <button className="ContactMain__btn" type="submit">
+              <button className="ContactMain__btn" type="submit" disabled={submitting}>
                 <span className="ContactMain__btn-label">
-                  Send Your Message
+                  {submitting ? 'Sending...' : 'Send Your Message'}
                 </span>
 
                 <span className="ContactMain__btn-arrow">
@@ -291,8 +306,17 @@ const ContactMain = () => {
 
               {sent && (
                 <div className="ContactMain__success" role="status">
-                  Thank you! Your message has been processed in this demo.
-                  Connect your backend to receive actual submissions.
+                  Thank you! Your enquiry has been submitted successfully. Our team will get back to you shortly.
+                </div>
+              )}
+
+              {errorMsg && (
+                <div
+                  className="ContactMain__success"
+                  role="alert"
+                  style={{ background: '#fef2f2', color: '#991b1b', borderColor: '#fecaca' }}
+                >
+                  {errorMsg}
                 </div>
               )}
 

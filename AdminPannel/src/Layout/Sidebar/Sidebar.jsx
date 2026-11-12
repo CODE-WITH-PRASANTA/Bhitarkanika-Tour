@@ -11,6 +11,8 @@ import {
   X,
   FilePenLine,
   FolderKanban,
+  Tags,
+  MessageSquare,
   Leaf,
 } from "lucide-react";
 
@@ -36,9 +38,19 @@ export const NAV_ITEMS = [
         path: "/blog/posting",
       },
       {
+        label: "Add Category",
+        icon: Tags,
+        path: "/blog/category",
+      },
+      {
         label: "Blog Management",
         icon: FolderKanban,
         path: "/blog/management",
+      },
+      {
+        label: "Blog Comments",
+        icon: MessageSquare,
+        path: "/blog/comments",
       },
     ],
   },
@@ -179,45 +191,6 @@ const Sidebar = ({
           </button>
         </div>
 
-        {/* Admin Profile */}
-        <NavLink
-          to="/profile"
-          className="HealthySidebar-profile-card"
-          onClick={handleLinkClick(onProfileClick)}
-          title={isCollapsed ? `${user.name} (${user.role})` : undefined}
-        >
-          <div className="HealthySidebar-avatar-wrap">
-            {user.avatarUrl ? (
-              <img
-                src={user.avatarUrl}
-                alt={user.name}
-                className="HealthySidebar-avatar-img"
-              />
-            ) : (
-              <div className="HealthySidebar-avatar-fallback">
-                {user.initials ||
-                  user.name
-                    ?.split(" ")
-                    .map((word) => word[0])
-                    .join("")
-                    .slice(0, 2)
-                    .toUpperCase()}
-              </div>
-            )}
-
-            <span className="HealthySidebar-status-beacon" />
-          </div>
-
-          <div className="HealthySidebar-profile-details">
-            <span className="HealthySidebar-profile-name">
-              {user.name}
-            </span>
-            <span className="HealthySidebar-profile-role">
-              {user.role}
-            </span>
-          </div>
-        </NavLink>
-
         {/* Main Navigation */}
         <nav
           className="HealthySidebar-nav"
@@ -336,18 +309,6 @@ const Sidebar = ({
             })}
           </div>
         </nav>
-
-        {/* Sidebar Footer */}
-        {!isCollapsed && (
-          <div className="HealthySidebar-footer">
-            <span className="HealthySidebar-footer-version">
-              {version}
-            </span>
-            <span className="HealthySidebar-footer-caption">
-              Admin Dashboard
-            </span>
-          </div>
-        )}
       </aside>
     </>
   );

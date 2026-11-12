@@ -1,5 +1,5 @@
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   BookOpen,
@@ -24,184 +24,11 @@ import {
 } from "lucide-react";
 import "./BlogManagement.css";
 
-const INITIAL_BLOGS = [
-  {
-    id: 1,
-    title: "Exploring the Beauty of Bhitarkanika",
-    category: "Wildlife",
-    location: "Bhitarkanika, Odisha",
-    season: "Winter",
-    tags: ["Bhitarkanika", "Nature", "Wildlife"],
-    date: "2026-10-20",
-    description:
-      "Discover the beautiful mangrove forests, rich biodiversity, and unforgettable river experiences of Bhitarkanika.",
-    image:
-      "https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=900&q=85",
-  },
-  {
-    id: 2,
-    title: "Birds of the Mangroves",
-    category: "Birds",
-    location: "Bhitarkanika Wetlands",
-    season: "Winter",
-    tags: ["Birds", "Photography", "Nature"],
-    date: "2026-10-18",
-    description:
-      "Explore the fascinating bird species found in the flourishing mangrove ecosystem of Bhitarkanika.",
-    image:
-      "https://images.unsplash.com/photo-1444464666168-49d633b86797?auto=format&fit=crop&w=900&q=85",
-  },
-  {
-    id: 3,
-    title: "A Complete Guide to Boat Safari",
-    category: "Boating",
-    location: "Bhitarkanika River",
-    season: "Summer",
-    tags: ["Safari", "Travel Tips", "Boating"],
-    date: "2026-10-15",
-    description:
-      "Plan your boat safari with useful tips, scenic routes, and everything to expect during your journey.",
-    image:
-      "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=900&q=85",
-  },
-  {
-    id: 4,
-    title: "Mangrove Forests: A Natural Treasure",
-    category: "Nature",
-    location: "Kendrapara, Odisha",
-    season: "Monsoon",
-    tags: ["Mangroves", "Conservation", "Nature"],
-    date: "2026-10-12",
-    description:
-      "Learn about unique mangrove forests, their importance, and how responsible tourism helps protect them.",
-    image:
-      "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=900&q=85",
-  },
-  {
-    id: 5,
-    title: "Wildlife Experience at Bhitarkanika",
-    category: "Adventure",
-    location: "Bhitarkanika",
-    season: "All Year",
-    tags: ["Wildlife", "Adventure", "Travel"],
-    date: "2026-10-10",
-    description:
-      "Experience the remarkable natural landscapes and diverse wildlife of Odisha's beautiful wetlands.",
-    image:
-      "https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=900&q=85",
-  },
-  {
-    id: 6,
-    title: "Discover Odisha's Hidden Nature Trails",
-    category: "Nature",
-    location: "Odisha, India",
-    season: "Winter",
-    tags: ["Nature", "Hiking", "Travel"],
-    date: "2026-10-08",
-    description:
-      "Find peaceful trails, lush landscapes, and unforgettable outdoor experiences across Odisha.",
-    image:
-      "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=900&q=85",
-  },
-  {
-    id: 7,
-    title: "Responsible Tourism in the Wetlands",
-    category: "Wildlife",
-    location: "Kendrapara, Odisha",
-    season: "Winter",
-    tags: ["Conservation", "Wildlife", "Nature"],
-    date: "2026-10-05",
-    description:
-      "Discover practical ways to protect sensitive habitats and enjoy more responsible wildlife tourism.",
-    image:
-      "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=900&q=85",
-  },
-  {
-    id: 8,
-    title: "A Photographer's Guide to Birdwatching",
-    category: "Birds",
-    location: "Bhitarkanika Wetlands",
-    season: "Winter",
-    tags: ["Birds", "Photography", "Travel"],
-    date: "2026-10-02",
-    description:
-      "Prepare for a birdwatching trip with simple photography tips and guidance for observing wildlife.",
-    image:
-      "https://images.unsplash.com/photo-1452570053594-1b985d6ea890?auto=format&fit=crop&w=900&q=85",
-  },
-  {
-    id: 9,
-    title: "The Magic of River Landscapes",
-    category: "Boating",
-    location: "Bhitarkanika River",
-    season: "Summer",
-    tags: ["River", "Boating", "Photography"],
-    date: "2026-09-28",
-    description:
-      "Explore the waterways, peaceful scenery, and natural beauty of a river adventure in Odisha.",
-    image:
-      "https://images.unsplash.com/photo-1439066615861-d1af74d74000?auto=format&fit=crop&w=900&q=85",
-  },
-  {
-    id: 10,
-    title: "Protecting Our Precious Mangroves",
-    category: "Nature",
-    location: "Odisha, India",
-    season: "Monsoon",
-    tags: ["Mangroves", "Conservation", "Environment"],
-    date: "2026-09-25",
-    description:
-      "Understand why mangrove ecosystems matter and how local conservation efforts support biodiversity.",
-    image:
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=85",
-  },
-  {
-    id: 11,
-    title: "Weekend Wildlife Photography",
-    category: "Adventure",
-    location: "Bhitarkanika",
-    season: "Winter",
-    tags: ["Photography", "Wildlife", "Adventure"],
-    date: "2026-09-20",
-    description:
-      "Prepare your camera, plan your visit, and discover the joy of observing wildlife in natural habitats.",
-    image:
-      "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=900&q=85",
-  },
-  {
-    id: 12,
-    title: "An Introduction to Odisha's Wetlands",
-    category: "Travel Guide",
-    location: "Odisha, India",
-    season: "All Year",
-    tags: ["Travel Guide", "Wetlands", "Nature"],
-    date: "2026-09-15",
-    description:
-      "Start exploring Odisha's rich natural heritage with this introduction to its beautiful wetland destinations.",
-    image:
-      "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=900&q=85",
-  },
-];
+const API_BLOGS_URL = "http://localhost:5000/api/blogs";
+const API_CATEGORIES_URL = "http://localhost:5000/api/blog-categories";
 
-const BLOG_CATEGORIES = [
-  "Wildlife",
-  "Birds",
-  "Boating",
-  "Nature",
-  "Adventure",
-  "Travel Guide",
-];
-
-const BLOG_LOCATIONS = [
-  "Bhitarkanika, Odisha",
-  "Bhitarkanika Wetlands",
-  "Bhitarkanika River",
-  "Kendrapara, Odisha",
-  "Bhitarkanika",
-  "Odisha, India",
-];
-
-const BLOG_SEASONS = ["Winter", "Summer", "Monsoon", "All Year"];
+const stripHtml = (html = "") =>
+  html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 
 const getCategoryIcon = (category) => {
   const icons = {
@@ -219,7 +46,8 @@ const getCategoryIcon = (category) => {
 const BlogManagement = () => {
   const navigate = useNavigate();
 
-  const [blogs, setBlogs] = useState(INITIAL_BLOGS);
+  const [blogs, setBlogs] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [viewMode, setViewMode] = useState("list");
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
@@ -227,6 +55,69 @@ const BlogManagement = () => {
   const [seasonFilter, setSeasonFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [previewBlog, setPreviewBlog] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [blogsRes, categoriesRes] = await Promise.all([
+          fetch(API_BLOGS_URL),
+          fetch(API_CATEGORIES_URL),
+        ]);
+        const [blogsJson, categoriesJson] = await Promise.all([
+          blogsRes.json(),
+          categoriesRes.json(),
+        ]);
+
+        if (blogsRes.ok && blogsJson.success) {
+          const mapped = (blogsJson.data || []).map((blog) => ({
+            id: blog._id || blog.id,
+            title: blog.title,
+            category: blog.category || "",
+            location: blog.location || "",
+            season: blog.idealSeason || "",
+            tags: Array.isArray(blog.tags) ? blog.tags : [],
+            date:
+              blog.date ||
+              (blog.createdAt
+                ? blog.createdAt.slice(0, 10)
+                : new Date().toISOString().slice(0, 10)),
+            description: stripHtml(blog.description),
+            image: blog.mainImage || "",
+            published: blog.published !== false,
+          }));
+          setBlogs(mapped);
+        }
+
+        if (categoriesRes.ok && categoriesJson.success) {
+          setCategories(
+            (categoriesJson.data || []).map((c) => c.name).filter(Boolean)
+          );
+        }
+      } catch (error) {
+        console.error("Failed to fetch blog management data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const BLOG_CATEGORIES = useMemo(
+    () =>
+      categories.length
+        ? categories
+        : Array.from(new Set(blogs.map((b) => b.category).filter(Boolean))),
+    [categories, blogs]
+  );
+
+  const BLOG_LOCATIONS = useMemo(
+    () => Array.from(new Set(blogs.map((b) => b.location).filter(Boolean))),
+    [blogs]
+  );
+
+  const BLOG_SEASONS = useMemo(
+    () => Array.from(new Set(blogs.map((b) => b.season).filter(Boolean))),
+    [blogs]
+  );
 
   const itemsPerPage = 5;
 
@@ -288,21 +179,31 @@ const BlogManagement = () => {
     setCurrentPage(1);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     const confirmed = window.confirm(
       "Are you sure you want to delete this blog post?"
     );
 
     if (!confirmed) return;
 
-    setBlogs((previous) => previous.filter((blog) => blog.id !== id));
-    setPreviewBlog((previous) =>
-      previous?.id === id ? null : previous
-    );
+    try {
+      const res = await fetch(`${API_BLOGS_URL}/${id}`, { method: "DELETE" });
+      const result = await res.json();
+      if (res.ok && result.success) {
+        setBlogs((previous) => previous.filter((blog) => blog.id !== id));
+        setPreviewBlog((previous) => (previous?.id === id ? null : previous));
+      }
+    } catch (error) {
+      console.error("Error deleting blog:", error);
+    }
   };
 
-  const handleEdit = () => {
-    navigate("/blog/posting");
+  const handleEdit = (id) => {
+    if (id) {
+      navigate(`/blog/posting?edit=${id}`);
+    } else {
+      navigate("/blog/posting");
+    }
   };
 
   const formatDate = (date) =>
@@ -373,7 +274,7 @@ const BlogManagement = () => {
         className="BlogManagement-action-btn BlogManagement-edit-btn"
         title="Edit blog"
         aria-label={`Edit ${blog.title}`}
-        onClick={handleEdit}
+        onClick={() => handleEdit(blog.id)}
       >
         <Pencil size={17} />
       </button>
@@ -412,7 +313,7 @@ const BlogManagement = () => {
           <button
             type="button"
             className="BlogManagement-create-btn"
-            onClick={handleEdit}
+            onClick={() => handleEdit()}
           >
             <Plus size={19} />
             Create New Blog
@@ -833,7 +734,7 @@ const BlogManagement = () => {
               <button
                 type="button"
                 className="BlogManagement-create-btn"
-                onClick={handleEdit}
+                onClick={() => handleEdit(previewBlog.id)}
               >
                 <Pencil size={16} />
                 Edit Blog

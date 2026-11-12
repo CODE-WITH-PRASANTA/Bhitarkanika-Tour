@@ -1755,3 +1755,116 @@
     animation-iteration-count: 1 !important;
   }
 }
+
+/* Publish / Draft Toggle Switch */
+.BlogPosting-publish-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 24px !important;
+  flex-wrap: wrap;
+}
+
+.BlogPosting-publish-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.BlogPosting-publish-copy strong {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.BlogPosting-publish-copy span {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.BlogPosting-publish-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.BlogPosting-publish-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #94a3b8;
+  transition: color 0.2s ease;
+}
+
+.BlogPosting-publish-label.is-draft {
+  color: #b45309;
+}
+
+.BlogPosting-publish-label.is-published {
+  color: #059669;
+}
+
+.BlogPosting-switch {
+  position: relative;
+  width: 50px;
+  height: 28px;
+  border-radius: 999px;
+  border: none;
+  background: #f59e0b;
+  padding: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.BlogPosting-switch.is-published {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.BlogPosting-switch-thumb {
+  display: block;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 2px 5px rgba(15, 23, 42, 0.24);
+  transition: transform 0.2s ease;
+}
+
+.BlogPosting-switch.is-published .BlogPosting-switch-thumb {
+  transform: translateX(22px);
+}
+
+.BlogPosting-switch--sm {
+  width: 40px;
+  height: 22px;
+  padding: 2px;
+}
+
+.BlogPosting-switch--sm .BlogPosting-switch-thumb {
+  width: 18px;
+  height: 18px;
+}
+
+.BlogPosting-switch--sm.is-published .BlogPosting-switch-thumb {
+  transform: translateX(18px);
+}
+
+.BlogPosting-table-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.BlogPosting-status-text {
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.BlogPosting-status-text.is-published {
+  color: #059669;
+}
+
+.BlogPosting-status-text.is-draft {
+  color: #b45309;
+}

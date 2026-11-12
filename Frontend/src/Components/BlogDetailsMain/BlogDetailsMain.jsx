@@ -1,4 +1,5 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import { useParams, useSearchParams, useNavigate, Link } from "react-router-dom";
 import {
   Search,
   CalendarDays,
@@ -17,104 +18,131 @@ import {
 } from "lucide-react";
 import "./BlogDetailsMain.css";
 
-const images = {
-  river:
-    "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1400&q=85",
-  crocodile:
-    "https://images.unsplash.com/photo-1564760055775-d63b17a55c44?auto=format&fit=crop&w=700&q=85",
-  bird:
-    "https://images.unsplash.com/photo-1552728089-57bdde30beb3?auto=format&fit=crop&w=700&q=85",
-  deer:
-    "https://images.unsplash.com/photo-1484406566174-9da000fda645?auto=format&fit=crop&w=700&q=85",
-  forest:
-    "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=900&q=85",
-  sunset:
-    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=700&q=85",
-  boat:
-    "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=700&q=85",
-  wetlands:
-    "https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=700&q=85",
+const API_BLOGS_URL = "http://localhost:5000/api/blogs";
+const API_CATEGORIES_URL = "http://localhost:5000/api/blog-categories?active=true";
+const API_COMMENTS_URL = "http://localhost:5000/api/blog-comments";
+
+const formatBlogDate = (dateValue, createdAt) => {
+  const source = dateValue ? `${dateValue}T00:00:00` : createdAt;
+  if (!source) return "";
+  const parsed = new Date(source);
+  if (Number.isNaN(parsed.getTime())) return dateValue || "";
+  return parsed.toLocaleDateString("en-US", {
+    month: "long",
+    day: "2-digit",
+    year: "numeric",
+  });
 };
 
-const categories = [
-  { name: "Travel Guide", count: 12 },
-  { name: "Wildlife", count: 8 },
-  { name: "Boat Safari", count: 6 },
-  { name: "Local Culture", count: 5 },
-  { name: "Tips & Hacks", count: 4 },
-  { name: "News & Updates", count: 3 },
-];
-
-const recentPosts = [
-  {
-    title: "Top 5 Things to Do in Bhitarkanika",
-    date: "Oct 15, 2026",
-    image: images.sunset,
-    category: "Travel Guide",
-  },
-  {
-    title: "Migratory Birds of Bhitarkanika",
-    date: "Oct 10, 2026",
-    image: images.bird,
-    category: "Wildlife",
-  },
-  {
-    title: "Best Time for Boat Safari in Bhitarkanika",
-    date: "Oct 05, 2026",
-    image: images.boat,
-    category: "Boat Safari",
-  },
-  {
-    title: "Exploring the Mangrove Forests",
-    date: "Sep 28, 2026",
-    image: images.forest,
-    category: "Travel Guide",
-  },
-];
-
-const relatedPosts = [
-  {
-    title: "Top 5 Things to Do in Bhitarkanika",
-    date: "Oct 15, 2026",
-    image: images.sunset,
-    category: "Travel Guide",
-  },
-  {
-    title: "Migratory Birds of Bhitarkanika",
-    date: "Oct 10, 2026",
-    image: images.wetlands,
-    category: "Wildlife",
-  },
-  {
-    title: "Best Time for Boat Safari in Bhitarkanika",
-    date: "Oct 05, 2026",
-    image: images.boat,
-    category: "Boat Safari",
-  },
-];
-
 const BlogDetailsMain = () => {
+  const { slug } = useParams();
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const blogId = searchParams.get("id");
+
+  const [blog, setBlog] = useState(null);
+  const [publishedBlogs, setPublishedBlogs] = useState([]);
+  const [dbCategories, setDbCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [activeCategory, setActiveCategory] = useState("Travel Guide");
+  const [activeCategory, setActiveCategory] = useState("All");
   const [categoryFilter, setCategoryFilter] = useState(false);
   const [shareMessage, setShareMessage] = useState("");
 
-  const [comments, setComments] = useState([
-    {
-      name: "Rakesh Patra",
-      date: "Oct 12, 2026",
-      message:
-        "Amazing information! We spotted two huge crocodiles during our boat safari. It was a thrilling experience.",
-      initials: "RP",
-    },
-    {
-      name: "Sneha Das",
-      date: "Oct 13, 2026",
-      message:
-        "Very well written. Bhitarkanika is truly a paradise for nature lovers.",
-      initials: "SD",
-    },
-  ]);
+  useEffect(() => {
+    const fetchBlogDetails = async () => {
+      try {
+        setLoading(true);
+        const [pubRes, catRes] = await Promise.all([
+          fetch(`${API_BLOGS_URL}/published`),
+          fetch(API_CATEGORIES_URL),
+        ]);
+        const [pubJson, catJson] = await Promise.all([
+          pubRes.json(),
+          catRes.json(),
+        ]);
+
+        const pubList = pubRes.ok && pubJson.success ? pubJson.data || [] : [];
+        setPublishedBlogs(pubList);
+
+        if (catRes.ok && catJson.success) {
+          setDbCategories(
+            (catJson.data || []).map((cat) => cat.name).filter(Boolean)
+          );
+        }
+
+        const lookupUrl = slug
+          ? `${API_BLOGS_URL}/slug/${encodeURIComponent(slug)}`
+          : blogId
+            ? `${API_BLOGS_URL}/${blogId}`
+            : null;
+
+        if (lookupUrl) {
+          const singleRes = await fetch(lookupUrl);
+          const singleJson = await singleRes.json();
+          if (singleRes.ok && singleJson.success && singleJson.data?.published) {
+            const fetched = singleJson.data;
+            setBlog(fetched);
+            if (fetched.slug && slug !== fetched.slug) {
+              navigate(`/blog/${fetched.slug}`, { replace: true });
+            }
+          } else {
+            const fallback = pubList[0] || null;
+            setBlog(fallback);
+            if (fallback?.slug && slug !== fallback.slug) {
+              navigate(`/blog/${fallback.slug}`, { replace: true });
+            }
+          }
+        } else {
+          const fallback = pubList[0] || null;
+          setBlog(fallback);
+          if (fallback?.slug && slug !== fallback.slug) {
+            navigate(`/blog/${fallback.slug}`, { replace: true });
+          }
+        }
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } catch (error) {
+        console.error("Failed to fetch blog details:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogDetails();
+  }, [slug, blogId]);
+
+  const [comments, setComments] = useState([]);
+  const [commentsLoading, setCommentsLoading] = useState(false);
+  const [commentSubmitting, setCommentSubmitting] = useState(false);
+  const [commentNotice, setCommentNotice] = useState({ type: "", text: "" });
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      if (!blog?._id) {
+        setComments([]);
+        return;
+      }
+
+      try {
+        setCommentsLoading(true);
+        const res = await fetch(`${API_COMMENTS_URL}/blog/${blog._id}`);
+        const json = await res.json();
+        if (res.ok && json.success) {
+          setComments(json.data || []);
+        } else {
+          setComments([]);
+        }
+      } catch (error) {
+        console.error("Failed to fetch comments:", error);
+        setComments([]);
+      } finally {
+        setCommentsLoading(false);
+      }
+    };
+
+    fetchComments();
+    setCommentNotice({ type: "", text: "" });
+  }, [blog?._id]);
 
   const [form, setForm] = useState({
     name: "",
@@ -122,25 +150,9 @@ const BlogDetailsMain = () => {
     message: "",
   });
 
-  const filteredRecentPosts = useMemo(
-    () =>
-      recentPosts.filter((post) => {
-        const matchesSearch = post.title
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase());
-
-        const matchesCategory =
-          !categoryFilter || post.category === activeCategory;
-
-        return matchesSearch && matchesCategory;
-      }),
-    [searchTerm, activeCategory, categoryFilter]
-  );
-
   const handleShare = async (platform) => {
     const pageUrl = window.location.href;
-    const title =
-      "Exploring Bhitarkanika: A Paradise for Nature Lovers";
+    const title = blog?.title || "Bhitarkanika Story";
 
     if (platform === "Copy link") {
       try {
@@ -165,7 +177,7 @@ const BlogDetailsMain = () => {
     );
   };
 
-  const handleCommentSubmit = (event) => {
+  const handleCommentSubmit = async (event) => {
     event.preventDefault();
 
     if (
@@ -173,33 +185,70 @@ const BlogDetailsMain = () => {
       !form.email.trim() ||
       !form.message.trim()
     ) {
+      setCommentNotice({
+        type: "error",
+        text: "Please enter your name, email, and comment message.",
+      });
       return;
     }
 
-    const newComment = {
-      name: form.name.trim(),
-      date: new Date().toLocaleDateString("en-IN", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-      }),
-      message: form.message.trim(),
-      initials: form.name
-        .trim()
-        .split(/\s+/)
-        .map((word) => word[0])
-        .join("")
-        .slice(0, 2)
-        .toUpperCase(),
-    };
+    if (!blog?._id) {
+      setCommentNotice({
+        type: "error",
+        text: "Blog post not loaded. Please try again.",
+      });
+      return;
+    }
 
-    setComments((previous) => [...previous, newComment]);
+    try {
+      setCommentSubmitting(true);
+      setCommentNotice({ type: "", text: "" });
 
-    setForm({
-      name: "",
-      email: "",
-      message: "",
-    });
+      const response = await fetch(API_COMMENTS_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          blogId: blog._id,
+          blogTitle: blog.title,
+          blogSlug: blog.slug || "",
+          name: form.name.trim(),
+          email: form.email.trim(),
+          message: form.message.trim(),
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.status === 409) {
+        setCommentNotice({
+          type: "warning",
+          text: result.message || "You have already submitted this comment on this story.",
+        });
+        return;
+      }
+
+      if (!response.ok || !result.success) {
+        setCommentNotice({
+          type: "error",
+          text: result.message || "Failed to post comment. Please try again.",
+        });
+        return;
+      }
+
+      setForm({ name: "", email: "", message: "" });
+      setCommentNotice({
+        type: "success",
+        text: "Thank you! Your comment has been submitted and is pending approval by the admin.",
+      });
+    } catch (error) {
+      console.error("Comment submission error:", error);
+      setCommentNotice({
+        type: "error",
+        text: "Network error occurred while posting your comment.",
+      });
+    } finally {
+      setCommentSubmitting(false);
+    }
   };
 
   const scrollTo = (selector) => {
@@ -208,23 +257,95 @@ const BlogDetailsMain = () => {
       ?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  const galleryItems = [
-    {
-      src: images.crocodile,
-      alt: "Wildlife in a natural habitat",
-      label: "Wildlife",
-    },
-    {
-      src: images.bird,
-      alt: "Bird in a natural setting",
-      label: "Bird watching",
-    },
-    {
-      src: images.deer,
-      alt: "Deer in a green forest",
-      label: "Forest life",
-    },
-  ];
+  const galleryItems = useMemo(() => {
+    const imgs = Array.isArray(blog?.contentImages) ? blog.contentImages : [];
+    return imgs.map((src, idx) => ({
+      src,
+      alt: `${blog?.title || "Blog"} image ${idx + 1}`,
+      label: `Photo ${idx + 1}`,
+    }));
+  }, [blog]);
+
+  const dynamicCategories = useMemo(() => {
+    const allNames = Array.from(
+      new Set([
+        ...dbCategories,
+        ...publishedBlogs.map((item) => item.category).filter(Boolean),
+      ])
+    );
+    return allNames.map((name) => ({
+      name,
+      count: publishedBlogs.filter((item) => item.category === name).length,
+    }));
+  }, [dbCategories, publishedBlogs]);
+
+  const dynamicRecentPosts = useMemo(
+    () =>
+      publishedBlogs.slice(0, 5).map((item) => ({
+        id: item._id,
+        slug: item.slug || item._id,
+        title: item.title,
+        date: formatBlogDate(item.date, item.createdAt),
+        image: item.mainImage,
+        category: item.category,
+      })),
+    [publishedBlogs]
+  );
+
+  const dynamicRelatedPosts = useMemo(
+    () =>
+      publishedBlogs
+        .filter((item) => item._id !== blog?._id)
+        .slice(0, 3)
+        .map((item) => ({
+          id: item._id,
+          slug: item.slug || item._id,
+          title: item.title,
+          date: formatBlogDate(item.date, item.createdAt),
+          image: item.mainImage,
+          category: item.category,
+        })),
+    [publishedBlogs, blog]
+  );
+
+  const filteredDynamicRecent = useMemo(
+    () =>
+      dynamicRecentPosts.filter((post) => {
+        const matchesSearch = post.title
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
+        const matchesCategory =
+          !categoryFilter ||
+          activeCategory === "All" ||
+          post.category === activeCategory;
+        return matchesSearch && matchesCategory;
+      }),
+    [dynamicRecentPosts, searchTerm, activeCategory, categoryFilter]
+  );
+
+  if (loading) {
+    return (
+      <main className="BlogDetailsMain">
+        <div className="BlogDetailsMain__container" style={{ padding: "80px 20px", textAlign: "center" }}>
+          <p>Loading story...</p>
+        </div>
+      </main>
+    );
+  }
+
+  if (!blog) {
+    return (
+      <main className="BlogDetailsMain">
+        <div className="BlogDetailsMain__container" style={{ padding: "80px 20px", textAlign: "center" }}>
+          <h2>No published story found</h2>
+          <p>Publish a blog from the admin panel to view it here.</p>
+          <Link to="/blog" className="BlogDetailsMain__tag" style={{ display: "inline-block", marginTop: "14px" }}>
+            Back to Blog
+          </Link>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="BlogDetailsMain">
@@ -261,11 +382,11 @@ const BlogDetailsMain = () => {
         <div className="BlogDetailsMain__toolbar">
           <div className="BlogDetailsMain__toolbar-info">
             <span>
-              Showing <strong>6 wildlife stories</strong>
+              Showing <strong>{publishedBlogs.length} published {publishedBlogs.length === 1 ? "story" : "stories"}</strong>
             </span>
             <span className="BlogDetailsMain__toolbar-dot" />
             <span>
-              Tales from India's second-largest mangrove sanctuary
+              {blog.location || "Bhitarkanika Sanctuary"}
             </span>
           </div>
 
@@ -277,113 +398,82 @@ const BlogDetailsMain = () => {
             <div className="BlogDetailsMain__hero-image-wrap">
               <img
                 className="BlogDetailsMain__hero-image"
-                src={images.river}
-                alt="Peaceful river surrounded by lush greenery"
+                src={blog.mainImage}
+                alt={blog.title}
               />
 
               <div className="BlogDetailsMain__image-caption">
                 <span>
                   <Leaf size={14} />
-                  NATURE &amp; DISCOVERY
+                  {blog.category}
                 </span>
-                <span>6 min read</span>
+                <span>{blog.idealSeason}</span>
               </div>
             </div>
 
             <div className="BlogDetailsMain__meta">
               <span>
                 <CalendarDays size={15} />
-                October 20, 2026
+                {formatBlogDate(blog.date, blog.createdAt)}
               </span>
               <i />
 
               <span>
                 <MessageCircle size={15} />
-                {comments.length + 3} Comments
+                {comments.length} Comments
               </span>
               <i />
 
               <span>
                 <Clock3 size={15} />
-                6 min read
+                {blog.idealSeason || "All Year"}
               </span>
             </div>
 
-            <p className="BlogDetailsMain__lead">
-              Bhitarkanika National Park, located in the Kendrapara
-              district of Odisha, is one of India's most fascinating
-              mangrove ecosystems. Known for its rich biodiversity,
-              serene waterways, and majestic saltwater crocodiles,
-              Bhitarkanika is a haven for wildlife enthusiasts,
-              photographers, and nature lovers from around the world.
-            </p>
+            <h2 style={{ fontSize: "2rem", margin: "12px 0 18px", color: "#0f172a" }}>
+              {blog.title}
+            </h2>
 
-            <section className="BlogDetailsMain__content-section">
-              <h2>The Beauty of Bhitarkanika</h2>
-              <p>
-                Spread over a vast area of dense mangrove forests and
-                winding creeks, Bhitarkanika offers a mesmerizing blend
-                of natural beauty and adventure. The tranquil backwaters,
-                lush greenery, and diverse wildlife create an unforgettable
-                experience for every visitor.
-              </p>
-            </section>
+            <div
+              className="BlogDetailsMain__content-section"
+              dangerouslySetInnerHTML={{ __html: blog.description }}
+            />
 
-            <section className="BlogDetailsMain__content-section">
-              <h2>Wildlife You Can Spot</h2>
-              <p>
-                Bhitarkanika is renowned for its saltwater crocodiles.
-                Apart from crocodiles, you can also spot spotted deer,
-                wild boars, water monitors, kingfishers, herons, and a
-                variety of migratory birds. The region's unique ecosystem
-                supports a rich diversity of flora and fauna.
-              </p>
+            {galleryItems.length > 0 && (
+              <section className="BlogDetailsMain__content-section">
+                <div className="BlogDetailsMain__gallery">
+                  {galleryItems.map((item) => (
+                    <button
+                      className="BlogDetailsMain__gallery-item"
+                      key={item.src}
+                      type="button"
+                      onClick={() =>
+                        window.open(
+                          item.src,
+                          "_blank",
+                          "noopener,noreferrer"
+                        )
+                      }
+                      aria-label={`View ${item.label} image`}
+                    >
+                      <img
+                        src={item.src}
+                        alt={item.alt}
+                        loading="lazy"
+                      />
+                      <span>{item.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </section>
+            )}
 
-              <div className="BlogDetailsMain__gallery">
-                {galleryItems.map((item) => (
-                  <button
-                    className="BlogDetailsMain__gallery-item"
-                    key={item.label}
-                    type="button"
-                    onClick={() =>
-                      window.open(
-                        item.src,
-                        "_blank",
-                        "noopener,noreferrer"
-                      )
-                    }
-                    aria-label={`View ${item.label} image`}
-                  >
-                    <img
-                      src={item.src}
-                      alt={item.alt}
-                      loading="lazy"
-                    />
-                    <span>{item.label}</span>
-                  </button>
-                ))}
-              </div>
-            </section>
-
-            <section className="BlogDetailsMain__content-section">
-              <h2>Best Time to Visit</h2>
-              <p>
-                The ideal time to explore Bhitarkanika is generally from
-                November to February, when the weather is pleasant and
-                suitable for boat safaris. During this time, you can enjoy
-                comfortable rides, better wildlife sightings, and the
-                true beauty of the mangrove forests. Check local park
-                rules and current access arrangements before your visit.
-              </p>
-            </section>
-
-            <blockquote className="BlogDetailsMain__quote">
-              <Quote size={29} />
-              <p>
-                Bhitarkanika is not just a destination; it's an experience
-                — a perfect harmony of wildlife, nature, and tranquility.
-              </p>
-            </blockquote>
+            {blog.quote && (
+              <blockquote className="BlogDetailsMain__quote">
+                <Quote size={29} />
+                <p>{blog.quote}</p>
+              </blockquote>
+            )}
 
             <div className="BlogDetailsMain__tags-share">
               <div className="BlogDetailsMain__tags">
@@ -392,19 +482,13 @@ const BlogDetailsMain = () => {
                   Tags:
                 </strong>
 
-                {[
-                  "Bhitarkanika",
-                  "Nature",
-                  "Wildlife",
-                  "Travel Guide",
-                  "Boat Safari",
-                ].map((tag) => (
+                {(Array.isArray(blog.tags) ? blog.tags : []).map((tag) => (
                   <button
                     className="BlogDetailsMain__tag"
                     type="button"
                     key={tag}
                     onClick={() => {
-                      setSearchTerm(tag === "Nature" ? "" : tag);
+                      setSearchTerm(tag);
                       setCategoryFilter(false);
                       scrollTo(".BlogDetailsMain__sidebar");
                     }}
@@ -516,24 +600,40 @@ const BlogDetailsMain = () => {
               </div>
 
               <div className="BlogDetailsMain__comment-list">
-                {comments.map((comment, index) => (
-                  <div
-                    className="BlogDetailsMain__comment"
-                    key={`${comment.name}-${index}`}
-                  >
-                    <div className="BlogDetailsMain__comment-avatar">
-                      {comment.initials}
-                    </div>
-
-                    <div className="BlogDetailsMain__comment-body">
-                      <div className="BlogDetailsMain__comment-top">
-                        <strong>{comment.name}</strong>
-                        <span>{comment.date}</span>
+                {commentsLoading ? (
+                  <p style={{ color: "#64748b", padding: "12px 0" }}>
+                    Loading comments...
+                  </p>
+                ) : comments.length === 0 ? (
+                  <p style={{ color: "#64748b", padding: "12px 0" }}>
+                    No comments yet. Be the first to share your thoughts!
+                  </p>
+                ) : (
+                  comments.map((comment, index) => (
+                    <div
+                      className="BlogDetailsMain__comment"
+                      key={comment._id || `${comment.name}-${index}`}
+                    >
+                      <div className="BlogDetailsMain__comment-avatar">
+                        {comment.initials ||
+                          (comment.name || "U")
+                            .split(/\s+/)
+                            .map((w) => w[0])
+                            .join("")
+                            .slice(0, 2)
+                            .toUpperCase()}
                       </div>
-                      <p>{comment.message}</p>
+
+                      <div className="BlogDetailsMain__comment-body">
+                        <div className="BlogDetailsMain__comment-top">
+                          <strong>{comment.name}</strong>
+                          <span>{comment.date}</span>
+                        </div>
+                        <p>{comment.message}</p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
 
               <form
@@ -545,6 +645,40 @@ const BlogDetailsMain = () => {
                   Have a story to share? We'd love to hear from you.
                 </p>
 
+                {commentNotice.text && (
+                  <div
+                    role="alert"
+                    style={{
+                      padding: "10px 14px",
+                      borderRadius: "8px",
+                      marginBottom: "14px",
+                      fontSize: "0.92rem",
+                      fontWeight: 500,
+                      backgroundColor:
+                        commentNotice.type === "success"
+                          ? "#ecfdf5"
+                          : commentNotice.type === "warning"
+                          ? "#fffbeb"
+                          : "#fef2f2",
+                      color:
+                        commentNotice.type === "success"
+                          ? "#065f46"
+                          : commentNotice.type === "warning"
+                          ? "#92400e"
+                          : "#991b1b",
+                      border: `1px solid ${
+                        commentNotice.type === "success"
+                          ? "#a7f3d0"
+                          : commentNotice.type === "warning"
+                          ? "#fde68a"
+                          : "#fecaca"
+                      }`,
+                    }}
+                  >
+                    {commentNotice.text}
+                  </div>
+                )}
+
                 <div className="BlogDetailsMain__form-row">
                   <input
                     type="text"
@@ -554,6 +688,7 @@ const BlogDetailsMain = () => {
                     onChange={(e) =>
                       setForm({ ...form, name: e.target.value })
                     }
+                    disabled={commentSubmitting}
                     required
                   />
 
@@ -565,6 +700,7 @@ const BlogDetailsMain = () => {
                     onChange={(e) =>
                       setForm({ ...form, email: e.target.value })
                     }
+                    disabled={commentSubmitting}
                     required
                   />
                 </div>
@@ -577,20 +713,23 @@ const BlogDetailsMain = () => {
                     setForm({ ...form, message: e.target.value })
                   }
                   rows={4}
+                  disabled={commentSubmitting}
                   required
                 />
 
                 <button
                   className="BlogDetailsMain__submit"
                   type="submit"
+                  disabled={commentSubmitting}
                 >
-                  Post Comment <Send size={15} />
+                  {commentSubmitting ? (
+                    "Posting..."
+                  ) : (
+                    <>
+                      Post Comment <Send size={15} />
+                    </>
+                  )}
                 </button>
-
-                <small className="BlogDetailsMain__form-note">
-                  <CheckCircle2 size={13} />
-                  Your comment will appear on this page.
-                </small>
               </form>
             </section>
 
@@ -615,16 +754,12 @@ const BlogDetailsMain = () => {
               </div>
 
               <div className="BlogDetailsMain__related-grid">
-                {relatedPosts.map((post) => (
+                {dynamicRelatedPosts.map((post) => (
                   <button
                     className="BlogDetailsMain__related-card"
-                    key={post.title}
+                    key={post.id}
                     type="button"
-                    onClick={() => {
-                      setSearchTerm(post.title);
-                      setCategoryFilter(false);
-                      scrollTo(".BlogDetailsMain__sidebar");
-                    }}
+                    onClick={() => navigate(`/blog/${post.slug}`)}
                   >
                     <div className="BlogDetailsMain__related-image">
                       <img
@@ -700,7 +835,7 @@ const BlogDetailsMain = () => {
               </div>
 
               <div className="BlogDetailsMain__category-list">
-                {categories.map((category) => (
+                {dynamicCategories.map((category) => (
                   <button
                     type="button"
                     key={category.name}
@@ -743,17 +878,15 @@ const BlogDetailsMain = () => {
               </div>
 
               <div className="BlogDetailsMain__recent-list">
-                {filteredRecentPosts.length ? (
-                  filteredRecentPosts.map((post) => (
+                {filteredDynamicRecent.length ? (
+                  filteredDynamicRecent.map((post) => (
                     <button
                       className="BlogDetailsMain__recent-item"
-                      key={post.title}
+                      key={post.id}
                       type="button"
-                      onClick={() =>
-                        setShareMessage(`Selected story: ${post.title}`)
-                      }
+                      onClick={() => navigate(`/blog/${post.slug}`)}
                     >
-                      <img src={post.image} alt="" loading="lazy" />
+                      <img src={post.image} alt={post.title} loading="lazy" />
 
                       <span className="BlogDetailsMain__recent-text">
                         <strong>{post.title}</strong>
@@ -776,8 +909,8 @@ const BlogDetailsMain = () => {
 
             <section className="BlogDetailsMain__booking-card">
               <img
-                src={images.forest}
-                alt="Lush green forest"
+                src={blog.mainImage}
+                alt={blog.title}
                 loading="lazy"
               />
               <div className="BlogDetailsMain__booking-overlay" />
