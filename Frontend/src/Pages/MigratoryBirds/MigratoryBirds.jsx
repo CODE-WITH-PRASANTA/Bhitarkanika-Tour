@@ -471,6 +471,18 @@ const MigratoryBirds = () => {
                     </div>
 
                     <div className="MigratoryBirds__inputGroup">
+                      <label htmlFor="MigratoryBirds-homeTown">Home Town / City *</label>
+                      <input
+                        id="MigratoryBirds-homeTown"
+                        name="homeTown"
+                        type="text"
+                        placeholder="e.g. Bhubaneswar / Kolkata"
+                        autoComplete="address-level2"
+                        required
+                      />
+                    </div>
+
+                    <div className="MigratoryBirds__inputGroup">
                       <label htmlFor="MigratoryBirds-date">
                         Target Safari Date *
                       </label>
@@ -481,27 +493,6 @@ const MigratoryBirds = () => {
                         min={new Date().toISOString().split("T")[0]}
                         required
                       />
-                    </div>
-
-                    <div className="MigratoryBirds__inputGroup">
-                      <label htmlFor="MigratoryBirds-entryGate">
-                        Preferred Departure Jetty
-                      </label>
-                      <select
-                        id="MigratoryBirds-entryGate"
-                        name="entryGate"
-                        defaultValue="Khola Gate (Direct to Bagagahana & Dangmal)"
-                      >
-                        <option value="Khola Gate (Direct to Bagagahana & Dangmal)">
-                          Khola Gate (Direct to Bagagahana & Dangmal)
-                        </option>
-                        <option value="Gupti Gate (Estuarine Waders & Mudflats)">
-                          Gupti Gate (Estuarine Waders & Mudflats)
-                        </option>
-                        <option value="Chandbali Ghat (River Delta Approach)">
-                          Chandbali Ghat (River Delta Approach)
-                        </option>
-                      </select>
                     </div>
 
                     <div className="MigratoryBirds__inputGroup">

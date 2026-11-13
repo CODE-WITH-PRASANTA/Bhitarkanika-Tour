@@ -1,12 +1,22 @@
-
+/* =========================================================
+   ABOUT ONE - LUXURY HERO COMPONENT
+   Bhitarkanika Boat Service Official Theme
+========================================================= */
 
 .AboutOne {
-  --AboutOne-green: #22b875;
-  --AboutOne-green-dark: #108451;
-  --AboutOne-forest: #123e30;
-  --AboutOne-ink: #29332f;
-  --AboutOne-muted: #748078;
-  --AboutOne-line: #e2e8e3;
+  --ao-forest: #0d2a1d;
+  --ao-forest-deep: #081c13;
+  --ao-forest-light: #164330;
+  --ao-emerald: #198754;
+  --ao-emerald-bright: #20b574;
+  --ao-gold: #b58d3d;
+  --ao-gold-light: #d4a84d;
+  --ao-gold-pale: #f8f2e2;
+  --ao-gold-border: rgba(181, 141, 61, 0.28);
+  --ao-text: #2c3832;
+  --ao-muted: #5e6d65;
+  --ao-border: #e3ebe6;
+  --ao-card-bg: rgba(255, 255, 255, 0.88);
 
   position: relative;
   isolation: isolate;
@@ -15,16 +25,14 @@
   max-width: 100%;
   min-width: 0;
   overflow: clip;
-  padding: 90px 24px 100px;
+  padding: 85px 24px 95px;
   background:
-    radial-gradient(
-      ellipse at 5% 15%,
-      rgba(32, 181, 116, 0.065),
-      transparent 35%
-    ),
-    #ffffff;
-  color: var(--AboutOne-ink);
-  font-family: inherit;
+    radial-gradient(ellipse 70% 50% at 88% 12%, rgba(197, 163, 82, 0.08), transparent 60%),
+    radial-gradient(ellipse 65% 45% at 8% 85%, rgba(25, 135, 84, 0.06), transparent 55%),
+    radial-gradient(circle at 50% 0%, rgba(240, 248, 243, 0.7), transparent 70%),
+    #fcfdfd;
+  color: var(--ao-text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 .AboutOne *,
@@ -33,16 +41,57 @@
   box-sizing: border-box;
 }
 
+/* =========================================
+   AMBIENT BACKGROUND ACCENTS
+========================================= */
+
+.AboutOne__ambientMesh {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(rgba(20, 70, 50, 0.035) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+  opacity: 0.75;
+  z-index: -1;
+}
+
+.AboutOne__ambientGlow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.AboutOne__ambientGlow--top {
+  top: -60px;
+  right: 15%;
+  width: 380px;
+  height: 380px;
+  background: rgba(212, 168, 77, 0.07);
+}
+
+.AboutOne__ambientGlow--bottom {
+  bottom: 0;
+  left: 5%;
+  width: 440px;
+  height: 440px;
+  background: rgba(26, 127, 82, 0.06);
+}
+
+/* =========================================
+   MAIN GRID CONTAINER
+========================================= */
+
 .AboutOne__container {
   display: grid;
   width: 100%;
-  max-width: 1450px;
+  max-width: 1400px;
   min-width: 0;
-  grid-template-columns:
-    minmax(0, 1.08fr)
-    minmax(0, 0.92fr);
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.95fr);
   align-items: center;
-  gap: clamp(28px, 4.5vw, 70px);
+  gap: clamp(32px, 5vw, 68px);
   margin-inline: auto;
 }
 
@@ -53,236 +102,368 @@
 }
 
 /* =========================================
-   LEFT CONTENT ANIMATION
+   LEFT COLUMN - CONTENT & ANIMATIONS
 ========================================= */
 
 .AboutOne__content {
   opacity: 0;
-  transform: translateX(-35px);
-  transition:
-    opacity 0.8s ease,
-    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(28px);
+  transition: opacity 0.85s ease, transform 0.85s cubic-bezier(0.2, 0.8, 0.25, 1);
 }
 
 .AboutOne--visible .AboutOne__content {
   opacity: 1;
-  transform: translateX(0);
+  transform: translateY(0);
 }
 
+/* Eyebrow Pill */
 .AboutOne__eyebrow {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 19px;
-  color: var(--AboutOne-green-dark);
-  font-size: 14px;
+  margin-bottom: 18px;
+}
+
+.AboutOne__eyebrowBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 15px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #fbf7ee 0%, #f1f8f3 100%);
+  border: 1px solid var(--ao-gold-border);
+  box-shadow: 0 2px 10px rgba(181, 141, 61, 0.08);
+}
+
+.AboutOne__eyebrowSparkle {
+  font-size: 13px;
+  line-height: 1;
+}
+
+.AboutOne__eyebrowText {
+  color: var(--ao-gold);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+}
+
+.AboutOne__eyebrowSep {
+  color: #cfb987;
+  font-size: 11px;
+}
+
+.AboutOne__eyebrowSub {
+  color: var(--ao-forest);
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 1.3px;
+  letter-spacing: 0.8px;
 }
 
-.AboutOne__eyebrowLine {
-  display: inline-block;
-  width: 35px;
-  height: 2px;
-  flex-shrink: 0;
-  background: var(--AboutOne-green);
-}
-
+/* Main Hero Heading */
 .AboutOne__title {
   margin: 0;
-  color: var(--AboutOne-ink);
-  font-family: "Arial Narrow", "Roboto Condensed", Arial, sans-serif;
-  font-size: clamp(36px, 4vw, 58px);
-  font-weight: 800;
-  line-height: 1.16;
-  letter-spacing: -1.3px;
-  overflow-wrap: anywhere;
+  color: var(--ao-forest);
+  font-size: clamp(34px, 4.2vw, 56px);
+  font-weight: 850;
+  line-height: 1.15;
+  letter-spacing: -1.4px;
 }
 
-.AboutOne__title span {
-  display: block;
-  margin-top: 3px;
-  color: var(--AboutOne-green-dark);
+.AboutOne__titleHighlight {
+  display: inline-block;
+  background: linear-gradient(135deg, #0e5033 0%, #157347 45%, #b2883b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
 }
 
 .AboutOne__intro {
-  max-width: 690px;
-  margin: 23px 0 27px;
-  color: var(--AboutOne-muted);
+  max-width: 650px;
+  margin: 20px 0 26px;
+  color: var(--ao-muted);
   font-size: 16px;
-  line-height: 1.9;
-  overflow-wrap: anywhere;
+  line-height: 1.85;
+}
+
+.AboutOne__intro strong {
+  color: var(--ao-forest);
+  font-weight: 700;
 }
 
 /* =========================================
-   FEATURE CARDS
+   FEATURE CARDS GRID
 ========================================= */
 
 .AboutOne__features {
   display: grid;
-  width: 100%;
-  min-width: 0;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
   margin-top: 26px;
-  border-top: 1px solid var(--AboutOne-line);
-  border-left: 1px solid var(--AboutOne-line);
 }
 
-.AboutOne__feature {
+.AboutOne__featureCard {
   position: relative;
   min-width: 0;
-  padding: 25px 20px 25px 22px;
-  border-right: 1px solid var(--AboutOne-line);
-  border-bottom: 1px solid var(--AboutOne-line);
-  background: rgba(255, 255, 255, 0.55);
-  transition:
-    background 0.3s ease,
-    box-shadow 0.3s ease,
-    transform 0.3s ease;
+  padding: 22px 20px 20px;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #ffffff 0%, #f7faf8 100%);
+  border: 1px solid rgba(20, 70, 50, 0.09);
+  box-shadow: 0 4px 18px rgba(18, 50, 36, 0.04);
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.25, 1),
+              box-shadow 0.35s ease,
+              border-color 0.35s ease,
+              background 0.35s ease;
+  overflow: hidden;
 }
 
-.AboutOne__feature:hover {
-  z-index: 1;
-  transform: translateY(-3px);
-  background: #f5fbf7;
-  box-shadow: 0 10px 28px rgba(16, 80, 48, 0.06);
+.AboutOne__featureCard:hover {
+  transform: translateY(-4px);
+  border-color: rgba(181, 141, 61, 0.38);
+  background: linear-gradient(145deg, #ffffff 0%, #f1f8f4 100%);
+  box-shadow: 0 14px 32px rgba(18, 56, 38, 0.1);
 }
 
-.AboutOne__featureNumber {
+.AboutOne__featureHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.AboutOne__featureBadge {
   display: inline-flex;
-  margin-bottom: 9px;
-  color: var(--AboutOne-green-dark);
+  align-items: center;
+  gap: 7px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  background: #eef6f1;
+  color: var(--ao-forest);
+  border: 1px solid rgba(25, 135, 84, 0.16);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.AboutOne__featureCard:hover .AboutOne__featureBadge {
+  background: #e4f3ea;
+  border-color: rgba(25, 135, 84, 0.3);
+}
+
+.AboutOne__featureIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ao-emerald);
+}
+
+.AboutOne__featureNum {
   font-size: 11px;
   font-weight: 800;
-  letter-spacing: 1.5px;
+  letter-spacing: 0.8px;
+  color: var(--ao-forest);
 }
 
-.AboutOne__feature h3 {
-  margin: 0 0 10px;
-  color: #26352e;
-  font-family: "Arial Narrow", "Roboto Condensed", Arial, sans-serif;
-  font-size: clamp(17px, 1.5vw, 22px);
+.AboutOne__featureTag {
+  font-size: 10px;
   font-weight: 800;
-  line-height: 1.4;
-  overflow-wrap: anywhere;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--ao-gold);
 }
 
-.AboutOne__feature p {
+.AboutOne__featureTitle {
+  margin: 0 0 8px;
+  color: var(--ao-forest);
+  font-size: 17.5px;
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: -0.3px;
+}
+
+.AboutOne__featureDesc {
   margin: 0;
-  color: var(--AboutOne-muted);
-  font-size: 14px;
-  line-height: 1.85;
-  overflow-wrap: anywhere;
+  color: var(--ao-muted);
+  font-size: 13.5px;
+  line-height: 1.7;
+}
+
+.AboutOne__cardGlow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 90px;
+  height: 90px;
+  background: radial-gradient(circle at top right, rgba(212, 168, 77, 0.12), transparent 70%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.AboutOne__featureCard:hover .AboutOne__cardGlow {
+  opacity: 1;
 }
 
 /* =========================================
-   PREMIUM BUTTONS
+   ACTION AREA & TRUST SIGNALS
 ========================================= */
+
+.AboutOne__actionArea {
+  margin-top: 32px;
+}
 
 .AboutOne__actions {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 14px;
-  margin-top: 32px;
 }
 
 .AboutOne__button {
   display: inline-flex;
-  max-width: 100%;
-  min-height: 54px;
   align-items: center;
   justify-content: center;
-  gap: 15px;
-  padding: 14px 21px;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 800;
-  text-align: center;
+  gap: 12px;
+  min-height: 54px;
+  padding: 13px 26px;
+  border-radius: 12px;
+  font-size: 14.5px;
+  font-weight: 750;
+  letter-spacing: 0.2px;
   text-decoration: none;
-  overflow-wrap: anywhere;
-  transition:
-    transform 0.25s ease,
-    color 0.25s ease,
-    background 0.25s ease,
-    border-color 0.25s ease,
-    box-shadow 0.25s ease;
+  transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.25, 1),
+              box-shadow 0.28s ease,
+              background 0.28s ease,
+              border-color 0.28s ease,
+              color 0.28s ease;
+  white-space: nowrap;
 }
 
-.AboutOne__button span {
-  flex-shrink: 0;
-  font-size: 18px;
-  transition: transform 0.25s ease;
+.AboutOne__buttonArrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  transition: transform 0.25s ease, background 0.25s ease;
 }
 
 .AboutOne__button:hover {
   transform: translateY(-3px);
 }
 
-.AboutOne__button:hover span {
-  transform: translate(3px, -3px);
+.AboutOne__button:hover .AboutOne__buttonArrow {
+  transform: translateX(3px);
+  background: rgba(255, 255, 255, 0.28);
 }
 
 .AboutOne__button--primary {
-  background: var(--AboutOne-green);
+  background: linear-gradient(135deg, #15583b 0%, #0d3824 100%);
   color: #ffffff;
-  box-shadow: 0 8px 20px rgba(34, 184, 117, 0.13);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 10px 24px rgba(18, 70, 46, 0.25);
 }
 
 .AboutOne__button--primary:hover {
-  background: var(--AboutOne-green-dark);
-  box-shadow: 0 12px 24px rgba(16, 132, 81, 0.2);
+  background: linear-gradient(135deg, #1b6d49 0%, #11452d 100%);
+  box-shadow: 0 14px 30px rgba(18, 70, 46, 0.35);
 }
 
 .AboutOne__button--secondary {
-  border-color: #bfcac2;
   background: #ffffff;
-  color: var(--AboutOne-forest);
+  color: var(--ao-forest);
+  border: 1.5px solid #d8e4dc;
+  box-shadow: 0 4px 14px rgba(18, 50, 36, 0.05);
+}
+
+.AboutOne__button--secondary .AboutOne__buttonArrow {
+  background: #edf5f0;
+  color: var(--ao-emerald);
 }
 
 .AboutOne__button--secondary:hover {
-  border-color: var(--AboutOne-green);
-  background: #f0faf4;
+  background: #f4faf6;
+  border-color: var(--ao-emerald);
+  box-shadow: 0 8px 20px rgba(25, 135, 84, 0.12);
+}
+
+/* Trust Row Beneath Buttons */
+.AboutOne__trustRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 22px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(245, 250, 247, 0.85);
+  border: 1px solid rgba(22, 80, 52, 0.08);
+}
+
+.AboutOne__trustItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--ao-forest);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.AboutOne__trustIcon {
+  font-size: 13px;
+}
+
+.AboutOne__trustDivider {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #a9beaf;
 }
 
 /* =========================================
-   RIGHT IMAGE ANIMATION
+   RIGHT COLUMN - VISUAL SHOWCASE
 ========================================= */
 
 .AboutOne__visual {
   position: relative;
   width: 100%;
-  padding: 0 0 65px;
   opacity: 0;
-  transform: translateX(35px);
-  transition:
-    opacity 0.9s ease 0.12s,
-    transform 0.95s cubic-bezier(0.22, 1, 0.36, 1) 0.12s;
+  transform: translateY(28px);
+  transition: opacity 0.9s ease 0.15s, transform 0.9s cubic-bezier(0.2, 0.8, 0.25, 1) 0.15s;
 }
 
 .AboutOne--visible .AboutOne__visual {
   opacity: 1;
-  transform: translateX(0);
+  transform: translateY(0);
 }
 
+.AboutOne__visualStack {
+  position: relative;
+  width: 100%;
+  padding-bottom: 70px;
+}
+
+/* Image Frame */
 .AboutOne__imageFrame {
   position: relative;
   width: 100%;
-  min-width: 0;
+  border-radius: 24px;
   overflow: hidden;
-  border-radius: 5px;
-  background: #dfe9df;
-  box-shadow: 0 24px 55px rgba(15, 48, 31, 0.12);
+  background: #173829;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 24px 55px rgba(10, 36, 24, 0.16),
+    0 4px 12px rgba(181, 141, 61, 0.1);
 }
 
 .AboutOne__image {
   display: block;
   width: 100%;
-  max-width: 100%;
-  height: clamp(430px, 44vw, 650px);
+  height: clamp(440px, 46vw, 620px);
   object-fit: cover;
   object-position: center;
-  transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.3, 1);
+  transition: transform 0.85s cubic-bezier(0.2, 0.8, 0.25, 1);
 }
 
 .AboutOne__imageFrame:hover .AboutOne__image {
@@ -294,210 +475,326 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(4, 28, 16, 0.02) 45%,
-    rgba(4, 28, 16, 0.3) 100%
+    rgba(6, 28, 18, 0.02) 40%,
+    rgba(6, 28, 18, 0.45) 100%
   );
   pointer-events: none;
 }
 
-.AboutOne__imageLabel {
+/* Top Floating Status Badge */
+.AboutOne__statusBadge {
   position: absolute;
-  right: 16px;
-  bottom: 16px;
+  top: 18px;
+  left: 18px;
   display: inline-flex;
-  max-width: calc(100% - 32px);
   align-items: center;
-  gap: 10px;
-  padding: 12px 15px;
-  border: 1px solid rgba(255, 255, 255, 0.42);
-  border-radius: 4px;
-  background: rgba(9, 42, 28, 0.86);
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.4px;
+  gap: 11px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(9, 36, 24, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
   backdrop-filter: blur(12px);
-}
-
-.AboutOne__statusDot {
-  width: 8px;
-  height: 8px;
-  flex: 0 0 8px;
-  border-radius: 50%;
-  background: #6fe2a2;
-  box-shadow: 0 0 0 5px rgba(111, 226, 162, 0.15);
-}
-
-/* =========================================
-   FLOATING COUNTER CARD
-========================================= */
-
-.AboutOne__experience {
-  position: absolute;
+  -webkit-backdrop-filter: blur(12px);
+  color: #ffffff;
   z-index: 2;
-  bottom: 0;
-  left: 0;
-  width: min(380px, 88%);
-  padding: 28px 30px 26px;
-  border-left: 5px solid var(--AboutOne-green);
-  background: #ffffff;
-  box-shadow: 0 20px 60px rgba(18, 54, 35, 0.16);
-  animation: AboutOne-float 4.5s ease-in-out infinite;
 }
 
-.AboutOne__experienceLabel {
-  display: block;
-  margin-bottom: 6px;
-  color: #74847a;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 1.8px;
+.AboutOne__pulseDot {
+  position: relative;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #39e58c;
 }
 
-.AboutOne__counter {
+.AboutOne__pulseRing {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid #39e58c;
+  animation: AboutOne-pulse 2s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+
+@keyframes AboutOne-pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.AboutOne__statusContent {
   display: flex;
-  align-items: baseline;
-  color: var(--AboutOne-green);
-  font-family: "Arial Narrow", "Roboto Condensed", Arial, sans-serif;
-  font-size: clamp(48px, 5vw, 64px);
-  font-weight: 900;
-  line-height: 1.12;
-  letter-spacing: -1.5px;
+  flex-direction: column;
 }
 
-.AboutOne__counter span {
-  margin-left: 2px;
-  font-size: 0.72em;
-}
-
-.AboutOne__experience h3 {
-  margin: 8px 0 9px;
-  color: #29332f;
-  font-family: "Arial Narrow", "Roboto Condensed", Arial, sans-serif;
-  font-size: 21px;
+.AboutOne__statusHeading {
+  font-size: 11.5px;
   font-weight: 800;
-  line-height: 1.4;
+  letter-spacing: 0.3px;
+  line-height: 1.2;
 }
 
-.AboutOne__experience p {
-  margin: 0;
-  color: var(--AboutOne-muted);
-  font-size: 13px;
-  line-height: 1.8;
+.AboutOne__statusSub {
+  font-size: 10px;
+  color: #cdecd8;
+  letter-spacing: 0.2px;
 }
 
-.AboutOne__experienceLine {
-  height: 3px;
-  margin-top: 19px;
-  overflow: hidden;
-  background: #e8f0ea;
+/* Bottom Location Pill */
+.AboutOne__locationPill {
+  position: absolute;
+  bottom: 18px;
+  right: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: rgba(7, 24, 16, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 2;
 }
 
-.AboutOne__experienceLine span {
-  display: block;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    var(--AboutOne-green-dark),
-    #80dfaa
-  );
-  transform: scaleX(0);
-  transform-origin: left;
-}
-
-.AboutOne--visible .AboutOne__experienceLine span {
-  transform: scaleX(1);
-  transition: transform 1.5s ease 0.25s;
+.AboutOne__locationPill svg {
+  color: var(--ao-gold-light);
 }
 
 /* =========================================
-   DECORATIVE CIRCLES
+   FLOATING EXPERIENCE COMMITMENT CARD
 ========================================= */
 
-.AboutOne__decor {
+.AboutOne__experienceCard {
   position: absolute;
-  z-index: -1;
-  border: 1px solid rgba(34, 184, 117, 0.2);
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.AboutOne__decor--one {
-  top: -15px;
-  right: 0;
-  width: 85px;
-  height: 85px;
-}
-
-.AboutOne__decor--two {
-  right: 0;
-  bottom: 20px;
-  width: 58px;
-  height: 58px;
+  bottom: 0;
+  left: -20px;
+  z-index: 3;
+  width: min(390px, 92%);
+  padding: 24px 26px;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #0d3222 0%, #071f15 100%);
+  border: 1.5px solid rgba(212, 168, 77, 0.35);
+  box-shadow: 
+    0 22px 50px rgba(5, 22, 14, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  animation: AboutOne-float 4.8s ease-in-out infinite;
 }
 
 @keyframes AboutOne-float {
   0%, 100% {
     transform: translateY(0);
   }
-
   50% {
-    transform: translateY(-6px);
+    transform: translateY(-7px);
   }
 }
 
+.AboutOne__expBadgeTop {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(212, 168, 77, 0.16);
+  border: 1px solid rgba(212, 168, 77, 0.32);
+  color: var(--ao-gold-light);
+  font-size: 9.5px;
+  font-weight: 850;
+  letter-spacing: 1.4px;
+  margin-bottom: 12px;
+}
+
+.AboutOne__expStar {
+  font-size: 11px;
+}
+
+.AboutOne__expMainRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.AboutOne__counter {
+  display: flex;
+  align-items: baseline;
+  line-height: 1;
+}
+
+.AboutOne__counterNum {
+  font-size: clamp(46px, 4.5vw, 58px);
+  font-weight: 900;
+  letter-spacing: -2px;
+  background: linear-gradient(135deg, #fcebc0 0%, #d4a84d 60%, #a47b2c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.AboutOne__counterPlus {
+  font-size: 32px;
+  font-weight: 850;
+  color: var(--ao-gold-light);
+  margin-left: 2px;
+}
+
+.AboutOne__counterLabel {
+  display: flex;
+  flex-direction: column;
+}
+
+.AboutOne__counterTitle {
+  font-size: 16px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.25;
+}
+
+.AboutOne__counterSub {
+  font-size: 11.5px;
+  color: #9cb4a5;
+  letter-spacing: 0.3px;
+}
+
+.AboutOne__expHeading {
+  margin: 0 0 6px;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 750;
+  letter-spacing: -0.2px;
+}
+
+.AboutOne__expText {
+  margin: 0;
+  color: #bacbc0;
+  font-size: 12.5px;
+  line-height: 1.65;
+}
+
+.AboutOne__expProgressTrack {
+  height: 3px;
+  border-radius: 3px;
+  margin: 14px 0 12px;
+  background: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+
+.AboutOne__expProgressBar {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #d4a84d, #20b574);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.AboutOne--visible .AboutOne__expProgressBar {
+  transform: scaleX(1);
+  transition: transform 1.5s cubic-bezier(0.2, 0.8, 0.25, 1) 0.3s;
+}
+
+.AboutOne__expFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 11px;
+  padding-top: 4px;
+}
+
+.AboutOne__expRating {
+  color: #ffffff;
+}
+
+.AboutOne__expGuests {
+  color: #9cb4a5;
+}
+
 /* =========================================
-   LAPTOP
+   DECORATIVE RINGS & PATTERNS
 ========================================= */
 
-@media (max-width: 1150px) {
-  .AboutOne {
-    padding: 75px 24px 85px;
-  }
+.AboutOne__decorRing {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(181, 141, 61, 0.3);
+  pointer-events: none;
+  z-index: 0;
+}
 
+.AboutOne__decorRing--one {
+  top: -24px;
+  right: -24px;
+  width: 120px;
+  height: 120px;
+}
+
+.AboutOne__decorRing--two {
+  bottom: 40px;
+  right: -16px;
+  width: 70px;
+  height: 70px;
+  border-style: solid;
+  border-color: rgba(26, 127, 82, 0.22);
+}
+
+.AboutOne__decorDotGrid {
+  position: absolute;
+  top: 30px;
+  right: -32px;
+  width: 72px;
+  height: 72px;
+  background-image: radial-gradient(rgba(181, 141, 61, 0.35) 1.5px, transparent 1.5px);
+  background-size: 12px 12px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* =========================================
+   RESPONSIVE BREAKPOINTS
+========================================= */
+
+/* Large Laptops / Screens */
+@media (max-width: 1240px) {
   .AboutOne__container {
-    gap: 30px;
+    gap: 40px;
   }
 
   .AboutOne__title {
-    font-size: clamp(34px, 4vw, 48px);
+    font-size: clamp(32px, 3.8vw, 48px);
   }
 
-  .AboutOne__intro {
-    font-size: 15px;
+  .AboutOne__featureCard {
+    padding: 18px 16px;
   }
 
-  .AboutOne__feature {
-    padding: 20px 15px;
-  }
-
-  .AboutOne__feature p {
-    font-size: 13px;
-  }
-
-  .AboutOne__image {
-    height: 500px;
-  }
-
-  .AboutOne__experience {
-    width: min(340px, 90%);
-    padding: 24px 23px;
+  .AboutOne__experienceCard {
+    width: min(350px, 94%);
+    padding: 20px 22px;
+    left: -10px;
   }
 }
 
-/* =========================================
-   TABLET
-========================================= */
-
-@media (max-width: 850px) {
+/* Tablets & Small Laptops (<= 992px) */
+@media (max-width: 992px) {
   .AboutOne {
-    padding: 65px 24px 80px;
+    padding: 70px 20px 85px;
   }
 
   .AboutOne__container {
     grid-template-columns: minmax(0, 1fr);
-    gap: 55px;
+    gap: 52px;
   }
 
   .AboutOne__content {
@@ -505,210 +802,214 @@
   }
 
   .AboutOne__visual {
-    width: 100%;
-    max-width: 650px;
     order: 2;
-    justify-self: center;
-    margin-inline: auto;
-    padding-bottom: 65px;
-  }
-
-  .AboutOne__title {
     max-width: 680px;
-    font-size: clamp(38px, 6vw, 54px);
-  }
-
-  .AboutOne__intro {
-    max-width: 700px;
+    margin-inline: auto;
   }
 
   .AboutOne__image {
-    height: clamp(360px, 65vw, 550px);
+    height: clamp(380px, 58vw, 520px);
   }
 
-  .AboutOne__experience {
-    left: 0;
-    width: min(365px, 85%);
+  .AboutOne__experienceCard {
+    left: 16px;
+    bottom: -15px;
   }
 }
 
-/* =========================================
-   MOBILE
-========================================= */
-
-@media (max-width: 560px) {
+/* Mobile Devices (<= 640px) */
+@media (max-width: 640px) {
   .AboutOne {
-    padding: 45px 16px 60px;
+    padding: 48px 16px 65px;
   }
 
-  .AboutOne__container {
-    gap: 45px;
+  .AboutOne__eyebrowBadge {
+    padding: 5px 12px;
+    gap: 6px;
   }
 
-  .AboutOne__eyebrow {
-    gap: 9px;
-    margin-bottom: 15px;
-    font-size: 11px;
-    letter-spacing: 1px;
+  .AboutOne__eyebrowText {
+    font-size: 10px;
+    letter-spacing: 1.2px;
   }
 
-  .AboutOne__eyebrowLine {
-    width: 25px;
-  }
-
-  .AboutOne__title {
-    font-size: clamp(31px, 8vw, 42px);
-    letter-spacing: -0.8px;
-    line-height: 1.2;
-  }
-
-  .AboutOne__intro {
-    margin: 17px 0 22px;
-    font-size: 14px;
-    line-height: 1.85;
-  }
-
-  .AboutOne__features {
-    margin-top: 22px;
-  }
-
-  .AboutOne__feature {
-    padding: 16px 11px;
-  }
-
-  .AboutOne__featureNumber {
-    margin-bottom: 7px;
-    font-size: 9px;
-  }
-
-  .AboutOne__feature h3 {
-    font-size: 15px;
-  }
-
-  .AboutOne__feature p {
-    font-size: 12px;
-    line-height: 1.75;
-  }
-
-  .AboutOne__actions {
-    gap: 10px;
-    margin-top: 25px;
-  }
-
-  .AboutOne__button {
-    min-height: 48px;
-    gap: 9px;
-    padding: 12px 13px;
-    font-size: 12px;
-  }
-
-  .AboutOne__visual {
-    padding-bottom: 72px;
-  }
-
-  .AboutOne__image {
-    height: 370px;
-  }
-
-  .AboutOne__imageLabel {
-    right: 9px;
-    bottom: 9px;
-    gap: 8px;
-    padding: 10px;
+  .AboutOne__eyebrowSub {
     font-size: 10px;
   }
 
-  .AboutOne__experience {
-    left: 0;
-    width: min(310px, 94%);
-    padding: 20px 18px;
-  }
-
-  .AboutOne__counter {
-    font-size: 48px;
-  }
-
-  .AboutOne__experience h3 {
-    font-size: 18px;
-  }
-
-  .AboutOne__experience p {
-    font-size: 12px;
-  }
-
-  .AboutOne__decor--one {
-    top: -10px;
-    right: 0;
-    width: 65px;
-    height: 65px;
-  }
-}
-
-/* =========================================
-   VERY SMALL PHONES
-========================================= */
-
-@media (max-width: 360px) {
-  .AboutOne {
-    padding-right: 12px;
-    padding-left: 12px;
-  }
-
   .AboutOne__title {
-    font-size: 30px;
+    font-size: clamp(29px, 7.5vw, 38px);
+    letter-spacing: -1px;
+    line-height: 1.18;
   }
 
-  .AboutOne__feature {
-    padding: 13px 9px;
+  .AboutOne__intro {
+    font-size: 14.5px;
+    line-height: 1.75;
+    margin: 16px 0 22px;
   }
 
-  .AboutOne__feature h3 {
-    font-size: 14px;
+  .AboutOne__features {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
   }
 
-  .AboutOne__feature p {
-    font-size: 11px;
+  .AboutOne__featureCard {
+    padding: 16px 16px;
+    border-radius: 14px;
+  }
+
+  .AboutOne__featureTitle {
+    font-size: 16px;
+  }
+
+  .AboutOne__featureDesc {
+    font-size: 13px;
+  }
+
+  .AboutOne__actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
   }
 
   .AboutOne__button {
-    gap: 7px;
-    padding: 10px;
-    font-size: 11px;
+    width: 100%;
+    min-height: 50px;
+    font-size: 14px;
+    padding: 12px 20px;
+  }
+
+  .AboutOne__trustRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px 14px;
+  }
+
+  .AboutOne__trustDivider {
+    display: none;
+  }
+
+  .AboutOne__visualStack {
+    padding-bottom: 120px;
   }
 
   .AboutOne__image {
-    height: 315px;
+    height: 360px;
+    border-radius: 18px;
   }
 
-  .AboutOne__experience {
-    padding: 17px;
+  .AboutOne__statusBadge {
+    top: 12px;
+    left: 12px;
+    padding: 8px 12px;
+  }
+
+  .AboutOne__statusHeading {
+    font-size: 10.5px;
+  }
+
+  .AboutOne__statusSub {
+    font-size: 9px;
+  }
+
+  .AboutOne__locationPill {
+    bottom: 12px;
+    right: 12px;
+    font-size: 10px;
+    padding: 6px 10px;
+  }
+
+  .AboutOne__experienceCard {
+    left: 0;
+    right: 0;
+    margin-inline: auto;
+    width: 100%;
+    padding: 18px 18px;
+    border-radius: 16px;
+    bottom: 0;
+  }
+
+  .AboutOne__counterNum {
+    font-size: 42px;
+  }
+
+  .AboutOne__counterPlus {
+    font-size: 26px;
+  }
+
+  .AboutOne__counterTitle {
+    font-size: 14.5px;
+  }
+
+  .AboutOne__expHeading {
+    font-size: 15px;
+  }
+
+  .AboutOne__expText {
+    font-size: 12px;
+  }
+
+  .AboutOne__expFooter {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .AboutOne__decorRing,
+  .AboutOne__decorDotGrid {
+    display: none;
+  }
+}
+
+/* Ultra Small Phones (<= 380px) */
+@media (max-width: 380px) {
+  .AboutOne {
+    padding-inline: 12px;
+  }
+
+  .AboutOne__title {
+    font-size: 27px;
+  }
+
+  .AboutOne__image {
+    height: 300px;
+  }
+
+  .AboutOne__experienceCard {
+    padding: 15px 14px;
   }
 }
 
 /* =========================================
-   ACCESSIBILITY
+   ACCESSIBILITY & REDUCED MOTION
 ========================================= */
 
 .AboutOne__button:focus-visible {
-  outline: 3px solid var(--AboutOne-green);
-  outline-offset: 4px;
+  outline: 3px solid var(--ao-emerald);
+  outline-offset: 3px;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .AboutOne__content,
   .AboutOne__visual {
-    opacity: 1;
-    transform: none;
-    transition: none;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 
-  .AboutOne__experience {
-    animation: none;
+  .AboutOne__experienceCard {
+    animation: none !important;
   }
 
-  .AboutOne__experienceLine span {
-    transform: scaleX(1);
-    transition: none;
+  .AboutOne__pulseRing {
+    animation: none !important;
+  }
+
+  .AboutOne__expProgressBar {
+    transform: scaleX(1) !important;
+    transition: none !important;
   }
 
   .AboutOne *,
@@ -716,5 +1017,6 @@
   .AboutOne *::after {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
   }
 }

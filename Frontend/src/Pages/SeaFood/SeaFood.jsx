@@ -462,6 +462,18 @@ const SeaFood = () => {
                     </div>
 
                     <div className="SeaFood__inputGroup">
+                      <label htmlFor="SeaFood-homeTown">Home Town / City *</label>
+                      <input
+                        id="SeaFood-homeTown"
+                        name="homeTown"
+                        type="text"
+                        placeholder="e.g. Bhubaneswar / Kolkata"
+                        autoComplete="address-level2"
+                        required
+                      />
+                    </div>
+
+                    <div className="SeaFood__inputGroup">
                       <label htmlFor="SeaFood-aadhaar">
                         Aadhaar Card Number <span>(Optional)</span>
                       </label>

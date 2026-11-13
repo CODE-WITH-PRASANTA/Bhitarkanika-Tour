@@ -1,5 +1,5 @@
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Search,
   CalendarDays,
@@ -25,152 +25,7 @@ import {
 
 import "./TourBooking.css";
 
-const initialBookings = [
-  {
-    id: 1,
-    bookingId: "TB-1001",
-    packageName: "Jaynagar Boat Package",
-    packageType: "Standard package · 1 DAY",
-    image:
-      "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=160&q=80",
-    name: "Ramesh Kumar",
-    adults: 1,
-    children: 0,
-    date: "2026-10-15",
-    time: "10:00 AM",
-    phone: "9876543210",
-    aadhaar: "1234 5678 9012",
-    email: "ramesh@gmail.com",
-    amount: 4000,
-    status: "Confirmed",
-  },
-  {
-    id: 2,
-    bookingId: "TB-1002",
-    packageName: "Sea View Package",
-    packageType: "Premium package · 1 DAY",
-    image:
-      "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=160&q=80",
-    name: "Priya Sharma",
-    adults: 2,
-    children: 1,
-    date: "2026-10-18",
-    time: "02:00 PM",
-    phone: "9123456789",
-    aadhaar: "9876 5432 1098",
-    email: "priya@gmail.com",
-    amount: 5500,
-    status: "Pending",
-  },
-  {
-    id: 3,
-    bookingId: "TB-1003",
-    packageName: "Mangrove Exploration",
-    packageType: "Standard package · 2 DAYS",
-    image:
-      "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=160&q=80",
-    name: "Amit Patel",
-    adults: 3,
-    children: 1,
-    date: "2026-10-20",
-    time: "09:00 AM",
-    phone: "9988776655",
-    aadhaar: "1122 3344 5566",
-    email: "amit@gmail.com",
-    amount: 6500,
-    status: "Confirmed",
-  },
-  {
-    id: 4,
-    bookingId: "TB-1004",
-    packageName: "Sunset Cruise",
-    packageType: "Evening package · 1 DAY",
-    image:
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=160&q=80",
-    name: "Neha Verma",
-    adults: 2,
-    children: 0,
-    date: "2026-10-22",
-    time: "05:00 PM",
-    phone: "8811223344",
-    aadhaar: "7788 9900 1122",
-    email: "neha@gmail.com",
-    amount: 4500,
-    status: "Cancelled",
-  },
-  {
-    id: 5,
-    bookingId: "TB-1005",
-    packageName: "Wildlife Safari",
-    packageType: "Premium package · 1 DAY",
-    image:
-      "https://images.unsplash.com/photo-1549366021-9f761d450615?auto=format&fit=crop&w=160&q=80",
-    name: "Suresh Das",
-    adults: 4,
-    children: 2,
-    date: "2026-10-25",
-    time: "08:00 AM",
-    phone: "7766554433",
-    aadhaar: "3344 5566 7788",
-    email: "suresh@gmail.com",
-    amount: 7000,
-    status: "Confirmed",
-  },
-  {
-    id: 6,
-    bookingId: "TB-1006",
-    packageName: "River Adventure",
-    packageType: "Adventure package · 1 DAY",
-    image:
-      "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=160&q=80",
-    name: "Ananya Mishra",
-    adults: 2,
-    children: 2,
-    date: "2026-10-26",
-    time: "11:00 AM",
-    phone: "9090909090",
-    aadhaar: "4455 6677 8899",
-    email: "ananya@gmail.com",
-    amount: 6000,
-    status: "Pending",
-  },
-  {
-    id: 7,
-    bookingId: "TB-1007",
-    packageName: "Bhitarkanika Explorer",
-    packageType: "Family package · 2 DAYS",
-    image:
-      "https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=160&q=80",
-    name: "Rahul Mohanty",
-    adults: 3,
-    children: 2,
-    date: "2026-10-28",
-    time: "09:30 AM",
-    phone: "9098765432",
-    aadhaar: "5566 7788 9900",
-    email: "rahul@gmail.com",
-    amount: 8500,
-    status: "Confirmed",
-  },
-  {
-    id: 8,
-    bookingId: "TB-1008",
-    packageName: "Jaynagar Boat Package",
-    packageType: "Standard package · 1 DAY",
-    image:
-      "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=160&q=80",
-    name: "Pooja Singh",
-    adults: 2,
-    children: 1,
-    date: "2026-10-30",
-    time: "03:00 PM",
-    phone: "9812345670",
-    aadhaar: "6677 8899 0011",
-    email: "pooja@gmail.com",
-    amount: 4000,
-    status: "Pending",
-  },
-];
+const API_URL = "http://localhost:5000/api/tour-bookings";
 
 const formatCurrency = (amount) =>
   new Intl.NumberFormat("en-IN", {
@@ -178,13 +33,16 @@ const formatCurrency = (amount) =>
     currency: "INR",
     maximumFractionDigits: 0,
   })
-    .format(amount)
+    .format(amount || 0)
     .replace("₹", "₹");
 
 const formatDate = (date) => {
   if (!date) return "—";
+  const source = date.includes("T") ? date : `${date}T00:00:00`;
+  const parsed = new Date(source);
+  if (Number.isNaN(parsed.getTime())) return date;
 
-  return new Date(`${date}T00:00:00`).toLocaleDateString("en-GB", {
+  return parsed.toLocaleDateString("en-GB", {
     day: "2-digit",
     month: "short",
     year: "numeric",
@@ -192,7 +50,8 @@ const formatDate = (date) => {
 };
 
 const TourBooking = () => {
-  const [bookings, setBookings] = useState(initialBookings);
+  const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterPackage, setFilterPackage] = useState("All Packages");
   const [filterStatus, setFilterStatus] = useState("All Status");
@@ -206,6 +65,43 @@ const TourBooking = () => {
   const [formData, setFormData] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [notice, setNotice] = useState("");
+
+  const fetchBookings = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch(API_URL);
+      const json = await res.json();
+      if (res.ok && json.success && Array.isArray(json.data)) {
+        const normalized = json.data.map((item) => ({
+          ...item,
+          id: item._id || item.id,
+          bookingId: item.bookingId || `TB-${String(item._id).slice(-6)}`,
+          date: item.date || item.travelDate || "",
+          time: item.time || item.departureSlot || "",
+          amount: item.amount || item.totalAmount || 0,
+          aadhaar: item.aadhaar || item.aadhar || "",
+          homeTown: item.homeTown || item.address || "",
+          image:
+            item.image ||
+            "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=160&q=80",
+          packageType: item.packageType || "Standard package · 1 DAY",
+          status: item.status || "Pending",
+        }));
+        setBookings(normalized);
+      } else {
+        setBookings([]);
+      }
+    } catch (err) {
+      console.error("Failed to load tour bookings:", err);
+      setBookings([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchBookings();
+  }, []);
 
   const packageNames = useMemo(
     () => [...new Set(bookings.map((booking) => booking.packageName))],
@@ -304,26 +200,25 @@ const TourBooking = () => {
 
   const openCreate = () => {
     setFormData({
-      id: Date.now(),
       bookingId: `TB-${Date.now().toString().slice(-6)}`,
-      packageName: packageNames[0] || "Jaynagar Boat Package",
+      packageName: packageNames[0] || "Bhitarkanika Boat Package",
       packageType: "Standard package · 1 DAY",
-      image: initialBookings[0].image,
+      image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=160&q=80",
       name: "",
       adults: 1,
       children: 0,
       date: "",
-      time: "",
+      time: "08:00 AM",
       phone: "",
       aadhaar: "",
       email: "",
-      amount: 4000,
+      amount: 3500,
       status: "Pending",
     });
     setShowForm(true);
   };
 
-  const saveBooking = (event) => {
+  const saveBooking = async (event) => {
     event.preventDefault();
 
     if (!formData.name.trim() || !formData.date || !formData.phone.trim()) {
@@ -336,47 +231,66 @@ const TourBooking = () => {
       return;
     }
 
-    if (bookings.some(
-      (booking) =>
-        booking.id !== formData.id &&
-        booking.bookingId === formData.bookingId
-    )) {
-      setNotice("This booking ID already exists.");
-      return;
-    }
-
-    const exists = bookings.some((booking) => booking.id === formData.id);
-
-    setBookings((previous) =>
-      exists
-        ? previous.map((booking) =>
-            booking.id === formData.id ? { ...formData } : booking
-          )
-        : [{ ...formData }, ...previous]
+    const targetId = formData._id || formData.id;
+    const exists = bookings.some(
+      (b) => (b._id && b._id === targetId) || b.id === targetId
     );
 
-    setShowForm(false);
-    setNotice(exists ? "Booking updated successfully." : "Booking added successfully.");
-    setCurrentPage(1);
+    try {
+      if (exists && formData._id) {
+        const res = await fetch(`${API_URL}/${targetId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
+        const json = await res.json();
+        if (res.ok && json.success) {
+          setNotice("Booking updated successfully.");
+        }
+      } else {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
+        const json = await res.json();
+        if (res.ok && json.success) {
+          setNotice("Booking added successfully.");
+        }
+      }
+      await fetchBookings();
+      setShowForm(false);
+      setCurrentPage(1);
+    } catch (err) {
+      setNotice("Failed to save booking. Please check connection.");
+    }
   };
 
-  const deleteBooking = (booking) => {
+  const deleteBooking = async (booking) => {
     const confirmed = window.confirm(
       `Delete booking ${booking.bookingId} for ${booking.name}?`
     );
 
     if (!confirmed) return;
 
-    setBookings((previous) =>
-      previous.filter((item) => item.id !== booking.id)
-    );
-    setSelectedIds((previous) =>
-      previous.filter((id) => id !== booking.id)
-    );
-    setNotice("Booking deleted successfully.");
+    const targetId = booking._id || booking.id;
+    try {
+      if (booking._id) {
+        await fetch(`${API_URL}/${targetId}`, { method: "DELETE" });
+      }
+      setBookings((previous) =>
+        previous.filter((item) => (item._id || item.id) !== targetId)
+      );
+      setSelectedIds((previous) =>
+        previous.filter((id) => id !== targetId)
+      );
+      setNotice("Booking deleted successfully.");
+    } catch (err) {
+      setNotice("Failed to delete booking.");
+    }
   };
 
-  const deleteSelected = () => {
+  const deleteSelected = async () => {
     if (!selectedIds.length) return;
 
     const confirmed = window.confirm(
@@ -385,11 +299,22 @@ const TourBooking = () => {
 
     if (!confirmed) return;
 
-    setBookings((previous) =>
-      previous.filter((booking) => !selectedIds.includes(booking.id))
-    );
-    setSelectedIds([]);
-    setNotice("Selected bookings deleted.");
+    try {
+      await Promise.all(
+        selectedIds.map((id) =>
+          fetch(`${API_URL}/${id}`, { method: "DELETE" })
+        )
+      );
+      setBookings((previous) =>
+        previous.filter(
+          (booking) => !selectedIds.includes(booking._id || booking.id)
+        )
+      );
+      setSelectedIds([]);
+      setNotice("Selected bookings deleted.");
+    } catch (err) {
+      setNotice("Failed to delete selected bookings.");
+    }
   };
 
   const updateField = (field, value) => {
@@ -774,12 +699,20 @@ const TourBooking = () => {
                 </tr>
               ))}
 
-              {paginatedBookings.length === 0 && (
+              {loading && (
+                <tr>
+                  <td colSpan="14" className="TourBooking-empty-state">
+                    <strong>Loading bookings from database...</strong>
+                  </td>
+                </tr>
+              )}
+
+              {!loading && paginatedBookings.length === 0 && (
                 <tr>
                   <td colSpan="14" className="TourBooking-empty-state">
                     <Search size={32} />
                     <strong>No bookings found</strong>
-                    <span>Try changing your search or filters.</span>
+                    <span>No real boat bookings found in database yet. New reservations from the website will appear here automatically.</span>
                     <button type="button" onClick={resetFilters}>
                       Clear filters
                     </button>

@@ -469,6 +469,18 @@ const NarrowCreek = () => {
                     </div>
 
                     <div className="NarrowCreek__inputGroup">
+                      <label htmlFor="NarrowCreek-homeTown">Home Town / City *</label>
+                      <input
+                        id="NarrowCreek-homeTown"
+                        name="homeTown"
+                        type="text"
+                        placeholder="e.g. Bhubaneswar / Kolkata"
+                        autoComplete="address-level2"
+                        required
+                      />
+                    </div>
+
+                    <div className="NarrowCreek__inputGroup">
                       <label htmlFor="NarrowCreek-aadhaar">Aadhaar Card Number</label>
                       <input
                         id="NarrowCreek-aadhaar"
@@ -506,26 +518,6 @@ const NarrowCreek = () => {
                         <option value="10:30 AM - 12:30 PM">10:30 AM - 12:30 PM</option>
                         <option value="12:30 PM - 2:30 PM">12:30 PM - 2:30 PM</option>
                         <option value="2:30 PM - 4:30 PM">2:30 PM - 4:30 PM</option>
-                      </select>
-                    </div>
-
-                    <div className="NarrowCreek__inputGroup NarrowCreek__inputGroup--full">
-                      <label htmlFor="NarrowCreek-entryGate">Preferred Departure Jetty *</label>
-                      <select
-                        id="NarrowCreek-entryGate"
-                        name="entryGate"
-                        defaultValue="Khola Gate (Direct to Suajore Narrow Creeks)"
-                        required
-                      >
-                        <option value="Khola Gate (Direct to Suajore Narrow Creeks)">
-                          Khola Gate (Direct to Suajore Narrow Creeks)
-                        </option>
-                        <option value="Gupti Gate (Estuary & Coastal Channels)">
-                          Gupti Gate (Estuary & Coastal Channels)
-                        </option>
-                        <option value="Chandbali Ghat (River Delta Approach)">
-                          Chandbali Ghat (River Delta Approach)
-                        </option>
                       </select>
                     </div>
 

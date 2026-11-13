@@ -479,6 +479,18 @@ const OliveRidleyTurtles = () => {
                     </div>
 
                     <div className="OliveRidleyTurtles__inputGroup">
+                      <label htmlFor="OliveRidleyTurtles-homeTown">Home Town / City *</label>
+                      <input
+                        id="OliveRidleyTurtles-homeTown"
+                        name="homeTown"
+                        type="text"
+                        placeholder="e.g. Bhubaneswar / Kolkata"
+                        autoComplete="address-level2"
+                        required
+                      />
+                    </div>
+
+                    <div className="OliveRidleyTurtles__inputGroup">
                       <label htmlFor="OliveRidleyTurtles-date">
                         Target Safari Date *
                       </label>
@@ -489,27 +501,6 @@ const OliveRidleyTurtles = () => {
                         min={new Date().toISOString().split("T")[0]}
                         required
                       />
-                    </div>
-
-                    <div className="OliveRidleyTurtles__inputGroup">
-                      <label htmlFor="OliveRidleyTurtles-entryGate">
-                        Preferred Departure Jetty
-                      </label>
-                      <select
-                        id="OliveRidleyTurtles-entryGate"
-                        name="entryGate"
-                        defaultValue="Gupti Gate (Direct Approach to Coastal & Marine Waters)"
-                      >
-                        <option value="Gupti Gate (Direct Approach to Coastal & Marine Waters)">
-                          Gupti Gate (Direct Approach to Coastal & Marine Waters)
-                        </option>
-                        <option value="Khola Gate (Inland Creeks & Island Connection)">
-                          Khola Gate (Inland Creeks & Island Connection)
-                        </option>
-                        <option value="Chandbali Ghat (River Delta Approach)">
-                          Chandbali Ghat (River Delta Approach)
-                        </option>
-                      </select>
                     </div>
 
                     <div className="OliveRidleyTurtles__inputGroup">

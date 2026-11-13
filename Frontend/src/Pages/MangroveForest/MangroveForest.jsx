@@ -240,6 +240,7 @@ const INITIAL_FORM = {
   name: "",
   email: "",
   phone: "",
+  homeTown: "",
   travelDate: "",
   entryGate: GATE_OPTIONS[0],
   guests: GUEST_OPTIONS[0],
@@ -253,6 +254,7 @@ const buildBookingMessage = (d) =>
     "",
     `Name: ${d.name}`,
     `Mobile: ${d.phone}`,
+    d.homeTown ? `Home Town: ${d.homeTown}` : null,
     `Email: ${d.email}`,
     `Safari date: ${formatDate(d.travelDate)}`,
     `Expedition: ${d.service}`,
@@ -740,6 +742,20 @@ const MangroveForest = () => {
                     </div>
 
                     <div className="MangroveForest__inputGroup">
+                      <label htmlFor="MangroveForest-homeTown">Home Town / City *</label>
+                      <input
+                        id="MangroveForest-homeTown"
+                        name="homeTown"
+                        type="text"
+                        placeholder="e.g. Bhubaneswar / Kolkata"
+                        autoComplete="address-level2"
+                        value={form.homeTown}
+                        onChange={updateField}
+                        required
+                      />
+                    </div>
+
+                    <div className="MangroveForest__inputGroup">
                       <label htmlFor="MangroveForest-date">Safari Date *</label>
                       <input
                         id="MangroveForest-date"
@@ -750,24 +766,6 @@ const MangroveForest = () => {
                         onChange={updateField}
                         required
                       />
-                    </div>
-
-                    <div className="MangroveForest__inputGroup">
-                      <label htmlFor="MangroveForest-entryGate">
-                        Departure Jetty Point
-                      </label>
-                      <select
-                        id="MangroveForest-entryGate"
-                        name="entryGate"
-                        value={form.entryGate}
-                        onChange={updateField}
-                      >
-                        {GATE_OPTIONS.map((option) => (
-                          <option key={option} value={option}>
-                            {option}
-                          </option>
-                        ))}
-                      </select>
                     </div>
 
                     <div className="MangroveForest__inputGroup">

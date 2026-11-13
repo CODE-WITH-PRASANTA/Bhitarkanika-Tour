@@ -623,6 +623,68 @@
   outline-offset: -5px;
 }
 
+/* =========================
+   EMPTY STATE & SKELETON
+========================= */
+
+.OurLatestNews__emptyState {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 55px 24px;
+  background: #ffffff;
+  border-radius: 24px;
+  border: 1px dashed rgba(16, 63, 48, 0.2);
+  color: var(--OurLatestNews-muted);
+  font-size: 15px;
+  font-weight: 500;
+  box-shadow: 0 4px 20px rgba(16, 63, 48, 0.04);
+}
+
+.OurLatestNews__emptyState p {
+  margin: 0;
+}
+
+.OurLatestNews__card--skeleton {
+  height: 480px;
+  background: #e9eee9;
+  border-radius: 26px;
+  position: relative;
+  overflow: hidden;
+}
+
+.OurLatestNews__card--skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.45),
+    transparent
+  );
+  animation: newsSkeletonShimmer 1.5s infinite;
+}
+
+@keyframes newsSkeletonShimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.OurLatestNews__imageFallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #103f30, #195240);
+  color: #a3edc0;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .OurLatestNews__card,
   .OurLatestNews__image,

@@ -10,6 +10,12 @@ import {
 } from "react-icons/fa";
 
 import "./Journey.css";
+import mangroveForestImg from "../../assets/mangrove-forest-ecosystem.jpg";
+import jungleTrekkingImg from "../../assets/jungle-trekking.jpg";
+import skywalkViewImg from "../../assets/skywalk-view.jpg";
+import monitorLizardImg from "../../assets/monitor-lizard.jpg";
+import spottedDeerImg from "../../assets/spotted-deer.jpg";
+import saltwaterCrocodileImg from "../../assets/saltwater-crocodile.jpg";
 
 const attractions = [
   {
@@ -19,8 +25,7 @@ const attractions = [
     description:
       "Explore the beautiful mangrove ecosystem of Bhitarkanika, filled with winding waterways and rich biodiversity.",
     specification: "Dense mangrove ecosystem",
-    image:
-      "https://commons.wikimedia.org/wiki/Special:FilePath/Bhitarakanika%20national%20park%20mangroves.jpg?width=1000",
+    image: mangroveForestImg,
   },
   {
     id: 2,
@@ -29,8 +34,7 @@ const attractions = [
     description:
       "Walk through natural forest trails and experience the peaceful atmosphere of the mangrove wilderness.",
     specification: "Guided nature trail",
-    image:
-      "https://commons.wikimedia.org/wiki/Special:FilePath/Bhitarkanika%20National%20Park%20inside%20pathway%20.jpg?width=1000",
+    image: jungleTrekkingImg,
   },
   {
     id: 3,
@@ -39,8 +43,7 @@ const attractions = [
     description:
       "Enjoy beautiful elevated views of the surrounding natural landscape and forest environment.",
     specification: "Panoramic nature view",
-    image:
-      "https://jungleavengers.com/wp-content/uploads/2025/08/a-breathtaking-scene-of-bhitarkanika-national-par-768x768.png",
+    image: skywalkViewImg,
   },
   {
     id: 4,
@@ -49,8 +52,7 @@ const attractions = [
     description:
       "Discover the fascinating water monitor lizard, one of the interesting reptiles found in the region.",
     specification: "Wildlife observation",
-    image:
-      "https://images.unsplash.com/photo-1591824438708-ce405f36ba3d?auto=format&fit=crop&w=1200&q=85",
+    image: monitorLizardImg,
   },
   {
     id: 5,
@@ -59,8 +61,7 @@ const attractions = [
     description:
       "Watch spotted deer moving through the forest surroundings and enjoying their natural habitat.",
     specification: "Natural wildlife habitat",
-    image:
-      "https://images.unsplash.com/photo-1484406566174-9da000fda645?auto=format&fit=crop&w=1200&q=85",
+    image: spottedDeerImg,
   },
   {
     id: 6,
@@ -69,8 +70,7 @@ const attractions = [
     description:
       "Experience the incredible sight of the famous saltwater crocodile, one of Bhitarkanika's major attractions.",
     specification: "Saltwater crocodile habitat",
-    image:
-      "https://res.cloudinary.com/roundglass/image/upload/f_auto/v1592388282/roundglass/sustain/odisha-bhitarkanika-saltwater-crocodile-dhritiman-mukherjee_vc63fo.jpg",
+    image: saltwaterCrocodileImg,
   },
   {
     id: 7,

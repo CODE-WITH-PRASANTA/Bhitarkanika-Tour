@@ -474,6 +474,18 @@ const Museum = () => {
                     </div>
 
                     <div className="Museum__inputGroup">
+                      <label htmlFor="Museum-homeTown">Home Town / City *</label>
+                      <input
+                        id="Museum-homeTown"
+                        name="homeTown"
+                        type="text"
+                        placeholder="e.g. Bhubaneswar / Kolkata"
+                        autoComplete="address-level2"
+                        required
+                      />
+                    </div>
+
+                    <div className="Museum__inputGroup">
                       <label htmlFor="Museum-aadhaar">Aadhaar Card Number</label>
                       <input
                         id="Museum-aadhaar"
@@ -511,26 +523,6 @@ const Museum = () => {
                         <option value="11:00 AM - 1:00 PM">11:00 AM - 1:00 PM</option>
                         <option value="1:00 PM - 3:00 PM">1:00 PM - 3:00 PM</option>
                         <option value="3:00 PM - 5:00 PM">3:00 PM - 5:00 PM</option>
-                      </select>
-                    </div>
-
-                    <div className="Museum__inputGroup Museum__inputGroup--full">
-                      <label htmlFor="Museum-entryGate">Departure Jetty Point *</label>
-                      <select
-                        id="Museum-entryGate"
-                        name="entryGate"
-                        defaultValue="Khola Gate (Direct Cruise to Dangmal Museum Pier)"
-                        required
-                      >
-                        <option value="Khola Gate (Direct Cruise to Dangmal Museum Pier)">
-                          Khola Gate (Direct Cruise to Dangmal Museum Pier)
-                        </option>
-                        <option value="Gupti Gate (Estuary & Coastal Route)">
-                          Gupti Gate (Estuary & Coastal Route)
-                        </option>
-                        <option value="Chandbali Ghat (River Delta Approach)">
-                          Chandbali Ghat (River Delta Approach)
-                        </option>
                       </select>
                     </div>
 

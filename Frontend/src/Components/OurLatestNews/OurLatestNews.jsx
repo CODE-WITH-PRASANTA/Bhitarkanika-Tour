@@ -2,51 +2,99 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import "./OurLatestNews.css";
 
-// Replace these filenames with your actual image filenames.
-import WildlifeImage from "../../assets/wildlife-travel.png";
-import CrocodileImage from "../../assets/bhitarkanika-crocodile.png";
-import MangroveImage from "../../assets/bhitarkanika-mangrove.png";
+const API_PUBLISHED_BLOGS_URL = "http://localhost:5000/api/blogs/published";
 
-const newsData = [
-  {
-    id: 1,
-    category: "Wildlife",
-    title: "Discover the Untamed Beauty of Bhitarkanika",
-    date: "22 Oct 2026",
-    author: "Bhitarkanika Team",
-    image: WildlifeImage,
-    alt: "Wildlife in a beautiful natural forest habitat",
-    link: "/blog",
-  },
-  {
-    id: 2,
-    category: "Wildlife Conservation",
-    title: "Saltwater Crocodiles: The Giants of the Mangroves",
-    date: "18 Oct 2026",
-    author: "Bhitarkanika Team",
-    image: CrocodileImage,
-    alt: "Saltwater crocodile in its natural habitat",
-    link: "/blog",
-  },
-  {
-    id: 3,
-    category: "Nature & Travel",
-    title: "Explore the Magical Waterways of Bhitarkanika",
-    date: "12 Oct 2026",
-    author: "Bhitarkanika Team",
-    image: MangroveImage,
-    alt: "Lush green mangrove forest and waterways",
-    link: "/services",
-  },
-];
+const resolveImageUrl = (image) => {
+  if (!image) return "";
+  if (
+    image.startsWith("http://") ||
+    image.startsWith("https://") ||
+    image.startsWith("data:")
+  ) {
+    return image;
+  }
+  const cleanPath = image.startsWith("/") ? image : `/${image}`;
+  return `http://localhost:5000${cleanPath}`;
+};
+
+const formatDate = (dateValue, createdAt) => {
+  const source = dateValue ? `${dateValue}T00:00:00` : createdAt;
+  if (!source) return "Recent Story";
+  const parsed = new Date(source);
+  if (Number.isNaN(parsed.getTime())) return dateValue || "Recent Story";
+  return parsed.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+};
 
 const OurLatestNews = () => {
   const sectionRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [newsList, setNewsList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  // Fetch only real published blogs from backend
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchPublishedBlogs = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(API_PUBLISHED_BLOGS_URL);
+        const json = await res.json();
+
+        if (
+          res.ok &&
+          json.success &&
+          Array.isArray(json.data) &&
+          json.data.length > 0
+        ) {
+          const published = json.data
+            .filter((blog) => blog.published === true)
+            .slice(0, 3)
+            .map((blog, index) => {
+              const blogSlug = blog.slug || blog._id || blog.id;
+
+              return {
+                id: blog._id || blog.id || index + 1,
+                category: blog.category || "Wilderness",
+                title: blog.title || "Untamed Bhitarkanika",
+                date: formatDate(blog.date, blog.createdAt),
+                author: blog.author || "Bhitarkanika Team",
+                image: resolveImageUrl(blog.mainImage),
+                alt: blog.title || "Bhitarkanika blog story",
+                link: `/blog/${blogSlug}`,
+              };
+            });
+
+          if (isMounted) {
+            setNewsList(published);
+          }
+        } else if (isMounted) {
+          setNewsList([]);
+        }
+      } catch (error) {
+        console.warn("Could not fetch published blogs from backend:", error);
+        if (isMounted) {
+          setNewsList([]);
+        }
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    fetchPublishedBlogs();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  // Intersection observer for section animation
   useEffect(() => {
     const section = sectionRef.current;
-
     if (!section) return undefined;
 
     if (!("IntersectionObserver" in window)) {
@@ -71,9 +119,7 @@ const OurLatestNews = () => {
 
   return (
     <section
-      className={`OurLatestNews ${
-        isVisible ? "OurLatestNews--visible" : ""
-      }`}
+      className={`OurLatestNews ${isVisible ? "OurLatestNews--visible" : ""}`}
       ref={sectionRef}
       aria-labelledby="OurLatestNews-title"
     >
@@ -86,12 +132,8 @@ const OurLatestNews = () => {
               STORIES FROM THE WILD
             </span>
 
-            <h2
-              className="OurLatestNews__title"
-              id="OurLatestNews-title"
-            >
-              Latest News
-              <span>&amp; Articles.</span>
+            <h2 className="OurLatestNews__title" id="OurLatestNews-title">
+              Latest News <span>&amp; Articles.</span>
             </h2>
           </div>
 
@@ -101,122 +143,133 @@ const OurLatestNews = () => {
               and unforgettable experiences of Bhitarkanika, Odisha.
             </p>
 
-            <Link
-              to="/blog"
-              className="OurLatestNews__viewAll"
-            >
+            <Link to="/blog" className="OurLatestNews__viewAll">
               Explore All Stories
               <span aria-hidden="true">↗</span>
             </Link>
           </div>
         </div>
 
-        {/* News cards */}
-        <div className="OurLatestNews__grid">
-          {newsData.map((news, index) => (
-            <article
-              className="OurLatestNews__card"
-              key={news.id}
-              style={{
-                "--OurLatestNews-delay": `${index * 160}ms`,
-              }}
-            >
-              <Link
-                to={news.link}
-                className="OurLatestNews__cardLink"
-                aria-label={`Read: ${news.title}`}
+        {/* Real published news cards */}
+        {loading ? (
+          <div className="OurLatestNews__grid">
+            {[0, 1, 2].map((i) => (
+              <div
+                key={i}
+                className="OurLatestNews__card OurLatestNews__card--skeleton"
+              />
+            ))}
+          </div>
+        ) : newsList.length > 0 ? (
+          <div className="OurLatestNews__grid">
+            {newsList.map((news, index) => (
+              <article
+                className="OurLatestNews__card"
+                key={news.id}
+                style={{
+                  "--OurLatestNews-delay": `${index * 160}ms`,
+                }}
               >
-                <img
-                  className="OurLatestNews__image"
-                  src={news.image}
-                  alt={news.alt}
-                  loading="lazy"
-                  decoding="async"
-                />
+                <Link
+                  to={news.link}
+                  className="OurLatestNews__cardLink"
+                  aria-label={`Read: ${news.title}`}
+                >
+                  {news.image ? (
+                    <img
+                      className="OurLatestNews__image"
+                      src={news.image}
+                      alt={news.alt}
+                      loading="lazy"
+                      decoding="async"
+                      onError={(e) => {
+                        e.currentTarget.style.display = "none";
+                      }}
+                    />
+                  ) : (
+                    <div className="OurLatestNews__imageFallback">
+                      <span>{news.category}</span>
+                    </div>
+                  )}
 
-                <div className="OurLatestNews__imageShade" />
+                  <div className="OurLatestNews__imageShade" />
 
-                <div className="OurLatestNews__cardTop">
-                  <span className="OurLatestNews__category">
-                    <span className="OurLatestNews__categoryDot" />
-                    {news.category}
-                  </span>
-
-                  <span className="OurLatestNews__cardNumber">
-                    0{news.id}
-                  </span>
-                </div>
-
-                <div className="OurLatestNews__cardContent">
-                  <div className="OurLatestNews__meta">
-                    <span className="OurLatestNews__metaIcon">
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        aria-hidden="true"
-                      >
-                        <circle
-                          cx="12"
-                          cy="8"
-                          r="3.5"
-                          stroke="currentColor"
-                          strokeWidth="1.7"
-                        />
-                        <path
-                          d="M5 20c.4-3.6 2.9-5.5 7-5.5s6.6 1.9 7 5.5"
-                          stroke="currentColor"
-                          strokeWidth="1.7"
-                          strokeLinecap="round"
-                        />
-                      </svg>
+                  <div className="OurLatestNews__cardTop">
+                    <span className="OurLatestNews__category">
+                      <span className="OurLatestNews__categoryDot" />
+                      {news.category}
                     </span>
-                    <span>{news.author}</span>
 
-                    <span className="OurLatestNews__metaDivider" />
-
-                    <span className="OurLatestNews__metaIcon">
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        aria-hidden="true"
-                      >
-                        <circle
-                          cx="12"
-                          cy="12"
-                          r="8.5"
-                          stroke="currentColor"
-                          strokeWidth="1.7"
-                        />
-                        <path
-                          d="M12 7v5l3.2 2"
-                          stroke="currentColor"
-                          strokeWidth="1.7"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </span>
-                    <time>{news.date}</time>
-                  </div>
-
-                  <h3 className="OurLatestNews__cardTitle">
-                    {news.title}
-                  </h3>
-
-                  <div className="OurLatestNews__readMore">
-                    <span>Read Story</span>
-                    <span
-                      className="OurLatestNews__readArrow"
-                      aria-hidden="true"
-                    >
-                      ↗
+                    <span className="OurLatestNews__cardNumber">
+                      {String(index + 1).padStart(2, "0")}
                     </span>
                   </div>
-                </div>
-              </Link>
-            </article>
-          ))}
-        </div>
+
+                  <div className="OurLatestNews__cardContent">
+                    <div className="OurLatestNews__meta">
+                      <span className="OurLatestNews__metaIcon">
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                          <circle
+                            cx="12"
+                            cy="8"
+                            r="3.5"
+                            stroke="currentColor"
+                            strokeWidth="1.7"
+                          />
+                          <path
+                            d="M5 20c.4-3.6 2.9-5.5 7-5.5s6.6 1.9 7 5.5"
+                            stroke="currentColor"
+                            strokeWidth="1.7"
+                            strokeLinecap="round"
+                          />
+                        </svg>
+                      </span>
+                      <span>{news.author}</span>
+
+                      <span className="OurLatestNews__metaDivider" />
+
+                      <span className="OurLatestNews__metaIcon">
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                          <circle
+                            cx="12"
+                            cy="12"
+                            r="8.5"
+                            stroke="currentColor"
+                            strokeWidth="1.7"
+                          />
+                          <path
+                            d="M12 7v5l3.2 2"
+                            stroke="currentColor"
+                            strokeWidth="1.7"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </span>
+                      <time>{news.date}</time>
+                    </div>
+
+                    <h3 className="OurLatestNews__cardTitle">{news.title}</h3>
+
+                    <div className="OurLatestNews__readMore">
+                      <span>Read Story</span>
+                      <span
+                        className="OurLatestNews__readArrow"
+                        aria-hidden="true"
+                      >
+                        ↗
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <div className="OurLatestNews__emptyState">
+            <p>No published articles found at the moment.</p>
+          </div>
+        )}
 
         {/* Bottom accent */}
         <div className="OurLatestNews__footer">

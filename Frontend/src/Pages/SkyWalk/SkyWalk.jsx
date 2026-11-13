@@ -423,6 +423,18 @@ const SkyWalk = () => {
                     </div>
 
                     <div className="SkyWalk__inputGroup">
+                      <label htmlFor="SkyWalk-homeTown">Home Town / City *</label>
+                      <input
+                        id="SkyWalk-homeTown"
+                        name="homeTown"
+                        type="text"
+                        placeholder="e.g. Bhubaneswar / Kolkata"
+                        autoComplete="address-level2"
+                        required
+                      />
+                    </div>
+
+                    <div className="SkyWalk__inputGroup">
                       <label htmlFor="SkyWalk-aadhaar">
                         Aadhaar Card Number *
                       </label>
@@ -476,31 +488,6 @@ const SkyWalk = () => {
                           <option value="04:00 PM">04:00 PM</option>
                           <option value="05:00 PM">05:00 PM</option>
                         </optgroup>
-                      </select>
-                    </div>
-
-                    <div className="SkyWalk__inputGroup SkyWalk__inputGroup--full">
-                      <label htmlFor="SkyWalk-entryGate">
-                        Preferred Entry Jetty *
-                      </label>
-                      <select
-                        id="SkyWalk-entryGate"
-                        name="entryGate"
-                        defaultValue=""
-                        required
-                      >
-                        <option value="" disabled>
-                          Select Entry Jetty
-                        </option>
-                        <option value="Khola Gate (Direct Cruise to Dangmal Skywalk)">
-                          Khola Gate (Direct Cruise to Dangmal Skywalk)
-                        </option>
-                        <option value="Gupti Gate (Estuary & Coastal Route)">
-                          Gupti Gate (Estuary & Coastal Route)
-                        </option>
-                        <option value="Chandbali Ghat (River Approach)">
-                          Chandbali Ghat (River Approach)
-                        </option>
                       </select>
                     </div>
 

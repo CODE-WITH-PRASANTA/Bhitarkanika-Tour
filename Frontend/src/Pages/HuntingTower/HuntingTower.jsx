@@ -472,6 +472,18 @@ const HuntingTower = () => {
                     </div>
 
                     <div className="HuntingTower__inputGroup">
+                      <label htmlFor="HuntingTower-homeTown">Home Town / City *</label>
+                      <input
+                        id="HuntingTower-homeTown"
+                        name="homeTown"
+                        type="text"
+                        placeholder="e.g. Bhubaneswar / Kolkata"
+                        autoComplete="address-level2"
+                        required
+                      />
+                    </div>
+
+                    <div className="HuntingTower__inputGroup">
                       <label htmlFor="HuntingTower-date">Expected Visit Date *</label>
                       <input
                         id="HuntingTower-date"
@@ -480,25 +492,6 @@ const HuntingTower = () => {
                         min={new Date().toISOString().split("T")[0]}
                         required
                       />
-                    </div>
-
-                    <div className="HuntingTower__inputGroup">
-                      <label htmlFor="HuntingTower-entryGate">Departure Jetty Point</label>
-                      <select
-                        id="HuntingTower-entryGate"
-                        name="entryGate"
-                        defaultValue="Khola Gate (Direct Cruise to Dangmal Trailhead)"
-                      >
-                        <option value="Khola Gate (Direct Cruise to Dangmal Trailhead)">
-                          Khola Gate (Direct Cruise to Dangmal Trailhead)
-                        </option>
-                        <option value="Gupti Gate (Estuary & Coastal Route)">
-                          Gupti Gate (Estuary & Coastal Route)
-                        </option>
-                        <option value="Chandbali Ghat (River Delta Approach)">
-                          Chandbali Ghat (River Delta Approach)
-                        </option>
-                      </select>
                     </div>
 
                     <div className="HuntingTower__inputGroup">

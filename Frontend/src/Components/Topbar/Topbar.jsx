@@ -9,7 +9,7 @@ const Topbar = () => {
       id: 1,
       icon: AlarmClock,
       title: "Opening Hours",
-      description: "Mon - Sat: 08:00 - 05:00",
+      description: "Mon - Sat: 07:00 AM - 02:00 PM",
     },
     {
       id: 2,

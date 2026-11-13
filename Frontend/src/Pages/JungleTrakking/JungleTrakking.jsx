@@ -474,6 +474,18 @@ const JungleTrakking = () => {
                     </div>
 
                     <div className="JungleTrakking__inputGroup">
+                      <label htmlFor="JungleTrakking-homeTown">Home Town / City *</label>
+                      <input
+                        id="JungleTrakking-homeTown"
+                        name="homeTown"
+                        type="text"
+                        placeholder="e.g. Bhubaneswar / Kolkata"
+                        autoComplete="address-level2"
+                        required
+                      />
+                    </div>
+
+                    <div className="JungleTrakking__inputGroup">
                       <label htmlFor="JungleTrakking-date">
                         Expected Trek Date *
                       </label>
@@ -484,27 +496,6 @@ const JungleTrakking = () => {
                         min={new Date().toISOString().split("T")[0]}
                         required
                       />
-                    </div>
-
-                    <div className="JungleTrakking__inputGroup">
-                      <label htmlFor="JungleTrakking-entryGate">
-                        Preferred Boarding Jetty
-                      </label>
-                      <select
-                        id="JungleTrakking-entryGate"
-                        name="entryGate"
-                        defaultValue="Khola Gate (Direct Cruise to Dangmal Trailhead)"
-                      >
-                        <option value="Khola Gate (Direct Cruise to Dangmal Trailhead)">
-                          Khola Gate (Direct Cruise to Dangmal Trailhead)
-                        </option>
-                        <option value="Gupti Gate (Access to Habalikhati Coastal Trail)">
-                          Gupti Gate (Access to Habalikhati Coastal Trail)
-                        </option>
-                        <option value="Chandbali Ghat (River Approach)">
-                          Chandbali Ghat (River Approach)
-                        </option>
-                      </select>
                     </div>
 
                     <div className="JungleTrakking__inputGroup">

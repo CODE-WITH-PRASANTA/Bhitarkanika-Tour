@@ -450,6 +450,11 @@ const WhiteCrocodile = () => {
                     </div>
 
                     <div className="WhiteCrocodile__inputGroup">
+                      <label htmlFor="WhiteCrocodile-homeTown">Home Town / City *</label>
+                      <input id="WhiteCrocodile-homeTown" name="homeTown" type="text" placeholder="e.g. Bhubaneswar / Kolkata" autoComplete="address-level2" required />
+                    </div>
+
+                    <div className="WhiteCrocodile__inputGroup">
                       <label htmlFor="WhiteCrocodile-aadhaar">Aadhaar Card Number</label>
                       <input id="WhiteCrocodile-aadhaar" name="aadhaar" type="text" inputMode="numeric" placeholder="Enter 12-digit Aadhaar number" maxLength={12} pattern="[0-9]{12}" />
                     </div>
@@ -471,15 +476,6 @@ const WhiteCrocodile = () => {
                           <option value="12:00 PM - 3:00 PM">12:00 PM - 3:00 PM</option>
                           <option value="3:00 PM - 5:00 PM">3:00 PM - 5:00 PM</option>
                         </optgroup>
-                      </select>
-                    </div>
-
-                    <div className="WhiteCrocodile__inputGroup WhiteCrocodile__inputGroup--full">
-                      <label htmlFor="WhiteCrocodile-entryGate">Preferred Entry Jetty *</label>
-                      <select id="WhiteCrocodile-entryGate" name="entryGate" defaultValue="Khola Gate (Direct to Dangmal White Croc Enclosure)" required>
-                        <option value="Khola Gate (Direct to Dangmal White Croc Enclosure)">Khola Gate (Direct to Dangmal White Croc Enclosure)</option>
-                        <option value="Gupti Gate (Estuary & Coastal Route)">Gupti Gate (Estuary & Coastal Route)</option>
-                        <option value="Chandbali Ghat (River Approach)">Chandbali Ghat (River Approach)</option>
                       </select>
                     </div>
 

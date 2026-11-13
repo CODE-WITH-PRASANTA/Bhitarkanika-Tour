@@ -240,6 +240,7 @@ const INITIAL_FORM = {
   name: "",
   email: "",
   phone: "",
+  homeTown: "",
   travelDate: "",
   entryGate: GATE_OPTIONS[0],
   guests: GUEST_OPTIONS[0],
@@ -253,10 +254,10 @@ const buildBookingMessage = (d) =>
     "",
     `Name: ${d.name}`,
     `Mobile: ${d.phone}`,
+    d.homeTown ? `Home Town: ${d.homeTown}` : null,
     `Email: ${d.email}`,
     `Safari date: ${formatDate(d.travelDate)}`,
     `Service: ${d.service}`,
-    `Departure jetty: ${d.entryGate}`,
     `Passengers: ${d.guests}`,
     d.notes ? `Notes: ${d.notes}` : null,
   ]
@@ -637,13 +638,15 @@ const Deer = () => {
                   </p>
 
                   <dl className="Deer__summary">
+                    {submitted.homeTown && (
+                      <div>
+                        <dt>Home Town</dt>
+                        <dd>{submitted.homeTown}</dd>
+                      </div>
+                    )}
                     <div>
                       <dt>Safari date</dt>
                       <dd>{formatDate(submitted.travelDate)}</dd>
-                    </div>
-                    <div>
-                      <dt>Departure jetty</dt>
-                      <dd>{submitted.entryGate}</dd>
                     </div>
                     <div>
                       <dt>Passengers</dt>
@@ -730,6 +733,20 @@ const Deer = () => {
                     </div>
 
                     <div className="Deer__inputGroup">
+                      <label htmlFor="Deer-homeTown">Home Town / City *</label>
+                      <input
+                        id="Deer-homeTown"
+                        name="homeTown"
+                        type="text"
+                        placeholder="e.g. Bhubaneswar / Kolkata"
+                        autoComplete="address-level2"
+                        value={form.homeTown}
+                        onChange={updateField}
+                        required
+                      />
+                    </div>
+
+                    <div className="Deer__inputGroup">
                       <label htmlFor="Deer-date">Expected Safari Date *</label>
                       <input
                         id="Deer-date"
@@ -740,22 +757,6 @@ const Deer = () => {
                         onChange={updateField}
                         required
                       />
-                    </div>
-
-                    <div className="Deer__inputGroup">
-                      <label htmlFor="Deer-entryGate">Preferred Departure Jetty</label>
-                      <select
-                        id="Deer-entryGate"
-                        name="entryGate"
-                        value={form.entryGate}
-                        onChange={updateField}
-                      >
-                        {GATE_OPTIONS.map((option) => (
-                          <option key={option} value={option}>
-                            {option}
-                          </option>
-                        ))}
-                      </select>
                     </div>
 
                     <div className="Deer__inputGroup">

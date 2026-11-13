@@ -194,7 +194,7 @@ const ServiceMain = () => {
                   <h3>Boat Options</h3>
 
                   <p>
-                    Ask about private boats, family-friendly vessels,
+                    Ask about Boats, family-friendly vessels,
                     seating capacity, and available safety equipment.
                   </p>
                 </div>
@@ -428,6 +428,21 @@ const ServiceMain = () => {
                         type="tel"
                         placeholder="+91 98765 43210"
                         autoComplete="tel"
+                        required
+                      />
+                    </div>
+
+                    <div className="ServiceMain__inputGroup">
+                      <label htmlFor="ServiceMain-homeTown">
+                        Home Town / City *
+                      </label>
+
+                      <input
+                        id="ServiceMain-homeTown"
+                        name="homeTown"
+                        type="text"
+                        placeholder="e.g. Bhubaneswar / Kolkata"
+                        autoComplete="address-level2"
                         required
                       />
                     </div>

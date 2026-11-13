@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import "./AboutTwo.css";
+import aboutMainImg from "../../assets/about-natural-wonders-main.jpg";
+import aboutSmallImg from "../../assets/about-natural-wonders-small.jpg";
 
 const AboutTwo = () => {
   const sectionRef = useRef(null);
@@ -162,8 +164,8 @@ const AboutTwo = () => {
 
           <div className="AboutTwo__imageMain">
             <img
-              src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=1200&q=85"
-              alt="Lush green forest representing the natural beauty of Bhitarkanika"
+              src={aboutMainImg}
+              alt="Bhitarkanika boat safari with wildlife and scenic mangroves"
               loading="lazy"
             />
 
@@ -178,8 +180,8 @@ const AboutTwo = () => {
 
           <div className="AboutTwo__imageSmall">
             <img
-              src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=700&q=85"
-              alt="Peaceful water representing the scenic waterways of Bhitarkanika"
+              src={aboutSmallImg}
+              alt="Scenic mangrove waterway canopy with safari boat"
               loading="lazy"
             />
           </div>

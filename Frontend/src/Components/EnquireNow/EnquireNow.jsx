@@ -22,6 +22,7 @@ import {
   CheckCircle2,
   ArrowRight,
   CreditCard,
+  MapPin,
 } from "lucide-react";
 
 import { FaWhatsapp } from "react-icons/fa";
@@ -83,6 +84,7 @@ const INITIAL_FORM = {
   fullName: "",
   email: "",
   mobile: "",
+  homeTown: "",
   aadhar: "",
   service: "",
   captchaInput: "",
@@ -97,6 +99,7 @@ const FIELD_IDS = {
   fullName: "enquireNowFullName",
   email: "enquireNowEmail",
   mobile: "enquireNowMobile",
+  homeTown: "enquireNowHomeTown",
   aadhar: "enquireNowAadhar",
   service: "enquireNowService",
   captchaInput: "enquireNowCaptcha",
@@ -112,6 +115,7 @@ const buildWhatsAppLink = ({
   fullName,
   email,
   mobile,
+  homeTown,
   service,
 }) => {
   const lines = [
@@ -119,8 +123,9 @@ const buildWhatsAppLink = ({
     "",
     `Name: ${fullName}`,
     `Mobile: +91 ${mobile}`,
+    homeTown ? `Home Town: ${homeTown}` : null,
     email ? `Email: ${email}` : null,
-    `Service: ${service}`,
+    service ? `Service: ${service}` : null,
   ].filter((line) => line !== null);
 
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
@@ -136,8 +141,9 @@ const EnquireNow = ({
   triggerOnLoad = false,
   loadDelay = 3000,
   onFormSubmitSuccess,
+  isInline = false,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(isInline || false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submittedName, setSubmittedName] = useState("");
   const [whatsAppLink, setWhatsAppLink] = useState("");
@@ -185,18 +191,26 @@ const EnquireNow = ({
     setIsOpen(false);
   }, []);
 
+  // Inline initialization
+  useEffect(() => {
+    if (isInline) {
+      setIsOpen(true);
+      generateCaptcha();
+    }
+  }, [isInline, generateCaptcha]);
+
   // Automatic popup
   useEffect(() => {
-    if (!triggerOnLoad) return undefined;
+    if (isInline || !triggerOnLoad) return undefined;
 
     const timer = setTimeout(handleOpen, loadDelay);
 
     return () => clearTimeout(timer);
-  }, [triggerOnLoad, loadDelay, handleOpen]);
+  }, [isInline, triggerOnLoad, loadDelay, handleOpen]);
 
   // Focus first input
   useEffect(() => {
-    if (!isOpen) return undefined;
+    if (!isOpen || isInline) return undefined;
 
     const timer = setTimeout(() => {
       firstInputRef.current?.focus();
@@ -296,6 +310,7 @@ const EnquireNow = ({
     const fullName = formData.fullName.trim();
     const email = formData.email.trim();
     const mobile = formData.mobile.trim();
+    const homeTown = formData.homeTown.trim();
     const aadhar = formData.aadhar.trim();
 
     if (fullName.length < 6) {
@@ -313,6 +328,10 @@ const EnquireNow = ({
     if (!/^[6-9]\d{9}$/.test(mobile)) {
       next.mobile =
         "Please enter a valid 10 digit Indian mobile number.";
+    }
+
+    if (!homeTown || homeTown.length < 2) {
+      next.homeTown = "Please enter your home town or city.";
     }
 
     // Mandatory Aadhaar validation
@@ -372,6 +391,7 @@ const EnquireNow = ({
       fullName: formData.fullName.trim(),
       email: formData.email.trim(),
       mobile: formData.mobile.trim(),
+      homeTown: formData.homeTown.trim(),
       service: formData.service,
     };
 
@@ -410,66 +430,24 @@ const EnquireNow = ({
     : "...";
 
   // ==========================================
-  // JSX
+  // CARD BODY
   // ==========================================
 
-  return (
+  const renderCardBody = () => (
     <>
-      {/* SIDE ENQUIRE BUTTON */}
-
-      {!isOpen && (
+      {/* CLOSE BUTTON */}
+      {!isInline && (
         <button
           type="button"
-          className="enquire-now-trigger"
-          onClick={handleOpen}
-          aria-label="Open enquiry form"
+          className="enquire-now-close"
+          onClick={handleClose}
+          aria-label="Close enquiry form"
         >
-          <span
-            className="enquire-now-trigger-dot"
-            aria-hidden="true"
-          />
-
-          <span
-            className="enquire-now-trigger-icon"
-            aria-hidden="true"
-          >
-            <MessageCircle size={17} strokeWidth={2} />
-          </span>
-
-          <span className="enquire-now-trigger-text">
-            ENQUIRE NOW
-          </span>
+          <X size={18} strokeWidth={2.2} />
         </button>
       )}
 
-      {/* MODAL */}
-
-      {isOpen && (
-        <div
-          className="enquire-now-backdrop"
-          onMouseDown={(event) => {
-            if (event.target === event.currentTarget) {
-              handleClose();
-            }
-          }}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="enquireNowTitle"
-        >
-          <div className="enquire-now-card">
-
-            {/* CLOSE BUTTON */}
-
-            <button
-              type="button"
-              className="enquire-now-close"
-              onClick={handleClose}
-              aria-label="Close enquiry form"
-            >
-              <X size={18} strokeWidth={2.2} />
-            </button>
-
-            {/* LEFT PROMO SECTION */}
+      {/* LEFT PROMO SECTION */}
 
             <div
               className="enquire-now-promo"
@@ -596,6 +574,20 @@ const EnquireNow = ({
                       <PhoneCall size={15} />
                       {PHONE_DISPLAY}
                     </a>
+
+                    {isInline && (
+                      <button
+                        type="button"
+                        className="enquire-now-ghost-btn"
+                        style={{ marginTop: "12px", width: "100%", cursor: "pointer" }}
+                        onClick={() => {
+                          setIsSubmitted(false);
+                          generateCaptcha();
+                        }}
+                      >
+                        Submit Another Enquiry
+                      </button>
+                    )}
 
                   </div>
                 </div>
@@ -754,11 +746,50 @@ const EnquireNow = ({
                       {renderError("mobile")}
                     </div>
 
+                    {/* HOME TOWN */}
+
+                    <div className="enquire-now-field">
+                      <label
+                        htmlFor={FIELD_IDS.homeTown}
+                        className="enquire-now-label"
+                      >
+                        Home town <em>Required</em>
+                      </label>
+
+                      <div className="enquire-now-input-wrap">
+                        <MapPin
+                          className="enquire-now-input-icon"
+                          size={17}
+                          aria-hidden="true"
+                        />
+
+                        <input
+                          id={FIELD_IDS.homeTown}
+                          type="text"
+                          name="homeTown"
+                          placeholder="Enter your home town / city"
+                          value={formData.homeTown}
+                          onChange={handleChange}
+                          maxLength={60}
+                          autoComplete="address-level2"
+                          aria-invalid={!!errors.homeTown}
+                          aria-describedby={
+                            errors.homeTown
+                              ? `${FIELD_IDS.homeTown}Error`
+                              : undefined
+                          }
+                          required
+                        />
+                      </div>
+
+                      {renderError("homeTown")}
+                    </div>
+
                     {/* =================================
                         AADHAAR NUMBER INPUT
                     ================================= */}
 
-                    <div className="enquire-now-field">
+                    <div className="enquire-now-field enquire-now-field-full">
                       <label
                         htmlFor={FIELD_IDS.aadhar}
                         className="enquire-now-label"
@@ -775,7 +806,6 @@ const EnquireNow = ({
 
                         <input
                           id={FIELD_IDS.aadhar}
-                          className="enquire-now-input-prefixed"
                           type="text"
                           name="aadhar"
                           placeholder="Enter 12-digit Aadhaar number"
@@ -808,7 +838,7 @@ const EnquireNow = ({
 
                     {/* CAPTCHA */}
 
-                    <div className="enquire-now-field">
+                    <div className="enquire-now-field enquire-now-field-full">
                       <label
                         htmlFor={FIELD_IDS.captchaInput}
                         className="enquire-now-label"
@@ -919,8 +949,62 @@ const EnquireNow = ({
                 </>
               )}
             </div>
+    </>
+  );
+
+  return (
+    <>
+      {/* SIDE ENQUIRE BUTTON */}
+      {!isInline && !isOpen && (
+        <button
+          type="button"
+          className="enquire-now-trigger"
+          onClick={handleOpen}
+          aria-label="Open enquiry form"
+        >
+          <span
+            className="enquire-now-trigger-dot"
+            aria-hidden="true"
+          />
+
+          <span
+            className="enquire-now-trigger-icon"
+            aria-hidden="true"
+          >
+            <MessageCircle size={17} strokeWidth={2} />
+          </span>
+
+          <span className="enquire-now-trigger-text">
+            ENQUIRE NOW
+          </span>
+        </button>
+      )}
+
+      {/* INLINE EMBED OR MODAL */}
+      {isInline ? (
+        <div className="enquire-now-inline-wrapper">
+          <div className="enquire-now-card enquire-now-card--inline">
+            {renderCardBody()}
           </div>
         </div>
+      ) : (
+        isOpen && (
+          <div
+            className="enquire-now-backdrop"
+            onMouseDown={(event) => {
+              if (event.target === event.currentTarget) {
+                handleClose();
+              }
+            }}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="enquireNowTitle"
+          >
+            <div className="enquire-now-card">
+              {renderCardBody()}
+            </div>
+          </div>
+        )
       )}
     </>
   );

@@ -241,6 +241,7 @@ const INITIAL_FORM = {
   name: "",
   email: "",
   phone: "",
+  homeTown: "",
   travelDate: "",
   pickupLocation: PICKUP_OPTIONS[0],
   guests: GUEST_OPTIONS[0],
@@ -254,6 +255,7 @@ const buildBookingMessage = (d) =>
     "",
     `Name: ${d.name}`,
     `Mobile: ${d.phone}`,
+    d.homeTown ? `Home Town: ${d.homeTown}` : null,
     `Email: ${d.email}`,
     `Visit date: ${formatDate(d.travelDate)}`,
     `Service: ${d.service}`,
@@ -734,6 +736,20 @@ const EVVechile = () => {
                         pattern="[0-9+ ]{10,15}"
                         title="Enter a valid mobile number (10 to 15 digits)"
                         value={form.phone}
+                        onChange={updateField}
+                        required
+                      />
+                    </div>
+
+                    <div className="EVVechile__inputGroup">
+                      <label htmlFor="EVVechile-homeTown">Home Town / City *</label>
+                      <input
+                        id="EVVechile-homeTown"
+                        name="homeTown"
+                        type="text"
+                        placeholder="e.g. Bhubaneswar / Kolkata"
+                        autoComplete="address-level2"
+                        value={form.homeTown}
                         onChange={updateField}
                         required
                       />

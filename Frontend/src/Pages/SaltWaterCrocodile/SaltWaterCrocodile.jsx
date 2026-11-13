@@ -418,6 +418,18 @@ const SaltWaterCrocodile = () => {
                     </div>
 
                     <div className="SaltWaterCrocodile__inputGroup">
+                      <label htmlFor="croc-homeTown">Home Town / City *</label>
+                      <input
+                        id="croc-homeTown"
+                        name="homeTown"
+                        type="text"
+                        placeholder="e.g. Bhubaneswar / Kolkata"
+                        autoComplete="address-level2"
+                        required
+                      />
+                    </div>
+
+                    <div className="SaltWaterCrocodile__inputGroup">
                       <label htmlFor="croc-aadhaar">Aadhaar Card Number *</label>
                       <input
                         id="croc-aadhaar"
@@ -462,15 +474,6 @@ const SaltWaterCrocodile = () => {
                           <option value="04:00 PM">04:00 PM</option>
                           <option value="05:00 PM">05:00 PM</option>
                         </optgroup>
-                      </select>
-                    </div>
-
-                    <div className="SaltWaterCrocodile__inputGroup SaltWaterCrocodile__inputGroup--full">
-                      <label htmlFor="croc-gate">Preferred Entry Jetty *</label>
-                      <select id="croc-gate" name="entryGate" defaultValue="" required>
-                        <option value="" disabled>Select Entry Jetty</option>
-                        <option value="Khola to Dangamal">Khola to Dangamal</option>
-                        <option value="Jaynagar to Dangamal">Jaynagar to Dangamal</option>
                       </select>
                     </div>
 

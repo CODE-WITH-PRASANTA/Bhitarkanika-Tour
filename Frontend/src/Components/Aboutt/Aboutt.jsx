@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Aboutt.css';
 
-import aboutImg1 from '../../assets/1.jpeg';
-import aboutImg2 from '../../assets/2.jpg';
-import aboutImg3 from '../../assets/3.jpeg';
-import aboutImg4 from '../../assets/4.jpg';
+import aboutImg1 from '../../assets/about-paradise-boat.jpg';
+import aboutImg2 from '../../assets/about-paradise-crocodile.jpg';
+import aboutImg3 from '../../assets/about-paradise-kingfisher.jpg';
+import aboutImg4 from '../../assets/about-paradise-egret.jpg';
 
 const Aboutt = () => {
   const [activeTab, setActiveTab] = useState('mission');
@@ -110,7 +110,7 @@ const Aboutt = () => {
             <div className="img-wrapper tall">
               <img
                 src={aboutImg4}
-                alt="White crocodile in Bhitarkanika National Park"
+                alt="White egret wading in Bhitarkanika mangrove waters"
               />
             </div>
           </div>

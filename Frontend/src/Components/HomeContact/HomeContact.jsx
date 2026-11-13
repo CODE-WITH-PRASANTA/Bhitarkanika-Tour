@@ -55,7 +55,7 @@ const CONTACT_ITEMS = [
     key: "call",
     label: "Call Us",
     value: PHONE_DISPLAY,
-    note: "Mon - Sat, 8:00 AM - 5:00 PM",
+    note: "Mon - Sat, 7:00 AM - 2:00 PM",
     href: `tel:${PHONE_TEL}`,
     icon: <Phone size={21} strokeWidth={2} />,
   },
@@ -80,6 +80,7 @@ const INITIAL_FORM = {
   fullName: "",
   phone: "",
   email: "",
+  homeTown: "",
   travelDate: "",
   guests: "",
   message: "",
@@ -89,6 +90,7 @@ const FIELD_IDS = {
   fullName: "homeContactFullName",
   phone: "homeContactPhone",
   email: "homeContactEmail",
+  homeTown: "homeContactHomeTown",
   travelDate: "homeContactTravelDate",
   guests: "homeContactGuests",
   message: "homeContactMessage",
@@ -113,12 +115,13 @@ const buildWhatsAppLink = (data) => {
     "",
     `Name: ${data.fullName}`,
     `Phone: +91 ${data.phone}`,
+    data.homeTown ? `Home Town: ${data.homeTown}` : null,
     `Email: ${data.email}`,
     `Travel date: ${formatDate(data.travelDate)}`,
     `Guests: ${data.guests}`,
     "",
     `Message: ${data.message}`,
-  ];
+  ].filter(Boolean);
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join("\n"))}`;
 };
 
@@ -185,6 +188,10 @@ const HomeContact = ({ onFormSubmitSuccess }) => {
       next.email = "Please enter a valid email address.";
     }
 
+    if (!formData.homeTown.trim()) {
+      next.homeTown = "Please enter your home town or city.";
+    }
+
     if (!formData.travelDate) {
       next.travelDate = "Please select your travel date.";
     } else if (formData.travelDate < getToday()) {
@@ -218,6 +225,7 @@ const HomeContact = ({ onFormSubmitSuccess }) => {
       fullName: formData.fullName.trim(),
       phone: formData.phone,
       email: formData.email.trim(),
+      homeTown: formData.homeTown.trim(),
       travelDate: formData.travelDate,
       guests: formData.guests,
       message: formData.message.trim(),
@@ -466,6 +474,28 @@ const HomeContact = ({ onFormSubmitSuccess }) => {
                       />
                     </div>
                     {renderError("email")}
+                  </div>
+
+                  {/* HOME TOWN */}
+                  <div className="home-contact-field">
+                    <label htmlFor={FIELD_IDS.homeTown} className="home-contact-label">
+                      Home Town <b aria-hidden="true">*</b>
+                    </label>
+                    <div className="home-contact-input-wrap">
+                      <MapPin className="home-contact-input-icon" size={18} aria-hidden="true" />
+                      <input
+                        id={FIELD_IDS.homeTown}
+                        type="text"
+                        name="homeTown"
+                        placeholder="Enter your home town / city"
+                        value={formData.homeTown}
+                        onChange={handleChange}
+                        autoComplete="address-level2"
+                        aria-invalid={!!errors.homeTown}
+                        aria-describedby={describedBy("homeTown")}
+                      />
+                    </div>
+                    {renderError("homeTown")}
                   </div>
 
                   {/* TRAVEL DATE */}

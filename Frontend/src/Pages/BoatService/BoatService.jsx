@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./BoatService.css";
+import EnquireNow from "../../Components/EnquireNow/EnquireNow";
 
 import boatServiceImg from "../../assets/boatservice-1.png";
 import boatServiceTwo from "../../assets/boatservice-2.png";
@@ -271,7 +272,7 @@ const safariPackages = [
     duration: "Early morning · 6:30 AM – 10:30 AM",
     highlights:
       "8 kingfisher species, White-bellied Sea Eagle, mudskippers, and basking giants.",
-    capacity: "Private custom boat with eco guide",
+    capacity: "Custom Boat with eco guide",
     gate: GATE_OPTIONS[0],
     service: SERVICE_OPTIONS[3],
   },
@@ -312,6 +313,7 @@ const INITIAL_FORM = {
   name: "",
   email: "",
   phone: "",
+  homeTown: "",
   aadhar: "",
   travelDate: "",
   entryGate: GATE_OPTIONS[0],
@@ -331,13 +333,14 @@ const buildBookingMessage = (data) =>
     "",
     `Name: ${data.name}`,
     `Mobile: ${data.phone}`,
+    data.homeTown ? `Home Town: ${data.homeTown}` : null,
     `Email: ${data.email}`,
     `Safari date: ${formatDate(data.travelDate)}`,
     `Safari time: ${data.bookingTime}`,
     `Service: ${data.service}`,
     `Entry jetty: ${data.entryGate}`,
     `Passengers: ${data.guests}`,
-  ].join("\n");
+  ].filter(Boolean).join("\n");
 
 // ============================================
 // MAIN COMPONENT
@@ -347,8 +350,6 @@ const BoatService = () => {
   const [activeTab, setActiveTab] = useState("boat-safari");
   const [activeImage, setActiveImage] = useState(null);
   const [faqIndex, setFaqIndex] = useState(0);
-  const [form, setForm] = useState(INITIAL_FORM);
-  const [submitted, setSubmitted] = useState(null);
 
   // ==========================================
   // SCROLL TO TOP
@@ -372,10 +373,6 @@ const BoatService = () => {
       setFaqIndex(0);
     }
 
-    if (tabId === "enquire-trip") {
-      setSubmitted(null);
-    }
-
     scrollToTop();
   };
 
@@ -383,76 +380,8 @@ const BoatService = () => {
   // PACKAGE BOOKING
   // ==========================================
 
-  const handleBookPackage = (pkg) => {
-    setForm((prev) => ({
-      ...prev,
-      entryGate: pkg.gate,
-      service: pkg.service,
-    }));
-
+  const handleBookPackage = () => {
     handleTabChange("enquire-trip");
-  };
-
-  // ==========================================
-  // FORM FIELD UPDATE
-  // ==========================================
-
-  const updateField = (event) => {
-    const { name } = event.target;
-    let { value } = event.target;
-
-    if (name === "aadhar") {
-      value = value.replace(/\D/g, "").slice(0, 12);
-    }
-
-    if (name === "guests") {
-      const passengerCount = Number(value);
-
-      if (
-        !Number.isInteger(passengerCount) ||
-        passengerCount < 1 ||
-        passengerCount > 18
-      ) {
-        return;
-      }
-    }
-
-    setForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  // ==========================================
-  // FORM SUBMIT
-  // ==========================================
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    if (!/^\d{12}$/.test(form.aadhar)) {
-      window.alert("Please enter a valid 12-digit Aadhaar number.");
-      return;
-    }
-
-    // Aadhaar is not included in WhatsApp.
-    // Use a secure backend if you need to retain permit details.
-
-    setSubmitted({
-      ...form,
-      guests: String(form.guests),
-    });
-
-    scrollToTop();
-  };
-
-  // ==========================================
-  // NEW BOOKING
-  // ==========================================
-
-  const handleNewRequest = () => {
-    setForm(INITIAL_FORM);
-    setSubmitted(null);
   };
 
   // ==========================================
@@ -681,7 +610,7 @@ const BoatService = () => {
                   </h3>
 
                   <p>
-                    Pre-reserve a private or shared boat to secure
+                    Pre-reserve a Boat or shared boat to secure
                     your preferred gate clearance and eco-guide
                     during peak tourist season.
                   </p>
@@ -852,391 +781,12 @@ const BoatService = () => {
               </h1>
 
               <p className="BoatService__lead">
-                Complete the booking details below. Once submitted,
-                you can review the details and send your request
-                through WhatsApp.
+                Fill in your details below and send your booking request directly
+                to us on WhatsApp. We will reply promptly with vessel availability
+                and tide timings.
               </p>
 
-              {submitted ? (
-                /* BOOKING SUCCESS */
-
-                <div className="BoatService__successCard">
-
-                  <div className="BoatService__successIcon">
-                    ✓
-                  </div>
-
-                  <span className="BoatService__successLabel">
-                    REQUEST DETAILS READY
-                  </span>
-
-                  <h2>Your Safari Request Is Ready!</h2>
-
-                  <p>
-                    Review the details below and send your booking
-                    request to our boat service team through WhatsApp.
-                  </p>
-
-                  <dl className="BoatService__successDetails">
-
-                    <div>
-                      <dt>Lead Passenger</dt>
-                      <dd>{submitted.name}</dd>
-                    </div>
-
-                    <div>
-                      <dt>Email</dt>
-                      <dd>{submitted.email}</dd>
-                    </div>
-
-                    <div>
-                      <dt>Mobile</dt>
-                      <dd>{submitted.phone}</dd>
-                    </div>
-
-                    <div>
-                      <dt>Safari Date</dt>
-                      <dd>{formatDate(submitted.travelDate)}</dd>
-                    </div>
-
-                    <div>
-                      <dt>Entry Jetty</dt>
-                      <dd>{submitted.entryGate}</dd>
-                    </div>
-
-                    <div>
-                      <dt>Safari Time</dt>
-                      <dd>{submitted.bookingTime}</dd>
-                    </div>
-
-                    <div>
-                      <dt>Passengers</dt>
-                      <dd>{submitted.guests}</dd>
-                    </div>
-
-                    <div>
-                      <dt>Service</dt>
-                      <dd>{submitted.service}</dd>
-                    </div>
-
-                  </dl>
-
-                  <div className="BoatService__successActions">
-
-                    <WhatsAppLink
-                      className="BoatService__btnWhatsApp BoatService__btnWhatsApp--large"
-                      message={buildBookingMessage(submitted)}
-                    >
-                      <WaIcon />
-                      Send Request on WhatsApp
-                    </WhatsAppLink>
-
-                    <button
-                      type="button"
-                      className="BoatService__btnGhost"
-                      onClick={handleNewRequest}
-                    >
-                      New Booking Request
-                    </button>
-
-                  </div>
-                </div>
-              ) : (
-
-                <form
-                  className="BoatService__form"
-                  onSubmit={handleSubmit}
-                >
-
-                  {/* FORM HEADING */}
-
-                  <div className="BoatService__formHeading">
-                    <span>BHITARKANIKA BOAT SERVICE</span>
-
-                    <h3>Safari Boat Booking Form</h3>
-
-                    <p>
-                      Fields marked * are required. Maximum 18
-                      passengers are allowed per booking.
-                    </p>
-                  </div>
-
-                  <div className="BoatService__formGrid">
-
-                    {/* NAME */}
-
-                    <div className="BoatService__inputGroup">
-                      <label htmlFor="BoatService-name">
-                        Lead Passenger Name *
-                      </label>
-
-                      <input
-                        id="BoatService-name"
-                        name="name"
-                        type="text"
-                        placeholder="e.g. Debashis Mohapatra"
-                        autoComplete="name"
-                        value={form.name}
-                        onChange={updateField}
-                        required
-                      />
-                    </div>
-
-                    {/* EMAIL */}
-
-                    <div className="BoatService__inputGroup">
-                      <label htmlFor="BoatService-email">
-                        Email Address *
-                      </label>
-
-                      <input
-                        id="BoatService-email"
-                        name="email"
-                        type="email"
-                        placeholder="debashis@example.com"
-                        autoComplete="email"
-                        value={form.email}
-                        onChange={updateField}
-                        required
-                      />
-                    </div>
-
-                    {/* PHONE */}
-
-                    <div className="BoatService__inputGroup">
-                      <label htmlFor="BoatService-phone">
-                        WhatsApp / Mobile Number *
-                      </label>
-
-                      <input
-                        id="BoatService-phone"
-                        name="phone"
-                        type="tel"
-                        inputMode="numeric"
-                        placeholder="+91 94370 XXXXX"
-                        autoComplete="tel"
-                        pattern="[0-9+ ]{10,15}"
-                        title="Enter a valid mobile number"
-                        value={form.phone}
-                        onChange={updateField}
-                        required
-                      />
-                    </div>
-
-                    {/* AADHAAR */}
-
-                    <div className="BoatService__inputGroup">
-                      <label htmlFor="BoatService-aadhar">
-                        Aadhaar Card Number *
-                      </label>
-
-                      <input
-                        id="BoatService-aadhar"
-                        name="aadhar"
-                        type="text"
-                        inputMode="numeric"
-                        autoComplete="off"
-                        maxLength={12}
-                        placeholder="Enter 12-digit Aadhaar number"
-                        pattern="[0-9]{12}"
-                        title="Please enter exactly 12 digits"
-                        value={form.aadhar}
-                        onChange={updateField}
-                        required
-                      />
-
-                      <small className="BoatService__fieldHint">
-                        Enter exactly 12 digits. Aadhaar details
-                        are not shared through WhatsApp.
-                      </small>
-                    </div>
-
-                    {/* DATE */}
-
-                    <div className="BoatService__inputGroup">
-                      <label htmlFor="BoatService-date">
-                        Expected Safari Date *
-                      </label>
-
-                      <input
-                        id="BoatService-date"
-                        name="travelDate"
-                        type="date"
-                        min={todayISO()}
-                        value={form.travelDate}
-                        onChange={updateField}
-                        required
-                      />
-                    </div>
-
-                    {/* TIME */}
-
-                    <div className="BoatService__inputGroup">
-                      <label htmlFor="BoatService-bookingTime">
-                       Booking Time
-                      </label>
-
-                      <select
-                        id="BoatService-bookingTime"
-                        name="bookingTime"
-                        value={form.bookingTime}
-                        onChange={updateField}
-                        required
-                      >
-                        <option value="">
-                          Select your booking time
-                        </option>
-
-                        {BOOKING_TIME_OPTIONS.map((group) => (
-                          <optgroup
-                            key={group.label}
-                            label={group.label}
-                          >
-                            {group.times.map((time) => (
-                              <option
-                                key={time}
-                                value={time}
-                              >
-                                {time}
-                              </option>
-                            ))}
-                          </optgroup>
-                        ))}
-                      </select>
-                    </div>
-
-                    {/* ENTRY JETTY */}
-
-                    <div className="BoatService__inputGroup BoatService__inputGroup--full">
-                      <label htmlFor="BoatService-entryGate">
-                        Preferred Entry Jetty *
-                      </label>
-
-                      <select
-                        id="BoatService-entryGate"
-                        name="entryGate"
-                        value={form.entryGate}
-                        onChange={updateField}
-                        required
-                      >
-                        {GATE_OPTIONS.map((option) => (
-                          <option key={option} value={option}>
-                            {option}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    {/* PASSENGER SELECTION */}
-
-                    <div className="BoatService__inputGroup BoatService__inputGroup--full">
-
-                      <div className="BoatService__passengerHeading">
-                        <div>
-                          <label>
-                            Number of Passengers *
-                          </label>
-
-                          <p>
-                            Select the total number of passengers.
-                            Maximum capacity: 18 persons.
-                          </p>
-                        </div>
-
-                        <span className="BoatService__passengerCount">
-                          {form.guests} / 18 Selected
-                        </span>
-                      </div>
-
-                      <div className="BoatService__passengerTableWrapper">
-                        <table className="BoatService__passengerTable">
-                          <tbody>
-                            {[0, 1, 2].map((row) => (
-                              <tr key={row}>
-                                {GUEST_OPTIONS.slice(
-                                  row * 6,
-                                  row * 6 + 6
-                                ).map((number) => (
-                                  <td key={number}>
-                                    <label
-                                      className={`BoatService__passengerOption ${
-                                        String(form.guests) ===
-                                        String(number)
-                                          ? "BoatService__passengerOption--active"
-                                          : ""
-                                      }`}
-                                    >
-                                      <input
-                                        type="radio"
-                                        name="guests"
-                                        value={String(number)}
-                                        checked={
-                                          String(form.guests) ===
-                                          String(number)
-                                        }
-                                        onChange={updateField}
-                                      />
-
-                                      <span>{number}</span>
-                                    </label>
-                                  </td>
-                                ))}
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-
-                      <small className="BoatService__fieldHint">
-                        One booking can accommodate a maximum
-                        of 18 passengers.
-                      </small>
-
-                    </div>
-
-                    {/* SERVICE */}
-
-                    <div className="BoatService__inputGroup BoatService__inputGroup--full">
-                      <label htmlFor="BoatService-service">
-                        Select Safari Service *
-                      </label>
-
-                      <select
-                        id="BoatService-service"
-                        name="service"
-                        value={form.service}
-                        onChange={updateField}
-                        required
-                      >
-                        {SERVICE_OPTIONS.map((option) => (
-                          <option key={option} value={option}>
-                            {option}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                  </div>
-
-                  {/* FORM FOOTER */}
-
-                  <div className="BoatService__formFooter">
-                    <p>
-                      Your booking request will be prepared for
-                      WhatsApp confirmation.
-                    </p>
-
-                    <button
-                      type="submit"
-                      className="BoatService__btnWhatsApp BoatService__btnWhatsApp--large"
-                    >
-                      <WaIcon />
-                      Continue Booking
-                    </button>
-                  </div>
-
-                </form>
-              )}
+              <EnquireNow isInline={true} />
 
             </div>
           )}
