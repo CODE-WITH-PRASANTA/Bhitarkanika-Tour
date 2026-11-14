@@ -152,21 +152,105 @@ const login = async (req, res, next) => {
  */
 const googleLogin = async (req, res, next) => {
   try {
-    const { credential, email, name, picture, googleId } = req.body;
+    const { credential, accessToken, code, redirectUri, email, name, picture, googleId } = req.body;
 
     let userEmail = email;
     let userName = name;
     let userPicture = picture;
     let userGoogleId = googleId;
 
-    // If credential JWT was passed from Google Identity Services button
-    if (credential) {
-      const decoded = decodeGoogleJwt(credential);
-      if (decoded) {
-        userEmail = decoded.email || userEmail;
-        userName = decoded.name || userName;
-        userPicture = decoded.picture || userPicture;
-        userGoogleId = decoded.sub || userGoogleId;
+    // 1. If authorization code was passed from OAuth popup / redirect flow
+    if (code) {
+      try {
+        const tokenParams = new URLSearchParams({
+          code,
+          client_id: process.env.GOOGLE_CLIENT_ID || '1070313248799-q3r7khugifnf6rr69nh7uhpmucaeurq0.apps.googleusercontent.com',
+          client_secret: process.env.GOOGLE_CLIENT_SECRET || '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',
+          redirect_uri: redirectUri || 'postmessage',
+          grant_type: 'authorization_code',
+        });
+
+        const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: tokenParams.toString(),
+        });
+
+        if (tokenRes.ok) {
+          const tokenData = await tokenRes.json();
+          if (tokenData.access_token) {
+            const userRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+              headers: { Authorization: `Bearer ${tokenData.access_token}` },
+            });
+            if (userRes.ok) {
+              const profile = await userRes.json();
+              userEmail = profile.email || userEmail;
+              userName = profile.name || userName;
+              userPicture = profile.picture || userPicture;
+              userGoogleId = profile.sub || userGoogleId;
+            }
+          } else if (tokenData.id_token) {
+            const decoded = decodeGoogleJwt(tokenData.id_token);
+            if (decoded) {
+              userEmail = decoded.email || userEmail;
+              userName = decoded.name || userName;
+              userPicture = decoded.picture || userPicture;
+              userGoogleId = decoded.sub || userGoogleId;
+            }
+          }
+        } else {
+          console.error('Google token exchange error:', await tokenRes.text());
+        }
+      } catch (err) {
+        console.error('Error exchanging Google code:', err);
+      }
+    }
+
+    // 2. If OAuth2 access token was passed from Google GIS token client
+    if (accessToken && !userEmail) {
+      try {
+        const userRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        if (userRes.ok) {
+          const profile = await userRes.json();
+          userEmail = profile.email || userEmail;
+          userName = profile.name || userName;
+          userPicture = profile.picture || userPicture;
+          userGoogleId = profile.sub || userGoogleId;
+        }
+      } catch (err) {
+        console.error('Error verifying Google access token:', err);
+      }
+    }
+
+    // 3. If credential JWT (ID token) was passed from Google Identity Services button
+    if (credential && !userEmail) {
+      try {
+        const tokenRes = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${credential}`);
+        if (tokenRes.ok) {
+          const tokenInfo = await tokenRes.json();
+          userEmail = tokenInfo.email || userEmail;
+          userName = tokenInfo.name || userName;
+          userPicture = tokenInfo.picture || userPicture;
+          userGoogleId = tokenInfo.sub || userGoogleId;
+        } else {
+          const decoded = decodeGoogleJwt(credential);
+          if (decoded) {
+            userEmail = decoded.email || userEmail;
+            userName = decoded.name || userName;
+            userPicture = decoded.picture || userPicture;
+            userGoogleId = decoded.sub || userGoogleId;
+          }
+        }
+      } catch (err) {
+        const decoded = decodeGoogleJwt(credential);
+        if (decoded) {
+          userEmail = decoded.email || userEmail;
+          userName = decoded.name || userName;
+          userPicture = decoded.picture || userPicture;
+          userGoogleId = decoded.sub || userGoogleId;
+        }
       }
     }
 
@@ -191,6 +275,10 @@ const googleLogin = async (req, res, next) => {
       }
       if (!user.avatar && userPicture) {
         user.avatar = userPicture;
+        changed = true;
+      }
+      if (!user.authProvider || user.authProvider === 'local') {
+        user.authProvider = 'google';
         changed = true;
       }
       if (changed) await user.save();

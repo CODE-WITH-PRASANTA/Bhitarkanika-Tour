@@ -17,6 +17,9 @@ import authBg from "../../assets/BhitarakanikaBreadcrumb.jpeg";
 import "./Auth.css";
 
 const API_BASE = "http://localhost:5000/api";
+const GOOGLE_CLIENT_ID =
+  import.meta.env.VITE_GOOGLE_CLIENT_ID ||
+  "1070313248799-q3r7khugifnf6rr69nh7uhpmucaeurq0.apps.googleusercontent.com";
 
 const Auth = () => {
   const [searchParams] = useSearchParams();
@@ -67,12 +70,17 @@ const Auth = () => {
     else if (qMode === "forgot") setMode("forgot");
   }, [searchParams]);
 
-  // If already authenticated and has pending booking, confirm immediately
+  // If already authenticated, finalize pending booking or redirect to profile
   useEffect(() => {
-    if (isAuthenticated && pendingBooking) {
-      finalizePendingBooking();
+    if (isAuthenticated) {
+      if (pendingBooking) {
+        finalizePendingBooking();
+      } else {
+        const redirect = searchParams.get("redirect");
+        navigate(redirect === "booking" ? "/services/boat-service" : "/profile");
+      }
     }
-  }, [isAuthenticated, pendingBooking]);
+  }, [isAuthenticated, pendingBooking, searchParams]);
 
   // Finalize booking after authentication
   const finalizePendingBooking = async () => {
@@ -293,51 +301,131 @@ const Auth = () => {
     }
   };
 
-  // Google OAuth Click Handler
-  const handleGoogleAuth = async () => {
-    setError("");
-    setSuccess("");
+  // Initialize Google Identity Services
+  useEffect(() => {
+    let checkCount = 0;
+    const interval = setInterval(() => {
+      checkCount += 1;
+      if (window.google?.accounts?.id) {
+        clearInterval(interval);
+        try {
+          window.google.accounts.id.initialize({
+            client_id: GOOGLE_CLIENT_ID,
+            callback: handleGoogleCredentialResponse,
+            auto_select: false,
+            cancel_on_tap_outside: true,
+          });
+        } catch (e) {
+          console.warn("Could not init Google GIS:", e);
+        }
+      }
+      if (checkCount > 25) clearInterval(interval);
+    }, 200);
 
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleGoogleCredentialResponse = async (response) => {
+    if (!response?.credential) return;
     try {
       setLoading(true);
-
-      const promptEmail = email && email.includes("@")
-        ? email
-        : window.prompt("Enter your Google Account email:", "traveler@gmail.com");
-
-      if (!promptEmail) {
-        setLoading(false);
-        return;
-      }
-
-      const googlePayload = {
-        email: promptEmail.trim().toLowerCase(),
-        name: promptEmail.split("@")[0].replace(/[._]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
-        picture: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&q=80",
-        googleId: `goog_${Date.now()}`,
-      };
+      setError("");
+      setSuccess("");
 
       const res = await fetch(`${API_BASE}/auth/google`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify(googlePayload),
+        body: JSON.stringify({ credential: response.credential }),
       });
 
       const data = await res.json();
       if (!res.ok || !data.success) {
-        setError(data.message || "Google authentication failed.");
+        setError(data.message || "Google sign-in failed. Please try again.");
         return;
       }
 
-      setSuccess("Google Login successful! Redirecting...");
+      setSuccess("Google login successful! Redirecting...");
       setTimeout(() => {
         handleAuthSuccess(data.user, data.token);
-      }, 400);
+      }, 350);
     } catch (err) {
-      setError("Could not complete Google authentication.");
+      console.error("Google auth callback error:", err);
+      setError("Network error during Google sign-in. Please try again.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Google OAuth Click Handler
+  const handleGoogleAuth = () => {
+    setError("");
+    setSuccess("");
+
+    if (!window.google?.accounts?.oauth2) {
+      setError("Google Sign-In service is loading. Please wait 2 seconds and try again.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const tokenClient = window.google.accounts.oauth2.initTokenClient({
+        client_id: GOOGLE_CLIENT_ID,
+        scope: "email profile openid",
+        callback: async (tokenResponse) => {
+          if (tokenResponse?.error) {
+            setLoading(false);
+            if (tokenResponse.error !== "access_denied") {
+              setError(`Google Sign-In failed: ${tokenResponse.error_description || tokenResponse.error}`);
+            }
+            return;
+          }
+
+          if (tokenResponse?.access_token) {
+            try {
+              const res = await fetch(`${API_BASE}/auth/google`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify({ accessToken: tokenResponse.access_token }),
+              });
+
+              const data = await res.json();
+              if (!res.ok || !data.success) {
+                setError(data.message || "Google authentication failed.");
+                setLoading(false);
+                return;
+              }
+
+              setSuccess("Google login successful! Redirecting...");
+              setTimeout(() => {
+                handleAuthSuccess(data.user, data.token);
+              }, 350);
+            } catch (err) {
+              console.error("Backend error after Google token:", err);
+              setError("Failed to verify Google account with server.");
+              setLoading(false);
+            }
+          } else {
+            setLoading(false);
+          }
+        },
+        error_callback: (nonOAuthError) => {
+          setLoading(false);
+          console.error("Google sign-in error:", nonOAuthError);
+          setError(
+            nonOAuthError?.message ||
+              "Google sign-in window could not open. Please ensure http://localhost:5173 is in your Authorized JavaScript Origins."
+          );
+        },
+      });
+
+      tokenClient.requestAccessToken({ prompt: "select_account" });
+    } catch (err) {
+      console.error("Error triggering Google Auth:", err);
+      setLoading(false);
+      setError("Unable to launch Google sign-in. Please try again.");
     }
   };
 
