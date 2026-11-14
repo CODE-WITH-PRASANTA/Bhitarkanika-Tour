@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./WhiteCrocodile.css";
+import EnquireNow from "../../Components/EnquireNow/EnquireNow";
 import whiteCrocOne from "../../assets/white-crocodile-1.png";
 import whiteCrocTwo from "../../assets/white-crocodile-2.png";
 import whiteCrocThree from "../../assets/white-crocodile-3.png";
@@ -397,123 +398,7 @@ const WhiteCrocodile = () => {
                 confirm your dedicated safari vessel.
               </p>
 
-              {formSubmitted ? (
-                <div className="WhiteCrocodile__formSuccess">
-                  <span className="WhiteCrocodile__checkIcon">✓</span>
-
-                  <h3>Safari Inquiry Received!</h3>
-
-                  <p>
-                    Your request has been logged successfully with Bhitarakanika Boat Service.
-                    Our tour desk will review vessel slots, organize required clearances, and
-                    contact you with timing and pricing details.
-                  </p>
-
-                  <button
-                    type="button"
-                    className="WhiteCrocodile__btnPrimary"
-                    onClick={() => setFormSubmitted(false)}
-                  >
-                    Submit Another Booking Request
-                  </button>
-                </div>
-              ) : (
-                <form
-                  className="WhiteCrocodile__form"
-                  onSubmit={(event) => {
-                    event.preventDefault();
-                    setFormSubmitted(true);
-                  }}
-                >
-                  <div className="WhiteCrocodile__formHeading">
-                    <span>BHITARAKANIKA BOAT SERVICE</span>
-                    <h3>White Crocodile Safari Booking Form</h3>
-                    <p>
-                      Mandatory fields for Forest Department passenger permits (*).
-                    </p>
-                  </div>
-
-                  <div className="WhiteCrocodile__formGrid">
-                    <div className="WhiteCrocodile__inputGroup">
-                      <label htmlFor="WhiteCrocodile-name">Lead Passenger Name *</label>
-                      <input id="WhiteCrocodile-name" name="name" type="text" placeholder="Enter full name" autoComplete="name" required />
-                    </div>
-
-                    <div className="WhiteCrocodile__inputGroup">
-                      <label htmlFor="WhiteCrocodile-email">Email Address *</label>
-                      <input id="WhiteCrocodile-email" name="email" type="email" placeholder="Enter email address" autoComplete="email" required />
-                    </div>
-
-                    <div className="WhiteCrocodile__inputGroup">
-                      <label htmlFor="WhiteCrocodile-phone">WhatsApp / Mobile Number *</label>
-                      <input id="WhiteCrocodile-phone" name="phone" type="tel" placeholder="+91 98765 43210" autoComplete="tel" pattern="[+0-9()\\s-]{8,18}" required />
-                    </div>
-
-                    <div className="WhiteCrocodile__inputGroup">
-                      <label htmlFor="WhiteCrocodile-homeTown">Home Town / City *</label>
-                      <input id="WhiteCrocodile-homeTown" name="homeTown" type="text" placeholder="e.g. Bhubaneswar / Kolkata" autoComplete="address-level2" required />
-                    </div>
-
-                    <div className="WhiteCrocodile__inputGroup">
-                      <label htmlFor="WhiteCrocodile-aadhaar">Aadhaar Card Number</label>
-                      <input id="WhiteCrocodile-aadhaar" name="aadhaar" type="text" inputMode="numeric" placeholder="Enter 12-digit Aadhaar number" maxLength={12} pattern="[0-9]{12}" />
-                    </div>
-
-                    <div className="WhiteCrocodile__inputGroup">
-                      <label htmlFor="WhiteCrocodile-date">Expected Visit Date *</label>
-                      <input id="WhiteCrocodile-date" name="travelDate" type="date" min={new Date().toISOString().split("T")[0]} required />
-                    </div>
-
-                    <div className="WhiteCrocodile__inputGroup">
-                      <label htmlFor="WhiteCrocodile-time">Booking Time *</label>
-                      <select id="WhiteCrocodile-time" name="safariTime" defaultValue="" required>
-                        <option value="" disabled>Select booking time</option>
-                        <optgroup label="Morning Safari">
-                          <option value="6:00 AM - 9:00 AM">6:00 AM - 9:00 AM</option>
-                          <option value="9:00 AM - 12:00 PM">9:00 AM - 12:00 PM</option>
-                        </optgroup>
-                        <optgroup label="Afternoon Safari">
-                          <option value="12:00 PM - 3:00 PM">12:00 PM - 3:00 PM</option>
-                          <option value="3:00 PM - 5:00 PM">3:00 PM - 5:00 PM</option>
-                        </optgroup>
-                      </select>
-                    </div>
-
-                    <div className="WhiteCrocodile__inputGroup WhiteCrocodile__inputGroup--full">
-                      <label>Number of Passengers *</label>
-                      <div className="WhiteCrocodile__passengerGrid" role="group" aria-label="Select number of passengers">
-                        {Array.from({ length: 18 }, (_, index) => index + 1).map((count) => (
-                          <button key={count} type="button" className={selectedPassengers === count ? "is-selected" : ""} aria-pressed={selectedPassengers === count} onClick={() => setSelectedPassengers(count)}>
-                            {count}
-                          </button>
-                        ))}
-                      </div>
-                      <input type="hidden" name="guests" value={selectedPassengers} />
-                      <div className="WhiteCrocodile__passengerInfo">
-                        <span>Selected passengers: <strong>{selectedPassengers}</strong></span>
-                        <span>Maximum 18 passengers</span>
-                      </div>
-                    </div>
-
-                    <div className="WhiteCrocodile__inputGroup WhiteCrocodile__inputGroup--full">
-                      <label htmlFor="WhiteCrocodile-service">Select Safari Experience *</label>
-                      <select id="WhiteCrocodile-service" name="service" defaultValue="Dangmal Research & White Croc Expedition (4 hrs)" required>
-                        <option value="Dangmal Research & White Croc Expedition (4 hrs)">Dangmal Research & White Croc Expedition (4 hrs) — Peak Basking Window</option>
-                        <option value="Captive Rearing & Hatchery Trail (5 hrs)">Captive Rearing & Hatchery Trail (5 hrs)</option>
-                        <option value="Full Day Delta & White Croc Safari (6 hrs)">Full Day Delta & White Croc Safari (6 hrs)</option>
-                        <option value="Wildlife Photography Low-Speed Private Charter">Wildlife Photography Low-Speed Private Charter</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="WhiteCrocodile__submitBtn"
-                  >
-                    Submit Safari Booking Request ↗
-                  </button>
-                </form>
-              )}
+              <EnquireNow isInline={true} />
             </div>
           )}
 

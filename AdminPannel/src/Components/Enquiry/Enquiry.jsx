@@ -998,6 +998,20 @@ const Enquiry = () => {
                   </strong>
                 </div>
 
+                {viewRow.homeTown && (
+                  <div className="Enquiry-view-item">
+                    <span>HOME TOWN</span>
+                    <strong>{viewRow.homeTown}</strong>
+                  </div>
+                )}
+
+                {viewRow.aadhar && (
+                  <div className="Enquiry-view-item">
+                    <span>AADHAAR / PASSPORT</span>
+                    <strong>{viewRow.aadhar}</strong>
+                  </div>
+                )}
+
                 <div className="Enquiry-view-item">
                   <span>TOUR / SUBJECT</span>
                   <strong>{viewRow.tour || viewRow.subject || "General Enquiry"}</strong>

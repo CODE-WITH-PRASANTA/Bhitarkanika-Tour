@@ -3,8 +3,10 @@ const mongoose = require('mongoose');
 const enquirySchema = new mongoose.Schema(
   {
     name: { type: String, required: true, trim: true },
-    email: { type: String, required: true, trim: true, lowercase: true },
+    email: { type: String, trim: true, default: '', lowercase: true },
     phone: { type: String, trim: true, default: '' },
+    homeTown: { type: String, trim: true, default: '' },
+    aadhar: { type: String, trim: true, default: '' },
     subject: { type: String, trim: true, default: '' },
     message: { type: String, trim: true, default: '' },
     tour: { type: String, trim: true, default: '' },

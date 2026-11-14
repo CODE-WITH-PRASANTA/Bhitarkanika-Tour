@@ -23,6 +23,8 @@ import {
   ArrowRight,
   CreditCard,
   MapPin,
+  Sparkles,
+  ShieldCheck,
 } from "lucide-react";
 
 import { FaWhatsapp } from "react-icons/fa";
@@ -38,6 +40,7 @@ const BRAND_NAME = "Bhitarkanika Boat Service";
 const CALL_NUMBER = "+918328982394";
 const PHONE_DISPLAY = "+91 832 898 2394";
 const WHATSAPP_NUMBER = "918328982394";
+const API_ENQUIRY_URL = "http://localhost:5000/api/enquiries";
 
 const SERVICES = [
   "Mangrove Boat Safari",
@@ -86,7 +89,7 @@ const INITIAL_FORM = {
   mobile: "",
   homeTown: "",
   aadhar: "",
-  service: "",
+  service: "Bhitarkanika Boat Safari",
   captchaInput: "",
   agreeTerms: false,
 };
@@ -145,6 +148,7 @@ const EnquireNow = ({
 }) => {
   const [isOpen, setIsOpen] = useState(isInline || false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedName, setSubmittedName] = useState("");
   const [whatsAppLink, setWhatsAppLink] = useState("");
   const [captchaRaw, setCaptchaRaw] = useState("");
@@ -277,9 +281,9 @@ const EnquireNow = ({
       nextValue = value.replace(/\D/g, "").slice(0, 10);
     }
 
-    // Aadhaar: only 12 digits
+    // Aadhaar / Passport: alphanumeric up to 16 chars
     if (name === "aadhar") {
-      nextValue = value.replace(/\D/g, "").slice(0, 12);
+      nextValue = value.replace(/[^a-zA-Z0-9]/g, "").toUpperCase().slice(0, 16);
     }
 
     // CAPTCHA: only 3 digits
@@ -334,14 +338,12 @@ const EnquireNow = ({
       next.homeTown = "Please enter your home town or city.";
     }
 
-    // Mandatory Aadhaar validation
-    if (!/^\d{12}$/.test(aadhar)) {
+    // Mandatory Aadhaar / Passport validation
+    const isAadhaar = /^\d{12}$/.test(aadhar);
+    const isPassport = /^[A-Z0-9]{6,16}$/i.test(aadhar);
+    if (!isAadhaar && !isPassport) {
       next.aadhar =
-        "Please enter a valid 12-digit Aadhaar number.";
-    }
-
-    if (!formData.service) {
-      next.service = "Please select a service.";
+        "Please enter a valid 12-digit Aadhaar number or Passport number.";
     }
 
     if (formData.captchaInput.trim() !== captchaRaw) {
@@ -381,19 +383,42 @@ const EnquireNow = ({
   // SUBMIT
   // ==========================================
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!validateForm()) return;
 
-    // Aadhaar is deliberately not sent to WhatsApp.
+    setIsSubmitting(true);
+
     const payload = {
+      name: formData.fullName.trim(),
       fullName: formData.fullName.trim(),
       email: formData.email.trim(),
+      phone: formData.mobile.trim(),
       mobile: formData.mobile.trim(),
       homeTown: formData.homeTown.trim(),
-      service: formData.service,
+      aadhar: formData.aadhar.trim(),
+      tour: formData.service || "Bhitarkanika Boat Safari",
+      service: formData.service || "Bhitarkanika Boat Safari",
+      subject: `Safari Booking Enquiry - ${formData.service || "Bhitarkanika Boat Safari"}`,
+      message: `Home Town: ${formData.homeTown.trim()}${
+        formData.aadhar.trim() ? ` | ID / Aadhaar: ${formData.aadhar.trim()}` : ""
+      }`,
     };
+
+    try {
+      await fetch(API_ENQUIRY_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+    } catch (err) {
+      console.error("Enquiry save error:", err);
+    } finally {
+      setIsSubmitting(false);
+    }
 
     setWhatsAppLink(buildWhatsAppLink(payload));
 
@@ -404,6 +429,7 @@ const EnquireNow = ({
     setIsSubmitted(true);
     setFormData(INITIAL_FORM);
     setErrors({});
+    generateCaptcha();
 
     if (onFormSubmitSuccess) {
       onFormSubmitSuccess(payload);
@@ -447,510 +473,362 @@ const EnquireNow = ({
         </button>
       )}
 
-      {/* LEFT PROMO SECTION */}
+      {/* FORM PANE (Centerpiece) */}
+      <div
+        className="enquire-now-pane"
+        ref={paneRef}
+      >
+        {/* FORM HEADER */}
+        <div className="enquire-now-header">
+          <div className="enquire-now-header-chips">
+            <span className="enquire-now-form-badge">
+              <Sparkles size={13} />
+              <span>QUICK ENQUIRY</span>
+            </span>
+            <span className="enquire-now-verified-chip">
+              <ShieldCheck size={13} />
+              <span>Forest Dept. Authorized</span>
+            </span>
+          </div>
 
-            <div
-              className="enquire-now-promo"
-              style={{
-                backgroundImage: `url(${enquireImage})`,
-              }}
-            >
-              <div className="enquire-now-promo-overlay" />
+          <h3
+            id="enquireNowTitle"
+            className="enquire-now-title"
+          >
+            Plan Your Boat Safari
+          </h3>
 
-              <div className="enquire-now-promo-content">
+          <p className="enquire-now-subtitle">
+            Fill in your details below to check live boat availability and tide timings. We respond directly via WhatsApp with vessel confirmation.
+          </p>
+        </div>
 
-                <div className="enquire-now-promo-top">
+        {/* FORM */}
 
-                  <div className="enquire-now-badge">
-                    <span className="enquire-now-badge-dot" />
-                    Authorised Boat Safaris · Odisha
-                  </div>
+        <form
+          onSubmit={handleSubmit}
+          className="enquire-now-form"
+          noValidate
+        >
 
-                  <h2 className="enquire-now-promo-title">
-                    Sail into untouched nature with{" "}
-                    <span>{BRAND_NAME}</span>
-                  </h2>
+              {/* FULL NAME */}
 
-                  <p className="enquire-now-promo-desc">
-                    Glide through the quiet creeks of
-                    Bhitarkanika, spot saltwater crocodiles
-                    and migratory birds, and explore the
-                    mangroves with trained local boatmen.
-                  </p>
-
-                </div>
-
-                <div className="enquire-now-feature-grid">
-                  {FEATURES.map((item) => (
-                    <div
-                      className="enquire-now-feature"
-                      key={item.title}
-                    >
-                      <span className="enquire-now-feature-icon">
-                        {item.icon}
-                      </span>
-
-                      <div>
-                        <strong>{item.title}</strong>
-                        <small>{item.text}</small>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <a
-                  href={`tel:${CALL_NUMBER}`}
-                  className="enquire-now-call-btn"
+              <div className="enquire-now-field">
+                <label
+                  htmlFor={FIELD_IDS.fullName}
+                  className="enquire-now-label"
                 >
-                  <span className="enquire-now-call-icon">
-                    <PhoneCall size={16} />
-                  </span>
+                  Full name
+                </label>
 
-                  <span className="enquire-now-call-text">
-                    <small>Call us now</small>
-                    <strong>{PHONE_DISPLAY}</strong>
-                  </span>
-                </a>
+                <div className="enquire-now-input-wrap">
+                  <User
+                    className="enquire-now-input-icon"
+                    size={17}
+                    aria-hidden="true"
+                  />
 
+                  <input
+                    ref={firstInputRef}
+                    id={FIELD_IDS.fullName}
+                    type="text"
+                    name="fullName"
+                    placeholder="Enter your full name"
+                    value={formData.fullName}
+                    onChange={handleChange}
+                    maxLength={80}
+                    autoComplete="name"
+                    aria-invalid={!!errors.fullName}
+                    aria-describedby={
+                      errors.fullName
+                        ? `${FIELD_IDS.fullName}Error`
+                        : undefined
+                    }
+                    required
+                  />
+                </div>
+
+                {renderError("fullName")}
               </div>
-            </div>
 
-            {/* RIGHT FORM SECTION */}
+              {/* EMAIL */}
 
-            <div
-              className="enquire-now-pane"
-              ref={paneRef}
-            >
-              {isSubmitted ? (
-
-                /* SUCCESS SCREEN */
-
-                <div
-                  className="enquire-now-success"
-                  role="status"
+              <div className="enquire-now-field">
+                <label
+                  htmlFor={FIELD_IDS.email}
+                  className="enquire-now-label"
                 >
-                  <span className="enquire-now-success-icon">
-                    <CheckCircle2
-                      size={34}
-                      strokeWidth={1.8}
-                    />
-                  </span>
+                  Email address <em>Optional</em>
+                </label>
 
-                  <h3
-                    className="enquire-now-success-title"
-                    id="enquireNowTitle"
-                  >
-                    Almost done
-                    {submittedName
-                      ? `, ${submittedName}`
-                      : ""}
-                    !
-                  </h3>
+                <div className="enquire-now-input-wrap">
+                  <Mail
+                    className="enquire-now-input-icon"
+                    size={17}
+                    aria-hidden="true"
+                  />
 
-                  <p className="enquire-now-success-text">
-                    Your details are ready. Tap{" "}
-                    <strong>Open WhatsApp</strong> and
-                    press <strong>Send</strong> in the chat
-                    to complete your enquiry. We will reply
-                    with availability and timings.
-                  </p>
-
-                  <div className="enquire-now-success-actions">
-
-                    <a
-                      href={whatsAppLink}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="enquire-now-wa-btn"
-                    >
-                      <FaWhatsapp size={18} />
-                      Open WhatsApp
-                    </a>
-
-                    <a
-                      href={`tel:${CALL_NUMBER}`}
-                      className="enquire-now-ghost-btn"
-                    >
-                      <PhoneCall size={15} />
-                      {PHONE_DISPLAY}
-                    </a>
-
-                    {isInline && (
-                      <button
-                        type="button"
-                        className="enquire-now-ghost-btn"
-                        style={{ marginTop: "12px", width: "100%", cursor: "pointer" }}
-                        onClick={() => {
-                          setIsSubmitted(false);
-                          generateCaptcha();
-                        }}
-                      >
-                        Submit Another Enquiry
-                      </button>
-                    )}
-
-                  </div>
+                  <input
+                    id={FIELD_IDS.email}
+                    type="email"
+                    name="email"
+                    placeholder="Enter your email address"
+                    value={formData.email}
+                    onChange={handleChange}
+                    autoComplete="email"
+                    aria-invalid={!!errors.email}
+                    aria-describedby={
+                      errors.email
+                        ? `${FIELD_IDS.email}Error`
+                        : undefined
+                    }
+                  />
                 </div>
 
-              ) : (
+                {renderError("email")}
+              </div>
 
-                <>
-                  {/* FORM HEADER */}
+              {/* MOBILE NUMBER */}
 
-                  <div className="enquire-now-header">
-                    <span className="enquire-now-form-badge">
-                      Quick enquiry
-                    </span>
+              <div className="enquire-now-field">
+                <label
+                  htmlFor={FIELD_IDS.mobile}
+                  className="enquire-now-label"
+                >
+                  Mobile number
+                </label>
 
-                    <h3
-                      id="enquireNowTitle"
-                      className="enquire-now-title"
-                    >
-                      Plan your boat safari
-                    </h3>
+                <div className="enquire-now-input-wrap">
+                  <Phone
+                    className="enquire-now-input-icon"
+                    size={17}
+                    aria-hidden="true"
+                  />
 
-                    <p className="enquire-now-subtitle">
-                      Fill in your details and send them
-                      to us on WhatsApp. We will reply
-                      with availability and timings.
-                    </p>
-                  </div>
+                  <span className="enquire-now-prefix">
+                    +91
+                  </span>
 
-                  {/* FORM */}
+                  <input
+                    id={FIELD_IDS.mobile}
+                    className="enquire-now-input-prefixed"
+                    type="tel"
+                    name="mobile"
+                    placeholder="10 digit mobile number"
+                    maxLength={10}
+                    value={formData.mobile}
+                    onChange={handleChange}
+                    autoComplete="tel-national"
+                    inputMode="numeric"
+                    aria-invalid={!!errors.mobile}
+                    aria-describedby={
+                      errors.mobile
+                        ? `${FIELD_IDS.mobile}Error`
+                        : undefined
+                    }
+                    required
+                  />
+                </div>
 
-                  <form
-                    onSubmit={handleSubmit}
-                    className="enquire-now-form"
-                    noValidate
-                  >
+                {renderError("mobile")}
+              </div>
 
-                    {/* FULL NAME */}
+              {/* HOME TOWN */}
 
-                    <div className="enquire-now-field">
-                      <label
-                        htmlFor={FIELD_IDS.fullName}
-                        className="enquire-now-label"
-                      >
-                        Full name
-                      </label>
+              <div className="enquire-now-field">
+                <label
+                  htmlFor={FIELD_IDS.homeTown}
+                  className="enquire-now-label"
+                >
+                  Home town <em>Required</em>
+                </label>
 
-                      <div className="enquire-now-input-wrap">
-                        <User
-                          className="enquire-now-input-icon"
-                          size={17}
-                          aria-hidden="true"
-                        />
+                <div className="enquire-now-input-wrap">
+                  <MapPin
+                    className="enquire-now-input-icon"
+                    size={17}
+                    aria-hidden="true"
+                  />
 
-                        <input
-                          ref={firstInputRef}
-                          id={FIELD_IDS.fullName}
-                          type="text"
-                          name="fullName"
-                          placeholder="Enter your full name"
-                          value={formData.fullName}
-                          onChange={handleChange}
-                          maxLength={80}
-                          autoComplete="name"
-                          aria-invalid={!!errors.fullName}
-                          aria-describedby={
-                            errors.fullName
-                              ? `${FIELD_IDS.fullName}Error`
-                              : undefined
-                          }
-                          required
-                        />
-                      </div>
+                  <input
+                    id={FIELD_IDS.homeTown}
+                    type="text"
+                    name="homeTown"
+                    placeholder="Enter your home town / city"
+                    value={formData.homeTown}
+                    onChange={handleChange}
+                    maxLength={60}
+                    autoComplete="address-level2"
+                    aria-invalid={!!errors.homeTown}
+                    aria-describedby={
+                      errors.homeTown
+                        ? `${FIELD_IDS.homeTown}Error`
+                        : undefined
+                    }
+                    required
+                  />
+                </div>
 
-                      {renderError("fullName")}
-                    </div>
+                {renderError("homeTown")}
+              </div>
 
-                    {/* EMAIL */}
-
-                    <div className="enquire-now-field">
-                      <label
-                        htmlFor={FIELD_IDS.email}
-                        className="enquire-now-label"
-                      >
-                        Email address <em>Optional</em>
-                      </label>
-
-                      <div className="enquire-now-input-wrap">
-                        <Mail
-                          className="enquire-now-input-icon"
-                          size={17}
-                          aria-hidden="true"
-                        />
-
-                        <input
-                          id={FIELD_IDS.email}
-                          type="email"
-                          name="email"
-                          placeholder="Enter your email address"
-                          value={formData.email}
-                          onChange={handleChange}
-                          autoComplete="email"
-                          aria-invalid={!!errors.email}
-                          aria-describedby={
-                            errors.email
-                              ? `${FIELD_IDS.email}Error`
-                              : undefined
-                          }
-                        />
-                      </div>
-
-                      {renderError("email")}
-                    </div>
-
-                    {/* MOBILE NUMBER */}
-
-                    <div className="enquire-now-field">
-                      <label
-                        htmlFor={FIELD_IDS.mobile}
-                        className="enquire-now-label"
-                      >
-                        Mobile number
-                      </label>
-
-                      <div className="enquire-now-input-wrap">
-                        <Phone
-                          className="enquire-now-input-icon"
-                          size={17}
-                          aria-hidden="true"
-                        />
-
-                        <span className="enquire-now-prefix">
-                          +91
-                        </span>
-
-                        <input
-                          id={FIELD_IDS.mobile}
-                          className="enquire-now-input-prefixed"
-                          type="tel"
-                          name="mobile"
-                          placeholder="10 digit mobile number"
-                          maxLength={10}
-                          value={formData.mobile}
-                          onChange={handleChange}
-                          autoComplete="tel-national"
-                          inputMode="numeric"
-                          aria-invalid={!!errors.mobile}
-                          aria-describedby={
-                            errors.mobile
-                              ? `${FIELD_IDS.mobile}Error`
-                              : undefined
-                          }
-                          required
-                        />
-                      </div>
-
-                      {renderError("mobile")}
-                    </div>
-
-                    {/* HOME TOWN */}
-
-                    <div className="enquire-now-field">
-                      <label
-                        htmlFor={FIELD_IDS.homeTown}
-                        className="enquire-now-label"
-                      >
-                        Home town <em>Required</em>
-                      </label>
-
-                      <div className="enquire-now-input-wrap">
-                        <MapPin
-                          className="enquire-now-input-icon"
-                          size={17}
-                          aria-hidden="true"
-                        />
-
-                        <input
-                          id={FIELD_IDS.homeTown}
-                          type="text"
-                          name="homeTown"
-                          placeholder="Enter your home town / city"
-                          value={formData.homeTown}
-                          onChange={handleChange}
-                          maxLength={60}
-                          autoComplete="address-level2"
-                          aria-invalid={!!errors.homeTown}
-                          aria-describedby={
-                            errors.homeTown
-                              ? `${FIELD_IDS.homeTown}Error`
-                              : undefined
-                          }
-                          required
-                        />
-                      </div>
-
-                      {renderError("homeTown")}
-                    </div>
-
-                    {/* =================================
-                        AADHAAR NUMBER INPUT
+              {/* =================================
+                        AADHAAR / PASSPORT NUMBER INPUT
                     ================================= */}
 
-                    <div className="enquire-now-field enquire-now-field-full">
-                      <label
-                        htmlFor={FIELD_IDS.aadhar}
-                        className="enquire-now-label"
-                      >
-                        Aadhaar number <em>Required</em>
-                      </label>
+              <div className="enquire-now-field">
+                <label
+                  htmlFor={FIELD_IDS.aadhar}
+                  className="enquire-now-label"
+                >
+                  Aadhaar number / Passport number <em>Required</em>
+                </label>
 
-                      <div className="enquire-now-input-wrap">
-                        <CreditCard
-                          className="enquire-now-input-icon"
-                          size={17}
-                          aria-hidden="true"
-                        />
+                <div className="enquire-now-input-wrap">
+                  <CreditCard
+                    className="enquire-now-input-icon"
+                    size={17}
+                    aria-hidden="true"
+                  />
 
-                        <input
-                          id={FIELD_IDS.aadhar}
-                          type="text"
-                          name="aadhar"
-                          placeholder="Enter 12-digit Aadhaar number"
-                          value={formData.aadhar}
-                          onChange={handleChange}
-                          maxLength={12}
-                          inputMode="numeric"
-                          autoComplete="off"
-                          aria-invalid={!!errors.aadhar}
-                          aria-describedby={
-                            errors.aadhar
-                              ? `${FIELD_IDS.aadhar}Error`
-                              : undefined
-                          }
-                          required
-                        />
-                      </div>
+                  <input
+                    id={FIELD_IDS.aadhar}
+                    type="text"
+                    name="aadhar"
+                    placeholder="Enter 12-digit Aadhaar or Passport"
+                    value={formData.aadhar}
+                    onChange={handleChange}
+                    maxLength={16}
+                    autoComplete="off"
+                    aria-invalid={!!errors.aadhar}
+                    aria-describedby={
+                      errors.aadhar
+                        ? `${FIELD_IDS.aadhar}Error`
+                        : undefined
+                    }
+                    required
+                  />
+                </div>
 
-                      {renderError("aadhar")}
+                {renderError("aadhar")}
+              </div>
 
-                      <small className="enquire-now-aadhar-note">
-                        Enter exactly 12 digits. Your Aadhaar
-                        number will not be shared through WhatsApp.
-                      </small>
-                    </div>
+              {/* CAPTCHA */}
 
-                    {/* SERVICE DROPDOWN */}
+              <div className="enquire-now-field">
+                <label
+                  htmlFor={FIELD_IDS.captchaInput}
+                  className="enquire-now-label"
+                >
+                  Security check
+                </label>
 
-                   
+                <div className="enquire-now-captcha-row">
 
-                    {/* CAPTCHA */}
+                  <div
+                    className="enquire-now-captcha-box"
+                    aria-label={`Security code ${captchaSpaced}`}
+                  >
+                    {captchaSpaced}
+                  </div>
 
-                    <div className="enquire-now-field enquire-now-field-full">
-                      <label
-                        htmlFor={FIELD_IDS.captchaInput}
-                        className="enquire-now-label"
-                      >
-                        Security check
-                      </label>
+                  <input
+                    id={FIELD_IDS.captchaInput}
+                    type="text"
+                    name="captchaInput"
+                    placeholder="Enter code"
+                    className="enquire-now-captcha-input"
+                    value={formData.captchaInput}
+                    onChange={handleChange}
+                    maxLength={3}
+                    autoComplete="off"
+                    inputMode="numeric"
+                    aria-invalid={!!errors.captchaInput}
+                    aria-describedby={
+                      errors.captchaInput
+                        ? `${FIELD_IDS.captchaInput}Error`
+                        : undefined
+                    }
+                  />
 
-                      <div className="enquire-now-captcha-row">
+                  <button
+                    type="button"
+                    className="enquire-now-captcha-refresh"
+                    onClick={generateCaptcha}
+                    aria-label="Generate a new code"
+                  >
+                    <RefreshCw size={17} />
+                  </button>
 
-                        <div
-                          className="enquire-now-captcha-box"
-                          aria-label={`Security code ${captchaSpaced}`}
-                        >
-                          {captchaSpaced}
-                        </div>
+                </div>
 
-                        <input
-                          id={FIELD_IDS.captchaInput}
-                          type="text"
-                          name="captchaInput"
-                          placeholder="Enter code"
-                          className="enquire-now-captcha-input"
-                          value={formData.captchaInput}
-                          onChange={handleChange}
-                          maxLength={3}
-                          autoComplete="off"
-                          inputMode="numeric"
-                          aria-invalid={!!errors.captchaInput}
-                          aria-describedby={
-                            errors.captchaInput
-                              ? `${FIELD_IDS.captchaInput}Error`
-                              : undefined
-                          }
-                        />
+                {renderError("captchaInput")}
+              </div>
 
-                        <button
-                          type="button"
-                          className="enquire-now-captcha-refresh"
-                          onClick={generateCaptcha}
-                          aria-label="Generate a new code"
-                        >
-                          <RefreshCw size={17} />
-                        </button>
+              {/* TERMS */}
 
-                      </div>
+              <div className="enquire-now-terms-wrap">
+                <div className="enquire-now-terms">
 
-                      {renderError("captchaInput")}
-                    </div>
+                  <input
+                    type="checkbox"
+                    id={FIELD_IDS.agreeTerms}
+                    name="agreeTerms"
+                    checked={formData.agreeTerms}
+                    onChange={handleChange}
+                    aria-invalid={!!errors.agreeTerms}
+                  />
 
-                    {/* TERMS */}
-
-                    <div className="enquire-now-terms-wrap">
-                      <div className="enquire-now-terms">
-
-                        <input
-                          type="checkbox"
-                          id={FIELD_IDS.agreeTerms}
-                          name="agreeTerms"
-                          checked={formData.agreeTerms}
-                          onChange={handleChange}
-                          aria-invalid={!!errors.agreeTerms}
-                        />
-
-                        <label htmlFor={FIELD_IDS.agreeTerms}>
-                          I agree to the{" "}
-                          <a
-                            href="/terms"
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            Terms &amp; Conditions
-                          </a>{" "}
-                          of {BRAND_NAME}.
-                        </label>
-
-                      </div>
-
-                      {renderError("agreeTerms")}
-                    </div>
-
-                    {/* SUBMIT */}
-
-                    <button
-                      type="submit"
-                      className="enquire-now-submit"
-                    >
-                      Submit enquiry
-                      <ArrowRight size={17} />
-                    </button>
-
-                    <p className="enquire-now-secure-text">
-                      <Lock size={12} />
-                      Your details are used only to contact
-                      you about this enquiry.
-                    </p>
-
-                    {/* MOBILE CALL */}
-
+                  <label htmlFor={FIELD_IDS.agreeTerms}>
+                    I agree to the{" "}
                     <a
-                      href={`tel:${CALL_NUMBER}`}
-                      className="enquire-now-mobile-call"
+                      href="/terms"
+                      target="_blank"
+                      rel="noreferrer"
                     >
-                      <PhoneCall size={16} />
-                      Prefer to talk? Call {PHONE_DISPLAY}
-                    </a>
+                      Terms &amp; Conditions
+                    </a>{" "}
+                    of {BRAND_NAME}.
+                  </label>
 
-                  </form>
-                </>
+                </div>
+
+                {renderError("agreeTerms")}
+              </div>
+
+              {/* SUBMIT */}
+
+              <button
+                type="submit"
+                className="enquire-now-submit"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Submitting enquiry..." : "Submit enquiry"}
+                <ArrowRight size={17} />
+              </button>
+
+              {/* SUCCESS BANNER BELOW SUBMIT */}
+              {isSubmitted && (
+                <div className="enquire-now-success-banner" role="status">
+                  <CheckCircle2
+                    size={22}
+                    className="enquire-now-success-banner-icon"
+                  />
+                  <div className="enquire-now-success-banner-body">
+                    <strong className="enquire-now-success-banner-title">
+                      Thank you for booking{submittedName ? `, ${submittedName}` : ""}!
+                    </strong>
+                    <p className="enquire-now-success-banner-msg">
+                      Your enquiry has been received successfully. Our team will contact you shortly.
+                    </p>
+                  </div>
+                </div>
               )}
-            </div>
-    </>
-  );
+
+            </form>
+          </div>
+        </>
+      );
 
   return (
     <>

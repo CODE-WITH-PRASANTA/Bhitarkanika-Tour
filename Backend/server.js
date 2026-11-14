@@ -2,6 +2,7 @@ require('dotenv').config();
 const path = require('path');
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const connectDB = require('./config/db');
 const { notFound, errorHandler } = require('./middleware/errorHandler');
@@ -14,6 +15,9 @@ const blogCommentRoutes = require('./routes/blogCommentRoutes');
 const galleryRoutes = require('./routes/galleryRoutes');
 const enquiryRoutes = require('./routes/enquiryRoutes');
 const exploreRoutes = require('./routes/exploreRoutes');
+const authRoutes = require('./routes/authRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
+const testimonialRoutes = require('./routes/testimonialRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -21,8 +25,27 @@ const PORT = process.env.PORT || 5000;
 // Connect to MongoDB
 connectDB();
 
+// Allowed Origins for secure credentialed cookies
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://127.0.0.1:5173',
+  'http://127.0.0.1:5174',
+];
+
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(null, true); // Dev permissive, supports credentials
+    },
+    credentials: true,
+  })
+);
+app.use(cookieParser(process.env.COOKIE_SECRET || 'bhitarkanika_cookie_secret_9981'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -54,6 +77,9 @@ app.use('/api/blog-comments', blogCommentRoutes);
 app.use('/api/gallery', galleryRoutes);
 app.use('/api/enquiries', enquiryRoutes);
 app.use('/api/explores', exploreRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/payment', paymentRoutes);
+app.use('/api/testimonials', testimonialRoutes);
 
 // Error Handling Middleware
 app.use(notFound);

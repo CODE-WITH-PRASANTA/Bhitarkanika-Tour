@@ -1,5 +1,15 @@
+const express = require('express');
 const tourBookingController = require('../controllers/tourBookingController');
-const createCrudRouter = require('./createCrudRouter');
+const { optionalAuth } = require('../middleware/auth');
 
-module.exports = createCrudRouter(tourBookingController);
+const router = express.Router();
 
+router.use(optionalAuth);
+router.route('/').get(tourBookingController.getAll).post(tourBookingController.create);
+router
+  .route('/:id')
+  .get(tourBookingController.getById)
+  .put(tourBookingController.update)
+  .delete(tourBookingController.remove);
+
+module.exports = router;

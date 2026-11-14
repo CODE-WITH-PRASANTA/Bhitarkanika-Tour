@@ -2552,13 +2552,112 @@
 
 .bk-doc-id {
   text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
 }
 
 .bk-doc-id strong {
   display: block;
-  margin-top: 3px;
+  margin-top: 1px;
   font-size: 13px;
   letter-spacing: 0.5px;
+}
+
+.bk-doc-route-sub {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #e1c88c;
+  font-weight: 500;
+}
+
+.bk-paid-badge-chip {
+  display: inline-block;
+  background: #10b981;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 3px 9px;
+  border-radius: 100px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.bk-voucher-grid-value {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  padding: 20px 22px;
+  background: #ffffff;
+}
+
+@media (max-width: 600px) {
+  .bk-voucher-grid-value {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 14px 16px;
+  }
+}
+
+.bk-voucher-metric {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.bk-metric-lbl {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.bk-metric-val {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.bk-metric-val.code {
+  font-family: monospace;
+  font-size: 12px;
+  color: #047857;
+}
+
+.bk-doc-total-strip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 22px;
+  background: #f0fdf4;
+  border-top: 1px solid #bbf7d0;
+}
+
+.bk-total-lbl {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #166534;
+}
+
+.bk-total-sub {
+  display: block;
+  font-size: 11px;
+  color: #15803d;
+  margin-top: 2px;
+}
+
+.bk-total-price {
+  font-size: 22px;
+  font-weight: 800;
+  color: #166534;
 }
 
 .bk-doc-tour {

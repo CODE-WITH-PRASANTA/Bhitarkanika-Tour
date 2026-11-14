@@ -11,6 +11,7 @@ import TourBooking from "./Components/TourBooking/TourBooking";
 import Gallary from "./Components/Gallary/Gallary";
 import Hotelbooking from "./Components/Hotelbooking/Hotelbooking";
 import Expores from "./Components/Expores/Expores";
+import Testimonial from "./Components/Testimonial/Testimonial";
 
 
 const App = () => {
@@ -29,6 +30,8 @@ const App = () => {
           <Route path="/gallery" element={<Gallary />} />
           <Route path="/hotel-booking" element={<Hotelbooking />} />
           <Route path="/explores" element={<Expores/>} />
+          <Route path="/testimonials" element={<Testimonial />} />
+          <Route path="/testimonial" element={<Testimonial />} />
         </Route>
       </Routes>
     </BrowserRouter>

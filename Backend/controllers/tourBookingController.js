@@ -1,11 +1,25 @@
 const TourBooking = require('../models/TourBooking');
 
 /**
- * Get all tour bookings sorted newest first.
+ * Get tour bookings (admin gets all, users get their own, query filter supported).
  */
 const getAll = async (req, res, next) => {
   try {
-    const bookings = await TourBooking.find().sort({ createdAt: -1 });
+    let filter = {};
+
+    if (req.query.email || req.query.phone) {
+      filter.$or = [];
+      if (req.query.email) filter.$or.push({ email: req.query.email.toLowerCase().trim() });
+      if (req.query.phone) filter.$or.push({ phone: req.query.phone.trim() });
+    } else if (req.user && req.user.role !== 'admin') {
+      filter.$or = [
+        { email: (req.user.email || '').toLowerCase().trim() },
+        { phone: (req.user.phone || '').trim() },
+        { userId: req.user._id },
+      ];
+    }
+
+    const bookings = await TourBooking.find(filter).sort({ createdAt: -1 });
     res.status(200).json({
       success: true,
       count: bookings.length,
@@ -68,6 +82,17 @@ const create = async (req, res, next) => {
 
     if (!body.homeTown && body.address) {
       body.homeTown = body.address;
+    }
+
+    if (!body.boats && body.boatCount) {
+      body.boats = Number(body.boatCount) || 1;
+    }
+    if (!body.boatCount && body.boats) {
+      body.boatCount = Number(body.boats) || 1;
+    }
+    if (!body.boats && !body.boatCount) {
+      body.boats = 1;
+      body.boatCount = 1;
     }
 
     const booking = await TourBooking.create(body);

@@ -41,5 +41,6 @@ const uploadBlogImages = createUpload('blogs').fields([
 ]);
 
 const uploadGalleryImage = createUpload('gallery').single('image');
+const uploadTestimonialImage = createUpload('testimonials').single('image');
 
-module.exports = { uploadBlogImages, uploadGalleryImage };
+module.exports = { uploadBlogImages, uploadGalleryImage, uploadTestimonialImage };

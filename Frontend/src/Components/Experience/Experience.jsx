@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import "./Experience.css";
 
 // ============================================
@@ -12,6 +14,7 @@ import boatService2 from "../../assets/boat-service-2.png";
 import boatService3 from "../../assets/boat-service-3.png";
 import kholaRouteMap from "../../assets/khola-route-map.jpg";
 import jaynagarRouteMap from "../../assets/jaynagar-route-map.jpg";
+import siteLogo from "../../assets/mlogo.png";
 
 // ============================================
 // SETTINGS
@@ -229,12 +232,16 @@ const personWord = (n) => (n === 1 ? "person" : "people");
 // Govt tax rule: 9 people or fewer = Rs. 40 each, more than 9 = Rs. 25 each.
 const taxPerPerson = (people) => (people > 9 ? TAX_10_PLUS : TAX_UP_TO_9);
 
-const calcBill = (tour, pkg, people) => {
-  const fare = pkg ? pkg.price : tour.fare;
+const calcBill = (tour, pkg, people, boats = 1) => {
+  const safeBoats = Math.max(1, parseInt(boats, 10) || 1);
+  const baseFare = pkg ? pkg.price : tour.fare;
+  const fare = baseFare * safeBoats;
   const perPerson = tour.govtTax ? taxPerPerson(people) : 0;
   const personTax = perPerson * people;
-  const boatTax = tour.govtTax ? BOAT_TAX : 0;
+  const boatTax = tour.govtTax ? BOAT_TAX * safeBoats : 0;
   return {
+    baseFare,
+    boats: safeBoats,
     fare,
     perPerson,
     personTax,
@@ -245,6 +252,7 @@ const calcBill = (tour, pkg, people) => {
 
 const INITIAL_FORM = {
   name: "",
+  boats: 1,
   people: 1,
   date: "",
   time: "",
@@ -549,31 +557,65 @@ const CustomSlotSelect = ({ value, onChange, options, hasError }) => {
   );
 };
 
+// Helper to dynamically load Razorpay checkout script
+const loadRazorpayScript = () => {
+  return new Promise((resolve) => {
+    if (window.Razorpay) {
+      resolve(true);
+      return;
+    }
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+};
+
 // ============================================
 // BOAT BOOKING MODAL
 // ============================================
 
 const BookingModal = ({ tour, pkg, onClose }) => {
+  const navigate = useNavigate();
+  const { isAuthenticated, user } = useAuth();
+
   const [step, setStep] = useState("form"); // "form" | "success"
   const [form, setForm] = useState({
     ...INITIAL_FORM,
+    name: user?.name || "",
+    email: user?.email || "",
+    phone: user?.phone || "",
     time: tour.fullDay ? FULL_DAY_SLOT.key : "",
   });
   const [errors, setErrors] = useState({});
   const [booking, setBooking] = useState(null);
   const [downloading, setDownloading] = useState(false);
+  const [isPaying, setIsPaying] = useState(false);
+  const [payError, setPayError] = useState("");
   const nameRef = useRef(null);
+
+  useEffect(() => {
+    if (user) {
+      setForm((prev) => ({
+        ...prev,
+        name: prev.name || user.name || "",
+        email: prev.email || user.email || "",
+        phone: prev.phone || user.phone || "",
+      }));
+    }
+  }, [user]);
 
   useEffect(() => {
     const t = setTimeout(() => nameRef.current?.focus(), 350);
     return () => clearTimeout(t);
   }, []);
 
-  const peopleNum = Math.min(
-    MAX_PEOPLE,
-    Math.max(0, parseInt(form.people, 10) || 0)
-  );
-  const bill = calcBill(tour, pkg, peopleNum);
+  const boatCount = Math.max(1, parseInt(form.boats, 10) || 1);
+  const maxCapacity = boatCount * 18;
+  const peopleNum = Math.max(0, parseInt(form.people, 10) || 0);
+  const bill = calcBill(tour, pkg, peopleNum, boatCount);
   const fareLabel = pkg ? `${pkg.name} package fare` : "Boat fare";
   const selectedSlot = ALL_SLOTS.find((s) => s.key === form.time);
 
@@ -582,12 +624,35 @@ const BookingModal = ({ tour, pkg, onClose }) => {
     if (errors[field]) setErrors((prev) => ({ ...prev, [field]: "" }));
   };
 
-  const changePeople = (delta) =>
-    setField("people", Math.min(MAX_PEOPLE, Math.max(1, peopleNum + delta)));
+  const changeBoats = (delta) => {
+    const nextBoats = Math.min(10, Math.max(1, boatCount + delta));
+    setForm((prev) => ({
+      ...prev,
+      boats: nextBoats,
+    }));
+    if (errors.boats) setErrors((prev) => ({ ...prev, boats: "" }));
+  };
+
+  const changePeople = (delta) => {
+    const nextPeople = Math.max(1, peopleNum + delta);
+    const neededBoats = Math.max(boatCount, Math.ceil(nextPeople / 18));
+    setForm((prev) => ({
+      ...prev,
+      people: nextPeople,
+      boats: neededBoats,
+    }));
+    if (errors.people) setErrors((prev) => ({ ...prev, people: "" }));
+  };
 
   const handlePeopleInput = (e) => {
-    const digits = e.target.value.replace(/\D/g, "").slice(0, 2);
-    setField("people", digits === "" ? "" : Math.min(MAX_PEOPLE, parseInt(digits, 10)));
+    const digits = e.target.value.replace(/\D/g, "").slice(0, 3);
+    const nextVal = digits === "" ? "" : parseInt(digits, 10);
+    const neededBoats = nextVal ? Math.max(boatCount, Math.ceil(nextVal / 18)) : boatCount;
+    setForm((prev) => ({
+      ...prev,
+      people: nextVal,
+      boats: neededBoats,
+    }));
   };
 
   const handlePeopleBlur = () => {
@@ -601,15 +666,20 @@ const BookingModal = ({ tour, pkg, onClose }) => {
   const validate = () => {
     const next = {};
     if (form.name.trim().length < 2) next.name = "Please enter your full name.";
-    if (peopleNum < 1 || peopleNum > MAX_PEOPLE)
-      next.people = `Enter 1 to ${MAX_PEOPLE} people.`;
+    if (peopleNum < 1 || peopleNum > maxCapacity)
+      next.people = `Enter 1 to ${maxCapacity} people for ${boatCount} ${boatCount > 1 ? "boats" : "boat"}.`;
     if (!form.date) next.date = "Please choose a date.";
     else if (form.date < todayString()) next.date = "Date cannot be in the past.";
     if (!form.time) next.time = "Please choose a time slot.";
     if (!/^[6-9]\d{9}$/.test(form.phone))
       next.phone = "Enter a valid 10-digit mobile number.";
-    if (form.aadhar && form.aadhar.length !== 12)
-      next.aadhar = "Aadhar must be 12 digits (or leave it empty).";
+    if (form.aadhar) {
+      const isAadhar = /^\d{12}$/.test(form.aadhar);
+      const isPassport = /^[A-Z0-9]{6,16}$/i.test(form.aadhar);
+      if (!isAadhar && !isPassport) {
+        next.aadhar = "Enter valid 12-digit Aadhaar or Passport number (or leave empty).";
+      }
+    }
     if (!EMAIL_REGEX.test(form.email.trim()))
       next.email = "Enter a valid email address.";
     if (!form.address || form.address.trim().length < 2)
@@ -621,6 +691,7 @@ const BookingModal = ({ tour, pkg, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
+    setPayError("");
 
     const data = {
       id: generateBookingId("BTK"),
@@ -630,6 +701,7 @@ const BookingModal = ({ tour, pkg, onClose }) => {
         year: "numeric",
       }),
       ...form,
+      boats: boatCount,
       people: peopleNum,
       name: form.name.trim(),
       email: form.email.trim(),
@@ -649,47 +721,236 @@ const BookingModal = ({ tour, pkg, onClose }) => {
       priceUnit: tour.priceUnit,
     };
 
-    // Save real booking into MongoDB via Backend API
-    try {
-      await fetch("http://localhost:5000/api/tour-bookings", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          bookingId: data.id,
-          name: data.name,
-          email: data.email,
-          phone: data.phone,
-          packageName: data.tourTitle || "Bhitarkanika Boat Package",
-          packageType: `${data.from ? data.from + " to " + data.to : "Boat Safari"} · ${data.duration || "1 DAY"}`,
-          image: tour.image || "",
-          travelDate: data.date,
-          date: data.date,
-          departureSlot: data.timeLabel,
-          time: data.timeLabel,
-          guests: data.people,
-          adults: data.people,
-          children: 0,
-          aadhar: data.aadhar || "",
-          aadhaar: data.aadhar || "",
-          homeTown: data.address || "",
-          address: data.address || "",
-          from: data.from || "",
-          to: data.to || "",
-          duration: data.duration || "",
-          amount: data.total || 0,
-          totalAmount: data.total || 0,
-          boatFare: data.bill?.fare || 0,
-          forestPermit: data.bill?.permitTotal || 0,
-          govtTax: data.govtTax || 0,
-          status: "Pending",
-        }),
-      });
-    } catch (err) {
-      console.warn("Could not save tour booking to backend database:", err);
+    const bookingPayload = {
+      bookingId: data.id,
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      packageName: data.tourTitle || "Bhitarkanika Boat Package",
+      packageType: `${data.from ? data.from + " to " + data.to : "Boat Safari"} · ${data.duration || "1 DAY"}`,
+      image: tour.image || "",
+      travelDate: data.date,
+      date: data.date,
+      departureSlot: data.timeLabel,
+      time: data.timeLabel,
+      boats: data.boats || 1,
+      boatCount: data.boats || 1,
+      guests: data.people,
+      adults: data.people,
+      children: 0,
+      aadhar: data.aadhar || "",
+      aadhaar: data.aadhar || "",
+      homeTown: data.address || "",
+      address: data.address || "",
+      from: data.from || "",
+      to: data.to || "",
+      duration: data.duration || "",
+      amount: data.total || 0,
+      totalAmount: data.total || 0,
+      boatFare: data.bill?.fare || 0,
+      forestPermit: data.bill?.personTax || 0,
+      govtTax: data.bill?.boatTax || 0,
+      status: "Confirmed",
+      paymentStatus: "Paid",
+      paymentMethod: "Razorpay / UPI",
+    };
+
+    // If user is not logged in, redirect to login page with pending booking preserved
+    if (!isAuthenticated) {
+      try {
+        sessionStorage.setItem("pending_booking", JSON.stringify(bookingPayload));
+      } catch (err) {
+        console.warn("Could not save to sessionStorage", err);
+      }
+      if (onClose) onClose();
+      navigate("/login?redirect=booking");
+      return;
     }
 
-    setBooking(data);
-    setStep("success");
+    try {
+      setIsPaying(true);
+
+      // 1. Ensure Razorpay Checkout script is loaded
+      const scriptReady = await loadRazorpayScript();
+      if (!scriptReady) {
+        setPayError("Unable to load Razorpay payment gateway. Please check your network connection.");
+        setIsPaying(false);
+        return;
+      }
+
+      // 2. Create Razorpay order from Backend with server-side price validation
+      const orderRes = await fetch("http://localhost:5000/api/payment/create-order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          amount: data.total,
+          receipt: data.id,
+          bookingDetails: {
+            people: data.people,
+            boats: data.boats || 1,
+            boatCount: data.boats || 1,
+            baseFare: data.bill?.baseFare,
+            farePerBoat: data.bill?.baseFare,
+            pkgKey: data.pkgKey,
+            pkgName: data.pkgName,
+            packageName: data.tourTitle,
+            category: data.category,
+            from: data.from,
+          },
+        }),
+      });
+
+      const orderData = await orderRes.json();
+      if (!orderRes.ok || !orderData.success) {
+        setPayError(orderData.message || "Failed to initialize payment order.");
+        setIsPaying(false);
+        return;
+      }
+
+      // 3. Configure Razorpay checkout options
+      const options = {
+        key: orderData.keyId || "rzp_test_TppGgVggUkbJv4",
+        amount: orderData.order.amount,
+        currency: orderData.order.currency || "INR",
+        name: "Bhitarkanika Boat Service",
+        description: `${data.tourTitle} Safari Reservation`,
+        image: "https://bhitarkanikatour.in/logo.png",
+        order_id: orderData.order.id,
+        handler: async function (response) {
+          try {
+            // 4. Verify payment cryptographic signature & store confirmed booking in MongoDB
+            const verifyRes = await fetch("http://localhost:5000/api/payment/verify-payment", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                ...(token ? { Authorization: `Bearer ${token}` } : {}),
+              },
+              credentials: "include",
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                bookingData: {
+                  ...bookingPayload,
+                  amount: data.total,
+                  totalAmount: data.total,
+                  boatFare: data.bill?.fare,
+                  forestPermit: data.bill?.personTax,
+                  govtTax: data.bill?.boatTax,
+                  paymentId: response.razorpay_payment_id,
+                  orderId: response.razorpay_order_id,
+                  signature: response.razorpay_signature,
+                  status: "Confirmed",
+                  paymentStatus: "Paid",
+                  paymentMethod: "Razorpay / UPI",
+                },
+              }),
+            });
+
+            const verifyData = await verifyRes.json();
+            if (verifyData.success) {
+              setBooking({
+                ...data,
+                paymentId: response.razorpay_payment_id,
+                orderId: response.razorpay_order_id,
+                paymentStatus: "Paid",
+                status: "Confirmed",
+              });
+              setStep("success");
+            } else {
+              setPayError(verifyData.message || "Payment verification failed.");
+            }
+          } catch (verifyErr) {
+            console.error("Verification error:", verifyErr);
+            setPayError("Server error verifying your payment. Please contact support.");
+          } finally {
+            setIsPaying(false);
+          }
+        },
+        prefill: {
+          name: data.name,
+          email: data.email,
+          contact: data.phone,
+        },
+        notes: {
+          bookingId: data.id,
+          tourTitle: data.tourTitle,
+          departureSlot: data.timeLabel,
+        },
+        theme: {
+          color: "#1d352b",
+        },
+        modal: {
+          ondismiss: function () {
+            setIsPaying(false);
+            setPayError("Payment was cancelled before completion. No amount was charged.");
+          },
+        },
+      };
+
+      const rzpInstance = new window.Razorpay(options);
+      rzpInstance.on("payment.failed", async function (failRes) {
+        const errorDesc =
+          failRes.error?.description ||
+          failRes.error?.reason ||
+          "Payment transaction was declined or failed.";
+        setPayError(`Payment Failed: ${errorDesc} (Code: ${failRes.error?.code || "PAYMENT_FAILED"})`);
+        setIsPaying(false);
+
+        // Record failure in backend audit log
+        try {
+          await fetch("http://localhost:5000/api/payment/payment-failed", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            },
+            credentials: "include",
+            body: JSON.stringify({
+              orderId: orderData?.order?.id,
+              paymentId: failRes.error?.metadata?.payment_id || "",
+              errorCode: failRes.error?.code,
+              errorDescription: errorDesc,
+              errorReason: failRes.error?.reason,
+              bookingData: bookingPayload,
+            }),
+          });
+        } catch (logErr) {
+          console.warn("Failed to record payment failure:", logErr);
+        }
+      });
+      rzpInstance.open();
+    } catch (err) {
+      console.error("Payment initiation error:", err);
+      setPayError("Unable to open Razorpay payment gateway.");
+      setIsPaying(false);
+    }
+  };
+
+  // Convert image to clean Base64 dataURL for jsPDF embedding
+  const loadLogoDataUrl = (src) => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.onload = () => {
+        try {
+          const canvas = document.createElement("canvas");
+          canvas.width = img.naturalWidth || img.width || 500;
+          canvas.height = img.naturalHeight || img.height || 500;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0);
+          resolve(canvas.toDataURL("image/png"));
+        } catch (e) {
+          resolve(src);
+        }
+      };
+      img.onerror = () => resolve(null);
+      img.src = src;
+    });
   };
 
   // ------------------------------------------
@@ -703,36 +964,61 @@ const BookingModal = ({ tour, pkg, onClose }) => {
       const { jsPDF } = await import("jspdf");
       const doc = new jsPDF({ unit: "mm", format: "a4" });
       const W = 210;
-      const green = [29, 53, 43];
-      const gold = [173, 134, 61];
+      const green = [18, 54, 38];
+      const gold = [180, 140, 60];
       const rs = (n) => `Rs. ${Number(n).toLocaleString("en-IN")}`;
       const b = booking.bill;
 
+      // 1. Fetch & attach official logo
+      let logoData = null;
+      try {
+        logoData = await loadLogoDataUrl(siteLogo);
+      } catch (err) {
+        console.warn("Could not load logo for PDF ticket:", err);
+      }
+
       // Header band
       doc.setFillColor(...green);
-      doc.rect(0, 0, W, 52, "F");
+      doc.rect(0, 0, W, 56, "F");
       doc.setFillColor(...gold);
-      doc.rect(0, 52, W, 3, "F");
+      doc.rect(0, 56, W, 3, "F");
+
+      // Attach Official Logo on Top Left
+      if (logoData) {
+        doc.setFillColor(255, 255, 255);
+        doc.roundedRect(14, 8, 38, 38, 4, 4, "F");
+        doc.addImage(logoData, "PNG", 16, 10, 34, 34);
+      }
+
+      const textStartX = logoData ? 58 : 14;
 
       doc.setTextColor(255, 255, 255);
       doc.setFont("helvetica", "bold");
-      doc.setFontSize(22);
-      doc.text("BOOKING CONFIRMATION", 14, 22);
+      doc.setFontSize(18);
+      doc.text("BHITARAKANIKA SAFARI", textStartX, 21);
 
-      doc.setFontSize(13);
-      doc.text(BRAND_NAME, 14, 33);
+      doc.setFontSize(11);
+      doc.text("Official Boat Safari E-Pass & Voucher", textStartX, 30);
       doc.setFont("helvetica", "normal");
-      doc.setFontSize(10.5);
+      doc.setFontSize(9);
       doc.setTextColor(225, 200, 140);
-      doc.text("Boat Service Reservation", 14, 41);
+      doc.text("Recognized by Forest Dept. · Govt. of Odisha", textStartX, 38);
 
       doc.setTextColor(255, 255, 255);
       doc.setFont("helvetica", "bold");
       doc.setFontSize(11);
-      doc.text(`Booking ID: ${booking.id}`, W - 14, 22, { align: "right" });
+      doc.text(`Booking ID: ${booking.id}`, W - 14, 20, { align: "right" });
       doc.setFont("helvetica", "normal");
-      doc.setFontSize(10);
-      doc.text(`Issued on: ${booking.issuedOn}`, W - 14, 30, { align: "right" });
+      doc.setFontSize(9.5);
+      doc.text(`Status: Confirmed · Paid`, W - 14, 28, { align: "right" });
+      if (booking.paymentId) {
+        doc.setFontSize(8.5);
+        doc.setTextColor(225, 200, 140);
+        doc.text(`Razorpay ID: ${booking.paymentId}`, W - 14, 36, { align: "right" });
+      }
+      doc.setTextColor(220, 230, 225);
+      doc.setFontSize(8.5);
+      doc.text(`Issued: ${booking.issuedOn}`, W - 14, 44, { align: "right" });
 
       // Title
       doc.setTextColor(...green);
@@ -801,23 +1087,34 @@ const BookingModal = ({ tour, pkg, onClose }) => {
       drawField("Home Town", booking.address || "N/A", col2, y);
       y += rowGap;
       drawField("Travel date", formatDate(booking.date), col1, y);
-      drawField("Aadhar number", maskAadhar(booking.aadhar), col2, y);
+      drawField("Aadhar / Passport", maskAadhar(booking.aadhar), col2, y);
       y += rowGap;
       drawField("Time slot", booking.timePdf, col1, y);
-      drawField("Total guests", `${booking.people} Guests (1 Boat)`, col2, y);
+      drawField("Total guests & boats", `${booking.people} Guests (${booking.boats || 1} ${(booking.boats || 1) > 1 ? "Boats" : "Boat"})`, col2, y);
       y += rowGap + 1;
 
       // Fare breakdown box
       const lines = booking.govtTax
         ? [
-            [booking.fareLabel, rs(b.fare)],
             [
-              `Govt tax: Rs. ${b.perPerson} x ${booking.people} ${personWord(booking.people)}`,
+              `${booking.fareLabel} (${booking.boats || 1} ${(booking.boats || 1) > 1 ? "boats" : "boat"})`,
+              rs(b.fare),
+            ],
+            [
+              `Govt forest permit: Rs. ${b.perPerson} x ${booking.people} ${personWord(booking.people)}`,
               rs(b.personTax),
             ],
-            ["Govt boat tax (1 boat)", rs(b.boatTax)],
+            [
+              `Govt boat tax (${booking.boats || 1} ${(booking.boats || 1) > 1 ? "boats" : "boat"})`,
+              rs(b.boatTax),
+            ],
           ]
-        : [[booking.fareLabel, rs(b.fare)]];
+        : [
+            [
+              `${booking.fareLabel} (${booking.boats || 1} ${(booking.boats || 1) > 1 ? "boats" : "boat"})`,
+              rs(b.fare),
+            ],
+          ];
 
       const boxH = 16 + lines.length * 7 + 18;
       doc.setFillColor(248, 246, 238);
@@ -888,7 +1185,7 @@ const BookingModal = ({ tour, pkg, onClose }) => {
 
   return (
     <ModalShell
-      kicker={step === "form" ? "Reserve your boat" : "Booking received"}
+      kicker={step === "form" ? "Reserve your boat" : "Confirmed Safari Reservation"}
       title={step === "form" ? "Book Your Boat Trip" : "Booking Confirmed"}
       onClose={onClose}
       className={step === "form" ? "bk-modal-booking" : "bk-modal-voucher"}
@@ -925,9 +1222,20 @@ const BookingModal = ({ tour, pkg, onClose }) => {
                 </div>
 
                 <div className="bk-fare-line">
-                  <span className="bk-fare-name">{fareLabel}</span>
-                  <span className="bk-fare-qty">1 Boat</span>
-                  <strong className="bk-fare-val">{formatPrice(bill.fare)}</strong>
+                  <span className="bk-fare-name">
+                    {fareLabel}
+                    {boatCount > 1 && (
+                      <small className="bk-tax-calc">
+                        ({formatPrice(bill.baseFare)} × {boatCount} boats)
+                      </small>
+                    )}
+                  </span>
+                  <span className="bk-fare-qty">
+                    {boatCount} {boatCount === 1 ? "Boat" : "Boats"}
+                  </span>
+                  <strong className="bk-fare-val bk-pop" key={bill.fare}>
+                    {formatPrice(bill.fare)}
+                  </strong>
                 </div>
 
                 {tour.govtTax ? (
@@ -947,9 +1255,13 @@ const BookingModal = ({ tour, pkg, onClose }) => {
                     <div className="bk-fare-line">
                       <span className="bk-fare-name">
                         Govt Boat Tax
-                        <small className="bk-tax-calc">(Mandatory forest entry)</small>
+                        <small className="bk-tax-calc">
+                          ({formatPrice(BOAT_TAX)} × {boatCount} {boatCount === 1 ? "boat" : "boats"})
+                        </small>
                       </span>
-                      <strong className="bk-fare-val">{formatPrice(bill.boatTax)}</strong>
+                      <strong className="bk-fare-val bk-pop" key={bill.boatTax}>
+                        {formatPrice(bill.boatTax)}
+                      </strong>
                     </div>
                   </>
                 ) : null}
@@ -1057,6 +1369,48 @@ const BookingModal = ({ tour, pkg, onClose }) => {
                   {errors.time && <em className="bk-err-txt">{errors.time}</em>}
                 </div>
 
+                {/* Boat Stepper */}
+                <div className={fieldClass("boats")}>
+                  <label htmlFor="bk-boats">
+                    Number of Boats <span className="bk-req-star">*</span>
+                  </label>
+                  <div className="bk-stepper-box">
+                    <button
+                      type="button"
+                      className="bk-step-btn"
+                      onClick={() => changeBoats(-1)}
+                      disabled={boatCount <= 1 || boatCount <= Math.ceil(peopleNum / 18)}
+                      aria-label="Decrease boats"
+                    >
+                      −
+                    </button>
+                    <div className="bk-step-val-wrap">
+                      <input
+                        id="bk-boats"
+                        className="bk-counter-input"
+                        type="text"
+                        inputMode="numeric"
+                        value={form.boats}
+                        readOnly
+                        aria-label="Number of boats"
+                      />
+                      <span className="bk-people-sub">
+                        {boatCount === 1 ? "Boat" : "Boats"}
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      className="bk-step-btn"
+                      onClick={() => changeBoats(1)}
+                      disabled={boatCount >= 10}
+                      aria-label="Increase boats"
+                    >
+                      +
+                    </button>
+                  </div>
+                  <small className="bk-hint-txt">Capacity: up to {boatCount * 18} passengers</small>
+                </div>
+
                 {/* People Stepper */}
                 <div className={fieldClass("people")}>
                   <label htmlFor="bk-people">
@@ -1091,13 +1445,17 @@ const BookingModal = ({ tour, pkg, onClose }) => {
                       type="button"
                       className="bk-step-btn"
                       onClick={() => changePeople(1)}
-                      disabled={peopleNum >= MAX_PEOPLE}
+                      disabled={peopleNum >= 180}
                       aria-label="Increase people"
                     >
                       +
                     </button>
                   </div>
-                  <small className="bk-hint-txt">Max {MAX_PEOPLE} passengers per boat</small>
+                  <small className="bk-hint-txt">
+                    {peopleNum > 18
+                      ? `${boatCount} boats allocated (cap: ${boatCount * 18})`
+                      : `Max 18 passengers per boat`}
+                  </small>
                   {errors.people && <em className="bk-err-txt">{errors.people}</em>}
                 </div>
 
@@ -1151,20 +1509,19 @@ const BookingModal = ({ tour, pkg, onClose }) => {
                   {errors.phone && <em className="bk-err-txt">{errors.phone}</em>}
                 </div>
 
-                {/* Aadhar */}
+                {/* Aadhar / Passport */}
                 <div className={fieldClass("aadhar")}>
                   <label htmlFor="bk-aadhar">
-                    Aadhar Number <span className="bk-opt-tag">(Optional)</span>
+                    Aadhaar / Passport Number <span className="bk-opt-tag">(Optional)</span>
                   </label>
                   <div className="bk-input-control">
                     <span className="bk-icon-lead">🪪</span>
                     <input
                       id="bk-aadhar"
                       type="text"
-                      inputMode="numeric"
-                      placeholder="12-digit UIDAI number"
+                      placeholder="12-digit Aadhaar or Passport number"
                       value={form.aadhar}
-                      onChange={handleDigits("aadhar", 12)}
+                      onChange={(e) => setField("aadhar", e.target.value.replace(/[^a-zA-Z0-9]/g, "").toUpperCase().slice(0, 16))}
                     />
                   </div>
                   {errors.aadhar && <em className="bk-err-txt">{errors.aadhar}</em>}
@@ -1210,134 +1567,100 @@ const BookingModal = ({ tour, pkg, onClose }) => {
               </div>
 
               {/* Form Action Buttons */}
+              {payError && (
+                <div style={{ color: "#d9534f", fontSize: "13px", margin: "8px 0 12px", fontWeight: "600", display: "flex", alignItems: "center", gap: "6px" }}>
+                  <span>⚠️</span>
+                  <span>{payError}</span>
+                </div>
+              )}
               <div className="bk-submit-row">
-                <button type="button" className="bk-btn-ghost-modern" onClick={close}>
+                <button type="button" className="bk-btn-ghost-modern" onClick={close} disabled={isPaying}>
                   Cancel
                 </button>
-                <button type="submit" className="bk-btn-primary-luxury">
-                  <span>Confirm Boat Booking</span>
-                  <span className="bk-btn-icon">➔</span>
+                <button type="submit" className="bk-btn-primary-luxury" disabled={isPaying}>
+                  {isPaying ? (
+                    <span>Opening Gateway...</span>
+                  ) : (
+                    <>
+                      <span>Confirm Boat Booking</span>
+                      <span className="bk-btn-icon">➔</span>
+                    </>
+                  )}
                 </button>
               </div>
             </div>
           </form>
         ) : (
           <div className="bk-body bk-success-wrap">
-            <div className="bk-success-top">
-              <div className="bk-check" aria-hidden="true">
-                <svg viewBox="0 0 52 52">
-                  <circle cx="26" cy="26" r="24" />
-                  <path d="M15 27l8 8 14-16" />
-                </svg>
-              </div>
-              <h3>Booking Request Received!</h3>
-              <p>
-                Thank you, <strong>{booking.name.split(" ")[0]}</strong>! Your boat reservation request has been registered.
-                Here is your official booking confirmation voucher.
-              </p>
-            </div>
-
+            {/* VALUE-ONLY CONFIRMATION TICKET */}
             <div className="bk-doc">
+              {/* Header: Package Name, Route & Paid Badge */}
               <div className="bk-doc-head">
                 <div>
-                  <small>{BRAND_NAME}</small>
-                  <h4>Official Booking Voucher</h4>
+                  <small>Bhitarkanika Boat Service</small>
+                  <h4>{booking.tourTitle}</h4>
+                  <span className="bk-doc-route-sub">
+                    {booking.from} ➔ {booking.to} · {booking.duration}
+                  </span>
                 </div>
                 <div className="bk-doc-id">
-                  <small>Booking ID</small>
+                  <span className="bk-paid-badge-chip">✓ Confirmed</span>
                   <strong>{booking.id}</strong>
                 </div>
               </div>
 
-              <div className="bk-doc-tour">
-                <h5>{booking.tourTitle}</h5>
-                <p>
-                  {booking.pkgName ? `${booking.pkgName} package · ` : ""}
-                  {booking.category} · {booking.duration}
-                </p>
+              {/* Core Value Details Grid */}
+              <div className="bk-voucher-grid-value">
+                <div className="bk-voucher-metric">
+                  <span className="bk-metric-lbl">📅 Travel Date &amp; Slot</span>
+                  <strong className="bk-metric-val">
+                    {formatDate(booking.date)} · {booking.timeLabel}
+                  </strong>
+                </div>
+
+                <div className="bk-voucher-metric">
+                  <span className="bk-metric-lbl">👥 Guests &amp; Boat</span>
+                  <strong className="bk-metric-val">
+                    {booking.people} {personWord(booking.people)} · 1 Boat
+                  </strong>
+                </div>
+
+                <div className="bk-voucher-metric">
+                  <span className="bk-metric-lbl">👤 Primary Guest</span>
+                  <strong className="bk-metric-val">
+                    {booking.name} (+91 {booking.phone})
+                  </strong>
+                </div>
+
+                <div className="bk-voucher-metric">
+                  <span className="bk-metric-lbl">💳 Payment Reference</span>
+                  <strong className="bk-metric-val code">
+                    {booking.paymentId || "Razorpay Verified"}
+                  </strong>
+                </div>
               </div>
 
-              <div className="bk-doc-route">
+              {/* Total Paid Strip */}
+              <div className="bk-doc-total-strip">
                 <div>
-                  <small>From</small>
-                  <strong>{booking.from}</strong>
+                  <span className="bk-total-lbl">Total Amount Paid</span>
+                  <small className="bk-total-sub">Includes Boat Fare, Forest Permit &amp; Taxes</small>
                 </div>
-                <span aria-hidden="true">⟶</span>
-                <div>
-                  <small>To</small>
-                  <strong>{booking.to}</strong>
-                </div>
-              </div>
-
-              <dl className="bk-doc-grid">
-                <div>
-                  <dt>Guest Name</dt>
-                  <dd>{booking.name}</dd>
-                </div>
-                <div>
-                  <dt>Phone Number</dt>
-                  <dd>+91 {booking.phone}</dd>
-                </div>
-                <div className="bk-doc-wide">
-                  <dt>Email Address</dt>
-                  <dd>{booking.email}</dd>
-                </div>
-                <div>
-                  <dt>Travel Date</dt>
-                  <dd>{formatDate(booking.date)}</dd>
-                </div>
-                <div>
-                  <dt>Total Guests</dt>
-                  <dd>{booking.people} Guests</dd>
-                </div>
-                <div className="bk-doc-wide">
-                  <dt>Departure Time Slot</dt>
-                  <dd>{booking.timeLabel}</dd>
-                </div>
-                {booking.address && (
-                  <div className="bk-doc-wide">
-                    <dt>Home Town</dt>
-                    <dd>{booking.address}</dd>
-                  </div>
-                )}
-                {booking.aadhar && (
-                  <div className="bk-doc-wide">
-                    <dt>Aadhar Number</dt>
-                    <dd>{maskAadhar(booking.aadhar)}</dd>
-                  </div>
-                )}
-              </dl>
-
-              <div className="bk-doc-bill">
-                <div>
-                  <span>{booking.fareLabel} (1 Boat)</span>
-                  <b>{formatPrice(booking.bill.fare)}</b>
-                </div>
-                {booking.govtTax && (
-                  <>
-                    <div>
-                      <span>
-                        Govt Forest Permit ({formatPrice(booking.bill.perPerson)} × {booking.people})
-                      </span>
-                      <b>{formatPrice(booking.bill.personTax)}</b>
-                    </div>
-                    <div>
-                      <span>Govt Boat Tax (1 boat)</span>
-                      <b>{formatPrice(booking.bill.boatTax)}</b>
-                    </div>
-                  </>
-                )}
-              </div>
-
-              <div className="bk-doc-total">
-                <span>Final Payable Price</span>
-                <strong>{formatPrice(booking.total)}</strong>
+                <strong className="bk-total-price">{formatPrice(booking.total)}</strong>
               </div>
             </div>
 
+            {/* Direct Action Buttons */}
             <div className="bk-actions bk-actions-end">
-              <button type="button" className="bk-btn-ghost-modern" onClick={close}>
-                Close
+              <button
+                type="button"
+                className="bk-btn-ghost-modern"
+                onClick={() => {
+                  close();
+                  navigate("/profile");
+                }}
+              >
+                <span>View in My Profile</span>
               </button>
               <button
                 type="button"

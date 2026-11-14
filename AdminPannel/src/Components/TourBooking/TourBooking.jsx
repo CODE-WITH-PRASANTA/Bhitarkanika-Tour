@@ -20,7 +20,8 @@ import {
   Mail,
   MapPin,
   UserRound,
-  Download,
+  RotateCcw,
+  Ship,
 } from "lucide-react";
 
 import "./TourBooking.css";
@@ -85,6 +86,8 @@ const TourBooking = () => {
             item.image ||
             "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=160&q=80",
           packageType: item.packageType || "Standard package · 1 DAY",
+          boats: Number(item.boats || item.boatCount) || 1,
+          boatCount: Number(item.boats || item.boatCount) || 1,
           status: item.status || "Pending",
         }));
         setBookings(normalized);
@@ -513,56 +516,33 @@ const TourBooking = () => {
           <ChevronDown size={17} />
         </label>
 
-        <div className="TourBooking-date-filter">
-          <CalendarDays size={18} />
-          <input
-            aria-label="From date"
-            type="date"
-            value={fromDate}
-            onChange={(event) => {
-              setFromDate(event.target.value);
-              setCurrentPage(1);
-            }}
-          />
-          <span>to</span>
-          <input
-            aria-label="To date"
-            type="date"
-            value={toDate}
-            onChange={(event) => {
-              setToDate(event.target.value);
-              setCurrentPage(1);
-            }}
-          />
+        <div className="TourBooking-actions-group">
+          {(searchTerm || filterPackage !== "All Packages" || filterStatus !== "All Status") && (
+            <button
+              type="button"
+              className="TourBooking-reset-btn"
+              title="Reset all filters"
+              onClick={() => {
+                setSearchTerm("");
+                setFilterPackage("All Packages");
+                setFilterStatus("All Status");
+                setCurrentPage(1);
+              }}
+            >
+              <RotateCcw size={14} />
+              <span>Reset</span>
+            </button>
+          )}
+
+          <button
+            className="TourBooking-add-button"
+            type="button"
+            onClick={openCreate}
+          >
+            <Plus size={18} />
+            <span>Add Booking</span>
+          </button>
         </div>
-
-        <button
-          className="TourBooking-search-button"
-          type="button"
-          onClick={() => setCurrentPage(1)}
-        >
-          <Search size={18} />
-          Search
-        </button>
-
-        <button
-          className="TourBooking-add-button"
-          type="button"
-          onClick={openCreate}
-        >
-          <Plus size={21} />
-          Add Booking
-        </button>
-
-        <button
-          className="TourBooking-export-button"
-          type="button"
-          onClick={exportBookings}
-          title="Export filtered bookings to CSV"
-        >
-          <Download size={18} />
-          <span>Export</span>
-        </button>
       </section>
 
       {selectedIds.length > 0 && (
@@ -601,6 +581,7 @@ const TourBooking = () => {
                 <th>#</th>
                 <th>Package Details</th>
                 <th>Full Name</th>
+                <th>Boats</th>
                 <th>Adults</th>
                 <th>Children</th>
                 <th>Travel Date</th>
@@ -647,6 +628,11 @@ const TourBooking = () => {
                     </div>
                   </td>
                   <td className="TourBooking-guest-name">{booking.name}</td>
+                  <td>
+                    <span style={{ fontWeight: 700, color: "#065f46" }}>
+                      {booking.boats || 1} { (booking.boats || 1) > 1 ? "Boats" : "Boat" }
+                    </span>
+                  </td>
                   <td>{booking.adults}</td>
                   <td>{booking.children}</td>
                   <td>{formatDate(booking.date)}</td>
@@ -854,6 +840,7 @@ const TourBooking = () => {
 
             <div className="TourBooking-detail-grid">
               <div><span><UserRound size={15} /> Guest name</span><strong>{activeBooking.name}</strong></div>
+              <div><span><Ship size={15} /> Boats booked</span><strong>{activeBooking.boats || 1} {(activeBooking.boats || 1) > 1 ? "Boats" : "Boat"}</strong></div>
               <div><span><Users size={15} /> Guests</span><strong>{activeBooking.adults} adults, {activeBooking.children} children</strong></div>
               <div><span><CalendarDays size={15} /> Travel date</span><strong>{formatDate(activeBooking.date)}</strong></div>
               <div><span><Clock3 size={15} /> Travel time</span><strong>{activeBooking.time || "—"}</strong></div>

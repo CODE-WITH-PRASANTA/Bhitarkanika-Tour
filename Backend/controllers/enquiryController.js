@@ -44,15 +44,35 @@ const create = async (req, res, next) => {
       minute: '2-digit',
     });
 
+    const name = (req.body.name || req.body.fullName || '').trim();
+    if (!name) {
+      res.status(400);
+      throw new Error('Customer name is required');
+    }
+
+    const email = (req.body.email || '').trim();
+    const phone = (req.body.phone || req.body.mobile || '').trim();
+    const homeTown = (req.body.homeTown || req.body.city || '').trim();
+    const aadhar = (req.body.aadhar || req.body.passport || '').trim();
     const subject = (req.body.subject || '').trim();
-    const tour = (req.body.tour || '').trim() || subject || 'General Enquiry';
+    const tour = (req.body.tour || req.body.service || '').trim() || subject || 'General Enquiry';
+
+    let message = (req.body.message || '').trim();
+    const metaParts = [];
+    if (homeTown && !message.includes(homeTown)) metaParts.push(`Home Town: ${homeTown}`);
+    if (aadhar && !message.includes(aadhar)) metaParts.push(`ID / Aadhaar: ${aadhar}`);
+    if (metaParts.length > 0) {
+      message = message ? `${metaParts.join(' | ')} — ${message}` : metaParts.join(' | ');
+    }
 
     const item = await Enquiry.create({
-      name: req.body.name,
-      email: req.body.email,
-      phone: req.body.phone || '',
-      subject,
-      message: req.body.message || '',
+      name,
+      email,
+      phone,
+      homeTown,
+      aadhar,
+      subject: subject || `Enquiry for ${tour}`,
+      message,
       tour,
       start: req.body.start || 'Not set',
       end: req.body.end || 'Not set',

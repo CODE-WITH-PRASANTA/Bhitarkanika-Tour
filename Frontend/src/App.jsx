@@ -1,6 +1,7 @@
 
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
 
 import Topbar from "./Components/Topbar/Topbar";
 import Navbar from "./Components/Navbar/Navbar";
@@ -29,48 +30,70 @@ import SeaFood from "./Pages/SeaFood/SeaFood";
 import HuntingTower from "./Pages/HuntingTower/HuntingTower";
 import EVVechile from "./Pages/EVVechile/EVVechile";
 import EnquireNow from "./Components/EnquireNow/EnquireNow";
+import Auth from "./Pages/Auth/Auth";
+import Profile from "./Pages/Profile/Profile";
+import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Topbar />
-      <Navbar />
+    <AuthProvider>
+      <BrowserRouter>
+        <Topbar />
+        <Navbar />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/contact" element={<ContactMain/>} />
-        <Route path="/blog" element={<BlogMain/>} />
-        <Route path="/blog/:slug" element={<BlogDetails/>} />
-        <Route path="/gallery" element={<GalleryMain/>} />
-        <Route path="/faq" element={<FaqMain/>} />
-        <Route path="/service" element={<ServiceMain/>} />
-        <Route path="/about" element={<About/>} />
-        <Route path="/blog-details" element={<BlogDetails/>} />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/contact" element={<ContactMain/>} />
+          <Route path="/blog" element={<BlogMain/>} />
+          <Route path="/blog/:slug" element={<BlogDetails/>} />
+          <Route path="/gallery" element={<GalleryMain/>} />
+          <Route path="/faq" element={<FaqMain/>} />
+          <Route path="/service" element={<ServiceMain/>} />
+          <Route path="/about" element={<About/>} />
+          <Route path="/blog-details" element={<BlogDetails/>} />
 
+          {/* Authentication & User Profile Routes */}
+          <Route path="/login" element={<Auth />} />
+          <Route path="/register" element={<Auth />} />
+          <Route path="/forgot-password" element={<Auth />} />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/my-profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
 
+          <Route path="/services/boat-service" element={<BoatService/>} />
+          <Route path="/services/migratory-birds-point" element={<MigratoryBirds/>} />
+          <Route path="/services/saltwater-crocodiles" element={<SaltWaterCrocodile/>} />
+          <Route path="/services/mangrove-forests" element={<MangroveForest/>} />
+          <Route path="/services/sky-walk" element={<SkyWalk/>} />
+          <Route path="/services/deer" element={<Deer/>} />
+          <Route path="/services/white-crocodile" element={<WhiteCrocodile/>} />
+          <Route path="/services/jungle-trekking" element={<JungleTrakking/>} />
+          <Route path="/services/museum" element={<Museum/>} />
+          <Route path="/services/narrow-creek" element={<NarrowCreek/>} />
+          <Route path="/services/olive-ridley-turtles" element={<OliveRidleyTurtles/>} />
+          <Route path="/services/sea-food" element={<SeaFood/>} />
+          <Route path="/services/hunting-tower" element={<HuntingTower/>} />
+          <Route path="/services/ev-vehicle-service" element={<EVVechile/>} />
+        </Routes>
 
-
-
-        <Route path="/services/boat-service" element={<BoatService/>} />
-        <Route path="/services/migratory-birds-point" element={<MigratoryBirds/>} />
-        <Route path="/services/saltwater-crocodiles" element={<SaltWaterCrocodile/>} />
-        <Route path="/services/mangrove-forests" element={<MangroveForest/>} />
-        <Route path="/services/sky-walk" element={<SkyWalk/>} />
-        <Route path="/services/deer" element={<Deer/>} />
-        <Route path="/services/white-crocodile" element={<WhiteCrocodile/>} />
-        <Route path="/services/jungle-trekking" element={<JungleTrakking/>} />
-        <Route path="/services/museum" element={<Museum/>} />
-        <Route path="/services/narrow-creek" element={<NarrowCreek/>} />
-        <Route path="/services/olive-ridley-turtles" element={<OliveRidleyTurtles/>} />
-        <Route path="/services/sea-food" element={<SeaFood/>} />
-        <Route path="/services/hunting-tower" element={<HuntingTower/>} />
-        <Route path="/services/ev-vehicle-service" element={<EVVechile/>} />
-      </Routes>
-
-      <Footer />
-      <FloatingIcons/>
-      <EnquireNow/>
-    </BrowserRouter>
+        <Footer />
+        <FloatingIcons/>
+        <EnquireNow/>
+      </BrowserRouter>
+    </AuthProvider>
   );
 };
 

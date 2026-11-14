@@ -1,0 +1,414 @@
+/* ========================================================
+   BHITARKANIKA LUXURY AUTHENTICATION (FRESH DESIGN)
+   Clean, centered, zero-scroll & zero horizontal overflow
+   ======================================================== */
+
+.btk-auth-page {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  min-height: calc(100vh - 120px);
+  padding: 18px 20px 32px;
+  background-image: url("../../assets/BhitarakanikaBreadcrumb.jpeg");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  font-family: inherit;
+}
+
+/* Atmospheric dark emerald gradient overlay - transparent enough so image is clearly visible */
+.btk-auth-overlay {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse at 50% 30%, rgba(7, 26, 19, 0.45) 0%, rgba(3, 15, 10, 0.72) 100%),
+    linear-gradient(180deg, rgba(6, 22, 16, 0.4) 0%, rgba(4, 16, 11, 0.75) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Luxury Centered Card */
+.btk-auth-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 480px;
+  background: rgba(8, 26, 19, 0.86);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(32, 181, 116, 0.32);
+  border-radius: 22px;
+  box-shadow: 
+    0 24px 70px rgba(0, 0, 0, 0.65),
+    0 0 45px rgba(32, 181, 116, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  padding: 26px 30px;
+  box-sizing: border-box;
+  margin: 10px auto 0;
+  overflow: hidden;
+}
+
+/* Card Header */
+.btk-auth-card-header {
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.btk-auth-emblem {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 12px;
+  border-radius: 100px;
+  background: rgba(173, 134, 61, 0.14);
+  border: 1px solid rgba(173, 134, 61, 0.35);
+  color: #e5c378;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.btk-auth-emblem-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #20b574;
+  box-shadow: 0 0 6px #20b574;
+}
+
+.btk-auth-card-title {
+  color: #ffffff;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 23px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 4px;
+  letter-spacing: -0.3px;
+}
+
+.btk-auth-card-sub {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 12px;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Pending Reservation Banner */
+.btk-auth-pending-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  background: rgba(173, 134, 61, 0.16);
+  border: 1px solid rgba(173, 134, 61, 0.4);
+  color: #f7d287;
+  font-size: 11.5px;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+.btk-auth-sparkle {
+  color: #f7d287;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.btk-auth-pending-hint {
+  display: block;
+  font-size: 10.5px;
+  color: rgba(255, 255, 255, 0.75);
+  margin-top: 2px;
+}
+
+/* Alerts (Error / Success / Info) */
+.btk-auth-msg {
+  padding: 8px 12px;
+  border-radius: 9px;
+  font-size: 12px;
+  line-height: 1.35;
+  margin-bottom: 11px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: btkSlide 0.2s ease;
+}
+
+.btk-auth-msg.error {
+  background: rgba(239, 68, 68, 0.16);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #fca5a5;
+}
+
+.btk-auth-msg.success {
+  background: rgba(32, 181, 116, 0.16);
+  border: 1px solid rgba(32, 181, 116, 0.38);
+  color: #86efac;
+}
+
+.btk-auth-msg.info {
+  background: rgba(173, 134, 61, 0.16);
+  border: 1px solid rgba(173, 134, 61, 0.35);
+  color: #f7d287;
+}
+
+/* Clean Form */
+.btk-auth-form-clean {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.btk-grid-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+
+.btk-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.btk-form-label {
+  color: #a7f3d0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.btk-label-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btk-forgot-btn {
+  background: transparent;
+  border: none;
+  color: #20b574;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.18s ease;
+}
+
+.btk-forgot-btn:hover {
+  color: #8ff0bd;
+  text-decoration: underline;
+}
+
+/* Input Box */
+.btk-input-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: rgba(4, 18, 13, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 9px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btk-input-box:focus-within {
+  border-color: #20b574;
+  background: rgba(4, 18, 13, 0.95);
+  box-shadow: 0 0 0 2.5px rgba(32, 181, 116, 0.22), inset 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.btk-input-ico {
+  position: absolute;
+  left: 11px;
+  color: rgba(255, 255, 255, 0.42);
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.btk-input-element {
+  width: 100%;
+  height: 38px;
+  padding: 0 12px 0 36px;
+  border-radius: 9px;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 12.5px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.btk-input-element::placeholder {
+  color: rgba(255, 255, 255, 0.32);
+}
+
+.btk-pwd-toggle {
+  position: absolute;
+  right: 11px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  transition: color 0.18s;
+}
+
+.btk-pwd-toggle:hover {
+  color: #ffffff;
+}
+
+/* Primary Button */
+.btk-btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 40px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #1ca668 0%, #107248 100%);
+  border: none;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(28, 166, 104, 0.32);
+  margin-top: 2px;
+}
+
+.btk-btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #23bb76 0%, #138554 100%);
+  box-shadow: 0 6px 18px rgba(28, 166, 104, 0.42);
+  transform: translateY(-1px);
+}
+
+.btk-btn-primary:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Divider */
+.btk-divider-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 3px 0;
+}
+
+.btk-divider-wrap::before,
+.btk-divider-wrap::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.btk-divider-wrap span {
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: 1.1px;
+  font-weight: 700;
+}
+
+/* Google OAuth Button */
+.btk-btn-google {
+  width: 100%;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 0 16px;
+  border-radius: 9px;
+  background: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  color: #1f2937;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  box-sizing: border-box;
+}
+
+.btk-btn-google:hover {
+  background: #f8fafc;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  transform: translateY(-1px);
+}
+
+.btk-google-svg {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+}
+
+/* Bottom Switcher Row */
+.btk-switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 6px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 12px;
+}
+
+.btk-switch-link {
+  background: transparent;
+  border: none;
+  color: #20b574;
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.18s ease;
+  text-decoration: underline;
+}
+
+.btk-switch-link:hover {
+  color: #8ff0bd;
+}
+
+/* Animations */
+@keyframes btkSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 540px) {
+  .btk-auth-page {
+    padding: 12px 14px 20px;
+  }
+
+  .btk-auth-card {
+    padding: 20px 18px;
+    border-radius: 16px;
+  }
+
+  .btk-grid-pair {
+    grid-template-columns: 1fr;
+  }
+}

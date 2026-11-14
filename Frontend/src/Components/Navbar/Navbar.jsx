@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import {
   ChevronDown,
@@ -44,6 +44,16 @@ const links = [
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 15);
+    };
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const closeMenu = () => {
     setMenuOpen(false);
@@ -52,7 +62,7 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="navbar">
+      <header className={`navbar ${isScrolled ? "is-scrolled" : ""}`}>
         <div className="navbar-container">
           {/* Logo (left corner) */}
           <Link
@@ -167,6 +177,36 @@ const Navbar = () => {
                   {link.title}
                 </NavLink>
               ))}
+
+              {/* Mobile Actions in Drawer */}
+              <div className="navbar-mobile-actions">
+                <a
+                  href="tel:+918328982394"
+                  className="navbar-support navbar-support--mobile"
+                  aria-label="Call our 24/7 support hotline"
+                >
+                  <span className="navbar-support-icon">
+                    <Headset size={22} strokeWidth={1.7} />
+                  </span>
+                  <span className="navbar-support-text">
+                    <span className="navbar-support-label">24/7 Hotline</span>
+                    <span className="navbar-support-number">
+                      +91 832 898 2394
+                    </span>
+                  </span>
+                </a>
+
+                <Link
+                  to="/contact"
+                  className="navbar-book-button navbar-book-button--mobile"
+                  onClick={closeMenu}
+                >
+                  <span>Book Your Boat</span>
+                  <span className="navbar-book-icon">
+                    <ArrowUpRight size={18} />
+                  </span>
+                </Link>
+              </div>
             </div>
           </nav>
 
@@ -190,7 +230,7 @@ const Navbar = () => {
             </a>
 
             <Link
-              to="/services/boat-service"
+              to="/contact"
               className="navbar-book-button"
               onClick={closeMenu}
             >

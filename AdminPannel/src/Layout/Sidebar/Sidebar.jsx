@@ -14,6 +14,7 @@ import {
   Tags,
   MessageSquare,
   Leaf,
+  MessageSquareQuote,
 } from "lucide-react";
 
 import logo from "../../assets/mlogo.png";
@@ -79,7 +80,11 @@ export const NAV_ITEMS = [
     icon: MessageSquareText,
     path: "/enquiry",
   },
- 
+  {
+    label: "Testimonials",
+    icon: MessageSquareQuote,
+    path: "/testimonials",
+  },
 ];
 
 const Sidebar = ({
