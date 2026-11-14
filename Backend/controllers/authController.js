@@ -164,8 +164,8 @@ const googleLogin = async (req, res, next) => {
       try {
         const tokenParams = new URLSearchParams({
           code,
-          client_id: process.env.GOOGLE_CLIENT_ID || '1070313248799-q3r7khugifnf6rr69nh7uhpmucaeurq0.apps.googleusercontent.com',
-          client_secret: process.env.GOOGLE_CLIENT_SECRET || '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',
+          client_id: process.env.GOOGLE_CLIENT_ID || '',
+          client_secret: process.env.GOOGLE_CLIENT_SECRET || '',
           redirect_uri: redirectUri || 'postmessage',
           grant_type: 'authorization_code',
         });
