@@ -222,80 +222,281 @@
 }
 
 /* =========================================================
-   TWO CARDS ROW + FEATURED ROW (Left & Right Integration)
+   ALL THREE CARDS IN ONE LINE (Side-by-side integration)
 ========================================================= */
 
-.exp-cards-container {
+.exp-cards-grid .exp-tour-card {
   display: flex;
   flex-direction: column;
-  gap: 32px;
   width: 100%;
-}
-
-.exp-cards-two-row {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 28px;
-  width: 100%;
-  align-items: start;
-}
-
-.exp-cards-two-row .exp-tour-card {
-  display: flex;
-  flex-direction: column;
-  height: auto;
+  height: 100%;
   border-radius: 20px;
   background: #ffffff;
   border: 1.5px solid #ded8c8;
   overflow: hidden;
-  box-shadow: 0 12px 36px rgba(24, 42, 34, 0.08);
+  box-shadow: 0 10px 32px rgba(24, 42, 34, 0.07);
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+  box-sizing: border-box;
 }
 
-.exp-cards-two-row .exp-card-map-wrap {
+.exp-cards-grid .exp-tour-card:hover {
+  transform: translateY(-6px);
+  border-color: #c9a152;
+  box-shadow: 0 20px 48px rgba(24, 42, 34, 0.13);
+}
+
+.exp-cards-grid .exp-card-image-wrap {
   width: 100%;
-  aspect-ratio: 1024 / 682 !important;
-  height: auto !important;
-  max-height: none !important;
-  min-height: 0 !important;
+  height: 235px;
+  max-height: 235px;
+  min-height: 235px;
+  overflow: hidden;
+  position: relative;
   border-bottom: 1px solid #ebe5d5;
+  background: #f5f7f2;
 }
 
-.exp-cards-two-row .exp-card-content {
+.exp-cards-grid .exp-card-map-wrap {
+  cursor: pointer;
+}
+
+.exp-cards-grid .exp-card-image-wrap .exp-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover !important;
+  object-position: center;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.exp-cards-grid .exp-tour-card:hover .exp-card-image {
+  transform: scale(1.05);
+}
+
+.exp-cards-grid .exp-card-content {
   display: flex;
   flex: 1;
   flex-direction: column;
-  justify-content: flex-start;
-  padding: 20px 22px;
-  gap: 12px;
+  padding: 13px 18px 13px;
+  gap: 7px;
+  box-sizing: border-box;
 }
 
-.exp-cards-two-row .exp-tagline {
-  min-height: 0 !important;
-  margin: 0 !important;
-  font-size: 13px !important;
-  line-height: 1.5 !important;
+.exp-cards-grid .exp-card-eyebrow-row {
+  margin-bottom: 2px;
+}
+
+.exp-cards-grid .exp-card-content h2 {
+  font-size: 17.5px;
+  font-weight: 800;
+  color: #172d24;
+  line-height: 1.22;
+  margin: 0;
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+}
+
+.exp-cards-grid .exp-tagline {
+  font-size: 12px;
+  line-height: 1.4;
   color: #63716a;
+  margin: 0;
+  min-height: 32px;
 }
 
-.exp-cards-two-row .exp-highlights-box {
-  margin: 2px 0 0;
-  padding: 12px 14px;
-  border-radius: 12px;
+.exp-cards-grid .exp-highlights-box {
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: 10px;
   background: #fbfaf6;
   border: 1px solid #ebe5d5;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 110px;
+  box-sizing: border-box;
 }
 
-.exp-cards-two-row .exp-highlights-list {
+.exp-cards-grid .exp-highlights-label {
+  font-size: 9.5px;
+  font-weight: 800;
+  color: #ad863d;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.exp-cards-grid .exp-highlights-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.exp-cards-grid .exp-highlights-list li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #2e4337;
+  line-height: 1.25;
+}
+
+.exp-cards-grid .exp-pkg-has {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 110px;
+  box-sizing: border-box;
+}
+
+.exp-cards-grid .exp-pkg-label {
+  font-size: 9.5px;
+  font-weight: 800;
+  color: #ad863d;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.exp-cards-grid .exp-pkg-options {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px 16px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  padding: 2px;
+  border: 1px solid #e2ddd0;
+  border-radius: 8px;
+  background: #f3f5ee;
+  margin-bottom: 5px;
 }
 
-.exp-cards-two-row .exp-card-bottom {
-  margin-top: 4px !important;
-  padding-top: 14px;
+.exp-cards-grid .exp-pkg-pill {
+  min-height: 32px;
+  padding: 2px 4px;
+  border-radius: 6px;
+}
+
+.exp-cards-grid .exp-pkg-pill-name {
+  font-size: 9.5px;
+  font-weight: 700;
+}
+
+.exp-cards-grid .exp-pkg-pill-price {
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.exp-cards-grid .exp-pkg-pill.active {
+  background: #183327;
+  color: #ffffff;
+}
+
+.exp-cards-grid .exp-pkg-panel {
+  flex: 1;
+  padding: 6px 10px;
+  border-radius: 9px;
+  background: #fbfaf6;
+  border: 1px solid #ebe5d5;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.exp-cards-grid .exp-pkg-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.exp-cards-grid .exp-pkg-panel-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  font-size: 13px;
+  box-shadow: none;
+}
+
+.exp-cards-grid .exp-pkg-panel-title small {
+  font-size: 8px;
+  letter-spacing: 0.6px;
+}
+
+.exp-cards-grid .exp-pkg-panel-title strong {
+  font-size: 12px;
+  margin-top: 0;
+}
+
+.exp-cards-grid .exp-pkg-features {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.exp-cards-grid .exp-pkg-features li {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #2e4337;
+  line-height: 1.2;
+}
+
+.exp-cards-grid .exp-card-bottom {
+  margin-top: auto;
+  padding-top: 8px;
   border-top: 1px solid #ebe5d5;
 }
+
+.exp-cards-grid .exp-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.exp-cards-grid .exp-price-label {
+  font-size: 9.5px;
+  margin-bottom: 1px;
+}
+
+.exp-cards-grid .exp-price-row strong {
+  font-size: 20px;
+}
+
+.exp-cards-grid .exp-primary-btn {
+  min-height: 38px;
+  padding: 0 14px;
+  font-size: 11.5px;
+  border-radius: 8px;
+}
+
+@media (max-width: 1120px) and (min-width: 651px) {
+  .exp-cards-grid {
+    gap: 16px;
+  }
+  .exp-cards-grid .exp-card-content {
+    padding: 16px 14px 14px;
+  }
+  .exp-cards-grid .exp-card-content h2 {
+    font-size: 17px;
+  }
+  .exp-cards-grid .exp-card-image-wrap {
+    height: 200px;
+    max-height: 200px;
+    min-height: 200px;
+  }
+}
+
 
 /* =========================================================
    COMPACT HALF-HEIGHT FEATURED CARD (Card 3: Left & Right)

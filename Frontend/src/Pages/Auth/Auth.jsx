@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   ArrowRight,
@@ -17,7 +17,9 @@ import authBg from "../../assets/BhitarakanikaBreadcrumb.jpeg";
 import "./Auth.css";
 
 const API_BASE = "http://localhost:5000/api";
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
+const GOOGLE_CLIENT_ID =
+  import.meta.env.VITE_GOOGLE_CLIENT_ID ||
+  "1070313248799-q3r7khugifnf6rr69nh7uhpmucaeurq0.apps.googleusercontent.com";
 
 const Auth = () => {
   const [searchParams] = useSearchParams();
@@ -27,6 +29,10 @@ const Auth = () => {
   // Mode: "login" (default) | "register" | "forgot"
   const initialMode = searchParams.get("mode") === "register" ? "register" : "login";
   const [mode, setMode] = useState(initialMode);
+
+  // Google OAuth button container refs
+  const googleLoginRef = useRef(null);
+  const googleRegisterRef = useRef(null);
 
   // Forgot password step: 1 (request OTP) | 2 (submit OTP & new password)
   const [forgotStep, setForgotStep] = useState(1);
@@ -299,6 +305,72 @@ const Auth = () => {
     }
   };
 
+  // Handle redirect code from Google OAuth flow
+  useEffect(() => {
+    const authCode = searchParams.get("code");
+    if (authCode) {
+      const exchangeOAuthCode = async () => {
+        try {
+          setLoading(true);
+          setError("");
+          setSuccess("Authenticating with Google...");
+          const redirectUri = `${window.location.origin}${window.location.pathname}`;
+          const res = await fetch(`${API_BASE}/auth/google`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({
+              code: authCode,
+              redirectUri: redirectUri,
+            }),
+          });
+          const data = await res.json();
+          if (res.ok && data.success) {
+            setSuccess("Google login successful! Redirecting...");
+            setTimeout(() => {
+              handleAuthSuccess(data.user, data.token);
+            }, 350);
+          } else {
+            setError(data.message || "Google authentication failed. Please try again.");
+          }
+        } catch (err) {
+          setError("Failed to verify Google authentication with server.");
+        } finally {
+          setLoading(false);
+        }
+      };
+      exchangeOAuthCode();
+    }
+  }, [searchParams]);
+
+  // Render official Google button into active mode container
+  const renderGoogleButton = () => {
+    if (!window.google?.accounts?.id) return;
+    try {
+      window.google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: handleGoogleCredentialResponse,
+        auto_select: false,
+        cancel_on_tap_outside: true,
+      });
+
+      const targetEl = mode === "register" ? googleRegisterRef.current : googleLoginRef.current;
+      if (targetEl) {
+        targetEl.innerHTML = "";
+        window.google.accounts.id.renderButton(targetEl, {
+          theme: "outline",
+          size: "large",
+          text: "continue_with",
+          shape: "rectangular",
+          width: 310,
+          logo_alignment: "left",
+        });
+      }
+    } catch (e) {
+      console.warn("Could not render Google Sign-In button:", e);
+    }
+  };
+
   // Initialize Google Identity Services
   useEffect(() => {
     let checkCount = 0;
@@ -306,22 +378,13 @@ const Auth = () => {
       checkCount += 1;
       if (window.google?.accounts?.id) {
         clearInterval(interval);
-        try {
-          window.google.accounts.id.initialize({
-            client_id: GOOGLE_CLIENT_ID,
-            callback: handleGoogleCredentialResponse,
-            auto_select: false,
-            cancel_on_tap_outside: true,
-          });
-        } catch (e) {
-          console.warn("Could not init Google GIS:", e);
-        }
+        renderGoogleButton();
       }
-      if (checkCount > 25) clearInterval(interval);
-    }, 200);
+      if (checkCount > 30) clearInterval(interval);
+    }, 150);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [mode]);
 
   const handleGoogleCredentialResponse = async (response) => {
     if (!response?.credential) return;
@@ -355,76 +418,114 @@ const Auth = () => {
     }
   };
 
+  // Trigger Google OAuth popup via tokenClient with fallback redirect
+  const triggerOAuthPopup = () => {
+    if (window.google?.accounts?.oauth2) {
+      try {
+        setLoading(true);
+
+        const tokenClient = window.google.accounts.oauth2.initTokenClient({
+          client_id: GOOGLE_CLIENT_ID,
+          scope: "email profile openid",
+          callback: async (tokenResponse) => {
+            if (tokenResponse?.error) {
+              setLoading(false);
+              if (tokenResponse.error !== "access_denied") {
+                setError(`Google Sign-In failed: ${tokenResponse.error_description || tokenResponse.error}`);
+              }
+              return;
+            }
+
+            if (tokenResponse?.access_token) {
+              try {
+                const res = await fetch(`${API_BASE}/auth/google`, {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  credentials: "include",
+                  body: JSON.stringify({ accessToken: tokenResponse.access_token }),
+                });
+
+                const data = await res.json();
+                if (!res.ok || !data.success) {
+                  setError(data.message || "Google authentication failed.");
+                  setLoading(false);
+                  return;
+                }
+
+                setSuccess("Google login successful! Redirecting...");
+                setTimeout(() => {
+                  handleAuthSuccess(data.user, data.token);
+                }, 350);
+              } catch (err) {
+                console.error("Backend error after Google token:", err);
+                setError("Failed to verify Google account with server.");
+                setLoading(false);
+              }
+            } else {
+              setLoading(false);
+            }
+          },
+          error_callback: (nonOAuthError) => {
+            setLoading(false);
+            console.error("Google sign-in error:", nonOAuthError);
+            setError(
+              nonOAuthError?.message ||
+                "Google sign-in window could not open. Please ensure http://localhost:5173 is added in your Google Cloud Console under 'Authorized JavaScript Origins'."
+            );
+          },
+        });
+
+        tokenClient.requestAccessToken({ prompt: "select_account" });
+        return;
+      } catch (err) {
+        console.error("Error launching token client:", err);
+      }
+    }
+
+    // Direct Google OAuth redirect as fallback
+    const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+    const redirectUri = `${window.location.origin}/auth`;
+    const params = new URLSearchParams({
+      client_id: GOOGLE_CLIENT_ID,
+      redirect_uri: redirectUri,
+      response_type: "code",
+      scope: "openid email profile",
+      prompt: "select_account",
+      access_type: "offline",
+    });
+    window.location.assign(`${rootUrl}?${params.toString()}`);
+  };
+
   // Google OAuth Click Handler
   const handleGoogleAuth = () => {
     setError("");
     setSuccess("");
 
-    if (!window.google?.accounts?.oauth2) {
-      setError("Google Sign-In service is loading. Please wait 2 seconds and try again.");
-      return;
+    // 1. If rendered Google button exists in the DOM, click it
+    const targetEl = mode === "register" ? googleRegisterRef.current : googleLoginRef.current;
+    if (targetEl) {
+      const internalBtn = targetEl.querySelector("div[role=button]");
+      if (internalBtn) {
+        internalBtn.click();
+        return;
+      }
     }
 
-    try {
-      setLoading(true);
-
-      const tokenClient = window.google.accounts.oauth2.initTokenClient({
-        client_id: GOOGLE_CLIENT_ID,
-        scope: "email profile openid",
-        callback: async (tokenResponse) => {
-          if (tokenResponse?.error) {
-            setLoading(false);
-            if (tokenResponse.error !== "access_denied") {
-              setError(`Google Sign-In failed: ${tokenResponse.error_description || tokenResponse.error}`);
-            }
-            return;
+    // 2. Try Google One Tap prompt
+    if (window.google?.accounts?.id) {
+      try {
+        window.google.accounts.id.prompt((notification) => {
+          if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+            triggerOAuthPopup();
           }
-
-          if (tokenResponse?.access_token) {
-            try {
-              const res = await fetch(`${API_BASE}/auth/google`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
-                body: JSON.stringify({ accessToken: tokenResponse.access_token }),
-              });
-
-              const data = await res.json();
-              if (!res.ok || !data.success) {
-                setError(data.message || "Google authentication failed.");
-                setLoading(false);
-                return;
-              }
-
-              setSuccess("Google login successful! Redirecting...");
-              setTimeout(() => {
-                handleAuthSuccess(data.user, data.token);
-              }, 350);
-            } catch (err) {
-              console.error("Backend error after Google token:", err);
-              setError("Failed to verify Google account with server.");
-              setLoading(false);
-            }
-          } else {
-            setLoading(false);
-          }
-        },
-        error_callback: (nonOAuthError) => {
-          setLoading(false);
-          console.error("Google sign-in error:", nonOAuthError);
-          setError(
-            nonOAuthError?.message ||
-              "Google sign-in window could not open. Please ensure http://localhost:5173 is in your Authorized JavaScript Origins."
-          );
-        },
-      });
-
-      tokenClient.requestAccessToken({ prompt: "select_account" });
-    } catch (err) {
-      console.error("Error triggering Google Auth:", err);
-      setLoading(false);
-      setError("Unable to launch Google sign-in. Please try again.");
+        });
+        return;
+      } catch (err) {
+        console.warn("One Tap prompt failed:", err);
+      }
     }
+
+    triggerOAuthPopup();
   };
 
   return (
@@ -559,32 +660,35 @@ const Auth = () => {
               <span>OR CONTINUE WITH</span>
             </div>
 
-            <button
-              type="button"
-              className="btk-btn-google"
-              onClick={handleGoogleAuth}
-              disabled={loading}
-            >
-              <svg className="btk-google-svg" viewBox="0 0 24 24">
-                <path
-                  fill="#4285F4"
-                  d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"
-                />
-                <path
-                  fill="#34A853"
-                  d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"
-                />
-                <path
-                  fill="#FBBC05"
-                  d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.97 0 12s.45 3.82 1.25 5.42l4.03-3.15z"
-                />
-                <path
-                  fill="#EA4335"
-                  d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
-                />
-              </svg>
-              <span>Continue with Google</span>
-            </button>
+            <div className="btk-google-wrapper">
+              <div ref={googleLoginRef} className="btk-google-rendered-btn" />
+              <button
+                type="button"
+                className="btk-btn-google"
+                onClick={handleGoogleAuth}
+                disabled={loading}
+              >
+                <svg className="btk-google-svg" viewBox="0 0 24 24">
+                  <path
+                    fill="#4285F4"
+                    d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"
+                  />
+                  <path
+                    fill="#34A853"
+                    d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"
+                  />
+                  <path
+                    fill="#FBBC05"
+                    d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.97 0 12s.45 3.82 1.25 5.42l4.03-3.15z"
+                  />
+                  <path
+                    fill="#EA4335"
+                    d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
+                  />
+                </svg>
+                <span>Continue with Google</span>
+              </button>
+            </div>
 
             {/* Bottom Switcher */}
             <div className="btk-switch-row">
@@ -724,32 +828,35 @@ const Auth = () => {
               <span>OR CONTINUE WITH</span>
             </div>
 
-            <button
-              type="button"
-              className="btk-btn-google"
-              onClick={handleGoogleAuth}
-              disabled={loading}
-            >
-              <svg className="btk-google-svg" viewBox="0 0 24 24">
-                <path
-                  fill="#4285F4"
-                  d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"
-                />
-                <path
-                  fill="#34A853"
-                  d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"
-                />
-                <path
-                  fill="#FBBC05"
-                  d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.97 0 12s.45 3.82 1.25 5.42l4.03-3.15z"
-                />
-                <path
-                  fill="#EA4335"
-                  d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
-                />
-              </svg>
-              <span>Continue with Google</span>
-            </button>
+            <div className="btk-google-wrapper">
+              <div ref={googleRegisterRef} className="btk-google-rendered-btn" />
+              <button
+                type="button"
+                className="btk-btn-google"
+                onClick={handleGoogleAuth}
+                disabled={loading}
+              >
+                <svg className="btk-google-svg" viewBox="0 0 24 24">
+                  <path
+                    fill="#4285F4"
+                    d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"
+                  />
+                  <path
+                    fill="#34A853"
+                    d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"
+                  />
+                  <path
+                    fill="#FBBC05"
+                    d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.97 0 12s.45 3.82 1.25 5.42l4.03-3.15z"
+                  />
+                  <path
+                    fill="#EA4335"
+                    d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
+                  />
+                </svg>
+                <span>Continue with Google</span>
+              </button>
+            </div>
 
             {/* Bottom Switcher: specifically writes "Login" instead of "Sign In instead" */}
             <div className="btk-switch-row">

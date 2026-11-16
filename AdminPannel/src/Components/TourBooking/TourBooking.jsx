@@ -76,19 +76,30 @@ const TourBooking = () => {
         const normalized = json.data.map((item) => ({
           ...item,
           id: item._id || item.id,
-          bookingId: item.bookingId || `TB-${String(item._id).slice(-6)}`,
+          bookingId: item.bookingId || `TB-${String(item._id).slice(-8)}`,
           date: item.date || item.travelDate || "",
+          travelDate: item.travelDate || item.date || "",
           time: item.time || item.departureSlot || "",
-          amount: item.amount || item.totalAmount || 0,
+          departureSlot: item.departureSlot || item.time || "",
+          amount: Number(item.amount || item.totalAmount || 0),
+          totalAmount: Number(item.totalAmount || item.amount || 0),
           aadhaar: item.aadhaar || item.aadhar || "",
+          aadhar: item.aadhar || item.aadhaar || "",
           homeTown: item.homeTown || item.address || "",
-          image:
-            item.image ||
-            "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=160&q=80",
-          packageType: item.packageType || "Standard package · 1 DAY",
+          address: item.address || item.homeTown || "",
+          image: item.image || "/src/assets/jaynagar-route-map.jpg",
+          packageType: item.packageType || "1 DAY Safari",
           boats: Number(item.boats || item.boatCount) || 1,
-          boatCount: Number(item.boats || item.boatCount) || 1,
-          status: item.status || "Pending",
+          boatCount: Number(item.boatCount || item.boats) || 1,
+          adults: Number(item.adults) || 1,
+          children: Number(item.children) || 0,
+          guests: Number(item.guests) || ((Number(item.adults) || 1) + (Number(item.children) || 0)),
+          status: item.status || "Confirmed",
+          paymentStatus: item.paymentStatus || "Paid",
+          paymentId: item.paymentId || "",
+          paymentMethod: item.paymentMethod || "Razorpay / UPI",
+          from: item.from || "",
+          to: item.to || "",
         }));
         setBookings(normalized);
       } else {
@@ -197,26 +208,81 @@ const TourBooking = () => {
   };
 
   const openEdit = (booking) => {
-    setFormData({ ...booking });
+    let dateStr = booking.date || booking.travelDate || "";
+    if (dateStr && dateStr.includes("T")) {
+      dateStr = dateStr.split("T")[0];
+    }
+    const timeStr = booking.time || booking.departureSlot || "";
+
+    setFormData({
+      ...booking,
+      id: booking._id || booking.id,
+      _id: booking._id || booking.id,
+      bookingId: booking.bookingId || "",
+      packageName: booking.packageName || "Bhitarkanika Boat Package",
+      packageType: booking.packageType || "",
+      from: booking.from || "",
+      to: booking.to || "",
+      image: booking.image || "",
+      name: booking.name || "",
+      phone: booking.phone || "",
+      email: booking.email || "",
+      homeTown: booking.homeTown || booking.address || "",
+      address: booking.address || booking.homeTown || "",
+      date: dateStr,
+      travelDate: dateStr,
+      time: timeStr,
+      departureSlot: timeStr,
+      boats: Number(booking.boats || booking.boatCount) || 1,
+      boatCount: Number(booking.boats || booking.boatCount) || 1,
+      adults: Number(booking.adults) || 1,
+      children: Number(booking.children) || 0,
+      guests:
+        Number(booking.guests) ||
+        (Number(booking.adults) || 1) + (Number(booking.children) || 0),
+      aadhaar: booking.aadhaar || booking.aadhar || "",
+      aadhar: booking.aadhar || booking.aadhaar || "",
+      amount: Number(booking.amount || booking.totalAmount) || 0,
+      totalAmount: Number(booking.amount || booking.totalAmount) || 0,
+      status: booking.status || "Confirmed",
+      paymentStatus: booking.paymentStatus || "Paid",
+      paymentId: booking.paymentId || "",
+      paymentMethod: booking.paymentMethod || "Razorpay / UPI",
+    });
     setShowForm(true);
   };
 
   const openCreate = () => {
+    const today = new Date().toISOString().split("T")[0];
     setFormData({
-      bookingId: `TB-${Date.now().toString().slice(-6)}`,
-      packageName: packageNames[0] || "Bhitarkanika Boat Package",
-      packageType: "Standard package · 1 DAY",
-      image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=160&q=80",
+      bookingId: `BTK-${Math.floor(10000000 + Math.random() * 90000000)}`,
+      packageName: "Bhitarkanika Boat Package",
+      packageType: "Khola (Boating Point) to Bhitarkanika · 1 DAY",
+      from: "Khola (Boating Point)",
+      to: "Bhitarkanika",
+      image: "/src/assets/khola-route-map.jpg",
       name: "",
       adults: 1,
       children: 0,
-      date: "",
-      time: "08:00 AM",
+      guests: 1,
+      boats: 1,
+      boatCount: 1,
+      date: today,
+      travelDate: today,
+      time: "7:00 AM – 10:30 AM (End)",
+      departureSlot: "7:00 AM – 10:30 AM (End)",
       phone: "",
       aadhaar: "",
+      aadhar: "",
       email: "",
+      homeTown: "",
+      address: "",
       amount: 3500,
-      status: "Pending",
+      totalAmount: 3500,
+      status: "Confirmed",
+      paymentStatus: "Paid",
+      paymentMethod: "Razorpay / UPI",
+      paymentId: "",
     });
     setShowForm(true);
   };
@@ -224,7 +290,7 @@ const TourBooking = () => {
   const saveBooking = async (event) => {
     event.preventDefault();
 
-    if (!formData.name.trim() || !formData.date || !formData.phone.trim()) {
+    if (!formData.name?.trim() || !formData.date || !formData.phone?.trim()) {
       setNotice("Please fill in the guest name, travel date, and phone number.");
       return;
     }
@@ -239,26 +305,49 @@ const TourBooking = () => {
       (b) => (b._id && b._id === targetId) || b.id === targetId
     );
 
+    const payload = {
+      ...formData,
+      travelDate: formData.date,
+      date: formData.date,
+      departureSlot: formData.time,
+      time: formData.time,
+      boatCount: Number(formData.boats) || 1,
+      boats: Number(formData.boats) || 1,
+      adults: Number(formData.adults) || 1,
+      children: Number(formData.children) || 0,
+      guests: (Number(formData.adults) || 1) + (Number(formData.children) || 0),
+      totalAmount: Number(formData.amount) || 0,
+      amount: Number(formData.amount) || 0,
+      address: formData.homeTown || "",
+      homeTown: formData.homeTown || "",
+      aadhar: formData.aadhaar || "",
+      aadhaar: formData.aadhaar || "",
+    };
+
     try {
-      if (exists && formData._id) {
+      if (exists && targetId) {
         const res = await fetch(`${API_URL}/${targetId}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(payload),
         });
         const json = await res.json();
         if (res.ok && json.success) {
           setNotice("Booking updated successfully.");
+        } else {
+          setNotice(json.message || "Failed to update booking.");
         }
       } else {
         const res = await fetch(API_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(payload),
         });
         const json = await res.json();
         if (res.ok && json.success) {
           setNotice("Booking added successfully.");
+        } else {
+          setNotice(json.message || "Failed to create booking.");
         }
       }
       await fetchBookings();
@@ -623,7 +712,7 @@ const TourBooking = () => {
                       <div>
                         <strong>{booking.packageName}</strong>
                         <span>{booking.packageType}</span>
-                        <b>{formatCurrency(booking.amount)} <small>per boat</small></b>
+                        <b>{formatCurrency(booking.amount)}</b>
                       </div>
                     </div>
                   </td>
@@ -846,8 +935,10 @@ const TourBooking = () => {
               <div><span><Clock3 size={15} /> Travel time</span><strong>{activeBooking.time || "—"}</strong></div>
               <div><span><Phone size={15} /> Phone</span><strong>{activeBooking.phone}</strong></div>
               <div><span><Mail size={15} /> Email</span><strong>{activeBooking.email || "—"}</strong></div>
+              <div><span><Home size={15} /> Home town / City</span><strong>{activeBooking.homeTown || activeBooking.address || "—"}</strong></div>
               <div><span><MapPin size={15} /> Aadhaar number</span><strong>{activeBooking.aadhaar || "—"}</strong></div>
-              <div><span><CheckCircle2 size={15} /> Status</span><strong>{activeBooking.status}</strong></div>
+              <div><span><CheckCircle2 size={15} /> Payment status</span><strong style={{ color: activeBooking.paymentStatus === "Paid" ? "#065f46" : activeBooking.paymentStatus === "Refunded" ? "#b45309" : "#304e40" }}>{activeBooking.paymentStatus || "Paid"}</strong></div>
+              <div><span><CheckCircle2 size={15} /> Booking status</span><strong>{activeBooking.status}</strong></div>
             </div>
 
             <div className="TourBooking-modal-footer">
@@ -912,51 +1003,44 @@ const TourBooking = () => {
                 <label>
                   Booking ID
                   <input
-                    value={formData.bookingId}
+                    value={formData.bookingId || ""}
                     onChange={(event) =>
                       updateField("bookingId", event.target.value)
                     }
+                    placeholder="e.g. BTK-10106961"
                     required
                   />
                 </label>
 
                 <label>
-                  Package
-                  <select
-                    value={formData.packageName}
-                    onChange={(event) => {
-                      const selected = event.target.value;
-                      updateField("packageName", selected);
-                      const existing = bookings.find(
-                        (booking) => booking.packageName === selected
-                      );
-                      if (existing) {
-                        setFormData((previous) => ({
-                          ...previous,
-                          packageName: selected,
-                          packageType: existing.packageType,
-                          image: existing.image,
-                          amount: existing.amount,
-                        }));
-                      }
-                    }}
+                  Package Name
+                  <input
+                    value={formData.packageName || ""}
+                    onChange={(event) =>
+                      updateField("packageName", event.target.value)
+                    }
+                    placeholder="e.g. Bhitarkanika Boat Package"
                     required
-                  >
-                    {[...new Set([
-                      ...packageNames,
-                      formData.packageName,
-                    ])].map((name) => (
-                      <option key={name} value={name}>{name}</option>
-                    ))}
-                  </select>
+                  />
+                </label>
+
+                <label>
+                  Package Route / Type
+                  <input
+                    value={formData.packageType || ""}
+                    onChange={(event) =>
+                      updateField("packageType", event.target.value)
+                    }
+                    placeholder="e.g. Jaynagar to Bhitarkanika · 1 DAY"
+                  />
                 </label>
 
                 <label>
                   Full name
                   <input
-                    value={formData.name}
+                    value={formData.name || ""}
                     onChange={(event) => updateField("name", event.target.value)}
-                    placeholder="Enter full name"
+                    placeholder="Enter guest full name"
                     required
                   />
                 </label>
@@ -964,7 +1048,7 @@ const TourBooking = () => {
                 <label>
                   Phone number
                   <input
-                    value={formData.phone}
+                    value={formData.phone || ""}
                     onChange={(event) => updateField("phone", event.target.value)}
                     placeholder="10-digit mobile number"
                     inputMode="numeric"
@@ -973,32 +1057,66 @@ const TourBooking = () => {
                 </label>
 
                 <label>
+                  Email address
+                  <input
+                    type="email"
+                    value={formData.email || ""}
+                    onChange={(event) => updateField("email", event.target.value)}
+                    placeholder="guest@example.com"
+                  />
+                </label>
+
+                <label>
+                  Home Town / City
+                  <input
+                    value={formData.homeTown || ""}
+                    onChange={(event) => updateField("homeTown", event.target.value)}
+                    placeholder="e.g. Bhubaneswar / Cuttack"
+                  />
+                </label>
+
+                <label>
                   Travel date
                   <input
                     type="date"
-                    value={formData.date}
+                    value={formData.date || ""}
                     onChange={(event) => updateField("date", event.target.value)}
                     required
                   />
                 </label>
 
                 <label>
-                  Travel time
-                  <select
-                    value={formData.time}
+                  Travel time / Departure Slot
+                  <input
+                    type="text"
+                    value={formData.time || ""}
                     onChange={(event) => updateField("time", event.target.value)}
+                    placeholder="e.g. 7:00 AM – 10:30 AM (End)"
+                    list="departure-slots-list"
                     required
-                  >
-                    <option value="">Select a time</option>
-                    <option>08:00 AM</option>
-                    <option>09:00 AM</option>
-                    <option>09:30 AM</option>
-                    <option>10:00 AM</option>
-                    <option>11:00 AM</option>
-                    <option>02:00 PM</option>
-                    <option>03:00 PM</option>
-                    <option>05:00 PM</option>
-                  </select>
+                  />
+                  <datalist id="departure-slots-list">
+                    <option value="7:00 AM – 10:30 AM (End)" />
+                    <option value="10:30 AM – 2:00 PM (Midday)" />
+                    <option value="2:00 PM – 5:30 PM (Afternoon)" />
+                    <option value="7:00 AM – 5:00 PM (Full Day)" />
+                    <option value="08:00 AM" />
+                    <option value="09:00 AM" />
+                    <option value="10:00 AM" />
+                  </datalist>
+                </label>
+
+                <label>
+                  Number of Boats
+                  <input
+                    type="number"
+                    min="1"
+                    value={formData.boats || 1}
+                    onChange={(event) =>
+                      updateField("boats", Math.max(1, Number(event.target.value)))
+                    }
+                    required
+                  />
                 </label>
 
                 <label>
@@ -1006,7 +1124,7 @@ const TourBooking = () => {
                   <input
                     type="number"
                     min="1"
-                    value={formData.adults}
+                    value={formData.adults ?? 1}
                     onChange={(event) =>
                       updateField("adults", Math.max(1, Number(event.target.value)))
                     }
@@ -1019,7 +1137,7 @@ const TourBooking = () => {
                   <input
                     type="number"
                     min="0"
-                    value={formData.children}
+                    value={formData.children ?? 0}
                     onChange={(event) =>
                       updateField("children", Math.max(0, Number(event.target.value)))
                     }
@@ -1028,21 +1146,11 @@ const TourBooking = () => {
                 </label>
 
                 <label>
-                  Aadhaar number (optional)
+                  Aadhaar number
                   <input
-                    value={formData.aadhaar}
+                    value={formData.aadhaar || ""}
                     onChange={(event) => updateField("aadhaar", event.target.value)}
                     placeholder="12-digit Aadhaar number"
-                  />
-                </label>
-
-                <label>
-                  Email address
-                  <input
-                    type="email"
-                    value={formData.email}
-                    onChange={(event) => updateField("email", event.target.value)}
-                    placeholder="you@example.com"
                   />
                 </label>
 
@@ -1051,7 +1159,7 @@ const TourBooking = () => {
                   <input
                     type="number"
                     min="0"
-                    value={formData.amount}
+                    value={formData.amount ?? 0}
                     onChange={(event) =>
                       updateField("amount", Math.max(0, Number(event.target.value)))
                     }
@@ -1060,20 +1168,34 @@ const TourBooking = () => {
                 </label>
 
                 <label>
+                  Payment status
+                  <select
+                    value={formData.paymentStatus || "Paid"}
+                    onChange={(event) => updateField("paymentStatus", event.target.value)}
+                  >
+                    <option value="Paid">Paid</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Refunded">Refunded</option>
+                    <option value="Failed">Failed</option>
+                  </select>
+                </label>
+
+                <label>
                   Booking status
                   <select
-                    value={formData.status}
+                    value={formData.status || "Confirmed"}
                     onChange={(event) => updateField("status", event.target.value)}
                   >
-                    <option>Pending</option>
-                    <option>Confirmed</option>
-                    <option>Cancelled</option>
+                    <option value="Confirmed">Confirmed</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Cancelled">Cancelled</option>
+                    <option value="Refunded">Refunded</option>
                   </select>
                 </label>
               </div>
 
               <div className="TourBooking-form-total">
-                <span>Estimated total</span>
+                <span>Total amount</span>
                 <strong>{formatCurrency(Number(formData.amount) || 0)}</strong>
               </div>
 

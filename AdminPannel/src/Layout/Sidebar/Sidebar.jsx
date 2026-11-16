@@ -15,6 +15,7 @@ import {
   MessageSquare,
   Leaf,
   MessageSquareQuote,
+  RotateCcw,
 } from "lucide-react";
 
 import logo from "../../assets/mlogo.png";
@@ -66,7 +67,7 @@ export const NAV_ITEMS = [
     path: "/explores",
   },
   {
-    label: "Tour Booking",
+    label: "Boat Booking",
     icon: CalendarCheck,
     path: "/tour-booking",
   },
@@ -74,6 +75,11 @@ export const NAV_ITEMS = [
     label: "Hotel Booking",
     icon: Hotel,
     path: "/hotel-booking",
+  },
+  {
+    label: "Refunds",
+    icon: RotateCcw,
+    path: "/refunds",
   },
   {
     label: "Enquiry",

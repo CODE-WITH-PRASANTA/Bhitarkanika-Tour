@@ -5,6 +5,8 @@ const {
   recordPaymentFailure,
   requestRefund,
   getMyRefunds,
+  getAllRefundsAdmin,
+  updateRefundStatusAdmin,
 } = require('../controllers/paymentController');
 const { protect, optionalAuth } = require('../middleware/auth');
 
@@ -18,5 +20,9 @@ router.post('/payment-failed', optionalAuth, recordPaymentFailure);
 // User-specific refund requests (protected routes)
 router.post('/request-refund', protect, requestRefund);
 router.get('/my-refunds', protect, getMyRefunds);
+
+// Admin-specific refund management routes
+router.get('/admin-refunds', getAllRefundsAdmin);
+router.put('/admin-refunds/:id', updateRefundStatusAdmin);
 
 module.exports = router;

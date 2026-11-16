@@ -121,95 +121,47 @@ const Icon = ({ name, size = 18, className = "" }) => (
 );
 
 /* -------------------------------- Constants ------------------------------- */
-const STORAGE_KEY = "expores_items_v1";
+const API_URL = "http://localhost:5000/api/explores";
+const API_CATEGORIES_URL = "http://localhost:5000/api/categories";
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const DESC_LIMIT = 300;
 
-const CATEGORIES = [
-  { value: "Nature & Wildlife", icon: "leaf", tone: "green" },
-  { value: "Adventure", icon: "compass", tone: "orange" },
-  { value: "Scenic Experience", icon: "camera", tone: "blue" },
-  { value: "Wildlife", icon: "paw", tone: "purple" },
-];
+const getCategoryIcon = (name = "") => {
+  const lower = String(name).toLowerCase();
+  if (lower.includes("bird")) return "paw";
+  if (lower.includes("wildlife") || lower.includes("fauna") || lower.includes("animal")) return "paw";
+  if (lower.includes("nature") || lower.includes("flora") || lower.includes("forest") || lower.includes("mangrove")) return "leaf";
+  if (lower.includes("adventure") || lower.includes("trek") || lower.includes("trail")) return "compass";
+  if (lower.includes("scenic") || lower.includes("view") || lower.includes("sight") || lower.includes("skywalk")) return "camera";
+  return "layers";
+};
 
-const getCategory = (value) =>
-  CATEGORIES.find((c) => c.value === value) || {
-    value,
-    icon: "leaf",
-    tone: "green",
+const getCategoryTone = (name = "") => {
+  const lower = String(name).toLowerCase();
+  if (lower.includes("adventure") || lower.includes("trek")) return "orange";
+  if (lower.includes("scenic") || lower.includes("view")) return "blue";
+  if (lower.includes("wildlife") || lower.includes("bird") || lower.includes("animal")) return "purple";
+  return "green";
+};
+
+const getCategory = (value, categoriesList = []) => {
+  const found = categoriesList.find(
+    (c) => (c.value && c.value === value) || (c.name && c.name === value)
+  );
+  if (found) {
+    return {
+      value: found.value || found.name,
+      icon: found.icon || getCategoryIcon(found.name || found.value),
+      tone: found.tone || getCategoryTone(found.name || found.value),
+    };
+  }
+  return {
+    value: value || "General",
+    icon: getCategoryIcon(value),
+    tone: getCategoryTone(value),
   };
-
-const img = (seed) => `https://picsum.photos/seed/${seed}/400/300`;
-
-const SEED_ITEMS = [
-  {
-    id: 1,
-    title: "Mangrove Forest",
-    shortDesc: "Dense mangrove ecosystem",
-    fullDesc:
-      "Explore the dense mangrove ecosystem, a rich habitat for birds, fish and countless other species along the tidal creeks.",
-    category: "Nature & Wildlife",
-    published: true,
-    image: img("mangrove-forest"),
-    createdAt: Date.now() - 600000,
-  },
-  {
-    id: 2,
-    title: "Jungle Trekking",
-    shortDesc: "Guided nature trail",
-    fullDesc:
-      "Walk through guided forest trails with experienced local guides and discover hidden viewpoints and rare plants.",
-    category: "Adventure",
-    published: true,
-    image: img("jungle-trekking"),
-    createdAt: Date.now() - 500000,
-  },
-  {
-    id: 3,
-    title: "Skywalk View",
-    shortDesc: "Panoramic nature view",
-    fullDesc:
-      "Enjoy a breathtaking panoramic view of the canopy and river from the elevated skywalk platform.",
-    category: "Scenic Experience",
-    published: true,
-    image: img("skywalk-view"),
-    createdAt: Date.now() - 400000,
-  },
-  {
-    id: 4,
-    title: "Monitor Lizard",
-    shortDesc: "Wildlife observation",
-    fullDesc:
-      "Discover the fascinating water monitor lizard, one of the interesting reptiles found in the region.",
-    category: "Wildlife",
-    published: true,
-    image: img("monitor-lizard"),
-    createdAt: Date.now() - 300000,
-  },
-  {
-    id: 5,
-    title: "Spotted Deer",
-    shortDesc: "Natural wildlife habitat",
-    fullDesc:
-      "Watch herds of spotted deer graze peacefully in their natural habitat during early morning safaris.",
-    category: "Wildlife",
-    published: true,
-    image: img("spotted-deer"),
-    createdAt: Date.now() - 200000,
-  },
-  {
-    id: 6,
-    title: "Saltwater Crocodile",
-    shortDesc: "Saltwater crocodile habitat",
-    fullDesc:
-      "Observe the mighty saltwater crocodile from a safe distance in its natural estuarine habitat.",
-    category: "Wildlife",
-    published: true,
-    image: img("saltwater-crocodile"),
-    createdAt: Date.now() - 100000,
-  },
-];
+};
 
 const EMPTY_FORM = {
   title: "",
@@ -218,19 +170,6 @@ const EMPTY_FORM = {
   category: "",
   published: true,
   image: "",
-};
-
-const loadItems = () => {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed)) return parsed;
-    }
-  } catch (e) {
-    /* ignore */
-  }
-  return SEED_ITEMS;
 };
 
 const formatDate = (ts) =>
@@ -264,7 +203,9 @@ const Thumb = ({ src, alt, className = "" }) => {
 
 /* -------------------------------- Component ------------------------------- */
 const Expores = () => {
-  const [items, setItems] = useState(loadItems);
+  const [items, setItems] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [form, setForm] = useState(EMPTY_FORM);
   const [errors, setErrors] = useState({});
   const [editingId, setEditingId] = useState(null);
@@ -288,14 +229,57 @@ const Expores = () => {
   const selectAllRef = useRef(null);
   const toastTimer = useRef(null);
 
-  /* persist */
-  useEffect(() => {
+  /* Fetch live items from backend database */
+  const fetchItems = async () => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-    } catch (e) {
-      /* storage full – ignore */
+      setLoading(true);
+      const res = await fetch(API_URL);
+      const json = await res.json();
+      if (res.ok && json.success && Array.isArray(json.data)) {
+        const normalized = json.data.map((item) => ({
+          ...item,
+          id: item._id || item.id,
+          _id: item._id || item.id,
+          createdAt: item.createdAt ? new Date(item.createdAt).getTime() : Date.now(),
+        }));
+        setItems(normalized);
+      } else {
+        setItems([]);
+      }
+    } catch (err) {
+      console.error("Failed to load explore items:", err);
+      setItems([]);
+    } finally {
+      setLoading(false);
     }
-  }, [items]);
+  };
+
+  /* Fetch real categories from database */
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch(API_CATEGORIES_URL);
+      const json = await res.json();
+      if (res.ok && json.success && Array.isArray(json.data)) {
+        const activeOnly = json.data
+          .filter((c) => c.isActive !== false && c.name)
+          .map((c) => ({
+            id: c._id || c.id,
+            value: c.name,
+            label: c.name,
+            icon: getCategoryIcon(c.name),
+            tone: getCategoryTone(c.name),
+          }));
+        setCategories(activeOnly);
+      }
+    } catch (err) {
+      console.warn("Failed to load real categories from database:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchItems();
+    fetchCategories();
+  }, []);
 
   /* toast */
   const showToast = useCallback((message, type = "success") => {
@@ -438,7 +422,7 @@ const Expores = () => {
     return Object.keys(err).length === 0;
   };
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
     if (!validate()) {
       showToast("Please fix the highlighted fields", "error");
@@ -448,37 +432,64 @@ const Expores = () => {
       title: form.title.trim(),
       shortDesc: form.shortDesc.trim(),
       fullDesc: form.fullDesc.trim(),
+      description: form.fullDesc.trim() || form.shortDesc.trim(),
       category: form.category,
       published: form.published,
       image: form.image,
+      imageUrl: form.image,
     };
 
-    if (editingId !== null) {
-      setItems((prev) => prev.map((it) => (it.id === editingId ? { ...it, ...payload } : it)));
-      showToast("Item updated successfully");
-    } else {
-      const newItem = { id: Date.now(), createdAt: Date.now(), ...payload };
-      setItems((prev) => [newItem, ...prev]);
-      // make sure the new row is visible on the right side
-      setSearch("");
-      setCatFilter("all");
-      setStatusFilter("all");
-      setPage(1);
-      showToast("Item added successfully");
+    try {
+      if (editingId !== null) {
+        const res = await fetch(`${API_URL}/${editingId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const json = await res.json();
+        if (res.ok && json.success) {
+          showToast("Item updated successfully in database");
+          await fetchItems();
+        } else {
+          showToast(json.message || "Failed to update item", "error");
+          return;
+        }
+      } else {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const json = await res.json();
+        if (res.ok && json.success) {
+          showToast("Item saved successfully into database");
+          await fetchItems();
+          setSearch("");
+          setCatFilter("all");
+          setStatusFilter("all");
+          setPage(1);
+        } else {
+          showToast(json.message || "Failed to create item", "error");
+          return;
+        }
+      }
+      resetForm();
+    } catch (err) {
+      console.error("Error saving explore item:", err);
+      showToast("Server error. Please check backend connection.", "error");
     }
-    resetForm();
   };
 
   /* table actions */
   const startEdit = (item) => {
-    setEditingId(item.id);
+    setEditingId(item._id || item.id);
     setForm({
       title: item.title,
       shortDesc: item.shortDesc,
       fullDesc: item.fullDesc || "",
       category: item.category,
       published: item.published,
-      image: item.image,
+      image: item.image || item.imageUrl || "",
     });
     setErrors({});
     setViewItem(null);
@@ -496,34 +507,73 @@ const Expores = () => {
     setTimeout(() => titleRef.current && titleRef.current.focus({ preventScroll: true }), 350);
   };
 
-  const toggleStatus = (item) => {
-    setItems((prev) =>
-      prev.map((it) => (it.id === item.id ? { ...it, published: !it.published } : it))
-    );
-    showToast(item.published ? "Item moved to draft" : "Item published");
+  const toggleStatus = async (item) => {
+    const targetId = item._id || item.id;
+    const newStatus = !item.published;
+    try {
+      const res = await fetch(`${API_URL}/${targetId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ published: newStatus }),
+      });
+      const json = await res.json();
+      if (res.ok && json.success) {
+        setItems((prev) =>
+          prev.map((it) => (it.id === targetId || it._id === targetId ? { ...it, published: newStatus } : it))
+        );
+        showToast(newStatus ? "Item published in database" : "Item moved to draft");
+      } else {
+        showToast(json.message || "Failed to update status", "error");
+      }
+    } catch (err) {
+      showToast("Failed to update status", "error");
+    }
   };
 
-  const confirmDelete = () => {
-    if (deleteTarget === "bulk") {
-      setItems((prev) => prev.filter((it) => !selected.includes(it.id)));
-      if (editingId !== null && selected.includes(editingId)) resetForm();
-      showToast(`${selected.length} item(s) deleted`);
-      setSelected([]);
-    } else if (deleteTarget) {
-      setItems((prev) => prev.filter((it) => it.id !== deleteTarget.id));
-      setSelected((prev) => prev.filter((id) => id !== deleteTarget.id));
-      if (editingId === deleteTarget.id) resetForm();
-      showToast("Item deleted successfully");
+  const confirmDelete = async () => {
+    try {
+      if (deleteTarget === "bulk") {
+        const res = await fetch(`${API_URL}/bulk-delete`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ids: selected }),
+        });
+        const json = await res.json();
+        if (res.ok && json.success) {
+          showToast(`${selected.length} item(s) deleted from database`);
+          if (editingId !== null && selected.includes(editingId)) resetForm();
+          setSelected([]);
+          await fetchItems();
+        } else {
+          showToast(json.message || "Failed to delete items", "error");
+        }
+      } else if (deleteTarget) {
+        const targetId = deleteTarget._id || deleteTarget.id;
+        const res = await fetch(`${API_URL}/${targetId}`, {
+          method: "DELETE",
+        });
+        const json = await res.json();
+        if (res.ok && json.success) {
+          showToast("Item deleted from database");
+          if (editingId === targetId) resetForm();
+          setSelected((prev) => prev.filter((id) => id !== targetId));
+          await fetchItems();
+        } else {
+          showToast(json.message || "Failed to delete item", "error");
+        }
+      }
+    } catch (err) {
+      showToast("Delete failed. Please check connection.", "error");
     }
     setDeleteTarget(null);
   };
 
-  const handleRefresh = () => {
+  const handleRefresh = async () => {
     setSpinning(true);
-    setItems(loadItems());
+    await Promise.all([fetchItems(), fetchCategories()]);
     setSelected([]);
-    setTimeout(() => setSpinning(false), 700);
-    showToast("List refreshed");
+    setTimeout(() => setSpinning(false), 500);
+    showToast("List refreshed from database");
   };
 
   const handleReset = () => {
@@ -534,7 +584,7 @@ const Expores = () => {
   };
 
   const hasFilters = search || catFilter !== "all" || statusFilter !== "all";
-  const selectedCat = form.category ? getCategory(form.category) : null;
+  const selectedCat = form.category ? getCategory(form.category, categories) : null;
 
   /* --------------------------------- Render -------------------------------- */
   return (
@@ -620,9 +670,11 @@ const Expores = () => {
                   value={form.category}
                   onChange={(e) => updateField("category", e.target.value)}
                 >
-                  <option value="">Select category</option>
-                  {CATEGORIES.map((c) => (
-                    <option key={c.value} value={c.value}>
+                  <option value="">
+                    {categories.length ? "Select category" : "No categories found — add in Blog Categories"}
+                  </option>
+                  {categories.map((c) => (
+                    <option key={c.id || c.value} value={c.value}>
                       {c.value}
                     </option>
                   ))}
@@ -782,8 +834,8 @@ const Expores = () => {
                 }}
               >
                 <option value="all">All Categories</option>
-                {CATEGORIES.map((c) => (
-                  <option key={c.value} value={c.value}>
+                {categories.map((c) => (
+                  <option key={c.id || c.value} value={c.value}>
                     {c.value}
                   </option>
                 ))}
@@ -863,25 +915,37 @@ const Expores = () => {
                 </tr>
               </thead>
               <tbody className="expores-tbody">
-                {pageItems.length === 0 ? (
+                {loading ? (
+                  <tr className="expores-tr-empty">
+                    <td colSpan={8} className="expores-empty-cell">
+                      <div className="expores-empty">
+                        <span className="expores-empty-icon expores-spinning">
+                          <Icon name="refresh" size={26} />
+                        </span>
+                        <h3 className="expores-empty-title">Loading Explore Items...</h3>
+                        <p className="expores-empty-text">Connecting to MongoDB database.</p>
+                      </div>
+                    </td>
+                  </tr>
+                ) : pageItems.length === 0 ? (
                   <tr className="expores-tr-empty">
                     <td colSpan={8} className="expores-empty-cell">
                       <div className="expores-empty">
                         <span className="expores-empty-icon">
                           <Icon name="search" size={26} />
                         </span>
-                        <h3 className="expores-empty-title">No items found</h3>
+                        <h3 className="expores-empty-title">No explore items found</h3>
                         <p className="expores-empty-text">
                           {hasFilters
                             ? "Try changing your search or filters."
-                            : "Add your first explore item using the form."}
+                            : "Create your first explore item using the form."}
                         </p>
                       </div>
                     </td>
                   </tr>
                 ) : (
                   pageItems.map((item, idx) => {
-                    const cat = getCategory(item.category);
+                    const cat = getCategory(item.category, categories);
                     const isSelected = selected.includes(item.id);
                     return (
                       <tr
@@ -1065,8 +1129,8 @@ const Expores = () => {
 
             <div className="expores-modal-body">
               <div className="expores-modal-tags">
-                <span className={`expores-badge expores-tone-${getCategory(viewItem.category).tone}`}>
-                  <Icon name={getCategory(viewItem.category).icon} size={13} />
+                <span className={`expores-badge expores-tone-${getCategory(viewItem.category, categories).tone}`}>
+                  <Icon name={getCategory(viewItem.category, categories).icon} size={13} />
                   {viewItem.category}
                 </span>
                 <span
