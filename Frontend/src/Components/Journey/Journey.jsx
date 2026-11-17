@@ -1,5 +1,4 @@
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   FaArrowRight,
@@ -10,220 +9,45 @@ import {
 } from "react-icons/fa";
 
 import "./Journey.css";
-import mangroveForestImg from "../../assets/mangrove-forest-ecosystem.jpg";
-import jungleTrekkingImg from "../../assets/jungle-trekking.jpg";
-import skywalkViewImg from "../../assets/skywalk-view.jpg";
-import monitorLizardImg from "../../assets/monitor-lizard.jpg";
-import spottedDeerImg from "../../assets/spotted-deer.jpg";
-import saltwaterCrocodileImg from "../../assets/saltwater-crocodile.jpg";
 
-const attractions = [
-  {
-    id: 1,
-    title: "Mangrove Forest",
-    category: "Nature & Wildlife",
-    description:
-      "Explore the beautiful mangrove ecosystem of Bhitarkanika, filled with winding waterways and rich biodiversity.",
-    specification: "Dense mangrove ecosystem",
-    image: mangroveForestImg,
-  },
-  {
-    id: 2,
-    title: "Jungle Trekking",
-    category: "Adventure",
-    description:
-      "Walk through natural forest trails and experience the peaceful atmosphere of the mangrove wilderness.",
-    specification: "Guided nature trail",
-    image: jungleTrekkingImg,
-  },
-  {
-    id: 3,
-    title: "Skywalk View",
-    category: "Scenic Experience",
-    description:
-      "Enjoy beautiful elevated views of the surrounding natural landscape and forest environment.",
-    specification: "Panoramic nature view",
-    image: skywalkViewImg,
-  },
-  {
-    id: 4,
-    title: "Monitor Lizard",
-    category: "Wildlife",
-    description:
-      "Discover the fascinating water monitor lizard, one of the interesting reptiles found in the region.",
-    specification: "Wildlife observation",
-    image: monitorLizardImg,
-  },
-  {
-    id: 5,
-    title: "Spotted Deer",
-    category: "Wildlife",
-    description:
-      "Watch spotted deer moving through the forest surroundings and enjoying their natural habitat.",
-    specification: "Natural wildlife habitat",
-    image: spottedDeerImg,
-  },
-  {
-    id: 6,
-    title: "Saltwater Crocodile",
-    category: "Wildlife",
-    description:
-      "Experience the incredible sight of the famous saltwater crocodile, one of Bhitarkanika's major attractions.",
-    specification: "Saltwater crocodile habitat",
-    image: saltwaterCrocodileImg,
-  },
-  {
-    id: 7,
-    title: "Boating Experience",
-    category: "Adventure",
-    description:
-      "Travel through beautiful rivers and narrow creeks while enjoying the natural beauty of Bhitarkanika.",
-    specification: "River and creek safari",
-    image:
-      "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=85",
-  },
-  {
-    id: 8,
-    title: "Olive Ridley Turtles",
-    category: "Marine Wildlife",
-    description:
-      "Learn about the Olive Ridley turtles and their conservation along Odisha's coastal ecosystem.",
-    specification: "Seasonal turtle conservation",
-    image:
-      "https://commons.wikimedia.org/wiki/Special:FilePath/Habalikhati%20Island%20Turtle%20Site.jpg?width=1000",
-  },
-  {
-    id: 9,
-    title: "Wildlife Museum",
-    category: "Learning & Discovery",
-    description:
-      "Explore exhibits and learn about the wildlife, ecology and conservation heritage of the region.",
-    specification: "Educational experience",
-    image:
-      "https://bhitarkanikatour.in/wp-content/uploads/2022/06/wildlife_conservation.jpg",
-  },
-  {
-    id: 10,
-    title: "Hunting Tower",
-    category: "Heritage",
-    description:
-      "Discover the historic structures and heritage associated with the natural landscape of Bhitarkanika.",
-    specification: "Historical landmark",
-    image:
-      "https://commons.wikimedia.org/wiki/Special:FilePath/Bhitarkanika%20National%20Park.jpg?width=1000",
-  },
-  {
-    id: 11,
-    title: "Migratory Birds Point",
-    category: "Birdwatching",
-    description:
-      "Observe seasonal migratory birds visiting the wetlands and waterways of Bhitarkanika.",
-    specification: "Seasonal birdwatching",
-    image:
-      "https://commons.wikimedia.org/wiki/Special:FilePath/Storks%20-%20Bhitarkanika%20National%20Park.jpg?width=1000",
-  },
-  {
-    id: 12,
-    title: "Kingfisher Birds",
-    category: "Birdwatching",
-    description:
-      "Enjoy birdwatching and look for colourful kingfishers among the riverside trees and waterways.",
-    specification: "Eight kingfisher types reported in the region",
-    image:
-      "https://images.unsplash.com/photo-1552728089-57bdde30beb3?auto=format&fit=crop&w=1200&q=85",
-  },
-  {
-    id: 13,
-    title: "Wetland Ecosystem",
-    category: "Nature",
-    description:
-      "Explore the wetlands that support a rich variety of birds, fish, reptiles and other wildlife.",
-    specification: "Rich wetland habitat",
-    image:
-      "https://commons.wikimedia.org/wiki/Special:FilePath/Bhitarkanika%20National%20Park.jpg?width=1000",
-  },
-  {
-    id: 14,
-    title: "Biodiversity",
-    category: "Nature & Discovery",
-    description:
-      "Experience the incredible variety of plants, birds, reptiles and animals found across the ecosystem.",
-    specification: "Diverse flora and fauna",
-    image:
-      "https://commons.wikimedia.org/wiki/Special:FilePath/Bhitarakanika%20national%20park%20mangroves.jpg?width=1000",
-  },
-  {
-    id: 15,
-    title: "Ramsar Site",
-    category: "Natural Heritage",
-    description:
-      "Discover the internationally recognised wetland ecosystem and its importance for biodiversity conservation.",
-    specification: "Internationally recognised wetland",
-    image:
-      "https://commons.wikimedia.org/wiki/Special:FilePath/Storks%20-%20Bhitarkanika%20National%20Park.jpg?width=1000",
-  },
-  {
-    id: 16,
-    title: "Red Crab",
-    category: "Wildlife",
-    description:
-      "Look for colourful red crabs moving across the muddy banks and mangrove surroundings.",
-    specification: "Mangrove mudflat wildlife",
-    image:
-      "https://commons.wikimedia.org/wiki/Special:FilePath/Red%20crabs%2C%20Bhitarkanmika%20National%20Park.jpg?width=1000",
-  },
-  {
-    id: 17,
-    title: "Mud Crab",
-    category: "Marine Wildlife",
-    description:
-      "Discover mud crabs living in the muddy tidal areas and mangrove ecosystem.",
-    specification: "Coastal mangrove species",
-    image:
-      "https://images.unsplash.com/photo-1559737558-2f5a35f4523b?auto=format&fit=crop&w=1200&q=85",
-  },
-  {
-    id: 18,
-    title: "White Crocodile – Gori",
-    category: "Wildlife",
-    description:
-      "Learn about Gori, the well-known white crocodile associated with Bhitarkanika's crocodile conservation story.",
-    specification: "Famous white crocodile",
-    image:
-      "https://commons.wikimedia.org/wiki/Special:FilePath/Crocodile%2C%20Bhitarkanika%20National%20Park.jpg?width=1000",
-  },
-  {
-    id: 19,
-    title: "River Sangam Sunset",
-    category: "Scenic Experience",
-    description:
-      "Enjoy a beautiful sunset at the river confluence. This experience is available only for afternoon booking guests.",
-    specification: "Afternoon booking guests only",
-    image:
-      "https://commons.wikimedia.org/wiki/Special:FilePath/Sunset%20%28Bhitarkanika%20National%20Park%29%20%28Odisha%29.jpg?width=1000",
-  },
-  {
-    id: 20,
-    title: "Crocodile Breeding Hatchery",
-    category: "Conservation",
-    description:
-      "Learn about crocodile breeding, conservation activities and the protection of saltwater crocodiles.",
-    specification: "Crocodile conservation centre",
-    image:
-      "https://commons.wikimedia.org/wiki/Special:FilePath/Crocodile%20near%20plants%20%28Bhitarkanika%20National%20Park%29%20%28Odisha%29.jpg?width=1000",
-  },
-];
-
+const API_BASE = "http://localhost:5000/api";
 const ITEMS_PER_PAGE = 6;
 
 const Journey = () => {
+  const [attractions, setAttractions] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [activeId, setActiveId] = useState(3);
+  const [activeId, setActiveId] = useState(null);
 
-  const totalPages = Math.ceil(attractions.length / ITEMS_PER_PAGE);
+  useEffect(() => {
+    const fetchExplores = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(`${API_BASE}/explores`);
+        const json = await res.json();
+        if (json.success && Array.isArray(json.data)) {
+          // Display live published explore posts from admin
+          const list = json.data.filter((item) => item.published !== false);
+          setAttractions(list);
+          if (list.length > 0) {
+            setActiveId(list[0]._id || list[0].id);
+          }
+        } else {
+          setAttractions([]);
+        }
+      } catch (err) {
+        console.error("Failed to load explore items:", err);
+        setAttractions([]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    fetchExplores();
+  }, []);
+
+  const totalPages = Math.max(1, Math.ceil(attractions.length / ITEMS_PER_PAGE));
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-
   const currentAttractions = attractions.slice(
     startIndex,
     startIndex + ITEMS_PER_PAGE
@@ -240,16 +64,9 @@ const Journey = () => {
       ?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  const handleImageError = (event) => {
-    event.currentTarget.onerror = null;
-    event.currentTarget.src =
-      "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1200&q=85";
-  };
-
   return (
     <section className="journey-section" id="journey-section">
       <div className="journey-container">
-
         {/* SECTION HEADER */}
         <div className="journey-header">
           <span className="journey-badge">
@@ -269,125 +86,161 @@ const Journey = () => {
         </div>
 
         {/* ATTRACTION GRID: EXACTLY 6 IMAGES PER PAGE */}
-        <div className="journey-grid">
-          {currentAttractions.map((item) => (
-            <article
-              className={`destination-card ${
-                activeId === item.id ? "active" : ""
-              }`}
-              key={item.id}
-              tabIndex={0}
-              onMouseEnter={() => setActiveId(item.id)}
-              onMouseLeave={() => setActiveId(null)}
-              onFocus={() => setActiveId(item.id)}
-              onBlur={() => setActiveId(null)}
-            >
-              <img
-                src={item.image}
-                alt={item.title}
-                className="card-bg-img"
-                loading="lazy"
-                onError={handleImageError}
-              />
+        {loading ? (
+          <div className="journey-loading">
+            <div className="journey-spinner" />
+            <p>Loading explore attractions...</p>
+          </div>
+        ) : attractions.length === 0 ? (
+          <div className="journey-empty">
+            <p>No explore attractions posted yet.</p>
+          </div>
+        ) : (
+          <>
+            <div className="journey-grid">
+              {currentAttractions.map((item, index) => {
+                const displayIndex = startIndex + index + 1;
+                const itemId = item._id || item.id || index;
+                const imageUrl = item.image || item.imageUrl || "";
+                const specification =
+                  item.specification ||
+                  item.location ||
+                  item.bestTimeToVisit ||
+                  "Bhitarkanika Sanctuary";
+                const description =
+                  item.shortDesc || item.description || item.fullDesc || "";
 
-              <div className="card-overlay"></div>
+                return (
+                  <article
+                    className={`destination-card ${
+                      activeId === itemId ? "active" : ""
+                    }`}
+                    key={itemId}
+                    tabIndex={0}
+                    onMouseEnter={() => setActiveId(itemId)}
+                    onMouseLeave={() => setActiveId(null)}
+                    onFocus={() => setActiveId(itemId)}
+                    onBlur={() => setActiveId(null)}
+                  >
+                    {imageUrl && (
+                      <img
+                        src={imageUrl}
+                        alt={item.title}
+                        className="card-bg-img"
+                        loading="lazy"
+                      />
+                    )}
 
-              <div className="card-number">
-                {String(item.id).padStart(2, "0")}
-              </div>
+                    <div className="card-overlay"></div>
 
-              <div className="card-info-content">
-                <span className="card-category">
-                  <FaLeaf />
-                  {item.category}
-                </span>
+                    <div className="card-number">
+                      {String(displayIndex).padStart(2, "0")}
+                    </div>
 
-                <h3 className="place-title">{item.title}</h3>
+                    <div className="card-info-content">
+                      <span className="card-category">
+                        <FaLeaf />
+                        {item.category || "Nature & Wildlife"}
+                      </span>
 
-                <p className="card-specification">
-                  {item.specification}
-                </p>
+                      <h3 className="place-title">{item.title}</h3>
 
-                <p className="card-description">
-                  {item.description}
-                </p>
-              </div>
+                      {specification && (
+                        <p className="card-specification">{specification}</p>
+                      )}
 
-              <div className="card-location-icon">
-                <FaMapMarkerAlt />
-              </div>
-            </article>
-          ))}
-        </div>
+                      {description && (
+                        <p className="card-description">{description}</p>
+                      )}
+                    </div>
 
-        {/* PAGINATION */}
-        <div className="journey-pagination">
-          <button
-            type="button"
-            className="journey-pagination-arrow"
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            aria-label="Previous page"
-          >
-            <FaChevronLeft />
-            <span>Previous</span>
-          </button>
+                    <div className="card-location-icon">
+                      <FaMapMarkerAlt />
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
 
-          <div className="journey-pagination-numbers">
-            {Array.from({ length: totalPages }, (_, index) => index + 1).map(
-              (page) => (
+            {/* PAGINATION */}
+            {totalPages > 1 && (
+              <div className="journey-pagination">
                 <button
                   type="button"
-                  key={page}
-                  onClick={() => handlePageChange(page)}
-                  className={`journey-page-number ${
-                    currentPage === page ? "selected" : ""
-                  }`}
-                  aria-label={`Go to page ${page}`}
-                  aria-current={currentPage === page ? "page" : undefined}
+                  className="journey-pagination-arrow"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  aria-label="Previous page"
                 >
-                  {page}
+                  <FaChevronLeft />
+                  <span>Previous</span>
                 </button>
-              )
+
+                <div className="journey-pagination-numbers">
+                  {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+                    (page) => (
+                      <button
+                        type="button"
+                        key={page}
+                        onClick={() => handlePageChange(page)}
+                        className={`journey-page-number ${
+                          currentPage === page ? "selected" : ""
+                        }`}
+                        aria-label={`Go to page ${page}`}
+                        aria-current={currentPage === page ? "page" : undefined}
+                      >
+                        {page}
+                      </button>
+                    )
+                  )}
+                </div>
+
+                <button
+                  type="button"
+                  className="journey-pagination-arrow"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  aria-label="Next page"
+                >
+                  <span>Next</span>
+                  <FaChevronRight />
+                </button>
+              </div>
             )}
-          </div>
 
-          <button
-            type="button"
-            className="journey-pagination-arrow"
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            aria-label="Next page"
-          >
-            <span>Next</span>
-            <FaChevronRight />
-          </button>
-        </div>
-
-        <p className="journey-page-information">
-          Showing{" "}
-          <strong>{startIndex + 1}</strong> –{" "}
-          <strong>
-            {Math.min(startIndex + ITEMS_PER_PAGE, attractions.length)}
-          </strong>{" "}
-          of <strong>{attractions.length}</strong> attractions
-        </p>
+            <p className="journey-page-information">
+              Showing <strong>{startIndex + 1}</strong> –{" "}
+              <strong>
+                {Math.min(startIndex + ITEMS_PER_PAGE, attractions.length)}
+              </strong>{" "}
+              of <strong>{attractions.length}</strong> attractions
+            </p>
+          </>
+        )}
 
         {/* PROMOTIONAL CARD - OUTSIDE THE SIX-IMAGE GRID */}
         <div className="promo-banner-card">
           <div className="promo-banner-content">
-            <span className="promo-small-label">
-              Experience The Adventure
-            </span>
+            <span className="promo-small-label">Experience The Adventure</span>
 
             <h3>Explore Bhitarkanika By Boat</h3>
 
             <p>
-              Discover hidden waterways, beautiful mangroves and
-              extraordinary wildlife on an unforgettable boat journey.
+              Discover hidden waterways, beautiful mangroves and extraordinary
+              wildlife on an unforgettable boat journey.
             </p>
 
-            <Link to="/services/boat-service" className="promo-banner-button">
+            <Link
+              to="/#book-trip"
+              className="promo-banner-button"
+              onClick={(e) => {
+                const el = document.getElementById("book-trip");
+                if (el) {
+                  e.preventDefault();
+                  el.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+              }}
+            >
               Explore Boat Services
               <FaArrowRight />
             </Link>
@@ -402,12 +255,11 @@ const Journey = () => {
         <div className="journey-bottom-note">
           <FaLeaf />
           <p>
-            Wildlife sightings depend on natural conditions and seasons.
-            The River Sangam sunset experience is available only for
-            afternoon booking guests.
+            Wildlife sightings depend on natural conditions and seasons. The
+            River Sangam sunset experience is available only for afternoon
+            booking guests.
           </p>
         </div>
-
       </div>
     </section>
   );

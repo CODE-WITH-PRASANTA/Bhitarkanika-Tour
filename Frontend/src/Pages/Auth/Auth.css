@@ -437,3 +437,102 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Forgot Password & OTP Styles */
+.btk-forgot-intro {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.45;
+  margin: 0 0 10px 0;
+  text-align: center;
+}
+
+.btk-otp-destination-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: rgba(32, 181, 116, 0.12);
+  border: 1px solid rgba(32, 181, 116, 0.3);
+  border-radius: 9px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+}
+
+.btk-otp-dest-left {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11.5px;
+  color: #a7f3d0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.btk-otp-dest-left strong {
+  color: #ffffff;
+}
+
+.btk-otp-edit-btn {
+  background: transparent;
+  border: none;
+  color: #20b574;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.btk-otp-edit-btn:hover {
+  color: #8ff0bd;
+}
+
+.btk-otp-input {
+  letter-spacing: 3px;
+  font-weight: 700;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+}
+
+.btk-resend-countdown {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 500;
+}
+
+.btk-resend-btn {
+  background: transparent;
+  border: none;
+  color: #20b574;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.btk-resend-btn:hover {
+  color: #8ff0bd;
+}
+
+.btk-pwd-match-pill {
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 6px;
+}
+
+.btk-pwd-match-pill.match {
+  background: rgba(32, 181, 116, 0.2);
+  color: #86efac;
+  border: 1px solid rgba(32, 181, 116, 0.4);
+}
+
+.btk-pwd-match-pill.mismatch {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}

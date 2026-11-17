@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const { generateToken, getAuthCookieOptions } = require('../middleware/auth');
+const { sendPasswordResetOtpEmail } = require('../services/emailService');
 
 /**
  * Format safe user object for response (no passwords).
@@ -310,7 +311,7 @@ const googleLogin = async (req, res, next) => {
 };
 
 /**
- * @desc   Initiate forgot password (generate OTP)
+ * @desc   Initiate forgot password (generate OTP & send via Gmail)
  * @route  POST /api/auth/forgot-password
  * @access Public
  */
@@ -331,7 +332,7 @@ const forgotPassword = async (req, res, next) => {
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: 'No account found with this email address.',
+        message: 'No account registered with this email address.',
       });
     }
 
@@ -342,10 +343,18 @@ const forgotPassword = async (req, res, next) => {
     console.log(`[PASSWORD RESET OTP] For ${cleanEmail}: ${otp}`);
     console.log(`========================================\n`);
 
+    // Send OTP via Gmail SMTP service
+    const emailResult = await sendPasswordResetOtpEmail(user, otp);
+    if (!emailResult.success) {
+      console.warn(`[PASSWORD RESET] Email delivery warning: ${emailResult.error}`);
+    }
+
     res.status(200).json({
       success: true,
-      message: 'A 6-digit verification code has been generated.',
-      otp, // included for seamless development/testing
+      message: `A 6-digit verification code (OTP) has been sent to ${cleanEmail}. Please check your inbox and spam folder.`,
+      emailSent: emailResult.success,
+      // In non-production or test mode, provide preview for rapid testing
+      ...(process.env.NODE_ENV !== 'production' ? { devOtp: otp } : {}),
     });
   } catch (error) {
     next(error);
@@ -353,18 +362,25 @@ const forgotPassword = async (req, res, next) => {
 };
 
 /**
- * @desc   Reset password using OTP
+ * @desc   Reset password using OTP & new/confirm password
  * @route  POST /api/auth/reset-password
  * @access Public
  */
 const resetPassword = async (req, res, next) => {
   try {
-    const { email, otp, newPassword } = req.body;
+    const { email, otp, newPassword, confirmPassword } = req.body;
 
     if (!email || !otp || !newPassword) {
       return res.status(400).json({
         success: false,
-        message: 'Please provide your email, 6-digit verification code, and new password.',
+        message: 'Please provide your registered email, 6-digit OTP code, and new password.',
+      });
+    }
+
+    if (confirmPassword && newPassword !== confirmPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'New password and confirm password do not match.',
       });
     }
 
@@ -383,15 +399,15 @@ const resetPassword = async (req, res, next) => {
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: 'Account not found.',
+        message: 'Account not found with this email.',
       });
     }
 
-    const isValid = user.verifyResetOtp(otp);
+    const isValid = user.verifyResetOtp(otp.trim());
     if (!isValid) {
       return res.status(400).json({
         success: false,
-        message: 'Invalid or expired verification code. Please request a new one.',
+        message: 'Invalid or expired 6-digit verification code. Please request a new code.',
       });
     }
 
@@ -401,10 +417,11 @@ const resetPassword = async (req, res, next) => {
     await user.save();
 
     const token = generateToken(user);
+    res.cookie('btk_token', token, getAuthCookieOptions());
 
     res.status(200).json({
       success: true,
-      message: 'Password reset successful! You are now signed in.',
+      message: 'Password reset successful! You are now logged in.',
       token,
       user: formatUser(user),
     });

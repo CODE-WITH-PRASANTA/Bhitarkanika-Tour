@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import "./Experience.css";
 
@@ -1848,6 +1848,7 @@ const BookingModal = ({ tour, pkg, onClose }) => {
 // ============================================
 
 const Experience = () => {
+  const location = useLocation();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedPkg, setSelectedPkg] = useState({ 3: "standard" }); // default card 3 to standard
   const [pkgHint, setPkgHint] = useState(null); // tour id that still needs a package
@@ -1863,6 +1864,29 @@ const Experience = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // Smooth scroll to "Book Trip" boat packages section if targeted by route hash or query
+  useEffect(() => {
+    const scrollToBookTrip = () => {
+      const hash = location.hash || window.location.hash;
+      const search = location.search || window.location.search;
+      if (
+        hash === "#book-trip" ||
+        hash === "#boat-booking" ||
+        hash === "#safari-booking" ||
+        search.includes("book=true")
+      ) {
+        const el = document.getElementById("book-trip");
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }
+    };
+
+    scrollToBookTrip();
+    const t = setTimeout(scrollToBookTrip, 300);
+    return () => clearTimeout(t);
+  }, [location]);
 
   const handlePrev = () =>
     setCurrentIndex((i) => (i === 0 ? boatData.length - 1 : i - 1));
@@ -1893,7 +1917,7 @@ const Experience = () => {
   };
 
   return (
-    <section className="exp-section">
+    <section className="exp-section" id="book-trip">
       <div className="exp-container">
         {/* SECTION HEADER */}
         <div className="exp-header">

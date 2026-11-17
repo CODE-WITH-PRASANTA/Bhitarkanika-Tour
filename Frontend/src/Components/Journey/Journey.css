@@ -1,4 +1,3 @@
-
 /* =========================================
    JOURNEY SECTION
 ========================================= */
@@ -135,24 +134,20 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(
-    180deg,
-    rgba(5, 20, 12, 0.05) 0%,
-    rgba(5, 20, 12, 0.15) 35%,
-    rgba(5, 20, 12, 0.85) 100%
-  );
+  background: linear-gradient(180deg,
+      rgba(5, 20, 12, 0.05) 0%,
+      rgba(5, 20, 12, 0.15) 35%,
+      rgba(5, 20, 12, 0.85) 100%);
   transition: background 0.4s ease;
 }
 
 .destination-card:hover .card-overlay,
 .destination-card.active .card-overlay,
 .destination-card:focus-visible .card-overlay {
-  background: linear-gradient(
-    180deg,
-    rgba(5, 20, 12, 0.12) 0%,
-    rgba(5, 20, 12, 0.35) 30%,
-    rgba(5, 20, 12, 0.94) 100%
-  );
+  background: linear-gradient(180deg,
+      rgba(5, 20, 12, 0.12) 0%,
+      rgba(5, 20, 12, 0.35) 30%,
+      rgba(5, 20, 12, 0.94) 100%);
 }
 
 /* =========================================
@@ -449,6 +444,35 @@
   font-size: 13px;
   line-height: 1.8;
   margin: 0;
+}
+
+/* Loading & Empty States */
+.journey-loading,
+.journey-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #64748b;
+  text-align: center;
+  min-height: 250px;
+}
+
+.journey-spinner {
+  width: 38px;
+  height: 38px;
+  border: 3px solid rgba(92, 150, 62, 0.2);
+  border-top-color: #5c963e;
+  border-radius: 50%;
+  animation: journeySpin 0.8s linear infinite;
+  margin-bottom: 14px;
+}
+
+@keyframes journeySpin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* =========================================
