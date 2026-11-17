@@ -1,21 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { API_ENDPOINTS, getImageUrl } from "../../api/api";
 import "./OurLatestNews.css";
 
-const API_PUBLISHED_BLOGS_URL = "http://localhost:5000/api/blogs/published";
+const API_PUBLISHED_BLOGS_URL = API_ENDPOINTS.BLOGS_PUBLISHED;
 
-const resolveImageUrl = (image) => {
-  if (!image) return "";
-  if (
-    image.startsWith("http://") ||
-    image.startsWith("https://") ||
-    image.startsWith("data:")
-  ) {
-    return image;
-  }
-  const cleanPath = image.startsWith("/") ? image : `/${image}`;
-  return `http://localhost:5000${cleanPath}`;
-};
+const resolveImageUrl = (image) => getImageUrl(image);
 
 const formatDate = (dateValue, createdAt) => {
   const source = dateValue ? `${dateValue}T00:00:00` : createdAt;

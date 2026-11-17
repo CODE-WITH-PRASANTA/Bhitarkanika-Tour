@@ -9,8 +9,8 @@ import {
 } from "react-icons/fa";
 
 import "./Journey.css";
+import { API_BASE } from "../../api/api";
 
-const API_BASE = "http://localhost:5000/api";
 const ITEMS_PER_PAGE = 6;
 
 const Journey = () => {

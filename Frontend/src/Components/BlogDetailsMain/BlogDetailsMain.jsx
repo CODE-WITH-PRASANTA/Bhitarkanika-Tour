@@ -17,10 +17,11 @@ import {
   X,
 } from "lucide-react";
 import "./BlogDetailsMain.css";
+import { API_ENDPOINTS } from "../../api/api";
 
-const API_BLOGS_URL = "http://localhost:5000/api/blogs";
-const API_CATEGORIES_URL = "http://localhost:5000/api/blog-categories?active=true";
-const API_COMMENTS_URL = "http://localhost:5000/api/blog-comments";
+const API_BLOGS_URL = API_ENDPOINTS.BLOGS;
+const API_CATEGORIES_URL = API_ENDPOINTS.BLOG_CATEGORIES_ACTIVE;
+const API_COMMENTS_URL = API_ENDPOINTS.BLOG_COMMENTS;
 
 const formatBlogDate = (dateValue, createdAt) => {
   const source = dateValue ? `${dateValue}T00:00:00` : createdAt;

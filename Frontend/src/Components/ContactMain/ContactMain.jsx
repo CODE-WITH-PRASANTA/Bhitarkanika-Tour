@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react'
+import { API_ENDPOINTS } from '../../api/api'
 import './ContactMain.css'
 
 const LOCATION = {
@@ -129,7 +130,7 @@ const contactItems = [
   },
 ]
 
-const API_ENQUIRY_URL = 'http://localhost:5000/api/enquiries'
+const API_ENQUIRY_URL = API_ENDPOINTS.ENQUIRIES
 
 const ContactMain = () => {
   const [form, setForm] = useState(initialForm)

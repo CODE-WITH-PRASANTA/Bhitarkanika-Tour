@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 
 import { FaWhatsapp } from "react-icons/fa";
+import { API_ENDPOINTS } from "../../api/api";
 import "./EnquireNow.css";
 
 import enquireImage from "../../assets/ev-vechile-1.png";
@@ -40,7 +41,7 @@ const BRAND_NAME = "Bhitarkanika Boat Service";
 const CALL_NUMBER = "+918328982394";
 const PHONE_DISPLAY = "+91 832 898 2394";
 const WHATSAPP_NUMBER = "918328982394";
-const API_ENQUIRY_URL = "http://localhost:5000/api/enquiries";
+const API_ENQUIRY_URL = API_ENDPOINTS.ENQUIRIES;
 
 const SERVICES = [
   "Mangrove Boat Safari",

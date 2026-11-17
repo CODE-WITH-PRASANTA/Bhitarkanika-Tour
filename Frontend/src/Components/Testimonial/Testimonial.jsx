@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { API_ENDPOINTS, getImageUrl } from "../../api/api";
 import "./Testimonial.css";
 
-const API_URL = "http://localhost:5000/api/testimonials?status=Active";
+const API_URL = API_ENDPOINTS.TESTIMONIALS_ACTIVE;
 
 const formatImageUrl = (img) => {
   if (!img) return "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=160&h=160&q=80";
-  if (img.startsWith("http://") || img.startsWith("https://")) return img;
-  const cleanPath = img.startsWith("/") ? img : `/${img}`;
-  return `http://localhost:5000${cleanPath}`;
+  return getImageUrl(img);
 };
 
 const Testimonial = () => {

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { API_BASE, API_ENDPOINTS } from "../../api/api";
 import "./Experience.css";
 
 // ============================================
@@ -769,7 +770,7 @@ const BookingModal = ({ tour, pkg, onClose }) => {
       await loadRazorpayScript();
 
       // 2. Create Razorpay order from Backend with server-side price validation
-      const orderRes = await fetch("http://localhost:5000/api/payment/create-order", {
+      const orderRes = await fetch(API_ENDPOINTS.PAYMENT_CREATE_ORDER, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -804,7 +805,7 @@ const BookingModal = ({ tour, pkg, onClose }) => {
       // 3. If in dev mode test order, verify seamlessly
       if (orderData.isDevMode || orderData.order?.isMock || !window.Razorpay) {
         try {
-          const verifyRes = await fetch("http://localhost:5000/api/payment/verify-payment", {
+          const verifyRes = await fetch(API_ENDPOINTS.PAYMENT_VERIFY, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -863,7 +864,7 @@ const BookingModal = ({ tour, pkg, onClose }) => {
         handler: async function (response) {
           try {
             // Verify payment cryptographic signature & store confirmed booking in MongoDB
-            const verifyRes = await fetch("http://localhost:5000/api/payment/verify-payment", {
+            const verifyRes = await fetch(API_ENDPOINTS.PAYMENT_VERIFY, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -943,7 +944,7 @@ const BookingModal = ({ tour, pkg, onClose }) => {
 
         // Record failure in backend audit log
         try {
-          await fetch("http://localhost:5000/api/payment/payment-failed", {
+          await fetch(API_ENDPOINTS.PAYMENT_FAILED, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
