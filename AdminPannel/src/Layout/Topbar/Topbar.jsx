@@ -1,13 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { Menu, ChevronDown, Bell, Search, User, LogOut, Shield } from 'lucide-react';
+import { useAdminAuth } from '../../context/AdminAuthContext';
 import './Topbar.css';
 
 const Topbar = ({ toggleSidebar }) => {
+  const navigate = useNavigate();
+  const { admin, logout } = useAdminAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const location = useLocation();
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    await logout();
+    navigate('/login', { replace: true });
+  };
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -108,17 +117,38 @@ const Topbar = ({ toggleSidebar }) => {
             }}
           >
             <div className="Topbar-avatar-wrapper">
-              <img 
-                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" 
-                alt="User Avatar" 
-                className="Topbar-avatar" 
-              />
+              {admin?.avatar ? (
+                <img 
+                  src={admin.avatar} 
+                  alt={admin.name || "Admin"} 
+                  className="Topbar-avatar" 
+                />
+              ) : (
+                <div
+                  className="Topbar-avatar"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    background: "#064e3b",
+                    color: "#a7f3d0",
+                    fontWeight: 700,
+                    fontSize: "13px",
+                  }}
+                >
+                  {(admin?.name || admin?.userId || "A")[0].toUpperCase()}
+                </div>
+              )}
               <span className="Topbar-status-indicator" />
             </div>
 
             <div className="Topbar-user-info">
-              <span className="Topbar-username">Jane Doe</span>
-              <span className="Topbar-role">Administrator</span>
+              <span className="Topbar-username">{admin?.name || "Sanctuary Admin"}</span>
+              <span className="Topbar-role">
+                {admin?.role
+                  ? admin.role.charAt(0).toUpperCase() + admin.role.slice(1)
+                  : "Super Administrator"}
+              </span>
             </div>
 
             <ChevronDown size={15} className={`Topbar-chevron ${dropdownOpen ? 'open' : ''}`} />
@@ -126,20 +156,30 @@ const Topbar = ({ toggleSidebar }) => {
             {dropdownOpen && (
               <div className="Topbar-dropdown Topbar-user-dropdown">
                 <div className="Topbar-user-card">
-                  <p className="Topbar-card-name">Jane Doe</p>
-                  <p className="Topbar-card-email">jane.doe@alkadrops.com</p>
+                  <p className="Topbar-card-name">{admin?.name || "Sanctuary Admin"}</p>
+                  <p className="Topbar-card-email">{admin?.email || "admin@bhitarkanikatour.in"}</p>
                 </div>
                 <div className="Topbar-dropdown-divider" />
-                <Link to="/profile" className="Topbar-dropdown-item">
-                  <User size={16} /> My Profile
-                </Link>
-                <Link to="/wdms/settings" className="Topbar-dropdown-item">
-                  <Shield size={16} /> Security & Settings
-                </Link>
-                <div className="Topbar-dropdown-divider" />
-                <Link to="/logout" className="Topbar-dropdown-item logout">
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="Topbar-dropdown-item logout"
+                  style={{
+                    width: "100%",
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    textAlign: "left",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    font: "inherit",
+                    padding: "9px 14px",
+                    color: "#b91c1c",
+                  }}
+                >
                   <LogOut size={16} /> Log Out
-                </Link>
+                </button>
               </div>
             )}
           </div>

@@ -26,7 +26,8 @@ import {
 
 import "./TourBooking.css";
 
-const API_URL = "http://localhost:5000/api/tour-bookings";
+const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
+const API_URL = `${API_BASE}/tour-bookings`;
 
 const formatCurrency = (amount) =>
   new Intl.NumberFormat("en-IN", {

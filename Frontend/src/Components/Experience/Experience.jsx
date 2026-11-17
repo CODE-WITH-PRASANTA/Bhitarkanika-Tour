@@ -2,8 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { API_BASE, API_ENDPOINTS } from "../../api/api";
 import "./Experience.css";
+
+const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
 
 // ============================================
 // BOAT SERVICE IMAGES  (put your files in src/assets)
@@ -770,7 +771,7 @@ const BookingModal = ({ tour, pkg, onClose }) => {
       await loadRazorpayScript();
 
       // 2. Create Razorpay order from Backend with server-side price validation
-      const orderRes = await fetch(API_ENDPOINTS.PAYMENT_CREATE_ORDER, {
+      const orderRes = await fetch(`${API_BASE}/payment/create-order`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -805,7 +806,7 @@ const BookingModal = ({ tour, pkg, onClose }) => {
       // 3. If in dev mode test order, verify seamlessly
       if (orderData.isDevMode || orderData.order?.isMock || !window.Razorpay) {
         try {
-          const verifyRes = await fetch(API_ENDPOINTS.PAYMENT_VERIFY, {
+          const verifyRes = await fetch(`${API_BASE}/payment/verify-payment`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -864,7 +865,7 @@ const BookingModal = ({ tour, pkg, onClose }) => {
         handler: async function (response) {
           try {
             // Verify payment cryptographic signature & store confirmed booking in MongoDB
-            const verifyRes = await fetch(API_ENDPOINTS.PAYMENT_VERIFY, {
+            const verifyRes = await fetch(`${API_BASE}/payment/verify-payment`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -944,7 +945,7 @@ const BookingModal = ({ tour, pkg, onClose }) => {
 
         // Record failure in backend audit log
         try {
-          await fetch(API_ENDPOINTS.PAYMENT_FAILED, {
+          await fetch(`${API_BASE}/payment/payment-failed`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

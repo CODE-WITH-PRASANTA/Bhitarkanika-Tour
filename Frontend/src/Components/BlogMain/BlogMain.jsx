@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import "./BlogMain.css";
-import { API_ENDPOINTS } from "../../api/api";
 
-const API_PUBLISHED_BLOGS_URL = API_ENDPOINTS.BLOGS_PUBLISHED;
-const API_CATEGORIES_URL = API_ENDPOINTS.BLOG_CATEGORIES_ACTIVE;
+const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
+const API_PUBLISHED_BLOGS_URL = `${API_BASE}/blogs/published`;
+const API_CATEGORIES_URL = `${API_BASE}/blog-categories?active=true`;
 const PETALS = [0, 1, 2, 3, 4, 5, 6, 7];
 
 const stripHtml = (html = "") =>

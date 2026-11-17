@@ -13,9 +13,10 @@ import {
   User,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
-import { API_BASE } from "../../api/api";
 import authBg from "../../assets/BhitarakanikaBreadcrumb.jpeg";
 import "./Auth.css";
+
+const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
 
 const GOOGLE_CLIENT_ID =
   import.meta.env.VITE_GOOGLE_CLIENT_ID ||

@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import "./Refunds.css";
 
-const API_BASE = "http://localhost:5000/api/payment/admin-refunds";
+const API_BASE = `${import.meta.env.VITE_API_BASE || "http://localhost:5000/api"}/payment/admin-refunds`;
 
 const Refunds = () => {
   const [refunds, setRefunds] = useState([]);
