@@ -16,6 +16,8 @@ const galleryRoutes = require('./routes/galleryRoutes');
 const enquiryRoutes = require('./routes/enquiryRoutes');
 const exploreRoutes = require('./routes/exploreRoutes');
 const authRoutes = require('./routes/authRoutes');
+const adminAuthRoutes = require('./routes/adminAuthRoutes');
+const { seedStaticAdmin } = require('./controllers/adminAuthController');
 const paymentRoutes = require('./routes/paymentRoutes');
 const testimonialRoutes = require('./routes/testimonialRoutes');
 
@@ -79,6 +81,7 @@ app.use('/api/gallery', galleryRoutes);
 app.use('/api/enquiries', enquiryRoutes);
 app.use('/api/explores', exploreRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminAuthRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/testimonials', testimonialRoutes);
 
@@ -88,5 +91,6 @@ app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
+  seedStaticAdmin();
 });
 
