@@ -15,9 +15,9 @@ import { useAdminAuth } from "../../context/AdminAuthContext";
 import logo from "../../assets/mlogo.png";
 import "./Login.css";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
-const STATIC_USER_ID = import.meta.env.VITE_ADMIN_USER_ID || "admin";
-const STATIC_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || "Admin@12345";
+const API_BASE = import.meta.env.VITE_API_BASE;
+const STATIC_USER_ID = import.meta.env.VITE_ADMIN_USER_ID;
+const STATIC_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
 
 const Login = () => {
   const navigate = useNavigate();

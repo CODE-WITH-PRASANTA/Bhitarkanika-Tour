@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import "./BlogComments.css";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
+const API_BASE = import.meta.env.VITE_API_BASE;
 const API_COMMENTS_URL = `${API_BASE}/blog-comments`;
 
 const BlogComments = () => {

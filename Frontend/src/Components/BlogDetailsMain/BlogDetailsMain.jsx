@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import "./BlogDetailsMain.css";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
+const API_BASE = import.meta.env.VITE_API_BASE;
 const API_BLOGS_URL = `${API_BASE}/blogs`;
 const API_CATEGORIES_URL = `${API_BASE}/blog-categories?active=true`;
 const API_COMMENTS_URL = `${API_BASE}/blog-comments`;

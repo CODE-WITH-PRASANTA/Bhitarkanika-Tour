@@ -26,7 +26,7 @@ import {
 
 import "./TourBooking.css";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
+const API_BASE = import.meta.env.VITE_API_BASE;
 const API_URL = `${API_BASE}/tour-bookings`;
 
 const formatCurrency = (amount) =>
@@ -1098,12 +1098,12 @@ const TourBooking = () => {
                   />
                   <datalist id="departure-slots-list">
                     <option value="7:00 AM – 10:30 AM (End)" />
-                    <option value="10:30 AM – 2:00 PM (Midday)" />
-                    <option value="2:00 PM – 5:30 PM (Afternoon)" />
+                    <option value="7:30 AM – 11:00 AM (End)" />
+                    <option value="8:00 AM – 11:30 AM (End)" />
+                    <option value="1:00 PM – 4:30 PM (End)" />
+                    <option value="1:30 PM – 5:00 PM (End)" />
+                    <option value="2:00 PM – 5:30 PM (End)" />
                     <option value="7:00 AM – 5:00 PM (Full Day)" />
-                    <option value="08:00 AM" />
-                    <option value="09:00 AM" />
-                    <option value="10:00 AM" />
                   </datalist>
                 </label>
 

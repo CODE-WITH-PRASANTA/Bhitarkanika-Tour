@@ -34,7 +34,7 @@ const BLOG_SEASONS = [
   "All Year Round",
 ];
 
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
+const API_BASE = import.meta.env.VITE_API_BASE;
 const API_BASE_URL = `${API_BASE}/blogs`;
 const API_CATEGORIES_URL = `${API_BASE}/blog-categories?active=true`;
 

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./Testimonial.css";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
-const SERVER_URL = import.meta.env.VITE_SERVER_URL || API_BASE.replace(/\/api\/?$/, "");
+const API_BASE = import.meta.env.VITE_API_BASE;
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 const API_URL = `${API_BASE}/testimonials?status=Active`;
 
 const formatImageUrl = (img) => {

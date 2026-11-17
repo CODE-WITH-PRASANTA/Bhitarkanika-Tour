@@ -129,7 +129,7 @@ const contactItems = [
   },
 ]
 
-const API_ENQUIRY_URL = `${import.meta.env.VITE_API_BASE || 'http://localhost:5000/api'}/enquiries`
+const API_ENQUIRY_URL = `${import.meta.env.VITE_API_BASE}/enquiries`;
 
 const ContactMain = () => {
   const [form, setForm] = useState(initialForm)

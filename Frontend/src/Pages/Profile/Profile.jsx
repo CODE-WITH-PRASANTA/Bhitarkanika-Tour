@@ -31,7 +31,7 @@ import { useAuth } from "../../context/AuthContext";
 import siteLogo from "../../assets/mlogo.png";
 import "./Profile.css";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
+const API_BASE = import.meta.env.VITE_API_BASE;
 
 // Dynamically load Razorpay checkout script
 const loadRazorpayScript = () => {

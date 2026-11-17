@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import "./Experience.css";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
+const API_BASE = import.meta.env.VITE_API_BASE;
 
 // ============================================
 // BOAT SERVICE IMAGES  (put your files in src/assets)
@@ -51,6 +51,27 @@ const SLOT_OPTIONS = [
     start: "8:00 AM",
     end: "11:30 AM",
     label: "8:00 AM – 11:30 AM (End)",
+  },
+  {
+    key: "13:00-16:30",
+    name: "1:00 PM",
+    start: "1:00 PM",
+    end: "4:30 PM",
+    label: "1:00 PM – 4:30 PM (End)",
+  },
+  {
+    key: "13:30-17:00",
+    name: "1:30 PM",
+    start: "1:30 PM",
+    end: "5:00 PM",
+    label: "1:30 PM – 5:00 PM (End)",
+  },
+  {
+    key: "14:00-17:30",
+    name: "2:00 PM",
+    start: "2:00 PM",
+    end: "5:30 PM",
+    label: "2:00 PM – 5:30 PM (End)",
   },
 ];
 const FULL_DAY_SLOT = {

@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import "./BlogMain.css";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
+const API_BASE = import.meta.env.VITE_API_BASE;
 const API_PUBLISHED_BLOGS_URL = `${API_BASE}/blogs/published`;
 const API_CATEGORIES_URL = `${API_BASE}/blog-categories?active=true`;
 const PETALS = [0, 1, 2, 3, 4, 5, 6, 7];

@@ -40,7 +40,7 @@ const BRAND_NAME = "Bhitarkanika Boat Service";
 const CALL_NUMBER = "+918328982394";
 const PHONE_DISPLAY = "+91 832 898 2394";
 const WHATSAPP_NUMBER = "918328982394";
-const API_ENQUIRY_URL = `${import.meta.env.VITE_API_BASE || "http://localhost:5000/api"}/enquiries`;
+const API_ENQUIRY_URL = `${import.meta.env.VITE_API_BASE}/enquiries`;
 
 const SERVICES = [
   "Mangrove Boat Safari",
