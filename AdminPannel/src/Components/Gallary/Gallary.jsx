@@ -17,8 +17,9 @@ import {
 
 import "./Gallary.css";
 
-const API_GALLERY_URL = "http://localhost:5000/api/gallery";
-const API_CATEGORIES_URL = "http://localhost:5000/api/blog-categories?active=true";
+const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
+const API_GALLERY_URL = `${API_BASE}/gallery`;
+const API_CATEGORIES_URL = `${API_BASE}/blog-categories?active=true`;
 
 const normalizeGalleryItem = (item) => ({
   ...item,

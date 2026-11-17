@@ -121,8 +121,9 @@ const Icon = ({ name, size = 18, className = "" }) => (
 );
 
 /* -------------------------------- Constants ------------------------------- */
-const API_URL = "http://localhost:5000/api/explores";
-const API_CATEGORIES_URL = "http://localhost:5000/api/categories";
+const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
+const API_URL = `${API_BASE}/explores`;
+const API_CATEGORIES_URL = `${API_BASE}/categories`;
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const DESC_LIMIT = 300;

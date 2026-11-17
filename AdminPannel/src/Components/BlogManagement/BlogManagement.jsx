@@ -24,8 +24,9 @@ import {
 } from "lucide-react";
 import "./BlogManagement.css";
 
-const API_BLOGS_URL = "http://localhost:5000/api/blogs";
-const API_CATEGORIES_URL = "http://localhost:5000/api/blog-categories";
+const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
+const API_BLOGS_URL = `${API_BASE}/blogs`;
+const API_CATEGORIES_URL = `${API_BASE}/blog-categories`;
 
 const stripHtml = (html = "") =>
   html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
