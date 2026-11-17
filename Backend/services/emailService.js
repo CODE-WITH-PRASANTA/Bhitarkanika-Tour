@@ -652,10 +652,75 @@ const sendRefundUpdateEmail = async (booking, refundDetails = {}) => {
   }
 };
 
+/**
+ * Send Password Reset OTP Email
+ */
+const sendPasswordResetOtpEmail = async (user, otp) => {
+  try {
+    if (!user || !user.email) return { success: false, error: 'No recipient email' };
+
+    const userName = user.name || 'Valued Traveler';
+
+    const htmlContent = `
+      <div style="text-align: center; margin-bottom: 24px;">
+        <span style="display: inline-block; padding: 6px 16px; border-radius: 50px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0;">
+          &#128274; Security Verification
+        </span>
+      </div>
+
+      <h2 style="font-size: 22px; color: #0d3826; text-align: center; margin: 0 0 10px 0; font-family: Georgia, serif;">
+        Password Reset Verification Code
+      </h2>
+      <p style="text-align: center; color: #4b5563; font-size: 14.5px; margin: 0 0 24px 0; line-height: 1.6;">
+        Hello <strong>${userName}</strong>,<br>
+        We received a request to reset your password for your <strong>Bhitarkanika National Park Safari</strong> account. Use the 6-digit verification code below to set your new password:
+      </p>
+
+      <div style="background: linear-gradient(135deg, #0d3826, #155e3b); border-radius: 12px; padding: 24px; text-align: center; margin: 0 auto 24px auto; max-width: 360px; box-shadow: 0 4px 15px rgba(13, 56, 38, 0.15);">
+        <span style="display: block; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #f3e5ab; margin-bottom: 8px;">
+          YOUR 6-DIGIT VERIFICATION CODE
+        </span>
+        <div style="font-family: 'Courier New', Courier, monospace; font-size: 38px; font-weight: 800; letter-spacing: 10px; color: #ffffff; padding: 6px 0;">
+          ${otp}
+        </div>
+        <span style="display: block; font-size: 12px; color: #d6e8dd; margin-top: 8px;">
+          &#9203; Valid for 15 minutes only
+        </span>
+      </div>
+
+      <div style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 14px 18px; margin-bottom: 24px;">
+        <strong style="color: #92400e; font-size: 13px;">&#9888; Security Notice:</strong>
+        <p style="margin: 4px 0 0 0; font-size: 12.5px; color: #78350f; line-height: 1.5;">
+          Never share this verification code with anyone. Bhitarkanika Tour staff will never ask for your password or OTP. If you did not request this password reset, please ignore this email or contact support.
+        </p>
+      </div>
+
+      <div style="text-align: center; font-size: 12px; color: #9ca3af; margin-top: 20px;">
+        This automated security code was generated for ${user.email}.
+      </div>
+    `;
+
+    const mailOptions = {
+      from: FROM_HEADER,
+      to: user.email,
+      subject: `Your Password Reset Verification Code: ${otp} - Bhitarkanika Safari`,
+      html: emailWrapper(htmlContent, `Your verification code is ${otp}. Valid for 15 minutes.`),
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log(`[emailService] Password reset OTP email sent to ${user.email}: ${info.messageId}`);
+    return { success: true, messageId: info.messageId };
+  } catch (error) {
+    console.error('[emailService] Error sending OTP email:', error);
+    return { success: false, error: error.message };
+  }
+};
+
 module.exports = {
   transporter,
   generateBookingTicketPdf,
   sendBookingConfirmationEmail,
   sendBookingCancellationEmail,
   sendRefundUpdateEmail,
+  sendPasswordResetOtpEmail,
 };

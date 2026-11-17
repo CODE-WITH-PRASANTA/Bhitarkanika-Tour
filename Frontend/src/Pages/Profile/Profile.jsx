@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   AlertCircle,
+  AlertTriangle,
   Anchor,
   ArrowRight,
   Calendar,
@@ -32,8 +33,24 @@ import "./Profile.css";
 
 const API_BASE = "http://localhost:5000/api";
 
+// Dynamically load Razorpay checkout script
+const loadRazorpayScript = () => {
+  return new Promise((resolve) => {
+    if (window.Razorpay) {
+      resolve(true);
+      return;
+    }
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+};
+
 const Profile = () => {
-  const { user, token, isAuthenticated, logout, updateUser } = useAuth();
+  const { user, token, isAuthenticated, logout, updateUser, login } = useAuth();
   const navigate = useNavigate();
 
   // Active Sidebar Tab: "profile" | "bookings" | "transactions" | "refunds" | "security"
@@ -54,6 +71,19 @@ const Profile = () => {
   const [changingPwd, setChangingPwd] = useState(false);
   const [pwdMsg, setPwdMsg] = useState({ type: "", text: "" });
 
+  // Security Tab OTP-Based Reset State (Same Forgot Password Integration)
+  const [secMode, setSecMode] = useState("standard"); // "standard" | "otp"
+  const [secOtpStep, setSecOtpStep] = useState(1); // 1: Send OTP | 2: Verify & Reset
+  const [secEmail, setSecEmail] = useState(user?.email || "");
+  const [secOtp, setSecOtp] = useState("");
+  const [secNewPassword, setSecNewPassword] = useState("");
+  const [secConfirmPassword, setSecConfirmPassword] = useState("");
+  const [showSecNewPwd, setShowSecNewPwd] = useState(false);
+  const [showSecConfirmPwd, setShowSecConfirmPwd] = useState(false);
+  const [secLoading, setSecLoading] = useState(false);
+  const [secCooldown, setSecCooldown] = useState(0);
+  const [secMsg, setSecMsg] = useState({ type: "", text: "" });
+
   // Bookings & Transactions State
   const [bookings, setBookings] = useState([]);
   const [loadingBookings, setLoadingBookings] = useState(true);
@@ -72,6 +102,10 @@ const Profile = () => {
   const [refundRequests, setRefundRequests] = useState([]);
   const [loadingRefunds, setLoadingRefunds] = useState(false);
 
+  // Payment Retry State
+  const [payingBookingId, setPayingBookingId] = useState(null);
+  const [retryPayMsg, setRetryPayMsg] = useState({ type: "", text: "" });
+
   // Protect page: Redirect if unauthenticated
   useEffect(() => {
     if (!isAuthenticated) {
@@ -84,8 +118,20 @@ const Profile = () => {
     if (user) {
       setName(user.name || "");
       setPhone(user.phone || "");
+      if (user.email && !secEmail) {
+        setSecEmail(user.email);
+      }
     }
   }, [user]);
+
+  // Resend OTP Countdown Timer for Security Tab
+  useEffect(() => {
+    if (secCooldown <= 0) return;
+    const timer = setInterval(() => {
+      setSecCooldown((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [secCooldown]);
 
   // Fetch real user bookings from database
   const fetchUserBookings = async () => {
@@ -235,6 +281,120 @@ const Profile = () => {
     }
   };
 
+  // Handle Security OTP Dispatch (Forgot / Reset Password)
+  const handleSendSecurityOtp = async (e) => {
+    if (e) e.preventDefault();
+    setSecMsg({ type: "", text: "" });
+
+    const targetEmail = (secEmail || user?.email || "").trim().toLowerCase();
+    if (!targetEmail) {
+      setSecMsg({ type: "error", text: "Please provide your registered email address." });
+      return;
+    }
+
+    try {
+      setSecLoading(true);
+      const res = await fetch(`${API_BASE}/auth/forgot-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: targetEmail }),
+      });
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        setSecMsg({ type: "error", text: data.message || "Failed to generate verification code." });
+        return;
+      }
+
+      setSecCooldown(60);
+      setSecMsg({
+        type: "success",
+        text: `A 6-digit verification code (OTP) has been sent to ${targetEmail}. Please check your inbox and spam folder.`,
+      });
+      setSecOtpStep(2);
+    } catch (err) {
+      setSecMsg({ type: "error", text: "Server connection failed. Please ensure the backend is running." });
+    } finally {
+      setSecLoading(false);
+    }
+  };
+
+  // Handle Security OTP Verification & Password Reset
+  const handleResetSecurityPasswordWithOtp = async (e) => {
+    e.preventDefault();
+    setSecMsg({ type: "", text: "" });
+
+    const targetEmail = (secEmail || user?.email || "").trim().toLowerCase();
+    const cleanOtp = (secOtp || "").trim();
+
+    if (!cleanOtp) {
+      setSecMsg({ type: "error", text: "Please enter the 6-digit verification code." });
+      return;
+    }
+
+    if (cleanOtp.length !== 6) {
+      setSecMsg({ type: "error", text: "Please enter a valid 6-digit verification code." });
+      return;
+    }
+
+    if (!secNewPassword) {
+      setSecMsg({ type: "error", text: "Please enter your new password." });
+      return;
+    }
+
+    if (secNewPassword.length < 6) {
+      setSecMsg({ type: "error", text: "New password must be at least 6 characters long." });
+      return;
+    }
+
+    if (secNewPassword !== secConfirmPassword) {
+      setSecMsg({ type: "error", text: "New password and confirm password do not match." });
+      return;
+    }
+
+    try {
+      setSecLoading(true);
+      const res = await fetch(`${API_BASE}/auth/reset-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: targetEmail,
+          otp: cleanOtp,
+          newPassword: secNewPassword,
+          confirmPassword: secConfirmPassword,
+        }),
+      });
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        setSecMsg({
+          type: "error",
+          text: data.message || "Password reset failed. Invalid or expired verification code.",
+        });
+        return;
+      }
+
+      if (data.user && login) {
+        login(data.user, data.token);
+      } else if (data.user) {
+        updateUser(data.user);
+      }
+
+      setSecMsg({
+        type: "success",
+        text: "Password reset successful! Your account is now secured with the new password.",
+      });
+      setSecOtp("");
+      setSecNewPassword("");
+      setSecConfirmPassword("");
+      setSecOtpStep(1);
+    } catch (err) {
+      setSecMsg({ type: "error", text: "Server connection error during password reset." });
+    } finally {
+      setSecLoading(false);
+    }
+  };
+
   // Open refund request modal
   const handleOpenRefundModal = (booking) => {
     setSelectedBookingForRefund(booking);
@@ -293,6 +453,183 @@ const Profile = () => {
     }
   };
 
+  // Navigate to Home Page's Boat Safari "Book Trip" Section
+  const handleRedirectToBookTrip = (e) => {
+    e?.preventDefault();
+    navigate("/#book-trip");
+    setTimeout(() => {
+      const el = document.getElementById("book-trip");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 200);
+  };
+
+  // Retry and complete payment for failed/pending booking directly from dashboard
+  const handleRetryPayment = async (booking) => {
+    if (!booking) return;
+    const targetId = booking.bookingId || booking._id;
+    setPayingBookingId(targetId);
+    setRetryPayMsg({ type: "", text: "" });
+
+    try {
+      const isLoaded = await loadRazorpayScript();
+      if (!isLoaded || !window.Razorpay) {
+        alert("Unable to load secure Razorpay payment gateway. Please check your internet connection.");
+        setPayingBookingId(null);
+        return;
+      }
+
+      // 1. Create order on backend for this specific booking
+      const orderAmount = Number(booking.amount || booking.totalAmount || 3590);
+      const res = await fetch(`${API_BASE}/payment/create-order`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          amount: orderAmount,
+          currency: "INR",
+          bookingId: booking.bookingId || booking._id,
+          receipt: `rcpt_${(booking.bookingId || "btk").slice(0, 30)}`,
+          bookingDetails: booking,
+        }),
+      });
+
+      const orderData = await res.json();
+      if (!orderData.success || !orderData.order) {
+        alert(orderData.message || "Failed to initialize payment gateway.");
+        setPayingBookingId(null);
+        return;
+      }
+
+      // 2. Configure Razorpay options
+      const options = {
+        key: orderData.keyId || "rzp_test_TppGgVggUkbJv4",
+        amount: orderData.order.amount,
+        currency: orderData.order.currency || "INR",
+        name: "Bhitarkanika Boat Service",
+        description: `${booking.packageName || "Boat Safari"} (Ref: ${booking.bookingId || "Safari"})`,
+        image: siteLogo || "https://bhitarkanikatour.in/logo.png",
+        order_id: orderData.order.id,
+        prefill: {
+          name: booking.name || user?.name || "Safari Traveler",
+          email: booking.email || user?.email || "",
+          contact: booking.phone || user?.phone || "",
+        },
+        notes: {
+          bookingId: booking.bookingId || booking._id,
+          packageName: booking.packageName || "Boat Safari",
+          departureSlot: booking.departureSlot || booking.time || "",
+        },
+        theme: {
+          color: "#1d352b",
+        },
+        handler: async function (response) {
+          try {
+            // Verify payment on backend and update booking status to Confirmed & Paid
+            const verifyRes = await fetch(`${API_BASE}/payment/verify-payment`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                ...(token ? { Authorization: `Bearer ${token}` } : {}),
+              },
+              credentials: "include",
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                bookingData: {
+                  ...booking,
+                  _id: booking._id,
+                  bookingId: booking.bookingId,
+                  amount: orderAmount,
+                  totalAmount: orderAmount,
+                },
+              }),
+            });
+
+            const verifyData = await verifyRes.json();
+            if (verifyData.success) {
+              setRetryPayMsg({
+                type: "success",
+                text: `Payment successful! Booking #${booking.bookingId || "Safari"} is now Confirmed. Official E-Voucher is available and confirmation email with ticket was sent.`,
+              });
+              // Refresh user bookings & transactions from database
+              await fetchUserBookings();
+            } else {
+              setRetryPayMsg({
+                type: "error",
+                text: verifyData.message || "Payment verification failed.",
+              });
+            }
+          } catch (verErr) {
+            console.error("Verification error:", verErr);
+            setRetryPayMsg({
+              type: "error",
+              text: "Server error verifying payment. Please contact support.",
+            });
+          } finally {
+            setPayingBookingId(null);
+          }
+        },
+        modal: {
+          ondismiss: function () {
+            setPayingBookingId(null);
+            setRetryPayMsg({
+              type: "warning",
+              text: "Payment was not completed. You can click 'Pay Now' anytime to complete your reservation.",
+            });
+          },
+        },
+      };
+
+      const rzpInstance = new window.Razorpay(options);
+      rzpInstance.on("payment.failed", async function (failRes) {
+        const errorDesc =
+          failRes.error?.description ||
+          failRes.error?.reason ||
+          "Payment was declined or failed.";
+        setPayingBookingId(null);
+        setRetryPayMsg({
+          type: "error",
+          text: `Payment failed: ${errorDesc}`,
+        });
+
+        // Record failure in backend
+        try {
+          await fetch(`${API_BASE}/payment/payment-failed`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            },
+            credentials: "include",
+            body: JSON.stringify({
+              orderId: orderData?.order?.id,
+              paymentId: failRes.error?.metadata?.payment_id || "",
+              errorCode: failRes.error?.code,
+              errorDescription: errorDesc,
+              errorReason: failRes.error?.reason,
+              bookingData: booking,
+            }),
+          });
+          await fetchUserBookings();
+        } catch (logErr) {
+          console.warn("Failed to log payment failure:", logErr);
+        }
+      });
+
+      rzpInstance.open();
+    } catch (err) {
+      console.error("Retry payment error:", err);
+      alert("Failed to launch payment gateway. Please try again.");
+      setPayingBookingId(null);
+    }
+  };
+
   // Format YYYY-MM-DD to readable date like "15 Nov 2026"
   const formatBookingDate = (d) => {
     if (!d) return "Scheduled Date";
@@ -315,6 +652,7 @@ const Profile = () => {
   const getBookingStatusCategory = (b) => {
     const rStatus = (b?.refundStatus || "").toLowerCase();
     const bStatus = (b?.status || "").toLowerCase();
+    const pStatus = (b?.paymentStatus || "").toLowerCase();
 
     if (
       rStatus === "completed" ||
@@ -332,6 +670,14 @@ const Profile = () => {
     ) {
       return "refund_processing";
     }
+    if (
+      pStatus === "failed" ||
+      bStatus === "failed" ||
+      bStatus === "payment failed" ||
+      (pStatus === "pending" && bStatus !== "confirmed")
+    ) {
+      return "payment_failed";
+    }
     if (bStatus === "cancelled") {
       return "cancelled";
     }
@@ -341,6 +687,14 @@ const Profile = () => {
   // Render standardized, attractive status badge
   const renderStatusBadge = (booking) => {
     const category = getBookingStatusCategory(booking);
+    if (category === "payment_failed") {
+      return (
+        <span className="btk-status-pill payment-failed">
+          <AlertTriangle size={13} />
+          <span>Payment Failed (Action Needed)</span>
+        </span>
+      );
+    }
     if (category === "refunded") {
       return (
         <span className="btk-status-pill refunded">
@@ -810,7 +1164,7 @@ const Profile = () => {
                   </p>
                 </div>
 
-                <Link to="/services/boat-service" className="btk-book-now-pill">
+                <Link to="/#book-trip" className="btk-book-now-pill" onClick={handleRedirectToBookTrip}>
                   <Anchor size={15} />
                   <span>Book Boat Safari</span>
                 </Link>
@@ -933,6 +1287,7 @@ const Profile = () => {
               const statusCounts = {
                 all: bookings.length,
                 confirmed: bookings.filter((b) => getBookingStatusCategory(b) === "confirmed").length,
+                payment_failed: bookings.filter((b) => getBookingStatusCategory(b) === "payment_failed").length,
                 refund_processing: bookings.filter((b) => getBookingStatusCategory(b) === "refund_processing").length,
                 refunded: bookings.filter((b) => getBookingStatusCategory(b) === "refunded").length,
                 cancelled: bookings.filter((b) => getBookingStatusCategory(b) === "cancelled").length,
@@ -953,11 +1308,31 @@ const Profile = () => {
                       </p>
                     </div>
 
-                    <Link to="/services/boat-service" className="btk-ghost-btn">
+                    <Link to="/#book-trip" className="btk-ghost-btn" onClick={handleRedirectToBookTrip}>
                       <Anchor size={15} />
                       <span>Book New Safari</span>
                     </Link>
                   </div>
+
+                  {/* Retry payment live notification message */}
+                  {retryPayMsg.text && (
+                    <div className={`btk-pay-retry-alert ${retryPayMsg.type}`}>
+                      {retryPayMsg.type === "success" ? (
+                        <CheckCircle2 size={16} />
+                      ) : (
+                        <AlertTriangle size={16} />
+                      )}
+                      <div className="btk-pay-retry-text">{retryPayMsg.text}</div>
+                      <button
+                        type="button"
+                        className="btk-pay-retry-close"
+                        onClick={() => setRetryPayMsg({ type: "", text: "" })}
+                        aria-label="Close notification"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  )}
 
                   {loadingBookings ? (
                     <div className="btk-loading-state">
@@ -973,7 +1348,7 @@ const Profile = () => {
                       <p>
                         Experience the untamed mangroves of Bhitarkanika. Spot saltwater crocodiles, exotic kingfishers, and pristine creeks.
                       </p>
-                      <Link to="/services/boat-service" className="btk-primary-btn">
+                      <Link to="/#book-trip" className="btk-primary-btn" onClick={handleRedirectToBookTrip}>
                         <span>Reserve a Boat Safari</span>
                         <ArrowRight size={16} />
                       </Link>
@@ -1000,6 +1375,18 @@ const Profile = () => {
                           <span>Confirmed / Success</span>
                           <span className="btk-filter-count">{statusCounts.confirmed}</span>
                         </button>
+
+                        {statusCounts.payment_failed > 0 && (
+                          <button
+                            type="button"
+                            className={`btk-filter-pill payment-failed ${bookingStatusFilter === "payment_failed" ? "active" : ""}`}
+                            onClick={() => setBookingStatusFilter("payment_failed")}
+                          >
+                            <AlertTriangle size={13} />
+                            <span>Payment Failed</span>
+                            <span className="btk-filter-count">{statusCounts.payment_failed}</span>
+                          </button>
+                        )}
 
                         {statusCounts.refund_processing > 0 && (
                           <button
@@ -1121,16 +1508,33 @@ const Profile = () => {
                                     </div>
                                   </div>
 
-                                  <div className="btk-meta-cell highlight">
+                                  <div className={`btk-meta-cell highlight ${category === "payment_failed" ? "payment-due" : ""}`}>
                                     <span className="btk-meta-icon money"><CreditCard size={15} /></span>
                                     <div>
-                                      <span className="btk-meta-label">Total Amount Paid</span>
+                                      <span className="btk-meta-label">
+                                        {category === "payment_failed" ? "Amount Payable" : "Total Amount Paid"}
+                                      </span>
                                       <strong className="btk-meta-value price">
                                         ₹{Number(booking.amount || booking.totalAmount || 3590).toLocaleString("en-IN")}
                                       </strong>
                                     </div>
                                   </div>
                                 </div>
+
+                                {/* Failure Banner: If Payment Failed, clearly indicate action needed */}
+                                {category === "payment_failed" && (
+                                  <div className="btk-booking-failed-banner">
+                                    <AlertTriangle size={15} className="btk-failed-banner-icon" />
+                                    <div className="btk-failed-banner-content">
+                                      <strong>Payment Incomplete or Declined</strong>
+                                      <p>
+                                        {booking.paymentError
+                                          ? booking.paymentError
+                                          : "Your previous payment attempt was not completed. Click 'Pay Now' below to securely complete your payment and receive your safari e-voucher."}
+                                      </p>
+                                    </div>
+                                  </div>
+                                )}
 
                                 {/* Refund Status Tracker Box (if refund is initiated or completed) */}
                                 {booking.refundStatus && booking.refundStatus !== "None" && (
@@ -1175,39 +1579,57 @@ const Profile = () => {
                                   </div>
 
                                   <div className="btk-booking-foot-actions">
-                                    <button
-                                      type="button"
-                                      className="btk-btn-download-voucher"
-                                      onClick={() => handleDownloadPdf(booking)}
-                                    >
-                                      <Download size={14} />
-                                      <span>Download E-Voucher</span>
-                                    </button>
-
-                                    {category === "refund_processing" ? (
-                                      <span className="btk-action-status-pill refund-processing">
-                                        <RotateCcw size={13} className="btk-spin-subtle" />
-                                        <span>Refund Processing (1-3 Days)</span>
-                                      </span>
-                                    ) : category === "refunded" ? (
-                                      <span className="btk-action-status-pill refunded">
-                                        <CheckCircle2 size={13} />
-                                        <span>Refund Credited</span>
-                                      </span>
-                                    ) : category === "cancelled" ? (
-                                      <span className="btk-action-status-pill cancelled">
-                                        <AlertCircle size={13} />
-                                        <span>Booking Cancelled</span>
-                                      </span>
-                                    ) : (
+                                    {category === "payment_failed" ? (
                                       <button
                                         type="button"
-                                        className="btk-btn-cancel-refund"
-                                        onClick={() => handleOpenRefundModal(booking)}
+                                        className="btk-btn-pay-now"
+                                        disabled={payingBookingId === (booking.bookingId || booking._id)}
+                                        onClick={() => handleRetryPayment(booking)}
                                       >
-                                        <RotateCcw size={13} />
-                                        <span>Cancel &amp; Request Refund</span>
+                                        <CreditCard size={14} />
+                                        <span>
+                                          {payingBookingId === (booking.bookingId || booking._id)
+                                            ? "Opening Gateway..."
+                                            : `Pay ₹${Number(booking.amount || booking.totalAmount || 3590).toLocaleString("en-IN")} Now`}
+                                        </span>
                                       </button>
+                                    ) : (
+                                      <>
+                                        <button
+                                          type="button"
+                                          className="btk-btn-download-voucher"
+                                          onClick={() => handleDownloadPdf(booking)}
+                                        >
+                                          <Download size={14} />
+                                          <span>Download E-Voucher</span>
+                                        </button>
+
+                                        {category === "refund_processing" ? (
+                                          <span className="btk-action-status-pill refund-processing">
+                                            <RotateCcw size={13} className="btk-spin-subtle" />
+                                            <span>Refund Processing (1-3 Days)</span>
+                                          </span>
+                                        ) : category === "refunded" ? (
+                                          <span className="btk-action-status-pill refunded">
+                                            <CheckCircle2 size={13} />
+                                            <span>Refund Credited</span>
+                                          </span>
+                                        ) : category === "cancelled" ? (
+                                          <span className="btk-action-status-pill cancelled">
+                                            <AlertCircle size={13} />
+                                            <span>Booking Cancelled</span>
+                                          </span>
+                                        ) : (
+                                          <button
+                                            type="button"
+                                            className="btk-btn-cancel-refund"
+                                            onClick={() => handleOpenRefundModal(booking)}
+                                          >
+                                            <RotateCcw size={13} />
+                                            <span>Cancel &amp; Request Refund</span>
+                                          </button>
+                                        )}
+                                      </>
                                     )}
                                   </div>
                                 </div>
@@ -1286,7 +1708,12 @@ const Profile = () => {
                                 <span className="btk-mode-pill">{booking.paymentMethod || "Razorpay / UPI"}</span>
                               </td>
                               <td>
-                                {category === "refunded" ? (
+                                {category === "payment_failed" ? (
+                                  <span className="btk-badge-failed">
+                                    <AlertTriangle size={12} />
+                                    <span>Payment Failed</span>
+                                  </span>
+                                ) : category === "refunded" ? (
                                   <span className="btk-badge-refunded">
                                     <CheckCircle2 size={12} />
                                     <span>Refund Credited</span>
@@ -1398,95 +1825,358 @@ const Profile = () => {
               </div>
             )}
 
-            {/* ================= TAB 5: SECURITY ================= */}
+            {/* ================= TAB 5: SECURITY & PASSWORD ================= */}
             {activeTab === "security" && (
               <div className="btk-content-card">
-                <div className="btk-card-head">
+                <div className="btk-card-head btk-card-head-sec">
                   <div>
                     <h2 className="btk-card-title">Security &amp; Password</h2>
                     <p className="btk-card-desc">
-                      Update your account password and review login security settings.
+                      Update your account password or reset it securely via registered email OTP verification.
                     </p>
+                  </div>
+
+                  {/* Mode Switcher Tabs */}
+                  <div className="btk-sec-tabs" role="tablist">
+                    <button
+                      type="button"
+                      className={`btk-sec-tab-btn ${secMode === "standard" ? "active" : ""}`}
+                      onClick={() => {
+                        setSecMode("standard");
+                        setPwdMsg({ type: "", text: "" });
+                        setSecMsg({ type: "", text: "" });
+                      }}
+                    >
+                      <Lock size={14} />
+                      <span>Change Password</span>
+                    </button>
+                    <button
+                      type="button"
+                      className={`btk-sec-tab-btn ${secMode === "otp" ? "active" : ""}`}
+                      onClick={() => {
+                        setSecMode("otp");
+                        setPwdMsg({ type: "", text: "" });
+                        setSecMsg({ type: "", text: "" });
+                      }}
+                    >
+                      <ShieldCheck size={15} />
+                      <span>Forgot? Reset via OTP</span>
+                    </button>
                   </div>
                 </div>
 
-                {pwdMsg.text && (
-                  <div className={`btk-alert ${pwdMsg.type}`}>
-                    {pwdMsg.type === "success" ? (
-                      <CheckCircle2 size={16} />
-                    ) : (
-                      <AlertCircle size={16} />
+                {/* ================= SUB-MODE 1: STANDARD PASSWORD CHANGE ================= */}
+                {secMode === "standard" && (
+                  <div className="btk-sec-form-wrapper">
+                    {pwdMsg.text && (
+                      <div className={`btk-alert ${pwdMsg.type}`}>
+                        {pwdMsg.type === "success" ? (
+                          <CheckCircle2 size={16} />
+                        ) : (
+                          <AlertCircle size={16} />
+                        )}
+                        <span>{pwdMsg.text}</span>
+                      </div>
                     )}
-                    <span>{pwdMsg.text}</span>
+
+                    <form onSubmit={handleChangePassword} className="btk-security-form">
+                      <div className="btk-input-group">
+                        <div className="btk-label-between">
+                          <label className="btk-lbl">Current Password</label>
+                          <button
+                            type="button"
+                            className="btk-link-action-btn"
+                            onClick={() => {
+                              setSecMode("otp");
+                              setSecOtpStep(1);
+                              setSecMsg({ type: "", text: "" });
+                            }}
+                          >
+                            Forgot Current Password?
+                          </button>
+                        </div>
+                        <div className="btk-input-wrap">
+                          <Lock size={16} className="btk-ico" />
+                          <input
+                            type={showPwd ? "text" : "password"}
+                            className="btk-inp"
+                            placeholder="Enter your current password"
+                            value={currentPassword}
+                            onChange={(e) => setCurrentPassword(e.target.value)}
+                            required
+                          />
+                          <button
+                            type="button"
+                            className="btk-pwd-eye"
+                            onClick={() => setShowPwd(!showPwd)}
+                            aria-label={showPwd ? "Hide password" : "Show password"}
+                          >
+                            {showPwd ? <EyeOff size={16} /> : <Eye size={16} />}
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="btk-form-row-2">
+                        <div className="btk-input-group">
+                          <label className="btk-lbl">New Password</label>
+                          <div className="btk-input-wrap">
+                            <KeyRound size={16} className="btk-ico" />
+                            <input
+                              type={showPwd ? "text" : "password"}
+                              className="btk-inp"
+                              placeholder="Min 6 characters"
+                              value={newPassword}
+                              onChange={(e) => setNewPassword(e.target.value)}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="btk-input-group">
+                          <div className="btk-label-between">
+                            <label className="btk-lbl">Confirm New Password</label>
+                            {confirmPassword && (
+                              <span className={`btk-match-pill ${newPassword === confirmPassword ? "match" : "mismatch"}`}>
+                                {newPassword === confirmPassword ? "✓ Match" : "✗ Mismatch"}
+                              </span>
+                            )}
+                          </div>
+                          <div className="btk-input-wrap">
+                            <KeyRound size={16} className="btk-ico" />
+                            <input
+                              type={showPwd ? "text" : "password"}
+                              className="btk-inp"
+                              placeholder="Re-enter new password"
+                              value={confirmPassword}
+                              onChange={(e) => setConfirmPassword(e.target.value)}
+                              required
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="btk-form-actions">
+                        <button
+                          type="submit"
+                          className="btk-primary-btn"
+                          disabled={changingPwd}
+                        >
+                          <span>{changingPwd ? "Updating..." : "Update Password"}</span>
+                          <ArrowRight size={16} />
+                        </button>
+                      </div>
+                    </form>
                   </div>
                 )}
 
-                <form onSubmit={handleChangePassword} className="btk-security-form">
-                  <div className="btk-input-group">
-                    <label className="btk-lbl">Current Password</label>
-                    <div className="btk-input-wrap">
-                      <Lock size={16} className="btk-ico" />
-                      <input
-                        type={showPwd ? "text" : "password"}
-                        className="btk-inp"
-                        placeholder="Enter your current password"
-                        value={currentPassword}
-                        onChange={(e) => setCurrentPassword(e.target.value)}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="btk-form-row-2">
-                    <div className="btk-input-group">
-                      <label className="btk-lbl">New Password</label>
-                      <div className="btk-input-wrap">
-                        <KeyRound size={16} className="btk-ico" />
-                        <input
-                          type={showPwd ? "text" : "password"}
-                          className="btk-inp"
-                          placeholder="Min 6 characters"
-                          value={newPassword}
-                          onChange={(e) => setNewPassword(e.target.value)}
-                          required
-                        />
-                        <button
-                          type="button"
-                          className="btk-pwd-eye"
-                          onClick={() => setShowPwd(!showPwd)}
-                        >
-                          {showPwd ? <EyeOff size={16} /> : <Eye size={16} />}
-                        </button>
+                {/* ================= SUB-MODE 2: FORGOT PASSWORD (OTP BASED) ================= */}
+                {secMode === "otp" && (
+                  <div className="btk-sec-form-wrapper">
+                    {secMsg.text && (
+                      <div className={`btk-alert ${secMsg.type}`}>
+                        {secMsg.type === "success" ? (
+                          <CheckCircle2 size={16} />
+                        ) : (
+                          <AlertCircle size={16} />
+                        )}
+                        <span>{secMsg.text}</span>
                       </div>
-                    </div>
+                    )}
 
-                    <div className="btk-input-group">
-                      <label className="btk-lbl">Confirm New Password</label>
-                      <div className="btk-input-wrap">
-                        <KeyRound size={16} className="btk-ico" />
-                        <input
-                          type={showPwd ? "text" : "password"}
-                          className="btk-inp"
-                          placeholder="Re-enter new password"
-                          value={confirmPassword}
-                          onChange={(e) => setConfirmPassword(e.target.value)}
-                          required
-                        />
-                      </div>
-                    </div>
-                  </div>
+                    {secOtpStep === 1 ? (
+                      /* STEP 1: REQUEST 6-DIGIT OTP */
+                      <form onSubmit={handleSendSecurityOtp} className="btk-security-form">
+                        <div className="btk-sec-otp-banner">
+                          <div className="btk-sec-otp-banner-icon">
+                            <Mail size={22} />
+                          </div>
+                          <div className="btk-sec-otp-banner-text">
+                            <h4>Reset Password via Email OTP</h4>
+                            <p>
+                              We will send a one-time 6-digit verification code to your registered email address to verify your identity and reset your password.
+                            </p>
+                          </div>
+                        </div>
 
-                  <div className="btk-form-actions">
-                    <button
-                      type="submit"
-                      className="btk-primary-btn"
-                      disabled={changingPwd}
-                    >
-                      <span>{changingPwd ? "Updating..." : "Update Password"}</span>
-                      <ArrowRight size={16} />
-                    </button>
+                        <div className="btk-input-group">
+                          <label className="btk-lbl">Registered Account Email</label>
+                          <div className="btk-input-wrap">
+                            <Mail size={16} className="btk-ico" />
+                            <input
+                              type="email"
+                              className="btk-inp"
+                              placeholder="Enter registered email"
+                              value={secEmail}
+                              onChange={(e) => setSecEmail(e.target.value)}
+                              required
+                            />
+                          </div>
+                          <small className="btk-field-hint">
+                            A verification code will be sent immediately to this mailbox.
+                          </small>
+                        </div>
+
+                        <div className="btk-form-actions-split">
+                          <button
+                            type="button"
+                            className="btk-link-action-btn"
+                            onClick={() => {
+                              setSecMode("standard");
+                              setSecMsg({ type: "", text: "" });
+                            }}
+                          >
+                            ← I know my current password
+                          </button>
+
+                          <button
+                            type="submit"
+                            className="btk-primary-btn"
+                            disabled={secLoading}
+                          >
+                            <span>{secLoading ? "Sending OTP Code..." : "Send Verification Code (OTP)"}</span>
+                            <ArrowRight size={16} />
+                          </button>
+                        </div>
+                      </form>
+                    ) : (
+                      /* STEP 2: VERIFY OTP AND SET NEW PASSWORD */
+                      <form onSubmit={handleResetSecurityPasswordWithOtp} className="btk-security-form">
+                        <div className="btk-otp-destination-bar">
+                          <div className="btk-otp-dest-left">
+                            <Mail size={15} />
+                            <span>Verification code sent to: <strong>{secEmail}</strong></span>
+                          </div>
+                          <button
+                            type="button"
+                            className="btk-otp-edit-btn"
+                            onClick={() => {
+                              setSecOtpStep(1);
+                              setSecMsg({ type: "", text: "" });
+                            }}
+                          >
+                            Change Email
+                          </button>
+                        </div>
+
+                        {/* 6-Digit OTP */}
+                        <div className="btk-input-group">
+                          <div className="btk-label-between">
+                            <label className="btk-lbl">6-Digit Verification Code (OTP)</label>
+                            {secCooldown > 0 ? (
+                              <span className="btk-resend-countdown">
+                                Resend in {secCooldown}s
+                              </span>
+                            ) : (
+                              <button
+                                type="button"
+                                className="btk-resend-btn"
+                                disabled={secLoading}
+                                onClick={handleSendSecurityOtp}
+                              >
+                                Resend Code
+                              </button>
+                            )}
+                          </div>
+                          <div className="btk-input-wrap">
+                            <KeyRound size={16} className="btk-ico" />
+                            <input
+                              type="text"
+                              className="btk-inp btk-otp-code-input"
+                              placeholder="Enter 6-digit OTP"
+                              value={secOtp}
+                              maxLength={6}
+                              inputMode="numeric"
+                              pattern="[0-9]*"
+                              onChange={(e) => setSecOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                              required
+                              autoFocus
+                            />
+                          </div>
+                        </div>
+
+                        <div className="btk-form-row-2">
+                          {/* New Password */}
+                          <div className="btk-input-group">
+                            <label className="btk-lbl">New Password</label>
+                            <div className="btk-input-wrap">
+                              <Lock size={16} className="btk-ico" />
+                              <input
+                                type={showSecNewPwd ? "text" : "password"}
+                                className="btk-inp"
+                                placeholder="Min 6 characters"
+                                value={secNewPassword}
+                                onChange={(e) => setSecNewPassword(e.target.value)}
+                                required
+                              />
+                              <button
+                                type="button"
+                                className="btk-pwd-eye"
+                                onClick={() => setShowSecNewPwd(!showSecNewPwd)}
+                                aria-label={showSecNewPwd ? "Hide password" : "Show password"}
+                              >
+                                {showSecNewPwd ? <EyeOff size={16} /> : <Eye size={16} />}
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* Confirm New Password */}
+                          <div className="btk-input-group">
+                            <div className="btk-label-between">
+                              <label className="btk-lbl">Confirm New Password</label>
+                              {secConfirmPassword && (
+                                <span className={`btk-match-pill ${secNewPassword === secConfirmPassword ? "match" : "mismatch"}`}>
+                                  {secNewPassword === secConfirmPassword ? "✓ Match" : "✗ Mismatch"}
+                                </span>
+                              )}
+                            </div>
+                            <div className="btk-input-wrap">
+                              <Lock size={16} className="btk-ico" />
+                              <input
+                                type={showSecConfirmPwd ? "text" : "password"}
+                                className="btk-inp"
+                                placeholder="Re-enter new password"
+                                value={secConfirmPassword}
+                                onChange={(e) => setSecConfirmPassword(e.target.value)}
+                                required
+                              />
+                              <button
+                                type="button"
+                                className="btk-pwd-eye"
+                                onClick={() => setShowSecConfirmPwd(!showSecConfirmPwd)}
+                                aria-label={showSecConfirmPwd ? "Hide password" : "Show password"}
+                              >
+                                {showSecConfirmPwd ? <EyeOff size={16} /> : <Eye size={16} />}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="btk-form-actions-split">
+                          <button
+                            type="button"
+                            className="btk-link-action-btn"
+                            onClick={() => {
+                              setSecOtpStep(1);
+                              setSecMode("standard");
+                              setSecMsg({ type: "", text: "" });
+                            }}
+                          >
+                            ← Back to standard change password
+                          </button>
+
+                          <button
+                            type="submit"
+                            className="btk-primary-btn"
+                            disabled={secLoading}
+                          >
+                            <span>{secLoading ? "Verifying..." : "Verify OTP & Update Password"}</span>
+                            <ArrowRight size={16} />
+                          </button>
+                        </div>
+                      </form>
+                    )}
                   </div>
-                </form>
+                )}
               </div>
             )}
           </main>

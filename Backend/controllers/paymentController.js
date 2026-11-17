@@ -55,12 +55,25 @@ const calculateServerPrice = (data = {}) => {
  */
 const createOrder = async (req, res, next) => {
   try {
-    const { amount, currency = 'INR', receipt, bookingDetails } = req.body;
+    const { amount, currency = 'INR', receipt, bookingDetails, bookingId } = req.body;
 
     let finalAmount = Number(amount);
 
+    // If an existing bookingId or _id is passed (e.g. retry payment on failed booking)
+    if (bookingId) {
+      const existing = await TourBooking.findOne({
+        $or: [
+          { bookingId: bookingId },
+          { _id: String(bookingId).match(/^[0-9a-fA-F]{24}$/) ? bookingId : null },
+        ],
+      });
+      if (existing) {
+        finalAmount = Number(existing.totalAmount || existing.amount || finalAmount);
+      }
+    }
+
     // If booking details provided, strictly enforce server-calculated price
-    if (bookingDetails) {
+    if (!finalAmount && bookingDetails) {
       const serverCalculated = calculateServerPrice(bookingDetails);
       if (serverCalculated.total && serverCalculated.total > 0) {
         finalAmount = serverCalculated.total;
@@ -197,28 +210,58 @@ const verifyPayment = async (req, res, next) => {
     // 4. Calculate authorized pricing server-side
     const serverPricing = calculateServerPrice(bookingData || {});
 
-    // 5. Create confirmed booking record in database
+    // 5. Create or update confirmed booking record in database
     let booking = null;
-    if (bookingData) {
-      const bookingPayload = {
-        ...bookingData,
-        boats: Number(bookingData.boats || bookingData.boatCount || serverPricing.boats || 1),
-        boatCount: Number(bookingData.boats || bookingData.boatCount || serverPricing.boats || 1),
-        amount: serverPricing.total || bookingData.total || bookingData.amount || 3590,
-        totalAmount: serverPricing.total || bookingData.total || bookingData.amount || 3590,
-        boatFare: serverPricing.fare || bookingData.boatFare || 3500,
-        forestPermit: serverPricing.permit || bookingData.forestPermit || 40,
-        govtTax: serverPricing.boatTax || bookingData.govtTax || 50,
-        paymentId: razorpay_payment_id,
-        orderId: razorpay_order_id,
-        signature: razorpay_signature,
-        status: 'Confirmed',
-        paymentStatus: 'Paid',
-        paymentMethod: 'Razorpay / UPI',
-        userId: req.user ? req.user._id : null,
-      };
+    let existingDoc = null;
 
-      booking = await TourBooking.create(bookingPayload);
+    if (bookingData) {
+      const idOrRef = bookingData._id || bookingData.bookingId || bookingData.id;
+      if (idOrRef) {
+        existingDoc = await TourBooking.findOne({
+          $or: [
+            { bookingId: idOrRef },
+            { _id: String(idOrRef).match(/^[0-9a-fA-F]{24}$/) ? idOrRef : null },
+          ],
+        });
+      }
+
+      if (existingDoc) {
+        // Update existing failed/pending booking to Confirmed & Paid
+        existingDoc.paymentId = razorpay_payment_id;
+        existingDoc.orderId = razorpay_order_id;
+        existingDoc.signature = razorpay_signature;
+        existingDoc.status = 'Confirmed';
+        existingDoc.paymentStatus = 'Paid';
+        existingDoc.paymentMethod = 'Razorpay / UPI';
+        existingDoc.paymentError = '';
+        if (bookingData.amount || serverPricing.total) {
+          existingDoc.amount = Number(bookingData.amount || serverPricing.total || existingDoc.amount);
+          existingDoc.totalAmount = Number(bookingData.totalAmount || bookingData.amount || serverPricing.total || existingDoc.totalAmount);
+        }
+        await existingDoc.save();
+        booking = existingDoc;
+      } else {
+        // Create new booking record
+        const bookingPayload = {
+          ...bookingData,
+          boats: Number(bookingData.boats || bookingData.boatCount || serverPricing.boats || 1),
+          boatCount: Number(bookingData.boats || bookingData.boatCount || serverPricing.boats || 1),
+          amount: serverPricing.total || bookingData.total || bookingData.amount || 3590,
+          totalAmount: serverPricing.total || bookingData.total || bookingData.amount || 3590,
+          boatFare: serverPricing.fare || bookingData.boatFare || 3500,
+          forestPermit: serverPricing.permit || bookingData.forestPermit || 40,
+          govtTax: serverPricing.boatTax || bookingData.govtTax || 50,
+          paymentId: razorpay_payment_id,
+          orderId: razorpay_order_id,
+          signature: razorpay_signature,
+          status: 'Confirmed',
+          paymentStatus: 'Paid',
+          paymentMethod: 'Razorpay / UPI',
+          userId: req.user ? req.user._id : null,
+        };
+
+        booking = await TourBooking.create(bookingPayload);
+      }
 
       // Send confirmation email with PDF ticket attachment
       if (booking && booking.email) {
@@ -260,23 +303,46 @@ const recordPaymentFailure = async (req, res) => {
       bookingData,
     } = req.body;
 
-    const failureRecord = {
-      ...bookingData,
-      bookingId: bookingData?.bookingId || `FAIL-${Date.now().toString().slice(-6)}`,
-      packageName: bookingData?.packageName || 'Bhitarkanika Boat Package',
-      name: bookingData?.name || 'Guest Traveler',
-      phone: bookingData?.phone || 'N/A',
-      email: bookingData?.email || '',
-      status: 'Failed',
-      paymentStatus: 'Failed',
-      paymentMethod: 'Razorpay / UPI',
-      orderId: orderId || '',
-      paymentId: paymentId || '',
-      paymentError: `${errorCode || 'PAYMENT_FAILED'}: ${errorDescription || errorReason || 'User cancelled or gateway rejected'}`,
-      userId: req.user ? req.user._id : null,
-    };
+    const errMsg = `${errorCode || 'PAYMENT_FAILED'}: ${errorDescription || errorReason || 'User cancelled or gateway rejected'}`;
 
-    const savedRecord = await TourBooking.create(failureRecord);
+    const idOrRef = bookingData?._id || bookingData?.bookingId || bookingData?.id;
+    let savedRecord = null;
+
+    if (idOrRef) {
+      savedRecord = await TourBooking.findOne({
+        $or: [
+          { bookingId: idOrRef },
+          { _id: String(idOrRef).match(/^[0-9a-fA-F]{24}$/) ? idOrRef : null },
+        ],
+      });
+    }
+
+    if (savedRecord) {
+      savedRecord.status = 'Payment Failed';
+      savedRecord.paymentStatus = 'Failed';
+      savedRecord.paymentError = errMsg;
+      if (orderId) savedRecord.orderId = orderId;
+      if (paymentId) savedRecord.paymentId = paymentId;
+      await savedRecord.save();
+    } else {
+      const failureRecord = {
+        ...bookingData,
+        bookingId: bookingData?.bookingId || `FAIL-${Date.now().toString().slice(-6)}`,
+        packageName: bookingData?.packageName || 'Bhitarkanika Boat Package',
+        name: bookingData?.name || 'Guest Traveler',
+        phone: bookingData?.phone || 'N/A',
+        email: bookingData?.email || '',
+        status: 'Payment Failed',
+        paymentStatus: 'Failed',
+        paymentMethod: 'Razorpay / UPI',
+        orderId: orderId || '',
+        paymentId: paymentId || '',
+        paymentError: errMsg,
+        userId: req.user ? req.user._id : null,
+      };
+
+      savedRecord = await TourBooking.create(failureRecord);
+    }
 
     res.status(200).json({
       success: true,

@@ -563,6 +563,12 @@
   border-color: #fecaca;
 }
 
+.btk-filter-pill.payment-failed.active {
+  background: #fef2f2;
+  color: #dc2626;
+  border-color: #fecaca;
+}
+
 .btk-filter-count {
   display: inline-flex;
   align-items: center;
@@ -646,6 +652,10 @@
 
 .btk-booking-card.btk-card-cancelled::before {
   background: linear-gradient(180deg, #ef4444, #b91c1c);
+}
+
+.btk-booking-card.btk-card-payment_failed::before {
+  background: linear-gradient(180deg, #ea580c, #dc2626);
 }
 
 .btk-booking-card:hover {
@@ -770,6 +780,12 @@
   color: #dc2626;
 }
 
+.btk-status-pill.payment-failed {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+}
+
 .btk-status-pulse {
   width: 7px;
   height: 7px;
@@ -816,6 +832,48 @@
 .btk-meta-cell.highlight {
   background: #f0fdf4;
   border-color: #bbf7d0;
+}
+
+.btk-meta-cell.highlight.payment-due {
+  background: #fff7ed;
+  border-color: #fed7aa;
+}
+
+.btk-meta-cell.highlight.payment-due .price {
+  color: #c2410c;
+}
+
+/* Payment Failure Banner inside Booking Card */
+.btk-booking-failed-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-top: 4px;
+}
+
+.btk-failed-banner-icon {
+  color: #ea580c;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.btk-failed-banner-content strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #9a3412;
+  margin-bottom: 2px;
+}
+
+.btk-failed-banner-content p {
+  margin: 0;
+  font-size: 12px;
+  color: #7c2d12;
+  line-height: 1.45;
 }
 
 .btk-meta-icon {
@@ -934,6 +992,100 @@
 .btk-action-link.danger:hover {
   background: #fef2f2;
   border-color: #f87171;
+}
+
+/* Pay Now CTA for Unpaid/Failed Bookings */
+.btk-btn-pay-now {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #059669, #047857);
+  border: 1px solid #047857;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 9px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(4, 120, 87, 0.28);
+  transition: all 0.22s ease;
+  letter-spacing: 0.2px;
+}
+
+.btk-btn-pay-now:hover:not(:disabled) {
+  background: linear-gradient(135deg, #047857, #065f46);
+  transform: translateY(-1.5px);
+  box-shadow: 0 6px 18px rgba(4, 120, 87, 0.38);
+}
+
+.btk-btn-pay-now:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Payment Retry Notification Alert */
+.btk-pay-retry-alert {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  animation: btkSlideDown 0.3s ease;
+}
+
+.btk-pay-retry-alert.success {
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  color: #047857;
+}
+
+.btk-pay-retry-alert.error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+}
+
+.btk-pay-retry-alert.warning {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  color: #b45309;
+}
+
+.btk-pay-retry-text {
+  flex: 1;
+}
+
+.btk-pay-retry-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  line-height: 1;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.7;
+  padding: 0 4px;
+}
+
+.btk-pay-retry-close:hover {
+  opacity: 1;
+}
+
+.btk-badge-failed {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 100px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  font-size: 11px;
+  font-weight: 700;
 }
 
 /* =========================================
@@ -1522,6 +1674,207 @@
 
 .btk-danger-btn:hover:not(:disabled) {
   transform: translateY(-1px);
+}
+
+/* =========================================
+   SECURITY & PASSWORD (OTP + CURRENT PASSWORD)
+========================================= */
+
+.btk-card-head-sec {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.btk-sec-tabs {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+.btk-sec-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 7px;
+  font-size: 12.5px;
+  font-weight: 600;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btk-sec-tab-btn:hover {
+  color: #0f172a;
+}
+
+.btk-sec-tab-btn.active {
+  background: #ffffff;
+  color: #107248;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.btk-sec-form-wrapper {
+  margin-top: 8px;
+}
+
+.btk-link-action-btn {
+  background: transparent;
+  border: none;
+  color: #1ca668;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s ease;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.btk-link-action-btn:hover {
+  color: #0e6b43;
+}
+
+.btk-match-pill {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  letter-spacing: 0.2px;
+}
+
+.btk-match-pill.match {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.btk-match-pill.mismatch {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.btk-sec-otp-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 20px;
+}
+
+.btk-sec-otp-banner-icon {
+  background: #1ca668;
+  color: #ffffff;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.btk-sec-otp-banner-text h4 {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #14532d;
+}
+
+.btk-sec-otp-banner-text p {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: #166534;
+}
+
+.btk-otp-destination-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 9px;
+  margin-bottom: 18px;
+  font-size: 12.5px;
+  color: #475569;
+}
+
+.btk-otp-dest-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #334155;
+}
+
+.btk-otp-dest-left strong {
+  color: #0f172a;
+}
+
+.btk-otp-edit-btn {
+  background: transparent;
+  border: none;
+  color: #1ca668;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.btk-otp-edit-btn:hover {
+  color: #0e6b43;
+}
+
+.btk-otp-code-input {
+  letter-spacing: 4px;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.btk-resend-countdown {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.btk-resend-btn {
+  background: transparent;
+  border: none;
+  color: #1ca668;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.btk-resend-btn:hover:not(:disabled) {
+  color: #0e6b43;
+}
+
+.btk-form-actions-split {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  margin-top: 14px;
+  flex-wrap: wrap;
 }
 
 /* =========================================

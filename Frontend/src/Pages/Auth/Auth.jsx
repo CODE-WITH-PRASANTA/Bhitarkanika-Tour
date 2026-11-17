@@ -27,14 +27,22 @@ const Auth = () => {
   const { login, isAuthenticated } = useAuth();
 
   // Mode: "login" (default) | "register" | "forgot"
-  const initialMode = searchParams.get("mode") === "register" ? "register" : "login";
-  const [mode, setMode] = useState(initialMode);
+  const getInitialMode = () => {
+    if (window.location.pathname.includes("forgot") || searchParams.get("mode") === "forgot") {
+      return "forgot";
+    }
+    if (window.location.pathname.includes("register") || searchParams.get("mode") === "register") {
+      return "register";
+    }
+    return "login";
+  };
+  const [mode, setMode] = useState(getInitialMode);
 
   // Google OAuth button container refs
   const googleLoginRef = useRef(null);
   const googleRegisterRef = useRef(null);
 
-  // Forgot password step: 1 (request OTP) | 2 (submit OTP & new password)
+  // Forgot password step: 1 (request OTP) | 2 (submit OTP & new/confirm password)
   const [forgotStep, setForgotStep] = useState(1);
   const [generatedOtpHint, setGeneratedOtpHint] = useState("");
 
@@ -47,13 +55,26 @@ const Auth = () => {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [otp, setOtp] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [resendCooldown, setResendCooldown] = useState(0);
 
   // Status
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  // Cooldown countdown timer for OTP resend
+  useEffect(() => {
+    let timer;
+    if (resendCooldown > 0) {
+      timer = setTimeout(() => setResendCooldown((prev) => prev - 1), 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [resendCooldown]);
 
   // Check for pending booking from session storage
   useEffect(() => {
@@ -232,11 +253,12 @@ const Auth = () => {
   };
 
   const handleForgotRequestOtp = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     setError("");
     setSuccess("");
 
-    if (!email) {
+    const cleanEmail = (email || "").trim().toLowerCase();
+    if (!cleanEmail) {
       setError("Please enter your registered email address.");
       return;
     }
@@ -246,7 +268,7 @@ const Auth = () => {
       const res = await fetch(`${API_BASE}/auth/forgot-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email: cleanEmail }),
       });
       const data = await res.json();
 
@@ -255,11 +277,11 @@ const Auth = () => {
         return;
       }
 
-      setGeneratedOtpHint(data.otp || "");
-      setSuccess("Verification code sent! Please enter the 6-digit code below.");
+      setResendCooldown(60);
+      setSuccess(`A 6-digit OTP verification code has been sent to ${cleanEmail}. Please check your email inbox and spam folder.`);
       setForgotStep(2);
     } catch (err) {
-      setError("Connection error. Please try again.");
+      setError("Connection error. Please check your internet connection.");
     } finally {
       setLoading(false);
     }
@@ -270,13 +292,36 @@ const Auth = () => {
     setError("");
     setSuccess("");
 
-    if (!otp || !password) {
-      setError("Please enter the verification code and your new password.");
+    const cleanEmail = (email || "").trim().toLowerCase();
+    const cleanOtp = (otp || "").trim();
+
+    if (!cleanOtp) {
+      setError("Please enter the 6-digit verification code sent to your email.");
       return;
     }
 
-    if (password.length < 6) {
+    if (cleanOtp.length !== 6) {
+      setError("Please enter a valid 6-digit verification code.");
+      return;
+    }
+
+    if (!newPassword) {
+      setError("Please enter your new password.");
+      return;
+    }
+
+    if (newPassword.length < 6) {
       setError("New password must be at least 6 characters long.");
+      return;
+    }
+
+    if (!confirmNewPassword) {
+      setError("Please confirm your new password.");
+      return;
+    }
+
+    if (newPassword !== confirmNewPassword) {
+      setError("New password and confirm password do not match.");
       return;
     }
 
@@ -285,7 +330,12 @@ const Auth = () => {
       const res = await fetch(`${API_BASE}/auth/reset-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, otp, newPassword: password }),
+        body: JSON.stringify({
+          email: cleanEmail,
+          otp: cleanOtp,
+          newPassword: newPassword,
+          confirmPassword: confirmNewPassword,
+        }),
       });
       const data = await res.json();
 
@@ -297,9 +347,9 @@ const Auth = () => {
       setSuccess("Password reset successful! Logging you in...");
       setTimeout(() => {
         handleAuthSuccess(data.user, data.token);
-      }, 400);
+      }, 500);
     } catch (err) {
-      setError("Server error during password reset.");
+      setError("Server error during password reset. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -545,13 +595,13 @@ const Auth = () => {
           <h1 className="btk-auth-card-title">
             {mode === "login" && "Login to Account"}
             {mode === "register" && "Create an Account"}
-            {mode === "forgot" && "Reset Password"}
+            {mode === "forgot" && (forgotStep === 1 ? "Reset Password" : "Set New Password")}
           </h1>
 
           <p className="btk-auth-card-sub">
             {mode === "login" && "Enter your email and password to access your bookings"}
             {mode === "register" && "Register to book boat safaris & download permits"}
-            {mode === "forgot" && "Enter your email to receive a recovery code"}
+            {mode === "forgot" && (forgotStep === 1 ? "Enter your registered email to receive a 6-digit OTP code" : "Enter the verification code and choose your new password")}
           </p>
         </div>
 
@@ -881,6 +931,10 @@ const Auth = () => {
           <div className="btk-auth-form-clean">
             {forgotStep === 1 ? (
               <form onSubmit={handleForgotRequestOtp}>
+                <p className="btk-forgot-intro">
+                  Enter your registered email address to receive a secure 6-digit verification code (OTP).
+                </p>
+
                 <div className="btk-form-group">
                   <label className="btk-form-label" htmlFor="forgot-email">
                     Registered Email Address
@@ -891,10 +945,11 @@ const Auth = () => {
                       id="forgot-email"
                       type="email"
                       className="btk-input-element"
-                      placeholder="Enter registered email"
+                      placeholder="name@example.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
+                      autoFocus
                     />
                   </div>
                 </div>
@@ -904,7 +959,7 @@ const Auth = () => {
                   className="btk-btn-primary"
                   disabled={loading}
                 >
-                  <span>{loading ? "Sending..." : "Send Verification Code"}</span>
+                  <span>{loading ? "Sending Code..." : "Send Verification Code (OTP)"}</span>
                   <ArrowRight size={16} />
                 </button>
 
@@ -925,33 +980,64 @@ const Auth = () => {
               </form>
             ) : (
               <form onSubmit={handleResetPasswordSubmit}>
-                {generatedOtpHint && (
-                  <div className="btk-auth-msg info">
-                    <span>
-                      Demo OTP Code: <strong>{generatedOtpHint}</strong>
-                    </span>
+                <div className="btk-otp-destination-bar">
+                  <div className="btk-otp-dest-left">
+                    <Mail size={14} />
+                    <span>Code sent to: <strong>{email}</strong></span>
                   </div>
-                )}
+                  <button
+                    type="button"
+                    className="btk-otp-edit-btn"
+                    onClick={() => {
+                      setForgotStep(1);
+                      setError("");
+                      setSuccess("");
+                    }}
+                  >
+                    Change Email
+                  </button>
+                </div>
 
+                {/* 6-Digit OTP Field */}
                 <div className="btk-form-group">
-                  <label className="btk-form-label" htmlFor="forgot-otp">
-                    6-Digit Verification Code
-                  </label>
+                  <div className="btk-label-between">
+                    <label className="btk-form-label" htmlFor="forgot-otp">
+                      6-Digit Verification Code (OTP)
+                    </label>
+                    {resendCooldown > 0 ? (
+                      <span className="btk-resend-countdown">
+                        Resend in {resendCooldown}s
+                      </span>
+                    ) : (
+                      <button
+                        type="button"
+                        className="btk-resend-btn"
+                        disabled={loading}
+                        onClick={handleForgotRequestOtp}
+                      >
+                        Resend Code
+                      </button>
+                    )}
+                  </div>
                   <div className="btk-input-box">
                     <KeyRound size={16} className="btk-input-ico" />
                     <input
                       id="forgot-otp"
                       type="text"
-                      className="btk-input-element"
-                      placeholder="Enter 6-digit code"
+                      className="btk-input-element btk-otp-input"
+                      placeholder="Enter 6-digit OTP"
                       value={otp}
                       maxLength={6}
-                      onChange={(e) => setOtp(e.target.value.trim())}
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
                       required
+                      autoFocus
                     />
                   </div>
                 </div>
 
+                {/* New Password */}
                 <div className="btk-form-group">
                   <label className="btk-form-label" htmlFor="forgot-new-pwd">
                     New Password
@@ -963,16 +1049,51 @@ const Auth = () => {
                       type={showPassword ? "text" : "password"}
                       className="btk-input-element"
                       placeholder="At least 6 characters"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
                       required
                     />
                     <button
                       type="button"
                       className="btk-pwd-toggle"
                       onClick={() => setShowPassword(!showPassword)}
+                      aria-label={showPassword ? "Hide password" : "Show password"}
                     >
                       {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Confirm Password */}
+                <div className="btk-form-group">
+                  <div className="btk-label-between">
+                    <label className="btk-form-label" htmlFor="forgot-confirm-pwd">
+                      Confirm New Password
+                    </label>
+                    {confirmNewPassword && (
+                      <span className={`btk-pwd-match-pill ${newPassword === confirmNewPassword ? "match" : "mismatch"}`}>
+                        {newPassword === confirmNewPassword ? "✓ Match" : "✗ Mismatch"}
+                      </span>
+                    )}
+                  </div>
+                  <div className="btk-input-box">
+                    <KeyRound size={16} className="btk-input-ico" />
+                    <input
+                      id="forgot-confirm-pwd"
+                      type={showConfirmPassword ? "text" : "password"}
+                      className="btk-input-element"
+                      placeholder="Re-enter new password"
+                      value={confirmNewPassword}
+                      onChange={(e) => setConfirmNewPassword(e.target.value)}
+                      required
+                    />
+                    <button
+                      type="button"
+                      className="btk-pwd-toggle"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                    >
+                      {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                     </button>
                   </div>
                 </div>
@@ -982,7 +1103,7 @@ const Auth = () => {
                   className="btk-btn-primary"
                   disabled={loading}
                 >
-                  <span>{loading ? "Updating..." : "Update Password & Login"}</span>
+                  <span>{loading ? "Verifying & Updating..." : "Verify OTP & Reset Password"}</span>
                   <ArrowRight size={16} />
                 </button>
 
@@ -993,9 +1114,10 @@ const Auth = () => {
                     onClick={() => {
                       setForgotStep(1);
                       setError("");
+                      setSuccess("");
                     }}
                   >
-                    Re-enter email
+                    ← Re-enter email
                   </button>
                   <span style={{ opacity: 0.3 }}>•</span>
                   <button
@@ -1004,9 +1126,10 @@ const Auth = () => {
                     onClick={() => {
                       setMode("login");
                       setError("");
+                      setSuccess("");
                     }}
                   >
-                    Login
+                    Back to Login
                   </button>
                 </div>
               </form>
