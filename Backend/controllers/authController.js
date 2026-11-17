@@ -262,9 +262,11 @@ const googleLogin = async (req, res, next) => {
     }
 
     const cleanEmail = userEmail.toLowerCase().trim();
-    let user = await User.findOne({
-      $or: [{ email: cleanEmail }, { googleId: userGoogleId }],
-    });
+    const queryConditions = [{ email: cleanEmail }];
+    if (userGoogleId && typeof userGoogleId === 'string' && userGoogleId.trim().length > 0) {
+      queryConditions.push({ googleId: userGoogleId.trim() });
+    }
+    let user = await User.findOne({ $or: queryConditions });
 
     if (user) {
       // Update avatar or googleId if not stored

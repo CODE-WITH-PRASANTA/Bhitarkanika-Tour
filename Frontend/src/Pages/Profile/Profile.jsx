@@ -57,11 +57,13 @@ const Profile = () => {
   // Bookings & Transactions State
   const [bookings, setBookings] = useState([]);
   const [loadingBookings, setLoadingBookings] = useState(true);
+  const [bookingStatusFilter, setBookingStatusFilter] = useState("all"); // "all" | "confirmed" | "refund_processing" | "refunded" | "cancelled"
 
   // Refund Modal State
   const [refundModalOpen, setRefundModalOpen] = useState(false);
   const [selectedBookingForRefund, setSelectedBookingForRefund] = useState(null);
-  const [refundReason, setRefundReason] = useState("Personal Emergency");
+  const [refundReason, setRefundReason] = useState("Personal Emergency / Health");
+  const [refundReasonDetails, setRefundReasonDetails] = useState("");
   const [refundUpi, setRefundUpi] = useState("");
   const [submittingRefund, setSubmittingRefund] = useState(false);
   const [refundSuccessMsg, setRefundSuccessMsg] = useState("");
@@ -92,8 +94,9 @@ const Profile = () => {
       setLoadingBookings(true);
       const userEmail = (user?.email || "").toLowerCase().trim();
       const userPhone = (user?.phone || "").replace(/\D/g, "");
+      const userId = user?._id || user?.id || "";
       const res = await fetch(
-        `${API_BASE}/tour-bookings?email=${encodeURIComponent(userEmail)}&phone=${encodeURIComponent(userPhone)}`,
+        `${API_BASE}/tour-bookings?email=${encodeURIComponent(userEmail)}&phone=${encodeURIComponent(userPhone)}&userId=${encodeURIComponent(userId)}`,
         {
           credentials: "include",
           headers: token ? { Authorization: `Bearer ${token}` } : {},
@@ -105,7 +108,9 @@ const Profile = () => {
         const matched = json.data.filter((b) => {
           const bEmail = (b.email || "").toLowerCase().trim();
           const bPhone = (b.phone || "").replace(/\D/g, "");
+          const bUserId = b.userId ? String(b.userId) : "";
           return (
+            (userId && bUserId && userId === bUserId) ||
             (userEmail && bEmail && userEmail === bEmail) ||
             (userPhone && bPhone && userPhone === bPhone)
           );
@@ -234,6 +239,7 @@ const Profile = () => {
   const handleOpenRefundModal = (booking) => {
     setSelectedBookingForRefund(booking);
     setRefundReason("Personal Emergency / Reschedule");
+    setRefundReasonDetails("");
     setRefundUpi(user?.phone ? `${user.phone}@upi` : "");
     setRefundSuccessMsg("");
     setRefundModalOpen(true);
@@ -245,6 +251,10 @@ const Profile = () => {
     setSubmittingRefund(true);
     setRefundSuccessMsg("");
 
+    const fullReason = refundReasonDetails.trim()
+      ? `${refundReason} - ${refundReasonDetails.trim()}`
+      : refundReason;
+
     try {
       const res = await fetch(`${API_BASE}/payment/request-refund`, {
         method: "POST",
@@ -255,7 +265,8 @@ const Profile = () => {
         credentials: "include",
         body: JSON.stringify({
           bookingId: selectedBookingForRefund.bookingId || selectedBookingForRefund._id,
-          reason: refundReason,
+          reason: fullReason,
+          reasonDetails: refundReasonDetails.trim(),
           refundUpi: refundUpi,
         }),
       });
@@ -298,6 +309,69 @@ const Profile = () => {
   const cleanSlot = (slot) => {
     if (!slot) return "Morning Slot";
     return slot.replace(/\s*\(End\)/gi, "").trim();
+  };
+
+  // Determine structured status category for filtering and badges
+  const getBookingStatusCategory = (b) => {
+    const rStatus = (b?.refundStatus || "").toLowerCase();
+    const bStatus = (b?.status || "").toLowerCase();
+
+    if (
+      rStatus === "completed" ||
+      rStatus === "processed" ||
+      rStatus === "refunded" ||
+      bStatus === "refunded"
+    ) {
+      return "refunded";
+    }
+    if (
+      rStatus.includes("processing") ||
+      rStatus.includes("requested") ||
+      bStatus.includes("cancellation") ||
+      bStatus.includes("refund")
+    ) {
+      return "refund_processing";
+    }
+    if (bStatus === "cancelled") {
+      return "cancelled";
+    }
+    return "confirmed";
+  };
+
+  // Render standardized, attractive status badge
+  const renderStatusBadge = (booking) => {
+    const category = getBookingStatusCategory(booking);
+    if (category === "refunded") {
+      return (
+        <span className="btk-status-pill refunded">
+          <CheckCircle2 size={13} />
+          <span>Refund Credited</span>
+        </span>
+      );
+    }
+    if (category === "refund_processing") {
+      return (
+        <span className="btk-status-pill refund-processing">
+          <RotateCcw size={13} className="btk-spin-subtle" />
+          <span>Refund Processing (1-3 Days)</span>
+        </span>
+      );
+    }
+    if (category === "cancelled") {
+      return (
+        <span className="btk-status-pill cancelled">
+          <AlertCircle size={13} />
+          <span>Booking Cancelled</span>
+        </span>
+      );
+    }
+    return (
+      <span className="btk-status-pill confirmed">
+        <span className="btk-status-pulse" />
+        <CheckCircle2 size={13} />
+        <span>Confirmed (Success)</span>
+      </span>
+    );
   };
 
   // Convert image to clean Base64 dataURL for jsPDF embedding
@@ -482,6 +556,140 @@ const Profile = () => {
       doc.text("2. Primary guest must carry valid Govt Photo ID (Aadhaar / Voter ID / Passport) for forest permit check.", 20, curY + 22);
       doc.text("3. Please report at the jetty 15 minutes prior to the scheduled departure time slot.", 20, curY + 28);
       doc.text("4. Certified life jackets are provided on board and mandatory during creek cruising.", 20, curY + 34);
+
+      // Page 1 Footer
+      doc.setFillColor(...green);
+      doc.rect(0, 282, W, 15, "F");
+      doc.setFillColor(...gold);
+      doc.rect(0, 282, W, 1.2, "F");
+      doc.setTextColor(255, 255, 255);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(8.5);
+      doc.text("Page 1 of 2 · Refer to Page 2 for official Terms & Conditions and Cancellation Policy", W / 2, 290, { align: "center" });
+
+      // ==========================================
+      // PAGE 2: OFFICIAL TERMS & CONDITIONS & POLICIES
+      // ==========================================
+      doc.addPage();
+
+      // Page 2 Header Band
+      doc.setFillColor(...green);
+      doc.rect(0, 0, W, 26, "F");
+      doc.setFillColor(...gold);
+      doc.rect(0, 26, W, 2, "F");
+
+      doc.setTextColor(255, 255, 255);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(13);
+      doc.text("TERMS & CONDITIONS · ECOTOUR ODISHA", 14, 13);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(8);
+      doc.setTextColor(225, 200, 140);
+      doc.text("Bhitarkanika Wildlife Sanctuary & National Park · Forest & Environment Dept., Govt. of Odisha", 14, 20);
+
+      let p2Y = 34;
+
+      // Section 1: Approved Cancellation & Date Change Policy Box
+      doc.setFillColor(248, 250, 248);
+      doc.setDrawColor(200, 220, 210);
+      doc.roundedRect(14, p2Y, W - 28, 44, 3, 3, "FD");
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(9.5);
+      doc.setTextColor(...green);
+      doc.text("CANCELLATION & DATE CHANGE POLICY", 20, p2Y + 7);
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7.8);
+      doc.setTextColor(50, 65, 58);
+      const policyLines = [
+        "• 30+ days prior to scheduled check-in / travel date: 5% cancellation charge | 0 INR date change fee.",
+        "• 15 to 29 days prior to travel date: 15% cancellation charge | 10% date change fee.",
+        "• 7 to 14 days prior to travel date: 25% cancellation charge | 10% date change fee.",
+        "• 2 to 6 days prior to travel date: 50% cancellation charge | 25% date change fee.",
+        "• 0 to 1 days prior to travel date (last 24 hours): 100% cancellation charge (No refund) | 100% date change fee.",
+        "• Reference check-in time is 12:00 noon IST. Refund requests are processed via UPI / original mode in 1 to 3 days.",
+      ];
+      policyLines.forEach((line, idx) => {
+        doc.text(line, 20, p2Y + 13 + idx * 4.9);
+      });
+
+      p2Y += 50;
+
+      // Section 2: Standard Terms & Conditions
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10);
+      doc.setTextColor(...green);
+      doc.text("OFFICIAL SANCTUARY & BOOKING TERMS & CONDITIONS", 14, p2Y);
+
+      p2Y += 5;
+
+      const termsList = [
+        {
+          title: "Booking Acceptance & Forest Permissions",
+          desc: "Booking is valid only after payment, availability confirmation, and applicable forest permissions. All bookings are subject to weather, tide conditions, and directions from the Forest Department.",
+        },
+        {
+          title: "Mandatory ID Proof & Entry Verification",
+          desc: "Every guest must carry a valid government-issued photo ID (Aadhaar, Passport, Voter ID) and produce it at jetty checkpoints. Denial of entry by forest authorities overrides booking without liability.",
+        },
+        {
+          title: "Strict Activity & Departure Timings",
+          desc: "Guests must report at least 15 minutes prior to the departure slot. Boat and safari timings are strictly governed by high/low tides and forest safety regulations. Late arrivals will result in missed services without refund.",
+        },
+        {
+          title: "Wildlife Conduct Norms & Silence",
+          desc: "Feeding, chasing, provoking, or photographing with flash in restricted zones is strictly prohibited. Guests must maintain silence, remain in designated areas, and follow guides and forest staff instructions at all times.",
+        },
+        {
+          title: "Safari, Boating & Trekking at Own Risk",
+          desc: "Nature activities involve operational and terrain risks. Certified life jackets must be worn at all times aboard safari boats. Participation is voluntary and at guest's own risk, subject to applicable law.",
+        },
+        {
+          title: "Prohibition of Intoxicants, Loud Noise & Pets",
+          desc: "Possession or consumption of alcohol, drugs, narcotics, smoking, loud music, parties, and companion animals/pets are strictly forbidden inside eco-tourism zones and will attract immediate legal action.",
+        },
+        {
+          title: "Environmental Protection & Zero-Littering",
+          desc: "Bhitarkanika is an eco-sensitive Ramsar site. Single-use plastic, littering, open fire, or damaging flora and fauna are strictly prohibited and punishable under the Wildlife Protection Act.",
+        },
+        {
+          title: "No Sightings Guarantee & Forest Utilities",
+          desc: "Wildlife sightings and specific weather cannot be guaranteed. Nature stays in forest zones may have limited or intermittent mobile signal, electricity, and water. No dispute will be entertained on this ground.",
+        },
+        {
+          title: "Damage to Property & Equipment",
+          desc: "Any breakage, loss, vandalism, or damage caused to boats, life jackets, or sanctuary facilities will be charged on actual assessment directly to the primary guest.",
+        },
+        {
+          title: "Cancellation, Closure & Force Majeure",
+          desc: "Services may be altered, rescheduled, or cancelled due to adverse weather, tidal surges, wildlife movements, or government directives. In such cases, refunds follow applicable forest policy.",
+        },
+      ];
+
+      termsList.forEach((term) => {
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(8);
+        doc.setTextColor(...gold);
+        doc.text(`• ${term.title}:`, 14, p2Y);
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(7.5);
+        doc.setTextColor(60, 75, 68);
+        const splitText = doc.splitTextToSize(term.desc, W - 28);
+        doc.text(splitText, 14, p2Y + 3.8);
+        p2Y += 3.8 + splitText.length * 3.4 + 1.6;
+      });
+
+      // Page 2 Footer
+      doc.setFillColor(...green);
+      doc.rect(0, 282, W, 15, "F");
+      doc.setFillColor(...gold);
+      doc.rect(0, 282, W, 1.2, "F");
+      doc.setTextColor(255, 255, 255);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(8.5);
+      doc.text("Page 2 of 2 · EcoTour Odisha · Forest & Environment Dept., Govt. of Odisha", W / 2, 290, { align: "center" });
 
       // Save PDF with clear descriptive name
       doc.save(`Bhitarkanika-Pass-${b.bookingId || "Ticket"}.pdf`);
@@ -721,167 +929,298 @@ const Profile = () => {
             )}
 
             {/* ================= TAB 2: MY BOOKINGS ================= */}
-            {activeTab === "bookings" && (
-              <div className="btk-content-card">
-                <div className="btk-card-head">
-                  <div>
-                    <h2 className="btk-card-title">My Boat Safari Bookings</h2>
-                    <p className="btk-card-desc">
-                      View your confirmed boat safari reservations, tickets, and departure points.
-                    </p>
-                  </div>
+            {activeTab === "bookings" && (() => {
+              const statusCounts = {
+                all: bookings.length,
+                confirmed: bookings.filter((b) => getBookingStatusCategory(b) === "confirmed").length,
+                refund_processing: bookings.filter((b) => getBookingStatusCategory(b) === "refund_processing").length,
+                refunded: bookings.filter((b) => getBookingStatusCategory(b) === "refunded").length,
+                cancelled: bookings.filter((b) => getBookingStatusCategory(b) === "cancelled").length,
+              };
 
-                  <Link to="/services/boat-service" className="btk-ghost-btn">
-                    <Anchor size={15} />
-                    <span>Book New Safari</span>
-                  </Link>
-                </div>
+              const filteredBookings = bookings.filter((b) => {
+                if (bookingStatusFilter === "all") return true;
+                return getBookingStatusCategory(b) === bookingStatusFilter;
+              });
 
-                {loadingBookings ? (
-                  <div className="btk-loading-state">
-                    <Clock size={24} className="btk-spin-ico" />
-                    <p>Loading your safari reservations...</p>
-                  </div>
-                ) : bookings.length === 0 ? (
-                  <div className="btk-empty-state">
-                    <div className="btk-empty-icon">
-                      <Compass size={32} />
+              return (
+                <div className="btk-content-card">
+                  <div className="btk-card-head">
+                    <div>
+                      <h2 className="btk-card-title">My Boat Safari Bookings</h2>
+                      <p className="btk-card-desc">
+                        View your confirmed boat safari reservations, vouchers, live status, and refund trackers.
+                      </p>
                     </div>
-                    <h3>No Safari Bookings Yet</h3>
-                    <p>
-                      Experience the untamed mangroves of Bhitarkanika. Spot saltwater crocodiles, exotic kingfishers, and pristine creeks.
-                    </p>
-                    <Link to="/services/boat-service" className="btk-primary-btn">
-                      <span>Reserve a Boat Safari</span>
-                      <ArrowRight size={16} />
+
+                    <Link to="/services/boat-service" className="btk-ghost-btn">
+                      <Anchor size={15} />
+                      <span>Book New Safari</span>
                     </Link>
                   </div>
-                ) : (
-                  <div className="btk-bookings-list">
-                    {bookings.map((booking, idx) => (
-                      <div className="btk-booking-card" key={booking._id || idx}>
-                        {/* Header: Reference Badge, Title, Route & Live Status */}
-                        <div className="btk-booking-card-head">
-                          <div className="btk-booking-title-group">
-                            <div className="btk-booking-badge-row">
-                              <span className="btk-booking-ref-badge">
-                                {booking.bookingId || `BTK-${idx + 1001}`}
-                              </span>
-                              <span className="btk-booking-gate-chip">
-                                <MapPin size={12} />
-                                <span>{booking.from || "Khola Jetty"}</span>
-                              </span>
-                            </div>
-                            <h3 className="btk-booking-title">
-                              {booking.packageName || "Bhitarkanika Boat Package"}
-                            </h3>
-                            <div className="btk-booking-route-line">
-                              <span>{booking.from || "Khola Boating Point"}</span>
-                              <span className="btk-arrow">➔</span>
-                              <span>{booking.to || "Bhitarkanika Sanctuary"}</span>
-                              <span className="btk-dot-sep">·</span>
-                              <span>1 Day Boat Safari</span>
-                            </div>
-                          </div>
 
-                          <div className="btk-booking-status-col">
-                            <span className={`btk-status-pill ${booking.refundStatus && booking.refundStatus !== "None" ? "refund" : "confirmed"}`}>
-                              <span className="btk-status-pulse" />
-                              {booking.refundStatus && booking.refundStatus !== "None"
-                                ? `Refund ${booking.refundStatus}`
-                                : (booking.status || "Confirmed")}
-                            </span>
-                            {booking.paymentId && (
-                              <span className="btk-paid-ref-sub">
-                                Ref: {booking.paymentId}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* 4 Spacious Value Blocks with Icons */}
-                        <div className="btk-booking-meta-grid">
-                          <div className="btk-meta-cell">
-                            <span className="btk-meta-icon"><Calendar size={15} /></span>
-                            <div>
-                              <span className="btk-meta-label">Travel Date</span>
-                              <strong className="btk-meta-value">
-                                {formatBookingDate(booking.travelDate || booking.date)}
-                              </strong>
-                            </div>
-                          </div>
-
-                          <div className="btk-meta-cell">
-                            <span className="btk-meta-icon"><Clock size={15} /></span>
-                            <div>
-                              <span className="btk-meta-label">Departure Slot</span>
-                              <strong className="btk-meta-value">
-                                {cleanSlot(booking.departureSlot || booking.time)}
-                              </strong>
-                            </div>
-                          </div>
-
-                          <div className="btk-meta-cell">
-                            <span className="btk-meta-icon"><Users size={15} /></span>
-                            <div>
-                              <span className="btk-meta-label">Travelers</span>
-                              <strong className="btk-meta-value">
-                                {booking.guests || booking.adults || 1} Person(s) · 1 Boat
-                              </strong>
-                            </div>
-                          </div>
-
-                          <div className="btk-meta-cell highlight">
-                            <span className="btk-meta-icon money"><CreditCard size={15} /></span>
-                            <div>
-                              <span className="btk-meta-label">Total Amount Paid</span>
-                              <strong className="btk-meta-value price">
-                                ₹{Number(booking.amount || booking.totalAmount || 3590).toLocaleString("en-IN")}
-                              </strong>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Footer: Official Note & Action Buttons */}
-                        <div className="btk-booking-card-foot">
-                          <div className="btk-booking-foot-note">
-                            <ShieldCheck size={14} />
-                            <span>Official Forest Permit &amp; Boat Tax Included</span>
-                          </div>
-
-                          <div className="btk-booking-foot-actions">
-                            <button
-                              type="button"
-                              className="btk-btn-download-voucher"
-                              onClick={() => handleDownloadPdf(booking)}
-                            >
-                              <Download size={14} />
-                              <span>Download E-Voucher</span>
-                            </button>
-
-                            {booking.refundStatus && booking.refundStatus !== "None" ? (
-                              <span className="btk-action-status-pill">
-                                <RotateCcw size={13} />
-                                <span>Refund {booking.refundStatus}</span>
-                              </span>
-                            ) : (
-                              <button
-                                type="button"
-                                className="btk-btn-cancel-refund"
-                                onClick={() => handleOpenRefundModal(booking)}
-                              >
-                                <RotateCcw size={13} />
-                                <span>Cancel &amp; Request Refund</span>
-                              </button>
-                            )}
-                          </div>
-                        </div>
+                  {loadingBookings ? (
+                    <div className="btk-loading-state">
+                      <Clock size={24} className="btk-spin-ico" />
+                      <p>Loading your safari reservations...</p>
+                    </div>
+                  ) : bookings.length === 0 ? (
+                    <div className="btk-empty-state">
+                      <div className="btk-empty-icon">
+                        <Compass size={32} />
                       </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
+                      <h3>No Safari Bookings Yet</h3>
+                      <p>
+                        Experience the untamed mangroves of Bhitarkanika. Spot saltwater crocodiles, exotic kingfishers, and pristine creeks.
+                      </p>
+                      <Link to="/services/boat-service" className="btk-primary-btn">
+                        <span>Reserve a Boat Safari</span>
+                        <ArrowRight size={16} />
+                      </Link>
+                    </div>
+                  ) : (
+                    <>
+                      {/* Booking Status Filter Bar */}
+                      <div className="btk-booking-filter-bar" role="tablist" aria-label="Filter bookings by status">
+                        <button
+                          type="button"
+                          className={`btk-filter-pill ${bookingStatusFilter === "all" ? "active" : ""}`}
+                          onClick={() => setBookingStatusFilter("all")}
+                        >
+                          <span>All Bookings</span>
+                          <span className="btk-filter-count">{statusCounts.all}</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          className={`btk-filter-pill confirmed ${bookingStatusFilter === "confirmed" ? "active" : ""}`}
+                          onClick={() => setBookingStatusFilter("confirmed")}
+                        >
+                          <CheckCircle2 size={13} />
+                          <span>Confirmed / Success</span>
+                          <span className="btk-filter-count">{statusCounts.confirmed}</span>
+                        </button>
+
+                        {statusCounts.refund_processing > 0 && (
+                          <button
+                            type="button"
+                            className={`btk-filter-pill refund-processing ${bookingStatusFilter === "refund_processing" ? "active" : ""}`}
+                            onClick={() => setBookingStatusFilter("refund_processing")}
+                          >
+                            <RotateCcw size={13} />
+                            <span>Refund Processing</span>
+                            <span className="btk-filter-count">{statusCounts.refund_processing}</span>
+                          </button>
+                        )}
+
+                        {statusCounts.refunded > 0 && (
+                          <button
+                            type="button"
+                            className={`btk-filter-pill refunded ${bookingStatusFilter === "refunded" ? "active" : ""}`}
+                            onClick={() => setBookingStatusFilter("refunded")}
+                          >
+                            <CheckCircle2 size={13} />
+                            <span>Refunded</span>
+                            <span className="btk-filter-count">{statusCounts.refunded}</span>
+                          </button>
+                        )}
+
+                        {statusCounts.cancelled > 0 && (
+                          <button
+                            type="button"
+                            className={`btk-filter-pill cancelled ${bookingStatusFilter === "cancelled" ? "active" : ""}`}
+                            onClick={() => setBookingStatusFilter("cancelled")}
+                          >
+                            <AlertCircle size={13} />
+                            <span>Cancelled</span>
+                            <span className="btk-filter-count">{statusCounts.cancelled}</span>
+                          </button>
+                        )}
+                      </div>
+
+                      {filteredBookings.length === 0 ? (
+                        <div className="btk-empty-filter-state">
+                          <p>No bookings found with status filter: <strong>{bookingStatusFilter.replace("_", " ")}</strong></p>
+                          <button
+                            type="button"
+                            className="btk-reset-filter-btn"
+                            onClick={() => setBookingStatusFilter("all")}
+                          >
+                            Show All {bookings.length} Bookings
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="btk-bookings-list">
+                          {filteredBookings.map((booking, idx) => {
+                            const category = getBookingStatusCategory(booking);
+                            return (
+                              <div className={`btk-booking-card btk-card-${category}`} key={booking._id || idx}>
+                                {/* Header: Reference Badge, Title, Route & Live Status */}
+                                <div className="btk-booking-card-head">
+                                  <div className="btk-booking-title-group">
+                                    <div className="btk-booking-badge-row">
+                                      <span className="btk-booking-ref-badge">
+                                        {booking.bookingId || `BTK-${idx + 1001}`}
+                                      </span>
+                                      <span className="btk-booking-gate-chip">
+                                        <MapPin size={12} />
+                                        <span>{booking.from || "Khola Jetty"}</span>
+                                      </span>
+                                    </div>
+                                    <h3 className="btk-booking-title">
+                                      {booking.packageName || "Bhitarkanika Boat Package"}
+                                    </h3>
+                                    <div className="btk-booking-route-line">
+                                      <span>{booking.from || "Khola Boating Point"}</span>
+                                      <span className="btk-arrow">➔</span>
+                                      <span>{booking.to || "Bhitarkanika Sanctuary"}</span>
+                                      <span className="btk-dot-sep">·</span>
+                                      <span>1 Day Boat Safari</span>
+                                    </div>
+                                  </div>
+
+                                  <div className="btk-booking-status-col">
+                                    {renderStatusBadge(booking)}
+                                    {booking.paymentId && (
+                                      <span className="btk-paid-ref-sub">
+                                        Ref: {booking.paymentId}
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+
+                                {/* 4 Spacious Value Blocks with Icons */}
+                                <div className="btk-booking-meta-grid">
+                                  <div className="btk-meta-cell">
+                                    <span className="btk-meta-icon"><Calendar size={15} /></span>
+                                    <div>
+                                      <span className="btk-meta-label">Travel Date</span>
+                                      <strong className="btk-meta-value">
+                                        {formatBookingDate(booking.travelDate || booking.date)}
+                                      </strong>
+                                    </div>
+                                  </div>
+
+                                  <div className="btk-meta-cell">
+                                    <span className="btk-meta-icon"><Clock size={15} /></span>
+                                    <div>
+                                      <span className="btk-meta-label">Departure Slot</span>
+                                      <strong className="btk-meta-value">
+                                        {cleanSlot(booking.departureSlot || booking.time)}
+                                      </strong>
+                                    </div>
+                                  </div>
+
+                                  <div className="btk-meta-cell">
+                                    <span className="btk-meta-icon"><Users size={15} /></span>
+                                    <div>
+                                      <span className="btk-meta-label">Travelers</span>
+                                      <strong className="btk-meta-value">
+                                        {booking.guests || booking.adults || 1} Person(s) · 1 Boat
+                                      </strong>
+                                    </div>
+                                  </div>
+
+                                  <div className="btk-meta-cell highlight">
+                                    <span className="btk-meta-icon money"><CreditCard size={15} /></span>
+                                    <div>
+                                      <span className="btk-meta-label">Total Amount Paid</span>
+                                      <strong className="btk-meta-value price">
+                                        ₹{Number(booking.amount || booking.totalAmount || 3590).toLocaleString("en-IN")}
+                                      </strong>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Refund Status Tracker Box (if refund is initiated or completed) */}
+                                {booking.refundStatus && booking.refundStatus !== "None" && (
+                                  <div className="btk-booking-refund-tracker">
+                                    <div className="btk-refund-tracker-header">
+                                      <div className="btk-rth-left">
+                                        <RotateCcw size={14} className={category === "refund_processing" ? "btk-spin-subtle" : ""} />
+                                        <strong>Refund Tracking Details</strong>
+                                      </div>
+                                      <span className={`btk-refund-badge-pill ${category}`}>
+                                        {booking.refundStatus}
+                                      </span>
+                                    </div>
+                                    <div className="btk-refund-tracker-grid">
+                                      <div className="btk-rt-item">
+                                        <span className="btk-rt-label">Refund Reference</span>
+                                        <span className="btk-rt-value code">{booking.refundId || `RFD-${booking.bookingId || "ONLINE"}`}</span>
+                                      </div>
+                                      <div className="btk-rt-item">
+                                        <span className="btk-rt-label">Refund Amount</span>
+                                        <span className="btk-rt-value price">₹{Number(booking.refundAmount || booking.amount || booking.totalAmount || 3590).toLocaleString("en-IN")}</span>
+                                      </div>
+                                      {booking.refundUpi && (
+                                        <div className="btk-rt-item">
+                                          <span className="btk-rt-label">Target UPI ID</span>
+                                          <span className="btk-rt-value">{booking.refundUpi}</span>
+                                        </div>
+                                      )}
+                                      <div className="btk-rt-item">
+                                        <span className="btk-rt-label">Bank Settlement</span>
+                                        <span className="btk-rt-value">1–3 Working Days Direct Credit</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+
+                                {/* Footer: Official Note & Action Buttons */}
+                                <div className="btk-booking-card-foot">
+                                  <div className="btk-booking-foot-note">
+                                    <ShieldCheck size={14} />
+                                    <span>Official Forest Permit &amp; Boat Tax Included</span>
+                                  </div>
+
+                                  <div className="btk-booking-foot-actions">
+                                    <button
+                                      type="button"
+                                      className="btk-btn-download-voucher"
+                                      onClick={() => handleDownloadPdf(booking)}
+                                    >
+                                      <Download size={14} />
+                                      <span>Download E-Voucher</span>
+                                    </button>
+
+                                    {category === "refund_processing" ? (
+                                      <span className="btk-action-status-pill refund-processing">
+                                        <RotateCcw size={13} className="btk-spin-subtle" />
+                                        <span>Refund Processing (1-3 Days)</span>
+                                      </span>
+                                    ) : category === "refunded" ? (
+                                      <span className="btk-action-status-pill refunded">
+                                        <CheckCircle2 size={13} />
+                                        <span>Refund Credited</span>
+                                      </span>
+                                    ) : category === "cancelled" ? (
+                                      <span className="btk-action-status-pill cancelled">
+                                        <AlertCircle size={13} />
+                                        <span>Booking Cancelled</span>
+                                      </span>
+                                    ) : (
+                                      <button
+                                        type="button"
+                                        className="btk-btn-cancel-refund"
+                                        onClick={() => handleOpenRefundModal(booking)}
+                                      >
+                                        <RotateCcw size={13} />
+                                        <span>Cancel &amp; Request Refund</span>
+                                      </button>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+              );
+            })()}
 
             {/* ================= TAB 3: TRANSACTIONS ================= */}
             {activeTab === "transactions" && (
@@ -923,6 +1262,7 @@ const Profile = () => {
                           const total = Number(booking.amount || booking.totalAmount || 3590);
                           const txnCode = booking.paymentId || (booking.bookingId ? `TXN_${booking.bookingId.replace(/\D/g, "")}` : `TXN_800${idx}`);
 
+                          const category = getBookingStatusCategory(booking);
                           return (
                             <tr key={booking._id || idx}>
                               <td>
@@ -946,15 +1286,25 @@ const Profile = () => {
                                 <span className="btk-mode-pill">{booking.paymentMethod || "Razorpay / UPI"}</span>
                               </td>
                               <td>
-                                {booking.refundStatus && booking.refundStatus !== "None" ? (
+                                {category === "refunded" ? (
+                                  <span className="btk-badge-refunded">
+                                    <CheckCircle2 size={12} />
+                                    <span>Refund Credited</span>
+                                  </span>
+                                ) : category === "refund_processing" ? (
                                   <span className="btk-badge-refund">
-                                    <RotateCcw size={12} />
-                                    <span>Refund {booking.refundStatus}</span>
+                                    <RotateCcw size={12} className="btk-spin-subtle" />
+                                    <span>Refund Processing</span>
+                                  </span>
+                                ) : category === "cancelled" ? (
+                                  <span className="btk-badge-cancelled">
+                                    <AlertCircle size={12} />
+                                    <span>Cancelled</span>
                                   </span>
                                 ) : (
                                   <span className="btk-badge-paid">
                                     <CheckCircle2 size={12} />
-                                    <span>{booking.paymentStatus || "Paid"}</span>
+                                    <span>Paid (Confirmed)</span>
                                   </span>
                                 )}
                               </td>
@@ -1197,12 +1547,23 @@ const Profile = () => {
                       value={refundReason}
                       onChange={(e) => setRefundReason(e.target.value)}
                     >
-                      <option value="Personal Emergency">Personal Emergency / Health</option>
-                      <option value="Weather / High Tide">Adverse Weather / Rain</option>
+                      <option value="Personal Emergency / Health">Personal Emergency / Health</option>
+                      <option value="Adverse Weather / Rain">Adverse Weather / Rain</option>
                       <option value="Travel Schedule Change">Travel Schedule Change</option>
-                      <option value="Duplicate Booking">Booked by mistake</option>
+                      <option value="Booked by mistake">Booked by mistake</option>
                       <option value="Other">Other</option>
                     </select>
+                  </div>
+
+                  <div className="btk-input-group">
+                    <label className="btk-lbl">Reason</label>
+                    <input
+                      type="text"
+                      className="btk-inp-modal"
+                      placeholder="Enter reason or additional details..."
+                      value={refundReasonDetails}
+                      onChange={(e) => setRefundReasonDetails(e.target.value)}
+                    />
                   </div>
 
                   <div className="btk-input-group">

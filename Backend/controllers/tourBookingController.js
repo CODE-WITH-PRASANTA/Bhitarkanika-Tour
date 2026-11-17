@@ -1,4 +1,9 @@
 const TourBooking = require('../models/TourBooking');
+const {
+  sendBookingConfirmationEmail,
+  sendBookingCancellationEmail,
+  sendRefundUpdateEmail,
+} = require('../services/emailService');
 
 /**
  * Get tour bookings (admin gets all, users get their own, query filter supported).
@@ -7,10 +12,11 @@ const getAll = async (req, res, next) => {
   try {
     let filter = {};
 
-    if (req.query.email || req.query.phone) {
+    if (req.query.email || req.query.phone || req.query.userId) {
       filter.$or = [];
       if (req.query.email) filter.$or.push({ email: req.query.email.toLowerCase().trim() });
       if (req.query.phone) filter.$or.push({ phone: req.query.phone.trim() });
+      if (req.query.userId) filter.$or.push({ userId: req.query.userId });
     } else if (req.user && req.user.role !== 'admin') {
       filter.$or = [
         { email: (req.user.email || '').toLowerCase().trim() },
@@ -57,8 +63,17 @@ const create = async (req, res, next) => {
       body.bookingId = `TB-${Date.now().toString().slice(-6)}`;
     }
 
+    if (req.user && !body.userId) {
+      body.userId = req.user._id;
+    }
+
+    // Automatic confirmation on booking submission/payment
     if (!body.status) {
-      body.status = 'Pending';
+      body.status = 'Confirmed';
+    }
+
+    if (!body.paymentStatus) {
+      body.paymentStatus = 'Paid';
     }
 
     if (!body.date && body.travelDate) {
@@ -96,6 +111,14 @@ const create = async (req, res, next) => {
     }
 
     const booking = await TourBooking.create(body);
+
+    // Send confirmation email with PDF ticket
+    if (booking && booking.email) {
+      sendBookingConfirmationEmail(booking).catch((err) =>
+        console.error('[emailService] Confirmation error:', err)
+      );
+    }
+
     res.status(201).json({ success: true, data: booking });
   } catch (error) {
     res.status(400);
@@ -108,6 +131,7 @@ const create = async (req, res, next) => {
  */
 const update = async (req, res, next) => {
   try {
+    const oldBooking = await TourBooking.findById(req.params.id);
     const booking = await TourBooking.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
@@ -116,6 +140,23 @@ const update = async (req, res, next) => {
       res.status(404);
       throw new Error('Tour booking not found');
     }
+
+    // Trigger email if status changed to Cancelled or Refunded
+    if (booking && booking.email) {
+      if (req.body.status === 'Cancelled' && oldBooking?.status !== 'Cancelled') {
+        sendBookingCancellationEmail(booking, req.body.refundReason || 'Booking Cancelled').catch((err) =>
+          console.error('[emailService] Cancellation error:', err)
+        );
+      } else if (
+        (req.body.status === 'Refunded' || req.body.paymentStatus === 'Refunded') &&
+        oldBooking?.status !== 'Refunded'
+      ) {
+        sendRefundUpdateEmail(booking, { status: 'Refunded / Completed' }).catch((err) =>
+          console.error('[emailService] Refund error:', err)
+        );
+      }
+    }
+
     res.status(200).json({ success: true, data: booking });
   } catch (error) {
     res.status(400);

@@ -324,6 +324,31 @@
 }
 
 /* Google OAuth Button */
+.btk-google-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 40px;
+}
+
+.btk-google-rendered-btn {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btk-google-rendered-btn:empty {
+  display: none;
+}
+
+.btk-google-rendered-btn:not(:empty) + .btk-btn-google {
+  display: none;
+}
+
 .btk-btn-google {
   width: 100%;
   height: 38px;

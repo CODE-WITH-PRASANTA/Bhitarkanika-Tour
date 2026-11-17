@@ -12,6 +12,7 @@ import Gallary from "./Components/Gallary/Gallary";
 import Hotelbooking from "./Components/Hotelbooking/Hotelbooking";
 import Expores from "./Components/Expores/Expores";
 import Testimonial from "./Components/Testimonial/Testimonial";
+import Refunds from "./Components/Refunds/Refunds";
 
 
 const App = () => {
@@ -27,6 +28,7 @@ const App = () => {
           <Route path="/blog/comments" element={<BlogComments />} />
           <Route path="/enquiry" element={<Enquiry />} />
           <Route path="/tour-booking" element={<TourBooking />} />
+          <Route path="/refunds" element={<Refunds />} />
           <Route path="/gallery" element={<Gallary />} />
           <Route path="/hotel-booking" element={<Hotelbooking />} />
           <Route path="/explores" element={<Expores/>} />
