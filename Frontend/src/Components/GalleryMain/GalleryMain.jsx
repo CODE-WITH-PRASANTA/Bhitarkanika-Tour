@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import "./GalleryMain.css";
+import { API_ENDPOINTS } from "../../api/api";
 
-const API_GALLERY_URL = "http://localhost:5000/api/gallery";
-const API_CATEGORIES_URL = "http://localhost:5000/api/blog-categories?active=true";
+const API_GALLERY_URL = API_ENDPOINTS.GALLERY;
+const API_CATEGORIES_URL = API_ENDPOINTS.BLOG_CATEGORIES_ACTIVE;
 const IMAGES_PER_PAGE = 12;
 
 const GalleryMain = () => {
