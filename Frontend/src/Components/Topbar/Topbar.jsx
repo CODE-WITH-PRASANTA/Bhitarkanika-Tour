@@ -11,16 +11,10 @@ const Topbar = () => {
     {
       id: 1,
       icon: AlarmClock,
-      title: "Opening Hours",
-      description: "Mon - Sat: 07:00 AM - 02:00 PM",
+      title: "Boat Booking Hours",
+      description: "Everyday Open: 07:00 AM - 02:00 PM",
     },
-    {
-      id: 2,
-      icon: Mail,
-      title: "Email Us",
-      description: "bhitarkanikaboatservice@gmail.com",
-      href: "mailto:bhitarkanikaboatservice@gmail.com",
-    },
+    
   ];
 
   return (

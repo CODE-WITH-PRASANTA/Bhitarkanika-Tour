@@ -95,7 +95,7 @@ const turtleFAQs = [
   },
   {
     q: "Are boats allowed to land directly on Gahirmatha mass nesting beaches?",
-    a: "No. Gahirmatha Marine Sanctuary is a strictly protected zero-landing reserve enforced by the Odisha Forest Department and Indian Coast Guard to prevent nest trampling and artificial light disorientation. Bhitarakanika Boat Service operates authorized seaworthy cruises along permitted marine waters and adjacent coastal points like Habalikhati.",
+    a: "No. Gahirmatha Marine Sanctuary is a strictly protected zero-landing reserve enforced by the Odisha Forest Department and Indian Coast Guard to prevent nest trampling and artificial light disorientation. Bhitarkanika Boat Booking operates authorized seaworthy cruises along permitted marine waters and adjacent coastal points like Habalikhati.",
   },
   {
     q: "Which departure jetty is best for coastal marine turtle expeditions?",
@@ -103,7 +103,7 @@ const turtleFAQs = [
   },
   {
     q: "What safety equipment and navigation measures are implemented on board?",
-    a: "All vessels operated by Bhitarakanika Boat Service are seaworthy marine-certified crafts equipped with offshore marine lifejackets, GPS units, ring buoys, first-aid kits, licensed marine helmsmen, and Forest Department certified naturalists.",
+    a: "All vessels operated by Bhitarkanika Boat Booking are seaworthy marine-certified crafts equipped with offshore marine lifejackets, GPS units, ring buoys, first-aid kits, licensed marine helmsmen, and Forest Department certified naturalists.",
   },
 ];
 
@@ -167,7 +167,7 @@ const OliveRidleyTurtles = () => {
             <div className="OliveRidleyTurtles__viewPane">
               <div className="OliveRidleyTurtles__eyebrow">
                 <span className="OliveRidleyTurtles__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • GAHIRMATHA MARINE SANCTUARY</span>
+                <span>Bhitarkanika Boat Booking • GAHIRMATHA MARINE SANCTUARY</span>
               </div>
 
               <h1 className="OliveRidleyTurtles__pageTitle">
@@ -176,7 +176,7 @@ const OliveRidleyTurtles = () => {
 
               <p className="OliveRidleyTurtles__lead">
                 Witness one of the Earth's greatest marine wildlife spectacles aboard
-                authorized marine vessels by Bhitarakanika Boat Service. Cruise from the
+                authorized marine vessels by Bhitarkanika Boat Booking. Cruise from the
                 mangrove estuaries toward the open coastal shelf of Gahirmatha, where
                 hundreds of thousands of Olive Ridley sea turtles migrate thousands of miles
                 across the Indian Ocean to breed and nest along Odisha's shoreline.
@@ -192,7 +192,7 @@ const OliveRidleyTurtles = () => {
                 <figcaption className="OliveRidleyTurtles__heroCaption">
                   <span className="OliveRidleyTurtles__heroCaptionDot" />
                   <span>
-                    Bhitarakanika Boat Service • Marine-Certified Cruisers & Forest Eco-Naturalists
+                    Bhitarkanika Boat Booking • Marine-Certified Cruisers & Forest Eco-Naturalists
                   </span>
                 </figcaption>
               </figure>
@@ -261,7 +261,7 @@ const OliveRidleyTurtles = () => {
 
               <div className="OliveRidleyTurtles__actionBanner">
                 <div>
-                  <h3>Plan an Olive Ridley Marine Cruise with Bhitarakanika Boat Service</h3>
+                  <h3>Plan an Olive Ridley Marine Cruise with Bhitarkanika Boat Booking</h3>
                   <p>
                     Pre-reserve authorized seaworthy vessels departing from Gupti Jetty with
                     coordinated maritime permits and certified marine spotters.
@@ -357,7 +357,7 @@ const OliveRidleyTurtles = () => {
                 <p className="OliveRidleyTurtles__routeNote">
                   <strong>Strict Sanctuary Regulation:</strong> Disembarking onto core nesting
                   islands is strictly prohibited under the Wildlife Protection Act. All tours
-                  conducted by Bhitarakanika Boat Service adhere to Forest Department maritime
+                  conducted by Bhitarkanika Boat Booking adhere to Forest Department maritime
                   perimeter guidelines.
                 </p>
               </div>
@@ -366,7 +366,7 @@ const OliveRidleyTurtles = () => {
                 <div>
                   <h3>Have Photography, Scientific or Educational Group Queries?</h3>
                   <p>
-                    Speak with our marine tour coordinators at Bhitarakanika Boat Service
+                    Speak with our marine tour coordinators at Bhitarkanika Boat Booking
                     for customized tidal charters and certified ornithologist-naturalist escorts.
                   </p>
                 </div>
@@ -387,7 +387,7 @@ const OliveRidleyTurtles = () => {
             <div className="OliveRidleyTurtles__viewPane">
               <div className="OliveRidleyTurtles__eyebrow">
                 <span className="OliveRidleyTurtles__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • EXPEDITION REGISTRATION</span>
+                <span>Bhitarkanika Boat Booking • EXPEDITION REGISTRATION</span>
               </div>
 
               <h1 className="OliveRidleyTurtles__pageTitle">
@@ -409,7 +409,7 @@ const OliveRidleyTurtles = () => {
             <div className="OliveRidleyTurtles__viewPane">
               <div className="OliveRidleyTurtles__eyebrow">
                 <span className="OliveRidleyTurtles__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • MARINE ARCHIVE</span>
+                <span>Bhitarkanika Boat Booking • MARINE ARCHIVE</span>
               </div>
 
               <h1 className="OliveRidleyTurtles__pageTitle">
@@ -496,7 +496,7 @@ const OliveRidleyTurtles = () => {
             </div>
 
             <div className="OliveRidleyTurtles__supportHeading">
-              <span>BHITARAKANIKA BOAT SERVICE</span>
+              <span>Bhitarkanika Boat Booking</span>
               <h3>Need Marine Advice?</h3>
             </div>
 
@@ -553,7 +553,7 @@ const OliveRidleyTurtles = () => {
           <div className="OliveRidleyTurtles__sideBox OliveRidleyTurtles__contactBox">
             <div className="OliveRidleyTurtles__sideTitle">
               <span />
-              <h2>Bhitarakanika Boat Service</h2>
+              <h2>Bhitarkanika Boat Booking</h2>
             </div>
 
             <div className="OliveRidleyTurtles__contactInfo">

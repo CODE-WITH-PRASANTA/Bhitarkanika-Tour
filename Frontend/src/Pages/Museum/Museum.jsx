@@ -79,7 +79,7 @@ const museumExperiences = [
     route: "Khola Jetty Boat Safari → Dangmal Museum Walk → Skywalk Trail → Core Creeks",
     duration: "5 to 6 Hours (Comprehensive Package)",
     highlights:
-      "Seamless blend of tidal creek motorboating by Bhitarakanika Boat Service combined with priority access to the Dangmal museum and breeding grounds.",
+      "Seamless blend of tidal creek motorboating by Bhitarkanika Boat Booking combined with priority access to the Dangmal museum and breeding grounds.",
     capacity: "Custom Private Cruisers & Forest Naturalist",
   },
 ];
@@ -87,7 +87,7 @@ const museumExperiences = [
 const museumFAQs = [
   {
     q: "Where is the Bhitarkanika Interpretation Centre & Museum situated?",
-    a: "The museum is located within the core Dangmal Forest campus on Dangmal Island. Visitors reach the center by taking authorized safari boats operated by Bhitarakanika Boat Service from Khola Jetty Terminal directly to the Dangmal pier.",
+    a: "The museum is located within the core Dangmal Forest campus on Dangmal Island. Visitors reach the center by taking authorized safari boats operated by Bhitarkanika Boat Booking from Khola Jetty Terminal directly to the Dangmal pier.",
   },
   {
     q: "What are the most notable exhibits inside the museum?",
@@ -95,7 +95,7 @@ const museumFAQs = [
   },
   {
     q: "Is entry to the museum included with the sanctuary boat permit?",
-    a: "Yes. General sanctuary entry clearances cover the museum, nature trails, and watchtowers. Bhitarakanika Boat Service coordinates all required Forest Department permits and passenger manifests before embarkation.",
+    a: "Yes. General sanctuary entry clearances cover the museum, nature trails, and watchtowers. Bhitarkanika Boat Booking coordinates all required Forest Department permits and passenger manifests before embarkation.",
   },
   {
     q: "Is photography allowed inside the museum galleries?",
@@ -168,7 +168,7 @@ const Museum = () => {
             <div className="Museum__viewPane">
               <div className="Museum__eyebrow">
                 <span className="Museum__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • SANCTUARY INTERPRETATION</span>
+                <span>Bhitarkanika Boat Booking • SANCTUARY INTERPRETATION</span>
               </div>
 
               <h1 className="Museum__pageTitle">
@@ -178,7 +178,7 @@ const Museum = () => {
               <p className="Museum__lead">
                 Delve into the evolutionary science and ecological heritage of India’s
                 coastal wetlands. Curated inside the Dangmal Forest campus and reached via
-                scenic river transit with Bhitarakanika Boat Service, the museum showcases
+                scenic river transit with Bhitarkanika Boat Booking, the museum showcases
                 the anatomy of giant estuarine crocodiles, rare floral specimens, archaeological
                 ruins, and decades of wetland conservation history.
               </p>
@@ -193,7 +193,7 @@ const Museum = () => {
                 <figcaption className="Museum__heroCaption">
                   <span className="Museum__heroCaptionDot" />
                   <span>
-                    Bhitarakanika Boat Service • Forest Interpretive Exhibits & Heritage Tours
+                    Bhitarkanika Boat Booking • Forest Interpretive Exhibits & Heritage Tours
                   </span>
                 </figcaption>
               </figure>
@@ -257,7 +257,7 @@ const Museum = () => {
 
               <div className="Museum__actionBanner">
                 <div>
-                  <h3>Plan Your Museum Visit with Bhitarakanika Boat Service</h3>
+                  <h3>Plan Your Museum Visit with Bhitarkanika Boat Booking</h3>
                   <p>
                     Pre-reserve complete boat cruise transfers from Khola Jetty to Dangmal
                     Island with included museum orientation and guided nature walks.
@@ -363,7 +363,7 @@ const Museum = () => {
                 <div>
                   <h3>Arranging an Educational or Institutional Tour?</h3>
                   <p>
-                    Contact Bhitarakanika Boat Service for chartered student group cruises,
+                    Contact Bhitarkanika Boat Booking for chartered student group cruises,
                     curated scientific walkthroughs, and audio-visual hall bookings.
                   </p>
                 </div>
@@ -384,7 +384,7 @@ const Museum = () => {
             <div className="Museum__viewPane">
               <div className="Museum__eyebrow">
                 <span className="Museum__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • EXPEDITION REGISTRATION</span>
+                <span>Bhitarkanika Boat Booking • EXPEDITION REGISTRATION</span>
               </div>
 
               <h1 className="Museum__pageTitle">
@@ -406,7 +406,7 @@ const Museum = () => {
             <div className="Museum__viewPane">
               <div className="Museum__eyebrow">
                 <span className="Museum__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • ARCHIVE GALLERY</span>
+                <span>Bhitarkanika Boat Booking • ARCHIVE GALLERY</span>
               </div>
 
               <h1 className="Museum__pageTitle">
@@ -492,7 +492,7 @@ const Museum = () => {
             </div>
 
             <div className="Museum__supportHeading">
-              <span>BHITARAKANIKA BOAT SERVICE</span>
+              <span>Bhitarkanika Boat Booking</span>
               <h3>Need Visit Guidance?</h3>
             </div>
 
@@ -545,7 +545,7 @@ const Museum = () => {
           <div className="Museum__sideBox Museum__contactBox">
             <div className="Museum__sideTitle">
               <span />
-              <h2>Bhitarakanika Boat Service</h2>
+              <h2>Bhitarkanika Boat Booking</h2>
             </div>
 
             <div className="Museum__contactInfo">

@@ -95,7 +95,7 @@ const creekFAQs = [
   },
   {
     q: "Are the safari boats safe inside shallow and tight creek bends?",
-    a: "All vessels operated by Bhitarakanika Boat Service feature rigid, high-walled safety gunwales, certified low-noise propulsion engines, licensed helmsmen skilled in tidal navigation, forest eco-guides, and mandatory life jackets for all passengers.",
+    a: "All vessels operated by Bhitarkanika Boat Booking feature rigid, high-walled safety gunwales, certified low-noise propulsion engines, licensed helmsmen skilled in tidal navigation, forest eco-guides, and mandatory life jackets for all passengers.",
   },
   {
     q: "Which jetty provides the best access for narrow creek expeditions?",
@@ -168,7 +168,7 @@ const NarrowCreek = () => {
             <div className="NarrowCreek__viewPane">
               <div className="NarrowCreek__eyebrow">
                 <span className="NarrowCreek__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • TIDAL CREEK EXPEDITIONS</span>
+                <span>Bhitarkanika Boat Booking • TIDAL CREEK EXPEDITIONS</span>
               </div>
 
               <h1 className="NarrowCreek__pageTitle">
@@ -177,7 +177,7 @@ const NarrowCreek = () => {
 
               <p className="NarrowCreek__lead">
                 Venture deep into the quiet interior arteries of Bhitarkanika National
-                Park with Bhitarakanika Boat Service. Cruise past exposed silt banks,
+                Park with Bhitarkanika Boat Booking. Cruise past exposed silt banks,
                 glide beneath natural arches of stilt roots, and observe estuarine
                 crocodiles, kingfishers, and monitor lizards along winding backwater channels.
               </p>
@@ -192,7 +192,7 @@ const NarrowCreek = () => {
                 <figcaption className="NarrowCreek__heroCaption">
                   <span className="NarrowCreek__heroCaptionDot" />
                   <span>
-                    Bhitarakanika Boat Service • Certified Low-Wake Safari Fleet & Naturalist Guides
+                    Bhitarkanika Boat Booking • Certified Low-Wake Safari Fleet & Naturalist Guides
                   </span>
                 </figcaption>
               </figure>
@@ -256,7 +256,7 @@ const NarrowCreek = () => {
 
               <div className="NarrowCreek__actionBanner">
                 <div>
-                  <h3>Ready to Explore the Mangrove Narrows with Bhitarakanika Boat Service?</h3>
+                  <h3>Ready to Explore the Mangrove Narrows with Bhitarkanika Boat Booking?</h3>
                   <p>
                     Pre-reserve private or shared low-wake boats to align with daily tidal
                     depths and secure certified Forest Department eco-guides.
@@ -358,7 +358,7 @@ const NarrowCreek = () => {
                 <div>
                   <h3>Need Real-Time Tide Information for Your Travel Date?</h3>
                   <p>
-                    Speak directly with dock operators at Bhitarakanika Boat Service for
+                    Speak directly with dock operators at Bhitarkanika Boat Booking for
                     updated high-tide departure charts and custom photography charters.
                   </p>
                 </div>
@@ -379,7 +379,7 @@ const NarrowCreek = () => {
             <div className="NarrowCreek__viewPane">
               <div className="NarrowCreek__eyebrow">
                 <span className="NarrowCreek__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • EXPEDITION REGISTRATION</span>
+                <span>Bhitarkanika Boat Booking • EXPEDITION REGISTRATION</span>
               </div>
 
               <h1 className="NarrowCreek__pageTitle">
@@ -401,7 +401,7 @@ const NarrowCreek = () => {
             <div className="NarrowCreek__viewPane">
               <div className="NarrowCreek__eyebrow">
                 <span className="NarrowCreek__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • FIELD GALLERY</span>
+                <span>Bhitarkanika Boat Booking • FIELD GALLERY</span>
               </div>
 
               <h1 className="NarrowCreek__pageTitle">
@@ -510,7 +510,7 @@ const NarrowCreek = () => {
             </div>
 
             <div className="NarrowCreek__supportHeading">
-              <span>BHITARAKANIKA BOAT SERVICE</span>
+              <span>Bhitarkanika Boat Booking</span>
               <h3>Need Tide Guidance?</h3>
             </div>
 
@@ -563,7 +563,7 @@ const NarrowCreek = () => {
           <div className="NarrowCreek__sideBox NarrowCreek__contactBox">
             <div className="NarrowCreek__sideTitle">
               <span />
-              <h2>Bhitarakanika Boat Service</h2>
+              <h2>Bhitarkanika Boat Booking</h2>
             </div>
 
             <div className="NarrowCreek__contactInfo">

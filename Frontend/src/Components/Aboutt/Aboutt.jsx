@@ -12,7 +12,7 @@ const Aboutt = () => {
   const navigate = useNavigate();
 
   const tabContent = {
-    mission: `At Bhitarakanika Boat Service, our mission is to help visitors discover the incredible beauty of Bhitarkanika, Odisha. We offer memorable boat journeys through peaceful mangrove creeks, lush green forests, and remarkable wildlife habitats. From spotting colourful kingfishers to witnessing the natural home of saltwater crocodiles, we aim to make every journey comfortable, enjoyable, and connected to nature.`,
+    mission: `At Bhitarkanika Boat Booking, our mission is to help visitors discover the incredible beauty of Bhitarkanika, Odisha. We offer memorable boat journeys through peaceful mangrove creeks, lush green forests, and remarkable wildlife habitats. From spotting colourful kingfishers to witnessing the natural home of saltwater crocodiles, we aim to make every journey comfortable, enjoyable, and connected to nature.`,
 
     experience: `Guest satisfaction, safety, and an authentic wilderness experience guide everything we do. Our forest-certified boats are equipped with modern life vests and captained by skilled local navigators who know every creek and tidal rhythm. Whether booking a private family charter or joining a group wildlife safari, we ensure an informative, serene, and unforgettable journey through the mangrove rivers.`
   };
@@ -36,7 +36,7 @@ const Aboutt = () => {
           </div>
 
           <h1 className="about-heading">
-            Bhitarakanika Boat Service – Discover Nature's Hidden Paradise
+            Bhitarkanika Boat Booking – Discover Nature's Hidden Paradise
           </h1>
 
           <p className="about-subheading">

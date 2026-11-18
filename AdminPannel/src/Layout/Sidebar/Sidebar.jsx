@@ -99,7 +99,7 @@ const Sidebar = ({
   onMobileClose = () => {},
   onProfileClick = () => {},
   onLogout = () => {},
-  brandName = "Bhitarkanika Tour",
+  brandName = "Bhitarkanika Boat Booking",
   brandTagline = "ADMIN PANEL",
   user = {
     name: "Admin",

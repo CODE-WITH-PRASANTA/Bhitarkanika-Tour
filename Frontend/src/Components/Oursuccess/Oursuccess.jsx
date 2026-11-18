@@ -89,11 +89,11 @@ const featuresData = [
 ];
 
 const Oursuccess = () => {
-  // Local SEO Schema for Bhitarakanika Boat Service
+  // Local SEO Schema for Bhitarkanika Boat Booking
   const travelAgencySchema = {
     '@context': 'https://schema.org',
     '@type': 'TouristInformationCenter',
-    name: 'Bhitarakanika Boat Service',
+    name: 'Bhitarkanika Boat Booking',
     description: 'Discover Bhitarkanika, Odisha, with scenic boat journeys through mangrove waterways, opportunities to appreciate local birdlife, and wildlife experiences in a remarkable coastal ecosystem.',
     address: {
       '@type': 'PostalAddress',
@@ -177,7 +177,7 @@ const Oursuccess = () => {
             className="oursuccess-title"
             itemProp="name"
           >
-            Discover Bhitarkanika with Bhitarakanika Boat Service
+            Discover Bhitarkanika with Bhitarkanika Boat Booking
           </h2>
 
           <p

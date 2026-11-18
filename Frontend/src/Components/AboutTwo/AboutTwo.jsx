@@ -96,7 +96,7 @@ const AboutTwo = () => {
 
           <div className="AboutTwo__eyebrow">
             <span className="AboutTwo__eyebrowLine" />
-            BHITARAKANIKA BOAT SERVICE
+            Bhitarkanika Boat Booking
           </div>
 
           <h2 className="AboutTwo__title" id="AboutTwo-title">
@@ -106,7 +106,7 @@ const AboutTwo = () => {
 
           <p className="AboutTwo__description">
             Discover the breathtaking beauty of Bhitarkanika, Odisha,
-            with Bhitarakanika Boat Service. Cruise through winding
+            with Bhitarkanika Boat Booking. Cruise through winding
             mangrove waterways, experience the peaceful beauty of
             nature, and explore a remarkable habitat known for its
             saltwater crocodiles and diverse birdlife. Every journey

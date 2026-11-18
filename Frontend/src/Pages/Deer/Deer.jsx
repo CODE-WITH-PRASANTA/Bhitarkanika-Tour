@@ -15,7 +15,7 @@ import deerImgSix from "../../assets/deer-6.png";
 const WHATSAPP_NUMBER = "918328982394"; // country code + number, digits only
 const WHATSAPP_DISPLAY = "+91 83289 82394";
 const GENERAL_MESSAGE =
-  "Hello Bhitarakanika Boat Service! I would like to know about spotted deer safari availability and today's tide timings.";
+  "Hello Bhitarkanika Boat Booking! I would like to know about spotted deer safari availability and today's tide timings.";
 
 const whatsappLink = (message) =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
@@ -251,7 +251,7 @@ const INITIAL_FORM = {
 
 const buildBookingMessage = (d) =>
   [
-    "Hello Bhitarakanika Boat Service! I would like to book a spotted deer safari.",
+    "Hello Bhitarkanika Boat Booking! I would like to book a spotted deer safari.",
     "",
     `Name: ${d.name}`,
     `Mobile: ${d.phone}`,
@@ -348,7 +348,7 @@ const Deer = () => {
             <div className="Deer__viewPane">
               <div className="Deer__eyebrow">
                 <span className="Deer__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • WILDLIFE EXPEDITIONS</span>
+                <span>Bhitarkanika Boat Booking • WILDLIFE EXPEDITIONS</span>
               </div>
 
               <h1 className="Deer__pageTitle">
@@ -358,7 +358,7 @@ const Deer = () => {
 
               <p className="Deer__lead">
                 Traverse tidal riverways aboard authorized motor cruisers by
-                Bhitarakanika Boat Service to explore the grassy savannahs and
+                Bhitarkanika Boat Booking to explore the grassy savannahs and
                 elevated forest islands of Dangmal. Witness hundreds of graceful
                 Spotted Deer (Chital) browsing peacefully along mangrove fringes
                 alongside wild boars, monitor lizards, and delta birdlife.
@@ -378,7 +378,7 @@ const Deer = () => {
                 <figcaption className="Deer__heroCaption">
                   <span className="Deer__heroCaptionDot" />
                   <span>
-                    Bhitarakanika Boat Service • Forest Wildlife Safaris &
+                    Bhitarkanika Boat Booking • Forest Wildlife Safaris &
                     Eco-Guided Trails
                   </span>
                 </figcaption>
@@ -461,7 +461,7 @@ const Deer = () => {
 
                         <WhatsAppLink
                           className="Deer__pkgBtn Deer__pkgBtn--wa"
-                          message={`Hello Bhitarakanika Boat Service! I'm interested in the "${pkg.title}". Please share availability and pricing.`}
+                          message={`Hello Bhitarkanika Boat Booking! I'm interested in the "${pkg.title}". Please share availability and pricing.`}
                         >
                           <WaIcon /> Ask on WhatsApp
                         </WhatsAppLink>
@@ -473,7 +473,7 @@ const Deer = () => {
 
               <div className="Deer__actionBanner">
                 <div>
-                  <h3>Ready to Spot Herds of Chital with Bhitarakanika Boat Service?</h3>
+                  <h3>Ready to Spot Herds of Chital with Bhitarkanika Boat Booking?</h3>
                   <p>
                     Reserve private or shared safari boats with forest permits
                     and certified naturalists for seamless wildlife exploration
@@ -598,7 +598,7 @@ const Deer = () => {
                   </button>
                   <WhatsAppLink
                     className="Deer__btnWhatsApp"
-                    message="Hello Bhitarakanika Boat Service! I have a question about group size and deer safari timing."
+                    message="Hello Bhitarkanika Boat Booking! I have a question about group size and deer safari timing."
                   >
                     <WaIcon /> Chat on WhatsApp
                   </WhatsAppLink>
@@ -612,7 +612,7 @@ const Deer = () => {
             <div className="Deer__viewPane">
               <div className="Deer__eyebrow">
                 <span className="Deer__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • EXPEDITION REGISTRATION</span>
+                <span>Bhitarkanika Boat Booking • EXPEDITION REGISTRATION</span>
               </div>
 
               <h1 className="Deer__pageTitle">
@@ -635,7 +635,7 @@ const Deer = () => {
             <div className="Deer__viewPane">
               <div className="Deer__eyebrow">
                 <span className="Deer__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • FIELD GALLERY</span>
+                <span>Bhitarkanika Boat Booking • FIELD GALLERY</span>
               </div>
 
               <h1 className="Deer__pageTitle">
@@ -719,7 +719,7 @@ const Deer = () => {
             </div>
 
             <div className="Deer__supportHeading">
-              <span>BHITARAKANIKA BOAT SERVICE</span>
+              <span>Bhitarkanika Boat Booking</span>
               <h3>Need Safari Advice?</h3>
             </div>
 
@@ -777,7 +777,7 @@ const Deer = () => {
           <div className="Deer__sideBox Deer__contactBox">
             <div className="Deer__sideTitle">
               <span />
-              <h2>Bhitarakanika Boat Service</h2>
+              <h2>Bhitarkanika Boat Booking</h2>
             </div>
 
             <div className="Deer__contactInfo">
@@ -885,7 +885,7 @@ const Deer = () => {
 
               <WhatsAppLink
                 className="Deer__lightboxWa"
-                message={`Hello Bhitarakanika Boat Service! I liked "${galleryImages[activeImage].title}" (${galleryImages[activeImage].location}). Can I book a safari to this area?`}
+                message={`Hello Bhitarkanika Boat Booking! I liked "${galleryImages[activeImage].title}" (${galleryImages[activeImage].location}). Can I book a safari to this area?`}
               >
                 <WaIcon /> Book this area
               </WhatsAppLink>

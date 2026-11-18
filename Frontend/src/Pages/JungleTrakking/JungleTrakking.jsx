@@ -87,11 +87,11 @@ const trekPackages = [
 const trekkingFAQs = [
   {
     q: "Are independent, unguided treks permitted inside Bhitarkanika National Park?",
-    a: "No. Solo and unguided walking inside the sanctuary is strictly prohibited due to active populations of giant saltwater crocodiles, wild boars, and venomous snakes. All jungle treks must be accompanied by licensed Forest Department guides arranged via Bhitarakanika Boat Service.",
+    a: "No. Solo and unguided walking inside the sanctuary is strictly prohibited due to active populations of giant saltwater crocodiles, wild boars, and venomous snakes. All jungle treks must be accompanied by licensed Forest Department guides arranged via Bhitarkanika Boat Booking.",
   },
   {
     q: "How do trekkers reach the starting points of the jungle trails?",
-    a: "The most popular nature trails are located on Dangmal Island and Habalikhati. Guests board forest-authorized vessels operated by Bhitarakanika Boat Service at Khola or Gupti jetty, cruising across scenic waterways directly to the trailheads.",
+    a: "The most popular nature trails are located on Dangmal Island and Habalikhati. Guests board forest-authorized vessels operated by Bhitarkanika Boat Booking at Khola or Gupti jetty, cruising across scenic waterways directly to the trailheads.",
   },
   {
     q: "What footwear and gear are required for jungle trekking?",
@@ -167,7 +167,7 @@ const JungleTrakking = () => {
             <div className="JungleTrakking__viewPane">
               <div className="JungleTrakking__eyebrow">
                 <span className="JungleTrakking__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • ECO TRAILS & TREKKING</span>
+                <span>Bhitarkanika Boat Booking • ECO TRAILS & TREKKING</span>
               </div>
 
               <h1 className="JungleTrakking__pageTitle">
@@ -176,7 +176,7 @@ const JungleTrakking = () => {
 
               <p className="JungleTrakking__lead">
                 Step off the boat and journey into the heart of India’s second largest
-                mangrove biosphere with Bhitarakanika Boat Service. Led by certified
+                mangrove biosphere with Bhitarkanika Boat Booking. Led by certified
                 forest naturalists and local trackers, explore winding dirt circuits,
                 centuries-old hunting lodge ruins, deer grazing glades, and coastal forest
                 paths that reveal the untamed wilderness of Bhitarkanika.
@@ -192,7 +192,7 @@ const JungleTrakking = () => {
                 <figcaption className="JungleTrakking__heroCaption">
                   <span className="JungleTrakking__heroCaptionDot" />
                   <span>
-                    Bhitarakanika Boat Service • Forest Department Certified Trackers & Guides
+                    Bhitarkanika Boat Booking • Forest Department Certified Trackers & Guides
                   </span>
                 </figcaption>
               </figure>
@@ -256,7 +256,7 @@ const JungleTrakking = () => {
 
               <div className="JungleTrakking__actionBanner">
                 <div>
-                  <h3>Ready for a Wilderness Trek with Bhitarakanika Boat Service?</h3>
+                  <h3>Ready for a Wilderness Trek with Bhitarkanika Boat Booking?</h3>
                   <p>
                     Pre-book your boat transfer and forest trekking permits early to secure
                     experienced naturalists during peak morning and winter safari slots.
@@ -363,7 +363,7 @@ const JungleTrakking = () => {
                 <div>
                   <h3>Have Photography, Birding, or Group Inquiries?</h3>
                   <p>
-                    Speak with Bhitarakanika Boat Service coordinators for custom sunrise
+                    Speak with Bhitarkanika Boat Booking coordinators for custom sunrise
                     walking trails, photography paces, and student nature study camps.
                   </p>
                 </div>
@@ -384,7 +384,7 @@ const JungleTrakking = () => {
             <div className="JungleTrakking__viewPane">
               <div className="JungleTrakking__eyebrow">
                 <span className="JungleTrakking__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • EXPEDITION REGISTRATION</span>
+                <span>Bhitarkanika Boat Booking • EXPEDITION REGISTRATION</span>
               </div>
 
               <h1 className="JungleTrakking__pageTitle">
@@ -392,7 +392,7 @@ const JungleTrakking = () => {
               </h1>
 
               <p className="JungleTrakking__lead">
-                Submit your target trekking dates and party details. Bhitarakanika Boat Service
+                Submit your target trekking dates and party details. Bhitarkanika Boat Booking
                 will coordinate forest gate manifests, boat transfers, and assign licensed
                 eco-guides for your excursion.
               </p>
@@ -406,7 +406,7 @@ const JungleTrakking = () => {
             <div className="JungleTrakking__viewPane">
               <div className="JungleTrakking__eyebrow">
                 <span className="JungleTrakking__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • TRAIL ARCHIVE</span>
+                <span>Bhitarkanika Boat Booking • TRAIL ARCHIVE</span>
               </div>
 
               <h1 className="JungleTrakking__pageTitle">
@@ -493,7 +493,7 @@ const JungleTrakking = () => {
             </div>
 
             <div className="JungleTrakking__supportHeading">
-              <span>BHITARAKANIKA BOAT SERVICE</span>
+              <span>Bhitarkanika Boat Booking</span>
               <h3>Need Trek Advice?</h3>
             </div>
 
@@ -546,7 +546,7 @@ const JungleTrakking = () => {
           <div className="JungleTrakking__sideBox JungleTrakking__contactBox">
             <div className="JungleTrakking__sideTitle">
               <span />
-              <h2>Bhitarakanika Boat Service</h2>
+              <h2>Bhitarkanika Boat Booking</h2>
             </div>
 
             <div className="JungleTrakking__contactInfo">

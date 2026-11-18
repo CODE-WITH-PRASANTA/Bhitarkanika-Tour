@@ -12,7 +12,7 @@ import logo from "../../assets/mlogo.png";
 import "./Navbar.css";
 
 const services = [
-  { title: "Boat Booking", path: "/services/boat-service" },
+  { title: "Explore Bhitarkanika", path: "/services/boat-service" },
   { title: "Migratory Birds Point", path: "/services/migratory-birds-point" },
   { title: "Saltwater Crocodiles", path: "/services/saltwater-crocodiles" },
   { title: "Mangrove Forests", path: "/services/mangrove-forests" },
@@ -21,7 +21,6 @@ const services = [
   { title: "White Crocodile (Gori)", path: "/services/white-crocodile" },
   { title: "Jungle Trekking", path: "/services/jungle-trekking" },
   { title: "Museum", path: "/services/museum" },
-  { title: "EV Vehicle Service", path: "/services/ev-vehicle-service" },
   { title: "Narrow Creek", path: "/services/narrow-creek" },
   { title: "Olive Ridley Turtles", path: "/services/olive-ridley-turtles" },
   { title: "Sea Food", path: "/services/sea-food" },

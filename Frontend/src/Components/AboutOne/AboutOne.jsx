@@ -142,7 +142,7 @@ const AboutOne = () => {
           </h1>
 
           <p className="AboutOne__intro">
-            Welcome to <strong>Bhitarakanika Boat Service</strong>, your trusted gateway to
+            Welcome to <strong>Bhitarkanika Boat Booking</strong>, your trusted gateway to
             the untouched wilderness of Odisha. Glide silently through winding mangrove creeks,
             encounter prehistoric <strong>saltwater crocodiles</strong> basking on riverbanks,
             and immerse yourself in one of India’s most breathtaking coastal eco-sanctuaries.

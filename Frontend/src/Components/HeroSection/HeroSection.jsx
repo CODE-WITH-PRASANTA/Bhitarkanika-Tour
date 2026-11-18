@@ -14,7 +14,7 @@ import heroImage8 from "../../assets/h.png";
 // SETTINGS
 // ============================================
 
-const BRAND_NAME = "Bhitarakanika Boat Service";
+const BRAND_NAME = "WELCOME TO BHITARKANIKA NATIONAL PARK";
 const LOCATION_TEXT = "Bhitarkanika National Park, Odisha";
 const SLIDE_DURATION = 6000; // 6 seconds per slide
 

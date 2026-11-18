@@ -98,8 +98,8 @@ const whiteCrocFAQs = [
     a: "Yes. While visitors can reliably observe white crocodiles inside the specialized open-air research enclosures at Dangmal, occasional wild-born sub-adult white and pale-phase crocodiles are spotted along the mudflats of Dangmal and Suajore creeks.",
   },
   {
-    q: "How does Bhitarakanika Boat Service arrange this tour?",
-    a: "Bhitarakanika Boat Service provides authorized safari crafts departing from Khola Jetty that cruise through core estuarine creeks directly to the Dangmal Forest pier, with dedicated time allocated for the white crocodile facility and nature trails.",
+    q: "How does Bhitarkanika Boat Booking arrange this tour?",
+    a: "Bhitarkanika Boat Booking provides authorized safari crafts departing from Khola Jetty that cruise through core estuarine creeks directly to the Dangmal Forest pier, with dedicated time allocated for the white crocodile facility and nature trails.",
   },
   {
     q: "When is the best season to plan a white crocodile tour?",
@@ -169,7 +169,7 @@ const WhiteCrocodile = () => {
             <div className="WhiteCrocodile__viewPane">
               <div className="WhiteCrocodile__eyebrow">
                 <span className="WhiteCrocodile__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • RARE ESTUARINE EXPEDITION</span>
+                <span>Bhitarkanika Boat Booking • RARE ESTUARINE EXPEDITION</span>
               </div>
 
               <h1 className="WhiteCrocodile__pageTitle">
@@ -178,7 +178,7 @@ const WhiteCrocodile = () => {
 
               <p className="WhiteCrocodile__lead">
                 Discover one of nature’s rarest wonders aboard authorized cruisers by
-                Bhitarakanika Boat Service. Journey through the tidal mangrove rivers
+                Bhitarkanika Boat Booking. Journey through the tidal mangrove rivers
                 to Dangmal, home to the world's most famous genetic lineage of leucistic
                 saltwater crocodiles—including the legacy of the legendary white crocodile
                 "Gori" and her descendants.
@@ -194,7 +194,7 @@ const WhiteCrocodile = () => {
                 <figcaption className="WhiteCrocodile__heroCaption">
                   <span className="WhiteCrocodile__heroCaptionDot" />
                   <span>
-                    Bhitarakanika Boat Service • Certified Guides & Captive Rearing Tours
+                    Bhitarkanika Boat Booking • Certified Guides & Captive Rearing Tours
                   </span>
                 </figcaption>
               </figure>
@@ -232,7 +232,7 @@ const WhiteCrocodile = () => {
               {/* SAFARI PACKAGES */}
               <div className="WhiteCrocodile__packageSection">
                 <div className="WhiteCrocodile__subHeader">
-                  <span>EXPEDITIONS BY BHITARAKANIKA BOAT SERVICE</span>
+                  <span>EXPEDITIONS BY Bhitarkanika Boat Booking</span>
                   <h2>Curated White Crocodile Safari Routes</h2>
                 </div>
 
@@ -263,7 +263,7 @@ const WhiteCrocodile = () => {
 
               <div className="WhiteCrocodile__actionBanner">
                 <div>
-                  <h3>Ready to Witness the White Crocodiles with Bhitarakanika Boat Service?</h3>
+                  <h3>Ready to Witness the White Crocodiles with Bhitarkanika Boat Booking?</h3>
                   <p>
                     Pre-reserve your safari vessel from Khola Jetty to guarantee preferred gate
                     manifest clearances, prime tide timings, and expert forest guide allocation.
@@ -364,7 +364,7 @@ const WhiteCrocodile = () => {
                 <div>
                   <h3>Planning a Research, Student or Family Tour?</h3>
                   <p>
-                    Speak with our dock managers at Bhitarakanika Boat Service for custom
+                    Speak with our dock managers at Bhitarkanika Boat Booking for custom
                     safari departures synchronized with low-tide basking periods.
                   </p>
                 </div>
@@ -385,7 +385,7 @@ const WhiteCrocodile = () => {
             <div className="WhiteCrocodile__viewPane">
               <div className="WhiteCrocodile__eyebrow">
                 <span className="WhiteCrocodile__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • EXPEDITION REGISTRATION</span>
+                <span>Bhitarkanika Boat Booking • EXPEDITION REGISTRATION</span>
               </div>
 
               <h1 className="WhiteCrocodile__pageTitle">
@@ -393,7 +393,7 @@ const WhiteCrocodile = () => {
               </h1>
 
               <p className="WhiteCrocodile__lead">
-                Submit your expected travel dates and party details. Bhitarakanika Boat Service
+                Submit your expected travel dates and party details. Bhitarkanika Boat Booking
                 will coordinate forest gate entry clearances, verify daily tide windows, and
                 confirm your dedicated safari vessel.
               </p>
@@ -407,7 +407,7 @@ const WhiteCrocodile = () => {
             <div className="WhiteCrocodile__viewPane">
               <div className="WhiteCrocodile__eyebrow">
                 <span className="WhiteCrocodile__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • FIELD GALLERY</span>
+                <span>Bhitarkanika Boat Booking • FIELD GALLERY</span>
               </div>
 
               <h1 className="WhiteCrocodile__pageTitle">
@@ -520,7 +520,7 @@ const WhiteCrocodile = () => {
             </div>
 
             <div className="WhiteCrocodile__supportHeading">
-              <span>BHITARAKANIKA BOAT SERVICE</span>
+              <span>Bhitarkanika Boat Booking</span>
               <h3>Need Safari Advice?</h3>
             </div>
 
@@ -575,7 +575,7 @@ const WhiteCrocodile = () => {
           <div className="WhiteCrocodile__sideBox WhiteCrocodile__contactBox">
             <div className="WhiteCrocodile__sideTitle">
               <span />
-              <h2>Bhitarakanika Boat Service</h2>
+              <h2>Bhitarkanika Boat Booking</h2>
             </div>
 
             <div className="WhiteCrocodile__contactInfo">

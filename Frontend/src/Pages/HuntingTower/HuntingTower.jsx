@@ -70,7 +70,7 @@ const towerExperiences = [
     route: "Khola Jetty Safari Boat → Dangmal Forest Ghat → Heritage Trail → Suajore Creek",
     duration: "5 to 6 Hours (Comprehensive Package)",
     highlights:
-      "Seamless motorboat cruise with Bhitarakanika Boat Service combined with a guided walking trek to the ancient hunting tower and crocodile breeding center.",
+      "Seamless motorboat cruise with Bhitarkanika Boat Booking combined with a guided walking trek to the ancient hunting tower and crocodile breeding center.",
     capacity: "Custom Private Cruisers & Forest Naturalist",
   },
   {
@@ -91,11 +91,11 @@ const towerFAQs = [
   },
   {
     q: "Where is the Hunting Tower located and how do visitors reach it?",
-    a: "The tower is situated on Dangmal Island inside the core terrestrial sector of Bhitarkanika National Park. Visitors arrive aboard authorized safari boats operated by Bhitarakanika Boat Service from Khola Jetty, docking at Dangmal Ghat before taking the cleared forest walking trail.",
+    a: "The tower is situated on Dangmal Island inside the core terrestrial sector of Bhitarkanika National Park. Visitors arrive aboard authorized safari boats operated by Bhitarkanika Boat Booking from Khola Jetty, docking at Dangmal Ghat before taking the cleared forest walking trail.",
   },
   {
     q: "Is entry to the Hunting Tower covered under standard sanctuary permits?",
-    a: "Yes. General sanctuary entry clearances cover the historical hunting tower, nature boardwalks, and watchtowers. Bhitarakanika Boat Service organizes all necessary Forest Department passenger permits and guide clearances before boat departure.",
+    a: "Yes. General sanctuary entry clearances cover the historical hunting tower, nature boardwalks, and watchtowers. Bhitarkanika Boat Booking organizes all necessary Forest Department passenger permits and guide clearances before boat departure.",
   },
   {
     q: "What wildlife can be seen near the Hunting Tower grounds?",
@@ -167,7 +167,7 @@ const HuntingTower = () => {
             <div className="HuntingTower__viewPane">
               <div className="HuntingTower__eyebrow">
                 <span className="HuntingTower__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • ROYAL HERITAGE TRAILS</span>
+                <span>Bhitarkanika Boat Booking • ROYAL HERITAGE TRAILS</span>
               </div>
 
               <h1 className="HuntingTower__pageTitle">
@@ -176,7 +176,7 @@ const HuntingTower = () => {
 
               <p className="HuntingTower__lead">
                 Walk through pages of delta history inside the core forests of
-                Dangmal with Bhitarakanika Boat Service. Built by the former rulers of
+                Dangmal with Bhitarkanika Boat Booking. Built by the former rulers of
                 Kanika, the historic Hunting Tower stands preserved amidst dense mangrove
                 groves, offering panoramic views across natural freshwater glades frequented
                 by spotted deer, wild boars, and native avifauna.
@@ -192,7 +192,7 @@ const HuntingTower = () => {
                 <figcaption className="HuntingTower__heroCaption">
                   <span className="HuntingTower__heroCaptionDot" />
                   <span>
-                    Bhitarakanika Boat Service • Royal Shikar Gah & Forest Heritage Circuits
+                    Bhitarkanika Boat Booking • Royal Shikar Gah & Forest Heritage Circuits
                   </span>
                 </figcaption>
               </figure>
@@ -256,7 +256,7 @@ const HuntingTower = () => {
 
               <div className="HuntingTower__actionBanner">
                 <div>
-                  <h3>Plan Your Heritage Forest Tour with Bhitarakanika Boat Service</h3>
+                  <h3>Plan Your Heritage Forest Tour with Bhitarkanika Boat Booking</h3>
                   <p>
                     Pre-reserve your safari vessel from Khola Jetty to include guided
                     walking access to the ancient Hunting Tower and Dangmal interpretive center.
@@ -365,7 +365,7 @@ const HuntingTower = () => {
                 <div>
                   <h3>Organizing a Photography, Student, or History Tour?</h3>
                   <p>
-                    Connect with our tour desk at Bhitarakanika Boat Service for chartered
+                    Connect with our tour desk at Bhitarkanika Boat Booking for chartered
                     group boats, historical briefings, and dedicated forest naturalists.
                   </p>
                 </div>
@@ -386,7 +386,7 @@ const HuntingTower = () => {
             <div className="HuntingTower__viewPane">
               <div className="HuntingTower__eyebrow">
                 <span className="HuntingTower__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • EXPEDITION REGISTRATION</span>
+                <span>Bhitarkanika Boat Booking • EXPEDITION REGISTRATION</span>
               </div>
 
               <h1 className="HuntingTower__pageTitle">
@@ -408,7 +408,7 @@ const HuntingTower = () => {
             <div className="HuntingTower__viewPane">
               <div className="HuntingTower__eyebrow">
                 <span className="HuntingTower__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • HERITAGE ARCHIVE</span>
+                <span>Bhitarkanika Boat Booking • HERITAGE ARCHIVE</span>
               </div>
 
               <h1 className="HuntingTower__pageTitle">
@@ -495,7 +495,7 @@ const HuntingTower = () => {
             </div>
 
             <div className="HuntingTower__supportHeading">
-              <span>BHITARAKANIKA BOAT SERVICE</span>
+              <span>Bhitarkanika Boat Booking</span>
               <h3>Need Heritage Advice?</h3>
             </div>
 
@@ -548,7 +548,7 @@ const HuntingTower = () => {
           <div className="HuntingTower__sideBox HuntingTower__contactBox">
             <div className="HuntingTower__sideTitle">
               <span />
-              <h2>Bhitarakanika Boat Service</h2>
+              <h2>Bhitarkanika Boat Booking</h2>
             </div>
 
             <div className="HuntingTower__contactInfo">

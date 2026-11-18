@@ -133,7 +133,7 @@ const SaltWaterCrocodile = () => {
             <div className="SaltWaterCrocodile__viewPane">
               <div className="SaltWaterCrocodile__eyebrow">
                 <span className="SaltWaterCrocodile__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • ESTUARINE EXPEDITION</span>
+                <span>Bhitarkanika Boat Booking • ESTUARINE EXPEDITION</span>
               </div>
 
               <h1 className="SaltWaterCrocodile__pageTitle">
@@ -193,7 +193,7 @@ const SaltWaterCrocodile = () => {
 
               <div className="SaltWaterCrocodile__packageSection">
                 <div className="SaltWaterCrocodile__subHeader">
-                  <span>EXPEDITIONS BY BHITARAKANIKA BOAT SERVICE</span>
+                  <span>EXPEDITIONS BY Bhitarkanika Boat Booking</span>
                   <h2>Popular Estuarine Crocodile Cruises</h2>
                 </div>
 
@@ -217,7 +217,7 @@ const SaltWaterCrocodile = () => {
 
               <div className="SaltWaterCrocodile__actionBanner">
                 <div>
-                  <h3>Ready to Spot Giant Crocodiles with Bhitarakanika Boat Service?</h3>
+                  <h3>Ready to Spot Giant Crocodiles with Bhitarkanika Boat Booking?</h3>
                   <p>
                     Pre-reserve private or shared safari boats to secure preferred gate
                     clearance and certified naturalist allocation during prime basking windows.
@@ -312,7 +312,7 @@ const SaltWaterCrocodile = () => {
                 <div>
                   <h3>Have Specific Group or Timing Inquiries?</h3>
                   <p>
-                    Speak with our dock managers at Bhitarakanika Boat Service for updated
+                    Speak with our dock managers at Bhitarkanika Boat Booking for updated
                     daily tide charts, water levels, and private naturalist hire.
                   </p>
                 </div>
@@ -332,7 +332,7 @@ const SaltWaterCrocodile = () => {
             <div className="SaltWaterCrocodile__viewPane">
               <div className="SaltWaterCrocodile__eyebrow">
                 <span className="SaltWaterCrocodile__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • EXPEDITION DESK</span>
+                <span>Bhitarkanika Boat Booking • EXPEDITION DESK</span>
               </div>
 
               <h1 className="SaltWaterCrocodile__pageTitle">
@@ -340,7 +340,7 @@ const SaltWaterCrocodile = () => {
               </h1>
 
               <p className="SaltWaterCrocodile__lead">
-                Submit your planned travel dates and group size. Bhitarakanika Boat Service
+                Submit your planned travel dates and group size. Bhitarkanika Boat Booking
                 will verify tidal schedules, organize Forest Department clearances, and reserve
                 your boat.
               </p>
@@ -354,7 +354,7 @@ const SaltWaterCrocodile = () => {
             <div className="SaltWaterCrocodile__viewPane">
               <div className="SaltWaterCrocodile__eyebrow">
                 <span className="SaltWaterCrocodile__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • FIELD GALLERY</span>
+                <span>Bhitarkanika Boat Booking • FIELD GALLERY</span>
               </div>
 
               <h1 className="SaltWaterCrocodile__pageTitle">
@@ -442,7 +442,7 @@ const SaltWaterCrocodile = () => {
             </div>
 
             <div className="SaltWaterCrocodile__supportHeading">
-              <span>BHITARAKANIKA BOAT SERVICE</span>
+              <span>Bhitarkanika Boat Booking</span>
               <h3>Need Tide Guidance?</h3>
             </div>
 
@@ -493,7 +493,7 @@ const SaltWaterCrocodile = () => {
           <div className="SaltWaterCrocodile__sideBox SaltWaterCrocodile__contactBox">
             <div className="SaltWaterCrocodile__sideTitle">
               <span />
-              <h2>Bhitarakanika Boat Service</h2>
+              <h2>Bhitarkanika Boat Booking</h2>
             </div>
 
             <div className="SaltWaterCrocodile__contactInfo">

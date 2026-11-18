@@ -28,7 +28,6 @@ import NarrowCreek from "./Pages/NarrowCreek/NarrowCreek";
 import OliveRidleyTurtles from "./Pages/OliveRidleyTurtles/OliveRidleyTurtles";
 import SeaFood from "./Pages/SeaFood/SeaFood";
 import HuntingTower from "./Pages/HuntingTower/HuntingTower";
-import EVVechile from "./Pages/EVVechile/EVVechile";
 import EnquireNow from "./Components/EnquireNow/EnquireNow";
 import Auth from "./Pages/Auth/Auth";
 import Profile from "./Pages/Profile/Profile";
@@ -86,7 +85,6 @@ const App = () => {
           <Route path="/services/olive-ridley-turtles" element={<OliveRidleyTurtles/>} />
           <Route path="/services/sea-food" element={<SeaFood/>} />
           <Route path="/services/hunting-tower" element={<HuntingTower/>} />
-          <Route path="/services/ev-vehicle-service" element={<EVVechile/>} />
         </Routes>
 
         <Footer />

@@ -19,7 +19,7 @@ import facilityImg1 from "../../assets/sky-walk.jpeg";
 import facilityImg2 from "../../assets/crocodile.jpeg";
 
 // ============================================
-// BHITARAKANIKA BOAT SERVICE - FACILITY SLIDES
+// Bhitarkanika Boat Booking - FACILITY SLIDES
 // ============================================
 
 const facilitySlides = [
@@ -31,7 +31,7 @@ const facilitySlides = [
     title: "Discover the Natural Beauty of Bhitarkanika",
 
     description:
-      "Experience the peaceful beauty of Bhitarkanika, Odisha, with Bhitarakanika Boat Service. Discover lush mangrove forests, winding waterways, beautiful birdlife, and a remarkable coastal ecosystem. From scenic nature trails to unforgettable boat journeys, explore a destination where nature takes centre stage.",
+      "Experience the peaceful beauty of Bhitarkanika, Odisha, with Bhitarkanika Boat Booking. Discover lush mangrove forests, winding waterways, beautiful birdlife, and a remarkable coastal ecosystem. From scenic nature trails to unforgettable boat journeys, explore a destination where nature takes centre stage.",
 
     features: [
       {
@@ -76,7 +76,7 @@ const facilitySlides = [
     title: "Experience the World of Saltwater Crocodiles",
 
     description:
-      "Explore the extraordinary wildlife of Bhitarkanika, renowned for its saltwater crocodiles and rich mangrove habitats. Journey through beautiful river channels by boat and discover the natural surroundings of one of Odisha's remarkable wildlife destinations. With Bhitarakanika Boat Service, enjoy a memorable nature experience while respecting wildlife and maintaining a safe distance from animals.",
+      "Explore the extraordinary wildlife of Bhitarkanika, renowned for its saltwater crocodiles and rich mangrove habitats. Journey through beautiful river channels by boat and discover the natural surroundings of one of Odisha's remarkable wildlife destinations. With Bhitarkanika Boat Booking, enjoy a memorable nature experience while respecting wildlife and maintaining a safe distance from animals.",
 
     features: [
       {
@@ -173,7 +173,7 @@ const Facility = () => {
   return (
     <section
       className="facility-section"
-      aria-label="Discover Bhitarkanika with Bhitarakanika Boat Service"
+      aria-label="Discover Bhitarkanika with Bhitarkanika Boat Booking"
     >
       <div className="facility-container">
 
@@ -195,7 +195,7 @@ const Facility = () => {
             </span>
 
             <span className="facility-badge-text">
-              Bhitarakanika Boat Service
+              Bhitarkanika Boat Booking
             </span>
 
             <span className="facility-badge-star">
@@ -369,7 +369,7 @@ const Facility = () => {
 
               <div>
                 <span className="facility-image-label-small">
-                  BHITARAKANIKA BOAT SERVICE
+                  Bhitarkanika Boat Booking
                 </span>
 
                 <h3>{current.imageLabel}</h3>

@@ -132,7 +132,7 @@ const SkyWalk = () => {
             <div className="SkyWalk__viewPane">
               <div className="SkyWalk__eyebrow">
                 <span className="SkyWalk__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • CANOPY EXPEDITIONS</span>
+                <span>Bhitarkanika Boat Booking • CANOPY EXPEDITIONS</span>
               </div>
 
               <h1 className="SkyWalk__pageTitle">
@@ -217,7 +217,7 @@ const SkyWalk = () => {
               <div className="SkyWalk__actionBanner">
                 <div>
                   <h3>
-                    Plan Your Skywalk & Boat Safari with Bhitarakanika Boat Service
+                    Plan Your Skywalk & Boat Safari with Bhitarkanika Boat Booking
                   </h3>
                   <p>
                     Combine your river creek cruise with reserved access to the
@@ -288,7 +288,7 @@ const SkyWalk = () => {
                 <ul>
                   <li>
                     <strong>From Khola Departure Jetty:</strong> Board authorized
-                    safari crafts via Bhitarakanika Boat Service. A picturesque
+                    safari crafts via Bhitarkanika Boat Booking. A picturesque
                     cruise delivers passengers directly to Dangmal Ghat.
                   </li>
                   <li>
@@ -314,7 +314,7 @@ const SkyWalk = () => {
                 <div>
                   <h3>Arranging a Group or School Educational Tour?</h3>
                   <p>
-                    Talk directly to Bhitarakanika Boat Service coordinators for
+                    Talk directly to Bhitarkanika Boat Booking coordinators for
                     specialized naturalist-led canopy walks and group permit clearance.
                   </p>
                 </div>
@@ -334,7 +334,7 @@ const SkyWalk = () => {
             <div className="SkyWalk__viewPane">
               <div className="SkyWalk__eyebrow">
                 <span className="SkyWalk__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • EXPEDITION REGISTRATION</span>
+                <span>Bhitarkanika Boat Booking • EXPEDITION REGISTRATION</span>
               </div>
 
               <h1 className="SkyWalk__pageTitle">
@@ -356,7 +356,7 @@ const SkyWalk = () => {
             <div className="SkyWalk__viewPane">
               <div className="SkyWalk__eyebrow">
                 <span className="SkyWalk__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • CANOPY PERSPECTIVES</span>
+                <span>Bhitarkanika Boat Booking • CANOPY PERSPECTIVES</span>
               </div>
 
               <h1 className="SkyWalk__pageTitle">
@@ -437,7 +437,7 @@ const SkyWalk = () => {
             </div>
 
             <div className="SkyWalk__supportHeading">
-              <span>BHITARAKANIKA BOAT SERVICE</span>
+              <span>Bhitarkanika Boat Booking</span>
               <h3>Need Trail Assistance?</h3>
             </div>
 
@@ -489,7 +489,7 @@ const SkyWalk = () => {
           <div className="SkyWalk__sideBox SkyWalk__contactBox">
             <div className="SkyWalk__sideTitle">
               <span />
-              <h2>Bhitarakanika Boat Service</h2>
+              <h2>Bhitarkanika Boat Booking</h2>
             </div>
 
             <div className="SkyWalk__contactInfo">

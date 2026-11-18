@@ -91,7 +91,7 @@ const culinaryFAQs = [
   },
   {
     q: "Can hot seafood meals be pre-ordered directly on the safari boat?",
-    a: "Yes. Bhitarakanika Boat Service allows travellers to pre-book hot packaged safari meals or full traditional seafood thalis at our jetty counters before departure, timed for anchor breaks inside the permissible river channels.",
+    a: "Yes. Bhitarkanika Boat Booking allows travellers to pre-book hot packaged safari meals or full traditional seafood thalis at our jetty counters before departure, timed for anchor breaks inside the permissible river channels.",
   },
   {
     q: "Are vegetarian and non-seafood meals available for accompanying guests?",
@@ -168,7 +168,7 @@ const SeaFood = () => {
             <div className="SeaFood__viewPane">
               <div className="SeaFood__eyebrow">
                 <span className="SeaFood__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • COASTAL CULINARY EXPERIENCES</span>
+                <span>Bhitarkanika Boat Booking • COASTAL CULINARY EXPERIENCES</span>
               </div>
 
               <h1 className="SeaFood__pageTitle">
@@ -178,7 +178,7 @@ const SeaFood = () => {
               <p className="SeaFood__lead">
                 Complement your river expedition with the rich culinary heritage of coastal
                 Odisha. Savor fresh estuarine mud crabs, jumbo tiger prawns, and spiced
-                Bhetki curated by Bhitarakanika Boat Service, freshly prepared using
+                Bhetki curated by Bhitarkanika Boat Booking, freshly prepared using
                 traditional claypots, mustard pastes, and aromatic local spices.
               </p>
 
@@ -192,7 +192,7 @@ const SeaFood = () => {
                 <figcaption className="SeaFood__heroCaption">
                   <span className="SeaFood__heroCaptionDot" />
                   <span>
-                    Bhitarakanika Boat Service • Daily Fresh Catch & Riverside Kitchens
+                    Bhitarkanika Boat Booking • Daily Fresh Catch & Riverside Kitchens
                   </span>
                 </figcaption>
               </figure>
@@ -266,7 +266,7 @@ const SeaFood = () => {
             <div className="SeaFood__viewPane">
               <div className="SeaFood__eyebrow">
                 <span className="SeaFood__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • SOURCING & PREPARATION</span>
+                <span>Bhitarkanika Boat Booking • SOURCING & PREPARATION</span>
               </div>
 
               <h1 className="SeaFood__pageTitle">
@@ -348,7 +348,7 @@ const SeaFood = () => {
                   <span>PERSONALIZED DINING ARRANGEMENTS</span>
                   <h3>Have Large Group or Specific Dietary Inquiries?</h3>
                   <p>
-                    Talk directly to our catering desk at Bhitarakanika Boat Service for
+                    Talk directly to our catering desk at Bhitarkanika Boat Booking for
                     banquet thali menus, picnic boxes, and cottage barbecue arrangements.
                   </p>
                 </div>
@@ -369,7 +369,7 @@ const SeaFood = () => {
             <div className="SeaFood__viewPane">
               <div className="SeaFood__eyebrow">
                 <span className="SeaFood__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • DINING RESERVATIONS</span>
+                <span>Bhitarkanika Boat Booking • DINING RESERVATIONS</span>
               </div>
 
               <h1 className="SeaFood__pageTitle">
@@ -391,7 +391,7 @@ const SeaFood = () => {
             <div className="SeaFood__viewPane">
               <div className="SeaFood__eyebrow">
                 <span className="SeaFood__eyebrowLine" />
-                <span>BHITARAKANIKA BOAT SERVICE • FOOD ARCHIVE</span>
+                <span>Bhitarkanika Boat Booking • FOOD ARCHIVE</span>
               </div>
 
               <h1 className="SeaFood__pageTitle">
@@ -474,7 +474,7 @@ const SeaFood = () => {
             </div>
 
             <div className="SeaFood__supportHeading">
-              <span>BHITARAKANIKA BOAT SERVICE</span>
+              <span>Bhitarkanika Boat Booking</span>
               <h3>Need Dining Assistance?</h3>
             </div>
 
@@ -527,7 +527,7 @@ const SeaFood = () => {
           <div className="SeaFood__sideBox SeaFood__contactBox">
             <div className="SeaFood__sideTitle">
               <span />
-              <h2>Bhitarakanika Boat Service</h2>
+              <h2>Bhitarkanika Boat Booking</h2>
             </div>
 
             <div className="SeaFood__contactInfo">

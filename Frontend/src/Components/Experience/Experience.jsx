@@ -22,7 +22,7 @@ import siteLogo from "../../assets/mlogo.png";
 // SETTINGS
 // ============================================
 
-const BRAND_NAME = "Bhitarkanika Boat Service";
+const BRAND_NAME = "Bhitarkanika Boat Booking";
 
 const MAX_PEOPLE = 18;
 const BOAT_TAX = 50; // govt tax per boat (Rs.)
@@ -159,63 +159,27 @@ const boatData = [
   },
   {
     id: 3,
-    slug: "bhitarkanika-photographer-full-day-boat",
+    slug: "bhitarkanika-boat-booking",
     eyebrow: "Khola / Jaynagar",
-    title: "Photographer Full Day Boat Booking",
-    tagline: "A full day on the water built around the best photo spots.",
+    title: "Bhitarkanika Boat Booking",
+    tagline: "Enjoy a scenic boat journey through the beautiful mangrove creeks of Bhitarkanika.",
     image: boatService3,
-    duration: "FULL DAY",
-    category: "PHOTOGRAPHY",
+    duration: "1 DAY",
+    category: "BOAT RIDE",
     from: "Khola / Jaynagar",
-    to: "Bhitarkanika Photo Spots",
-    priceUnit: "per day",
-    startingFrom: 8000,
+    to: "Bhitarkanika",
+    priceUnit: "per boat",
+    fare: 8000,
     govtTax: false,
-    fullDay: true,
-    fare: null,
-    map: null,
-    packages: [
-      {
-        key: "standard",
-        name: "Standard",
-        price: 8000,
-        icon: "🚤",
-        tag: "",
-        perks: "Full-day Boat for photography.",
-        features: [
-          "Full-day Boat for photography",
-          "On the water 7:00 AM – 5:00 PM",
-          "Start from Khola or Jaynagar",
-        ],
-      },
-      {
-        key: "medium",
-        name: "Medium",
-        price: 12500,
-        icon: "📷",
-        tag: "Most Popular",
-        perks: "Standard + photo-friendly stops and a guide.",
-        features: [
-          "Everything in Standard",
-          "Photo-friendly stops on the route",
-          "Local guide included",
-        ],
-      },
-      {
-        key: "premium",
-        name: "Premium",
-        price: 15000,
-        icon: "🌅",
-        tag: "Best Value",
-        perks: "Medium + sunrise slot, snacks and a dedicated guide.",
-        features: [
-          "Everything in Medium",
-          "Golden sunrise photo slot",
-          "Snacks & refreshments on board",
-          "Dedicated guide all day",
-        ],
-      },
+    fullDay: false,
+    packages: null,
+    highlights: [
+      "Boat ride through mangrove creeks",
+      "Start from Khola or Jaynagar",
+      "Explore the beauty of Bhitarkanika",
+      "A memorable river safari experience",
     ],
+    map: null,
   },
 ];
 
@@ -1953,7 +1917,7 @@ const Experience = () => {
             </div>
 
             <h1 className="exp-main-title">
-              Cruise the Mangroves of <span className="exp-title-gradient">Bhitarkanika</span>
+              Cruise through the Mangroves of <span className="exp-title-gradient">Bhitarkanika</span>
             </h1>
           </div>
         </div>
